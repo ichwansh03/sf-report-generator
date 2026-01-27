@@ -1,0 +1,173 @@
+<apex:page standardController="Contact" extensions="Task_CustomPage_ctrl" sidebar="false" showHeader="false">
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>   
+    <apex:includeScript value="/support/console/37.0/integration.js"/>    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">  
+
+        var urlRequestNewTabRelatedContactActHis ='';
+        var titleNewTabRelatedContactActHis ='';
+  
+        function openNewTabRelatedContactActHis(el) {
+            console.log(el);	
+            let ActId = el.getAttribute('data-id');
+            let uniqueId = el.getAttribute('data-lastId');
+            
+            console.log(ActId);
+            titleNewTabRelatedContactActHis = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactActHis ='/apex/Task_recorddetailpage?id='+ ActId+'&lastId='+uniqueId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactActHis);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactActHis,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactActHis(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactActHis+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactActHis , false, titleNewTabRelatedContactActHis, null, null, titleNewTabRelatedContactActHis);
+        }
+
+        function openSuccessRelatedContactActHis(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    </script> 
+    
+    <style>
+        
+        .slds-text-title_caps {
+            border-left: 0.5px solid grey; 
+            border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+            text-align:center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+            /* Background color */
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            
+            /* Dimensions */
+            width: 100%;
+            height: 300%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            position: absolute;
+            
+            /* Mouse */
+            cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+            /* Background color */
+            border: solid 2px #ffba1a;
+            background-color: white;
+            
+            /* Dimensions */
+            left: 50%;
+            width: 200px;
+            margin-left: -100px;
+            top: 50%;
+            height: 75px;
+            margin-top: -25px;
+            z-index: 999;
+            position: fixed;
+            
+            /* Mouse */
+            cursor:pointer;
+        }
+    </style>    
+    <!--c:StatusLoading />-->
+    <apex:actionStatus id="stSearch" stopText="">
+        <apex:facet name="start">
+            <div>
+                <div class="popupBackground" />
+                <div class="PopupPanel">
+                    <table  border="0" bordercolor="red"  width="100%" height="100%">
+                        <tr>
+                            <td align="center"><b>Please Wait</b></td>
+                        </tr>
+                        <tr>
+                            <td valign="center" align="center"><img height="16" width="16" title="Processing..." alt="Processing..." 
+                                                                    src="/img/loading.gif" style="margin-top :17px;"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+    
+    
+    <apex:form id="formId">
+        <apex:pageblock id="ActivityHistory" title="Activity History" tabStyle="Case">
+            <apex:actionStatus id="status" >
+                <apex:facet name="start">
+                    <apex:outputPanel >
+                        Loading...<br/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:outputPanel >
+                        <apex:commandButton value="Reload" action="{!loadActivityHistory}" rerender="ActivityHistory,pagination" status="status" /><br/>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus><br/>
+             <apex:pageBlockTable value="{!list_task_res}" var="ts" rendered="{!list_task_res.size != 0}">  
+                <apex:column headerValue="Subject"><apex:outputText ><a href="javascript:void(0);" data-id="{!ts.id}"  data-lastId="{!ts.lastId}" data-title="{!ts.Subject}" onclick="openNewTabRelatedContactActHis(this);"> {!ts.Subject}</a></apex:outputText></apex:column>
+                <!--apex:column headerValue="Subject"><apex:outputLink target="_blank" value="/apex/Task_recorddetailpage?id={!ts.id}" >{!ts.subject}</apex:outputLink> </apex:column-->
+               <apex:column headerValue="Related To" value="{!ts.what_name}"/>
+               <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!ts.isClosed, 'un', '')}checked.gif"/></apex:column>
+               <apex:column headerValue="Due Date"><apex:outputText value="{0,date,MM/dd/yyyy}"> <apex:param value="{!ts.ActivityDate}" /> </apex:outputText></apex:column>
+               <apex:column headerValue="Assigned To" value="{!ts.owner_name}"/>
+               <apex:column headerValue="Last Modified Date/Time"><apex:outputText value="{0,date,MM/dd/yyyy  HH:mm a}"> <apex:param value="{!ts.lastModifiedDate}" /> </apex:outputText></apex:column>  
+               
+           </apex:pageBlockTable>
+            <apex:outputLabel value="No records to display" rendered="{!list_task_res.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            
+            <apex:outputPanel id="pagination">
+                <apex:actionFunction name="ActivityHistroryJavascript" action="{!setActivityHistory}" rerender="out"/>
+                <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="ActivityHistory">First</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="ActivityHistory">Previous&nbsp;</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                        <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="ActivityHistory">
+                            <apex:param name="nickName"
+                                        value="{!i}"
+                                        assignTo="{!to_page}"/>
+                        </apex:commandLink>
+                        <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                        &nbsp;|&nbsp;
+                    </apex:repeat>
+                    
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="ActivityHistory">Next</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="ActivityHistory">Last</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

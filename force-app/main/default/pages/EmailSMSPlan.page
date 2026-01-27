@@ -1,0 +1,191 @@
+<apex:page id="pageId" controller="EmailSMSPlan">  
+    <style>    
+    #map {
+        font-family: Arial;
+        font-size:12px;
+        line-height:normal !important;
+        height:200px;        
+        padding: 20px;
+    }       
+    .roundCornerCss{ 
+        /* outer shadows  (note the rgba is red, green, blue, alpha) */
+        -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.4); 
+        -moz-box-shadow: 0px 1px 6px rgba(23, 69, 88, .5);
+        
+        /* rounded corners */
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 7px; 
+        border-radius: 7px;
+        
+        /* gradients */
+        background: -webkit-gradient(linear, left top, left bottom, 
+        color-stop(0%, white), color-stop(15%, white), color-stop(100%, #D7E9F5)); 
+        background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); 
+    }   
+    .requiredLoaderBG{
+        background-color: rgb(71,71,71);
+        opacity:0.7;
+        filter:alpha(opacity=70);
+        background-image:url('{!$Resource.ajaxLoadGif}');
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+    }
+    </style> 
+    <script> 
+    var newWin=null;
+    function openLookupPopup(object,cId,cName,fCol,fId){ 
+       var objectName = object;
+       var filterId;
+       
+       if(fCol== 'undefined' || fCol== '' || fCol== null) fCol="";
+       if(fId== 'undefined' || fId== '' || fId== null){ 
+           filterId ="";
+       }else{
+           filterId = document.getElementById('pageId:mainFormId:pgBId:' + fId).value;
+       }
+       
+       try{            
+            if(objectName == 'undefined' || objectName == '' || objectName == null){
+                alert('Error: Please select the Object name!');
+            }else{
+               var url="/apex/Lookup?oN="+objectName+"&cId="+cId+"&cName="+cName+"&fCol="+fCol+"&fId="+filterId+"&passId=&passName=";
+               newWin=window.open(url, 'Popup','height=400,width=650,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no');
+               if (window.focus){
+                    newWin.focus();
+               }
+            }
+        }catch(e){
+                alert('Server Error: '+e);
+        }                   
+        return false;
+    }                  
+    function closeLookupPopup(){
+       if (null!=newWin)
+       {
+          newWin.close();
+       }  
+    }
+    
+    function setLookup(Name, id, cId, cName){
+        var elem = document.getElementById('pageId:mainFormId:pgBId:' + cName);           
+        var elemName = document.getElementById('pageId:mainFormId:pgBId:' + cId);  
+        elem.value = Name;
+        elemName.value = id; 
+    }
+    
+    function clearLookup(name,id){
+        document.getElementById(name).value ="";
+        document.getElementById(id).value =""; 
+    }
+    
+    function doSearch() {
+        var e = document.getElementById("pageId:mainFormId:pgBId:FieldDocument");
+        searchServer(
+              e.options[e.selectedIndex].value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldBrandId").value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldMatGroupId").value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldModelId").value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldMaterialId").value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldBCId").value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldAreaId").value,
+              document.getElementById("pageId:mainFormId:pgBId:FieldCabangId").value
+              );
+      }    
+    </script> 
+    <apex:form id="mainFormId">
+        <pbe:PageBlockTableEnhancerADV targetPbTableIds="SalesPlanTable" pageSizeOptions="10,50,100,200" defaultPageSize="50" enableExport="false"/>
+        <apex:pageBlock id="pgBDataId">
+            <apex:pageMessages id="errors"/>
+            <apex:pageBlockButtons >
+                <!-- apex:commandButton value="Lock" action="{!Lock}" reRender="errors,pgSalesPlanId" status="ajaxStatus"/ -->
+                <apex:commandButton value="Get Data" action="{!GetData}" reRender="mainFormId,errors,pgSalesPlanId" status="ajaxStatus"/>
+                <apex:commandButton value="Save" action="{!Save}" reRender="errors,pgSalesPlanId" status="ajaxStatus"/>
+
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1" id="pgSalesPlanId" title="Sales Plan" showHeader="false">
+                <apex:outputText value="Periode : {!sPeriode}" style="font-weight: bold;" />
+                <apex:outputText value="Profile : {!$Profile.Name}" style="font-weight: bold;" /> 
+                <!--apex:outputText value="Entity : {!sPosisi}" style="font-weight: bold;" / --> 
+                <apex:outputPanel >
+                    <apex:outputText value="Entity : " style="font-weight: bold;"/>
+                    <apex:selectList size="1" id="sPosisi" value="{!valueEntity}"  >
+                        <apex:selectOptions value="{!sPosisi}" />
+                    </apex:selectList>
+                    <!-- apex:outputText value="{!descperiod}" style="font-weight: bold;"/ --> 
+                </apex:outputPanel>
+
+                <apex:outputText value="Status : {!sStatus}" style="font-weight: bold;" /> 
+                <apex:outputPanel >
+                    <apex:outputText value="Document Period : " style="font-weight: bold;"/>
+                    <apex:selectList size="1" id="dperiod" value="{!valueperiod}">
+                        <apex:selectOptions value="{!dperiod}" />
+                    </apex:selectList>
+                    <!-- apex:outputText value="{!descperiod}" style="font-weight: bold;"/ --> 
+                </apex:outputPanel>
+                
+                <apex:pageBlockTable value="{!datalist_DataPlan}" var="a" id="SalesPlanTable">
+                    <apex:column headerValue="Send ?" width="5%" >
+                        <apex:Inputfield value="{!a.Send_Flag__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Plan Date" width="10%" >
+                        <apex:outputText value="{0,date,yyyy MM dd}">
+                            <apex:param value="{!a.Start_Date__c}" />
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Request Date" width="10%" >
+                        <apex:Inputfield value="{!a.Request_Date__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Send Date" width="10%" >
+                        <apex:outputText value="{0,date,yyyy MM dd}">
+                            <apex:param value="{!a.End_Date__c}" />
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Case" width="10%" >
+                        <apex:outputLink value="/{!a.Case__c}">{!a.Case__r.CaseNumber}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Contact" width="10%" >
+                        <apex:outputLink value="/{!a.Contact__c}">{!a.Contact__r.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Policy Number" width="10%" >
+                        <apex:outputText value="{!a.Policy_Number__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Account" width="10%" >
+                        <apex:outputLink value="/{!a.Account__c}">{!a.Account__r.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Email / SMS Template" width="10%" >
+                        <apex:outputLink value="/{!a.Email_SMS_Template__c}">{!a.Email_SMS_Template__r.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Entity" width="10%" >
+                        <apex:outputText value="{!a.Entity__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Method" width="10%" >
+                        <apex:outputText value="{!a.Method__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Category" width="10%" >
+                        <apex:outputText value="{!a.Category__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Mobile" width="10%" >
+                        <apex:outputText value="{!a.Mobile__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Email" width="18%" >
+                        <apex:outputfield value="{!a.Email__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Type" width="10%" >
+                        <apex:outputText value="{!a.Type__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Status" width="10%" >
+                        <apex:outputText value="{!a.Status__c}"/>
+                    </apex:column> 
+                </apex:pageBlockTable>  
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        <apex:actionstatus startStyleClass="requiredLoaderBG" id="ajaxStatus" />  
+    </apex:form>
+</apex:page>

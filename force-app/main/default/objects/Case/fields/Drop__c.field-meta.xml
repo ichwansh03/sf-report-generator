@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Drop__c</fullName>
+    <label>Drop</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Complaint_Decision_AMFS__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Uncontacted Customer</fullName>
+                <default>false</default>
+                <label>Uncontacted Customer</label>
+            </value>
+            <value>
+                <fullName>Required supporting document not submitted by customer</fullName>
+                <default>false</default>
+                <label>Required supporting document not submitted by customer</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Drop</controllingFieldValue>
+            <valueName>Uncontacted Customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drop</controllingFieldValue>
+            <valueName>Required supporting document not submitted by customer</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

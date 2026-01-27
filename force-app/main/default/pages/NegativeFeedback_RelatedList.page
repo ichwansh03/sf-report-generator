@@ -1,0 +1,230 @@
+<apex:page standardController="Contact" extensions="NegativeFeedback_CustomPage_ctrl" sidebar="false" showHeader="false">
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>   
+    <apex:includeScript value="/support/console/37.0/integration.js"/>    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">  
+
+        var urlRequestNewTabRelatedContactNegativeFeedback ='';
+        var titleNewTabRelatedContactNegativeFeedback ='';
+  
+        function openNewTabRelatedContactNegative(el) {
+            console.log(el);    
+            let negativeFeedbackId = el.getAttribute('data-id');
+            let uniqueId = el.getAttribute('data-lastId');
+            console.log(negativeFeedbackId);
+            titleNewTabRelatedContactNegativeFeedback = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactNegativeFeedback ='/apex/NegativeFeedback_RecordDetailPage?id='+ negativeFeedbackId+'&lastId='+uniqueId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactNegativeFeedback);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactNegativeFeedback,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactNegativeFeedback(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactNegativeFeedback+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactNegativeFeedback , false, titleNewTabRelatedContactNegativeFeedback, null, null, titleNewTabRelatedContactNegativeFeedback);
+        }
+    
+        var urlRequestNewTabRelatedContactCase ='';
+        var titleNewTabRelatedContactCase ='';
+  
+        function openNewTabRelatedContactCase(el) {
+            console.log(el);    
+            let CaseId = el.getAttribute('data-id'); 
+            console.log(CaseId);
+            titleNewTabRelatedContactCase = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactCase ='/apex/Case_RecordDetailPage?id='+ CaseId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactCase);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactCase,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactCase(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactCase+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactCase , false, titleNewTabRelatedContactCase, null, null, titleNewTabRelatedContactCase);
+        }
+
+        function openSuccessRelatedContactCase(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+ 
+        
+        var urlRequestNewTabRelatedContactSurveyForm ='';
+        var titleNewTabRelatedContactSurveyForm ='';
+  
+        function openNewTabRelatedContactSurveyForm(el) {
+            console.log(el);    
+            let SurveyFormId = el.getAttribute('data-id');
+            console.log(SurveyFormId);
+            titleNewTabRelatedContactSurveyForm = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactSurveyForm ='/'+ SurveyFormId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactSurveyForm);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactSurveyForm,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactSurveyForm(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactSurveyForm+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactSurveyForm , false, titleNewTabRelatedContactSurveyForm, null, null, titleNewTabRelatedContactSurveyForm);
+        }
+
+        
+        var urlRequestNewTabRelatedContactSurveyResponse ='';
+        var titleNewTabRelatedContactSurveyResponse ='';
+  
+        function openNewTabRelatedContactSurveyResponse(el) {
+            console.log(el);    
+            let SurveyResponseId = el.getAttribute('data-id');
+            console.log(SurveyResponseId);
+            titleNewTabRelatedContactSurveyResponse = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactSurveyResponse ='/'+ SurveyResponseId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactSurveyResponse);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactSurveyResponse,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactSurveyResponse(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactSurveyResponse+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactSurveyResponse , false, titleNewTabRelatedContactSurveyResponse, null, null, titleNewTabRelatedContactSurveyResponse);
+        }
+ 
+ 
+    </script>  
+    
+    <style>
+        
+        .slds-text-title_caps {
+        border-left: 0.5px solid grey; 
+        border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+        text-align:center;
+        width: 100%;
+        word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        
+        /* Dimensions */
+        width: 100%;
+        height: 300%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+        /* Background color */
+        border: solid 2px #ffba1a;
+        background-color: white;
+        
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 75px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+        }
+    </style>
+    <apex:form >   
+        <apex:pageblock id="negatives" title="Negative Feedbacks" tabStyle="Case">
+            <apex:actionStatus id="status" >
+                <apex:facet name="start"> 
+                    <apex:outputPanel >
+                        Loading...<br/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:outputPanel > 
+                        <apex:commandButton value="Reload" action="{!loadNegatives}" rerender="negatives" status="status" /><br/>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus><br/>
+            <apex:pageBlockTable value="{!listData}" var="em" rendered="{!listData.size != 0}">
+                <apex:column headerValue="Negative Feedback No"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!em.lastId}" data-id="{!em.id}" data-title="{!em.name}" onclick="openNewTabRelatedContactNegative(this);">{!em.name}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Negative Feedback No"><apex:outputLink value="/apex/?id={!em.id}">{!em.name}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="New Case" value="{!em.new_Case_c}"/>
+                <apex:column headerValue="Case"><apex:outputText ><a href="javascript:void(0);"  data-id="{!em.case_c}" data-title="{!em.caseNumber}" onclick="openNewTabRelatedContactCase(this);"> {!em.caseNumber}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Send Survey"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!em.send_Survey_c}" /> </apex:outputText></apex:column>  
+                <apex:column headerValue="Survey Form"><apex:outputText ><a href="javascript:void(0);" data-id="{!em.id}" data-title="{!em.survey_Form_c}" onclick="openNewTabRelatedContactSurveyForm(this);"> {!em.survey_Form_name}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Survey Form"><apex:outputLink value="/{!em.survey_Form_c}">{!em.survey_Form_name}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Survey Response"><apex:outputText ><a href="javascript:void(0);"  data-id="{!em.survey_Response_c}" data-title="{!em.survey_Response_c}" onclick="openNewTabRelatedContactSurveyResponse(this);"> {!em.survey_Response_name}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Survey Response"><apex:outputLink value="/{!em.survey_Response_c}">{!em.survey_Response_name}</apex:outputLink> </apex:column>  -->
+                <apex:column headerValue="Description" value="{!em.description_c}"/>
+            </apex:pageBlockTable> 
+            <apex:outputLabel value="No records to display" rendered="{!listData.size == 0}" styleClass="noRowsHeader"></apex:outputLabel> 
+            <apex:outputPanel id="pagination"> 
+                <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="negatives">First</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="negatives">Previous&nbsp;</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                        <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="negatives">
+                            <apex:param name="nickName"
+                                        value="{!i}"
+                                        assignTo="{!to_page}"/>
+                        </apex:commandLink>
+                        <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                        &nbsp;|&nbsp;
+                    </apex:repeat>
+                    
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="negatives">Next</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="negatives">Last</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+        </apex:pageblock>        
+    </apex:form>
+</apex:page>

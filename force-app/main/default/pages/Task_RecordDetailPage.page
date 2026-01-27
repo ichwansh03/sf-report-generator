@@ -1,0 +1,323 @@
+<apex:page controller="Task_CustomPage_ctrl" showHeader="{!isConsole}" sidebar="{!isConsole}" action="{!redirect}">
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/home32.png"/></td>
+                        <td><div><STRONG>Task</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!task_res.data.subject}</div></td>
+                    </tr>
+                </table>
+               
+            </td>
+        </tr>
+    </table>
+    <apex:form id="formId" >
+        <apex:pageMessages />        
+        <apex:pageBlock id="TaskDetail" mode="maindetail" title="">
+            <br/>
+            <apex:pageBlockButtons >
+                <!--apex:commandButton action="{!save}" value="Save" status="actStatusId"/>-->
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Task Information" columns="2" collapsible="true" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Assign To"></apex:outputLabel>
+                    <apex:outputPanel ><img style="vertical-align: bottom;" width="15" height="15" src="/profilephoto/005/T"/>&nbsp;<apex:outputLink value="/{!task_res.data.Ownerid}" >{!task_res.data.Owner_name}</apex:outputLink></apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Related To"></apex:outputLabel>
+                    <apex:outputLink value="/{!task_res.data.Whatid}" >{!task_res.data.relatedto_name}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Subject"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.subject}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Name"></apex:outputLabel>
+                    <apex:outputLink value="/{!task_res.data.Whoid}" >{!task_res.data.Who_name}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Due Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!task_res.data.ActivityDate}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="AGI - Send Survey ?"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.agI_Send_Survey_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Comments" ></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.des_c}" escape="false"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+                        
+            <apex:pageBlockSection title="Additional Information" columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.Status}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Phone"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.whoPhone}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Priority"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.Priority}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Email"></apex:outputLabel>
+                    <apex:outputLink value="mailto:{!task_res.data.whoEmail}" >{!task_res.data.whoEmail}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+           <apex:pageBlockSection title="PureCloud Information" columns="2" rendered="{!task_res.data.recordtypeid = '0126F0000026gkAQAQ'}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="SIP"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.siP_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Callback"></apex:outputLabel>
+                    <img src="/img/checkbox_{!IF(!task_res.data.callback_c, 'un', '')}checked.gif"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud Interaction Link "></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Interaction_Link_c}" escape="false" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Manual Insert"></apex:outputLabel>
+                    <img src="/img/checkbox_{!IF(!task_res.data.manual_Insert_c, 'un', '')}checked.gif"/>
+                    
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Call Object Identifier"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.callObject}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy No"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.policy_No_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Purecloud Participant ID"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.purecloud_Participant_ID_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Queue Group"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.queue_ID_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud Verint Link"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Verint_Link_c}" escape="false"  />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Languange"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.languange_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Call Type"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.CallType}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Skill"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.skill_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Entity"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.entity_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Customer IVR"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.customer_IVR_c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="PureCloud - Call Details" columns="2" rendered="{!task_res.data.recordtypeid = '0126F0000026gkAQAQ'}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="From"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.from_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="To"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.to_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Calling"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!task_res.data.start_Calling_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Calling Text"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.start_Calling_Text_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Dialing"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!task_res.data.start_Dialing_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Dialing Text"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.start_Dialing_Text_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="End Calling"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!task_res.data.end_Calling_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="End_Calling_Text"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.end_Calling_Text_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Duration Call"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.duration_Call_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud_Survey"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Survey_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Duration Dial"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.duration_Dial_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Duration Hold"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.duration_Hold_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud - Question1"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Question1_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud - Question2"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Question2_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Transfer From"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.transfer_From_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud - Question3"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Question3_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Transfer To"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.transfer_To_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud - Question4"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Question4_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Transfer Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!task_res.data.transfer_Date_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PureCloud - Question5"></apex:outputLabel>
+                    <apex:outputText value="{!task_res.data.pureCloud_Question5_c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="System Information" columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!task_res.data.CreatedById}" >{!task_res.data.CreatedBy_name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!task_res.data.createdDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!task_res.data.LastModifiedById}" >{!task_res.data.LastModifiedBy_name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!task_res.data.lastModifiedDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Reminder" columns="2" collapsible="false" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reminder"></apex:outputLabel>
+                    <img src="/img/checkbox_{!IF(!task_res.data.isReminderSet, 'un', '')}checked.gif"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageblock id="Attachments" title="Attachments" tabStyle="Attachment">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadAttachments}" rerender="Attachments" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!list_attachment}" var="a" rendered="{!list_attachment.size != 0}">
+                    <apex:column headerValue="Type" value="{!a.ContentType}"/>
+                    <apex:column headerValue="Title"><apex:outputLink value="/{!a.new_id}">{!a.name}</apex:outputLink> </apex:column> 
+                    <apex:column headerValue="Last Modified"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!a.LastModifiedDate}" /> </apex:outputText></apex:column> 
+                    <apex:column headerValue="Created By"><apex:outputLink value="/{!a.CreatedById}">{!a.CreatedBy_Name}</apex:outputLink></apex:column>
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_attachment.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            </apex:pageblock>
+    </apex:form>
+</apex:page>

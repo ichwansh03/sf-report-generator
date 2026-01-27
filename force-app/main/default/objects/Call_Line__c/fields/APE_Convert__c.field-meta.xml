@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>APE_Convert__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF((ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Withdrawal&apos;) || ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Redemption Konven&apos;))&amp;&amp; Currency__c=&apos;USD&apos;, Amount__c * 14000,
+IF((ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Withdrawal&apos;) || ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Redemption Konven&apos;))&amp;&amp; Currency__c!=&apos;USD&apos;,Amount__c,
+IF((ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Redemption TM&apos;) || ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Lapse TM&apos;))&amp;&amp; Currency__c==&apos;USD&apos;,(APE__c)/12*14000,
+IF((ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Redemption TM&apos;) || ISPICKVAL(Call_List__r.Case_Type_Config__c,&apos;Lapse TM&apos;))&amp;&amp; Currency__c!=&apos;USD&apos;,APE__c/12,
+IF(Currency__c==&apos;USD&apos;,APE__c*14000,APE__c)))))</formula>
+    <label>APE / Amount Convert</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

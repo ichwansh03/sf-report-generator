@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Call_Status_and_Remark_CR</fullName>
+    <active>true</active>
+    <description>Make sure to change call status, reason, remark and checked confirm when call status is contacted. User can change notes when call status is uncontacted. This rules is only appear for updated record.</description>
+    <errorConditionFormula>AND(
+    OR(
+        RecordType.Name = &apos;Collection AMFS 1&apos;,
+        RecordType.Name = &apos;Collection AMFS 2&apos;,
+        RecordType.Name = &apos;Collection AMFS 4&apos;,
+        RecordType.Name = &apos;Collection AMFS 6&apos;,
+        RecordType.Name = &apos;Collection AMFS 7&apos;,
+        RecordType.Name = &apos;Collection AMFS 8&apos;,
+        RecordType.Name = &apos;TeleService&apos;,
+        RecordType.Name = &apos;AMFS 1&apos;,
+        RecordType.Name = &apos;AMFS 2&apos;,
+        RecordType.Name = &apos;AMFS 4&apos;
+    ),
+    ISPICKVAL(Entity__c, &apos;AMFS&apos;),
+    NOT(Confirm__c),
+    OR(
+        AND(
+            OR(
+                AND(ISPICKVAL(Call_Status_Config__c, &apos;Contacted&apos;),OR(RecordType.Name = &apos;AMFS 1&apos;,RecordType.Name = &apos;AMFS 2&apos;,RecordType.Name = &apos;AMFS 4&apos;,RecordType.Name = &apos;TeleService&apos;)),
+                ISPICKVAL(Call_Status_Config__c, &apos;Uncontacted&apos;),
+                ISPICKVAL(Call_Status_Config__c, &apos;Retry&apos;),
+                ISPICKVAL(Call_Status_Config__c, &apos;F&apos;),
+                ISPICKVAL(Call_Status_Config__c, &apos;P&apos;)
+            ),
+            OR(           
+                ISPICKVAL(Reason_Status_Config__c,&apos;&apos;),
+                ISBLANK(Call_Remarks__c),
+                NOT(ISCHANGED(Confirm__c))
+            )
+        ),
+        AND(ISPICKVAL(Call_Status_Config__c, &apos;Takeout&apos;),
+            OR(
+               ISBLANK(Call_Remarks__c),
+               NOT(ISCHANGED(Call_Remarks__c)),
+               NOT(ISCHANGED(Confirm__c))
+            )
+        ),
+        AND(
+            NOT(
+                OR(
+                   AND(ISPICKVAL(Call_Status_Config__c, &apos;Contacted&apos;),OR(RecordType.Name = &apos;AMFS 1&apos;,RecordType.Name = &apos;AMFS 2&apos;,RecordType.Name = &apos;AMFS 4&apos;,RecordType.Name = &apos;TeleService&apos;)),
+                   ISPICKVAL(Call_Status_Config__c, &apos;Uncontacted&apos;),
+                   ISPICKVAL(Call_Status_Config__c, &apos;Retry&apos;),
+                   ISPICKVAL(Call_Status_Config__c, &apos;F&apos;),
+                   ISPICKVAL(Call_Status_Config__c, &apos;P&apos;),
+                   ISPICKVAL(Call_Status_Config__c, &apos;Takeout&apos;)
+                )
+            ),
+            OR(
+                ISPICKVAL(Reason_Status_Config__c,&apos;&apos;),
+                ISBLANK(Call_Remarks__c),
+                NOT(ISCHANGED(Call_Remarks__c)),
+                NOT(ISCHANGED(Confirm__c))
+            )
+        )
+    ),
+    OR(
+        ISCHANGED(Call_Status_Config__c),
+        ISCHANGED(Call_Remarks__c),
+        ISCHANGED(Confirm__c),
+        ISCHANGED(Reason_Status_Config__c)
+    )
+)</errorConditionFormula>
+    <errorDisplayField>Confirm__c</errorDisplayField>
+    <errorMessage>Have you update Call Status/Reason Status/Remarks?</errorMessage>
+</ValidationRule>

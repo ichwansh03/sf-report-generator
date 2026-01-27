@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_This_WEEK</fullName>
+    <columns>CREATED_DATE</columns>
+    <columns>NAME</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Expired_Date__c</columns>
+    <columns>Entity__c</columns>
+    <columns>Generated_Date__c</columns>
+    <columns>Activity__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>THIS_WEEK</value>
+    </filters>
+    <label>All This WEEK</label>
+</ListView>

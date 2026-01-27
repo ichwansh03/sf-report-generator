@@ -1,0 +1,47 @@
+<apex:page standardController="Case" extensions="popupUserOnCaseClass" showHeader="false" showChat="false" sidebar="false" tabStyle="Case" >
+    <apex:includeScript value="/support/console/44.0/integration.js" />
+    
+    <script type="text/javascript">
+    	function cancelEdit() {
+            if (sforce.console.isInConsole()) {
+        		sforce.console.getEnclosingPrimaryTabId(vftab);
+            } else {
+            	window.close();
+            }
+        }
+        var vftab = function vftab(result) {
+            var tabId = result.id;
+            console.log(tabId);
+            console.log('{!Case.Id}');
+            var url = "/{!Case.Id}";
+            sforce.console.openPrimaryTab(tabId, url, true, "{!Case.CaseNumber}"); 
+        }
+    
+    	function closeTab() {
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingTabId(currentTab);
+            }
+        }
+    	var currentTab = function currentTab(result) {
+            var tabId = result.id;
+            sforce.console.closeTab(tabId);
+        }
+
+    </script>
+    
+    <apex:form >
+        <apex:sectionHeader title="Assign Case" subtitle="{!Case.CaseNumber}" />	
+        <apex:pageBlock mode="edit">
+            <apex:pageBlockButtons >
+            	<apex:commandButton action="{!updateCase}" value="Save" />
+                <apex:commandButton onclick="cancelEdit()" value="Cancel" /> <!-- onclick="cancelEdit()" -->
+            </apex:pageBlockButtons>
+            
+            <apex:outputText value="Please Select User:" />
+            <!--<apex:inputField value="{!Case.Named_User_Lookup__c}" />-->
+            <apex:inputField value="{!cic.Named_User__c}" />
+            <apex:inputHidden value="{!Case.OwnerId}" />
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

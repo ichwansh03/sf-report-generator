@@ -1,0 +1,136 @@
+<apex:page controller="ChangePaymentController" action="{!TermsAndConditionsInit}" showHeader="false" sidebar="false">
+  
+    <apex:outputPanel id="payment-midtrans">
+        Order Id : {!trxRefNo} <br/>
+        SNAP token : {!vsnapToken}
+
+    <script type="text/javascript" src="{!snapJs}" data-client-key="{!dataClientKey}">
+    </script>
+    
+    <script type="text/javascript">
+    function paymidtrans(){
+        var orderId = '{!trxRefNo}';
+        var token = '{!vsnapToken}';
+        console.log('start transaction : ' + orderId + ', ' + token + '.');
+        if('{!vsnapToken}' != ''){
+            console.log('trying paymidtrans');
+            snap.pay('{!vsnapToken}', {
+                selectedPaymentType: 'credit_card', language: 'en', skipCustomerDetails: true,
+                onSuccess: function(result) {
+                    console.log(result);
+                    var pageUrl = '{!URLFOR($Page.OrderStatusPage)}';
+                    var parameters = '?orderId=' + result.order_id + '&statusCode=' + result.status_code + '&transactionId=' + result.transaction_id;
+                    var link = pageUrl + parameters;
+                    console.log(link);
+                    //window.location.href = link;
+                    window.open(link,'_top');
+                },
+                onPending: function(result){
+                    console.log('pending');
+                    console.log(result);
+                    var pageUrl = '{!URLFOR($Page.OrderStatusPage)}';
+                    var parameters = '?orderId=' + result.order_id + '&statusCode=' + result.status_code + '&transactionId=' + result.transaction_id;
+                    var link = pageUrl + parameters;
+                    //window.location.href = link;
+                    window.open(link,'_top');
+                },
+                onError: function(result){
+                    console.log('error');
+                    console.log(result);
+                    var pageUrl = '{!URLFOR($Page.OrderStatusPage)}';
+                    var parameters = '?orderId={!trxRefNo}' + '&statusCode=' + result.status_code;
+                    var link = pageUrl + parameters;
+                    //window.location.href = link;
+                    window.open(link,'_top');
+                },
+                onClose: function(){console.log('customer closed the popup without finishing the payment');}
+            })
+        }
+    }
+    </script>
+    </apex:outputPanel>
+    
+    <apex:form >
+        <apex:actionFunction action="{!getVSnapTokenMidtrans}" name="PaymentAction" reRender="payment-midtrans" onComplete="paymidtrans();" status="stSearch"/>
+    </apex:form>
+    
+    <apex:messages />
+    
+    <apex:form >
+        <apex:pageBlock title="Secure Payment">
+            <apex:pageBlockSection title="Term of Conditions" columns="1" rendered="{!IF(MIDParameter.RTC_01__c=='',TRUE,FALSE)}">
+                <!-- apex:outputText >1. Nama yang tercantum pada kartu kredit adalah nama pemegang polis, jika berbeda dengan pemegang polis maka hanya kartu  kredit keluarga inti pemegang polis (suami/istri/anak/orang tua/wali) yang diperbolehkan untuk membayar premi. Dalam hal ini wajib melampirkan formulir Beneficiary Owner beserta fotocopy kartu keluarga/akta lahir/surat perwakilan. (formulir dapat diunduh di sini)</apex:outputText -->
+                <!-- apex:outputText >2. Dengan mengonfirmasikan One Time Password (OTP : untuk kartu kredit berjenis VISA/MasterCard/JCB/Amex) yang dikirimkan oleh bank penerbit kartu kredit saya. Saya bersedia agar kartu kredit tersebut digunakan pada pembayaran premi otomatis berikutnya secara berkala. (akan dikenakan biaya Rp. 10.000,- yang akan dikembalikan lagi ke kartu kredit)</apex:outputText -->
+                <!-- apex:outputText >3. Apabila polis terdapat perubahan premi yang telah disetujui oleh PT. AXA Financial Indonesia maka secara otomatis surat kuasa ini berlaku atas perubahan jumlah premi tersebut.</apex:outputText -->
+                <!-- apex:outputText >4. Pembayaran dinyatakan sah setelah dana diterima di rekening PT. AXA Financial Indonesia</apex:outputText -->
+                <!-- apex:outputText >5. Penolakan otorisasi oleh bank penerbit bukan merupakan tanggung jawab PT. AXA Financial Indonesia</apex:outputText -->
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_01__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="01" / -->
+	                <apex:outputField value="{!MIDParameter.TC_01__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_02__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="02" / -->
+	                <apex:outputField value="{!MIDParameter.TC_02__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_03__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="03" / -->
+    	            <apex:outputField value="{!MIDParameter.TC_03__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_04__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="04" / -->
+        	        <apex:outputField value="{!MIDParameter.TC_04__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_05__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="05" / -->
+            	    <apex:outputField value="{!MIDParameter.TC_05__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_06__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="06" / -->
+            	    <apex:outputField value="{!MIDParameter.TC_06__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_07__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="07" / -->
+            	    <apex:outputField value="{!MIDParameter.TC_07__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_08__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="08" / -->
+            	    <apex:outputField value="{!MIDParameter.TC_08__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_09__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="09" / -->
+            	    <apex:outputField value="{!MIDParameter.TC_09__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.TC_10__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="10" / -->
+            	    <apex:outputField value="{!MIDParameter.TC_10__c}"/>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>    
+            <apex:pageBlockSection title="Term of Conditions" columns="1" rendered="{!IF(MIDParameter.RTC_01__c=='',FALSE,TRUE)}">
+                <apex:pageBlockSectionItem rendered="{!IF(MIDParameter.RTC_01__c=='',FALSE,TRUE)}">
+                    <!-- apex:outputLabel value="01" / -->
+	                <apex:outputField value="{!MIDParameter.RTC_01__c}"/>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>    
+            <apex:pageBlockSection title="Confirm" columns="1">
+                <table>
+                    <tr>
+                        <td>
+                            <apex:inputCheckbox id="CheckConfirm" value="{!termsCheck}">Saya telah membaca ketentuan diatas
+                                <apex:actionSupport event="onchange" reRender="btnContinue" />
+                            </apex:inputCheckbox>
+                        </td>
+                    </tr>
+                </table>
+            </apex:pageBlockSection>    
+        </apex:pageBlock>
+        
+        <apex:outputPanel id="btnContinue">
+            <apex:commandButton value="Continue" onclick="PaymentAction(); return false;" disabled="{!IF(termsCheck==true, false, true)}" />
+        </apex:outputPanel>
+    </apex:form>
+    
+    <!--<button onclick=" if('{!termsCheck}' == true) PaymentAction(); return false;">Click me</button>-->
+	
+</apex:page>

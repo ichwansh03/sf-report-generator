@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Report_ID__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Case_Type__c , &apos;Welcome Call&apos;),&apos;00O6F000008x9sY&apos;, 
+IF(ISPICKVAL(Case_Type__c, &apos;Reinstate&apos;),&apos;00O6F000008x9sc&apos;, 
+IF(ISPICKVAL(Case_Type__c , &apos;Premium FU&apos;),&apos;00O6F000008x9sd&apos;, 
+IF(ISPICKVAL(Case_Type__c , &apos;Claim&apos;),&apos;00O6F000008x9sX&apos;, 
+IF(ISPICKVAL(Case_Type__c , &apos;Update Data&apos;),&apos;00O6F000008x9sZ&apos;, 
+IF(ISPICKVAL(Case_Type__c , &apos;NCB&apos;),&apos;00O6F000008x9se&apos;, 
+IF(ISPICKVAL(Activity__c , &apos;Survey Feedback&apos;),&apos;00O6F000008x9sf&apos;, 
+IF(ISPICKVAL(Case_Type__c , &apos;Collection Task&apos;),&apos;00O6F000008x9sa&apos;, 
+IF(ISPICKVAL(Case_Type__c , &apos;Retain redemption&apos;),&apos;00O6F000008x9sb&apos;, 
+IF(ISPICKVAL(Activity__c , &apos;Complaint Case&apos;),&apos;00O6F000008x9sg&apos;, 
+&apos;00O6F000008x9sV&apos;) ) ) ) ) ) ) ) ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Report ID</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

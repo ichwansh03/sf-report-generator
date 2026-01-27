@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Welcome_Call_Refer_to_Change_MSW</fullName>
+    <columns>NAME</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Policy_No__c</columns>
+    <columns>Contact__c</columns>
+    <columns>WelcomeCall_Criteria__c</columns>
+    <columns>WelcomeCall_Schedule_Date__c</columns>
+    <columns>Issued_Date_Contact__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Formula_Product__c</columns>
+    <columns>WelcomeCall_Call_Line_Status__c</columns>
+    <columns>OWNER.LAST_NAME</columns>
+    <columns>Verification__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>WelcomeCall_Call_Line_Status__c</field>
+        <operation>equals</operation>
+        <value>Open</value>
+    </filters>
+    <filters>
+        <field>Formula_Product__c</field>
+        <operation>contains</operation>
+        <value>MSW</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Call_Line__c.Welcome_Call</value>
+    </filters>
+    <filters>
+        <field>Owner__c</field>
+        <operation>equals</operation>
+        <value>Ridwan Hamid,Agus Saputra</value>
+    </filters>
+    <label>Welcome Call Refer to Change (MSW)</label>
+    <language>en_US</language>
+</ListView>

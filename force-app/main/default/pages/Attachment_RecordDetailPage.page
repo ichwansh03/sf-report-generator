@@ -1,0 +1,97 @@
+<apex:page controller="Attachment_CustomPage_ctrl">
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/cd32.png"/></td>
+                        <td><div><STRONG>Attached File</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!att.data.Name}</div></td>
+                    </tr>
+                </table>
+                <!--div class="efhpRow ">
+                    <div class="efhpValue efhpDescription">{!payment.data.Description}</div>
+                </div>-->
+            </td>
+        </tr>
+    </table>
+    <apex:form id="formId">
+        <apex:pageMessages />        
+        <apex:pageBlock id="AttachmentDetail" mode="maindetail" tabStyle="Attachment" title="">
+            <br/>
+            <apex:pageBlockButtons >
+                <!--apex:commandButton action="{!save}" value="Save" status="actStatusId"/>-->
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Attachment Detail" columns="1" collapsible="false" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attachment Owner"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!att.data.OwnerId}">{!att.data.Owner_Name}</apex:outputLink></apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Related To"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!att.data.parentId}">{!att.data.Parent_Name}</apex:outputLink></apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="File Name"></apex:outputLabel>
+                    <apex:outputText value="{!att.data.Name}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Description"></apex:outputLabel>
+                    <apex:outputText value="{!att.data.Description}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Size"></apex:outputLabel>
+                    <apex:outputText ><STRONG>{!att.data.Size}</STRONG></apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value=""></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="{!att.data.url}">View File</apex:outputLink></apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!att.data.CreatedById}">{!att.data.CreatedBy_Name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!att.data.CreatedDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!att.data.LastModifiedById}">{!att.data.LastModifiedBy_Name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!att.data.LastModifiedDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

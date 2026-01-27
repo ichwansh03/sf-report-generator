@@ -1,0 +1,77 @@
+<apex:page controller="InquiryFullertonController" showHeader="true" docType="html-5.0">
+    <apex:sectionHeader title="Find Personal Data"/>
+    <apex:form >
+        <apex:pagemessages id="msg"/>
+        <apex:pageBlock id="policyInfo" mode="maindetail" tabStyle="Contact">
+            <apex:pageBlockSection title="Please fill in the form at least 1 of these fields" collapsible="false" columns="1" >
+                <!--
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Username" />
+                    <apex:inputText value="{!username}" label="Username"/>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Mobile Number" />
+                    <apex:inputText value="{!mobileNumber}" label="Mobile Number"/>
+                </apex:pageblockSectionItem>
+				-->
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Unique Number" />
+                    <apex:inputText value="{!uniqueNumber}" label="Unique Number"/>
+                </apex:pageblockSectionItem>
+				
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="First Name" />
+                    <apex:inputText value="{!firstName}" label="First Name"/>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Last Name" />
+                    <apex:inputText value="{!lastName}" label="Last Name"/>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Date of Birth" />
+                    <apex:input type="date" value="{!dob}" label="Date of Birth"/>
+                </apex:pageblockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Go" action="{!inquiry}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageBlock title="Response Fullerton" rendered="{! !ISBLANK(responseStatus)}">
+            <apex:pageMessage severity="Error" summary="{!responseMessage}" strength="1" rendered="{! isError}"/>
+            <apex:pageBlockSection columns="1" rendered="{! !isError}">
+                <apex:pageBlockTable value="{!responseCustomers}" var="data" style="overflow:auto;width:1000px;" align="left" border="1">
+                    <apex:column headerValue="First Name">
+                        <apex:outputText value="{!data.firstName}"/>
+                    </apex:column>
+                    <apex:column headerValue="Last Name">
+                        <apex:outputText value="{!data.lastName}"/>
+                    </apex:column>
+                    <apex:column headerValue="Username">
+                        <apex:outputText value="{!data.username}"/>
+                    </apex:column>
+                    <apex:column headerValue="Gender">
+                        <apex:outputText value="{!data.gender}"/>
+                    </apex:column>
+                    <apex:column headerValue="Date of Birth">
+                        <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!data.dob}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Email">
+                        <apex:outputText value="{!data.email}"/>
+                    </apex:column>
+                    <apex:column headerValue="Mobile Number">
+                        <apex:outputText value="{!data.mobileNumber}"/>
+                    </apex:column>
+                    <apex:column headerValue="Unique Number">
+                        <apex:outputText value="{!data.uniqueNumber}"/>
+                    </apex:column>
+                    <apex:facet name="footer"><i>About {!responseTotalData} results. Showing Page # {!responsePage} of {!totalPages}</i></apex:facet>
+                </apex:pageBlockTable>
+                
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Previous" action="{!previousPage}" disabled="{! NOT(hasPrevious) }" />
+                <apex:commandButton value="Next" action="{!nextPage}" disabled="{!NOT(hasNext)}" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

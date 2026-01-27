@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_of_Area__c</fullName>
+    <label>Service of Area</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Jakarta Utara</fullName>
+                <default>false</default>
+                <label>Jakarta Utara</label>
+            </value>
+            <value>
+                <fullName>Jakarta Barat</fullName>
+                <default>false</default>
+                <label>Jakarta Barat</label>
+            </value>
+            <value>
+                <fullName>Jakarta Timur</fullName>
+                <default>false</default>
+                <label>Jakarta Timur</label>
+            </value>
+            <value>
+                <fullName>Jakarta Selatan</fullName>
+                <default>false</default>
+                <label>Jakarta Selatan</label>
+            </value>
+            <value>
+                <fullName>Jakarta Pusat</fullName>
+                <default>false</default>
+                <label>Jakarta Pusat</label>
+            </value>
+            <value>
+                <fullName>Bekasi</fullName>
+                <default>false</default>
+                <label>Bekasi</label>
+            </value>
+            <value>
+                <fullName>Depok</fullName>
+                <default>false</default>
+                <label>Depok</label>
+            </value>
+            <value>
+                <fullName>Tangerang</fullName>
+                <default>false</default>
+                <label>Tangerang</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

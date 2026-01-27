@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Create_Call_Note</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Create Call Note</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)}
+
+var urlCallNote = &quot;/500/e?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.CallNote_RecordTypeId_Keeper__c}&amp;cas5=Inquiry&amp;ent=Case&quot;;
+
+if (sforce.console.isInConsole()) {
+   sforce.console.getEnclosingTabId(function(enclosingResult){
+   sforce.console.getEnclosingPrimaryTabId(function(){
+   sforce.console.openPrimaryTab(null, urlCallNote, true, &apos;Create Call Note&apos;, null);
+   });
+});
+
+}else {
+window.location.href = urlCallNote;
+}</url>
+</WebLink>

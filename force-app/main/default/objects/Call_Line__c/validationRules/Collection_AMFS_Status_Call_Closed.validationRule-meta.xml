@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_AMFS_Status_Call_Closed</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+CONTAINS(RecordType.Name, &apos;Collection AMFS&apos;),
+$Profile.Name=&apos;Outbound Collection Agent-AMFS&apos;,
+NOT(CONTAINS(Campaign_Name__c, &apos;Redemption TM&apos;)),
+ISCHANGED(Call_Status_Config__c),
+OR (
+ISBLANK(PRIORVALUE(Status_has_call__c)),
+ISNULL(PRIORVALUE(Status_has_call__c)),
+ISPICKVAL(PRIORVALUE(Status_has_call__c),&apos;Pending&apos;)
+),
+ISPICKVAL(Status_has_call__c, &apos;Closed&apos;),
+OR (
+CONTAINS(Todo_Item_Status__c, &apos;false&apos;),
+ISBLANK(Todo_Item_Status__c),
+ISNULL(Todo_Item_Status__c))
+)</errorConditionFormula>
+    <errorMessage>Can&apos;t Edit Status has call to Closed Before Completing the To-Do List!</errorMessage>
+</ValidationRule>

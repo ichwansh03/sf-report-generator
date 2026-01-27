@@ -1,0 +1,122 @@
+<apex:page standardController="Call_Line__c" sidebar="false" showHeader="false" extensions="PolicyInfoController" action="{!initCallLine}" >
+     
+    <!-- HEAD -->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>  
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>     
+    <apex:includeScript value="/support/console/37.0/integration.js"/>       
+    
+    <head>
+        <script type="text/javascript">
+            var timerStart = Date.now();
+        </script> 
+    </head> 
+    
+    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // call 
+            console.log("Time until DOMready: ", Date.now()-timerStart);
+            //callMethodLoadDataSeq2and3();
+            callMethodloadDataBySequenceNo2();
+        });
+        
+        $(window).load(function() {
+            console.log("Time until everything loaded: ", Date.now()-timerStart);
+        });
+
+        var urlRequestNewTab ='';
+        var titleNewTab ='';
+        var i = 0;
+        var menuList = [ 'CLAIMINFO' ];
+
+        if ('{!policyApp}' == 'RLS' || '{!policyApp}' == 'CLIPPER') {
+            menuList = [ 'CLAIMINFO' ];
+        }
+
+        if ('{!entity}' == 'AMFS') {
+            menuList = [ 'CLAIMINFO' ];
+        }
+
+        function afterLoad(){ 
+            // load tab after load data sequence done 
+            if (sforce.console.isInConsole()) {
+                // only open in console
+                // initial open with array 0
+                console.log('opening sub tab...');
+                openNewTab(menuList[i],null,null,null);
+            }
+            console.log('sub tab has opened'); 
+        }
+
+        function openNewTab(tabName, arg2, arg3, arg4) {
+            switch (tabName){ 
+                case 'CLAIMINFO' :
+                    urlRequestNewTab ='/apex/CallLineClaimInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' + '&agentServicingCode=' + '{!customerInfoData.agentServicingCode}' + '&agentProducingCode=' + '{!customerInfoData.agentProducingCode}' ;
+                    titleNewTab ='CLAIM INFO';
+                    break; 
+            }
+            
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTab);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTab,'_blank');
+            }
+        }
+
+        function openSubTab(result) {
+            var primaryTabId = result.id;
+            console.log('primary tab id for '+titleNewTab+': '+primaryTabId);
+            i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTab , false, titleNewTab, null, openSuccess, titleNewTab);
+        }
+
+        function openSuccess(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                if (i < menuList.length) {
+                    console.log('array of i :' + i + ' for menu '+menuList[i]);
+                    openNewTab(menuList[i],null,null,null);
+                }
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    </script>     
+    <!--  .END OF JAVASCRIPT ABOVE -->
+
+    <body>
+        <apex:form >
+        
+           <script type='text/javascript'>
+               var jsonstr = 'kang ... ';
+               var listener = function (result){
+                   var childId = result.message;
+                   sforce.console.fireEvent('ParentDataResponse_'.concat(childId), jsonstr);
+               };
+    
+               var parentId = Math.floor((Math.random() * 1000) + 500); 
+           </script>
+    
+           <script type="text/javascript">
+                function initiateChildVFPage() {
+                    sforce.console.getEnclosingPrimaryTabId(openSubtab);
+                }
+    
+           </script>
+    
+        <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+            <apex:pageMessages />  
+            <apex:pageBlock mode="maindetail" tabStyle="Contact" id="customer" rendered="{!isCustomerProfile}">  
+                <!-- ::: F. CLAIM (link)   -->
+                <apex:pageBlockSection title="Claims" collapsible="false" columns="1" >
+                    <input type="button" value="Open History" id="claimInfoOpen" onClick="openNewTab('CLAIMINFO', null, null, null);" /> 
+                </apex:pageBlockSection>     
+            </apex:pageBlock> <!-- .END OF <apex:pageBlock mode="maindetail" tabStyle="Contact" > -->
+        
+        </div> <!-- .END OF   -->  
+        </apex:form>     
+    </body> 
+</apex:page>

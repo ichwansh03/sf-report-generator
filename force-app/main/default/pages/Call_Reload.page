@@ -1,0 +1,116 @@
+<apex:page controller="CallLineGeneratorController" tabstyle="Call_ReloadNew__tab" docType="html-5.0">
+  <script>
+  	function selectAllCheckboxes(obj,receivedInputID){
+        var inputCheckBox = document.getElementsByTagName("input");
+        for(var i=0; i<inputCheckBox.length; i++){
+            if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){
+                inputCheckBox[i].checked = obj.checked;
+            }
+        }
+    }
+  </script>
+  
+  <apex:sectionHeader title="" subtitle="Reload"/>
+  <apex:form id="formid">
+    <apex:pageBlock >
+        <apex:outputPanel id="panelPageMessages" rendered="true"><apex:pageMessages /></apex:outputPanel>
+        <apex:pageBlockSection title="Please Select Campaign and Agent Menus" columns="2">
+            <!--
+            <apex:selectList value="{!choosen_campaign}" label="Campaign" size="1" >
+                <apex:selectOption itemValue="" itemLabel="-"/>
+                <!--apex:actionSupport event="onchange" action="{!populateReloadFreshData}" reRender="formid"/--
+                <apex:selectOptions value="{!campaignList}"/>
+            </apex:selectList>             
+            <apex:selectList value="{!choosen_agent}" label="Agent" size="1">
+                <apex:selectOption itemValue="" itemLabel="-"/>
+                <apex:selectOption itemValue="All" itemLabel="All"/>
+                <apex:actionSupport event="onchange" action="{!populateReloadFreshData}" reRender="formid"/>
+                <apex:selectOptions value="{!agentOptList}"/>
+            </apex:selectList>
+            --> 
+            <apex:pageBlockSectionItem >
+            	<apex:outputPanel >
+	            	<apex:outputLabel value="Campaign" />
+		           	<apex:selectList value="{!choosen_campaign}" size="1" style="margin-left:20px;" >
+		                <apex:selectOption itemValue="" itemLabel="-"/>
+                        <apex:selectOption itemValue="All" itemLabel="All"/>
+		                <apex:selectOptions value="{!campaignList}"/>
+	            	</apex:selectList>
+            	</apex:outputPanel>
+	        </apex:pageBlockSectionItem>
+	 		<apex:pageBlockSectionItem > 
+	 			<apex:outputLabel value="Agent" /> 
+	 			<apex:selectList value="{!choosen_agent}" size="1">
+	                <apex:selectOption itemValue="" itemLabel="-"/>
+	                <apex:selectOption itemValue="All" itemLabel="All"/>
+	                <!--<apex:actionSupport event="onchange" action="{!populateCallAndReasonStatus}" reRender="formid"/>-->	<!-- <apex:actionSupport event="onchange" action="{!populateReloadFreshData}" reRender="formid"/>	 -->
+	                <apex:selectOptions value="{!agentOptList}"/>
+	            </apex:selectList> 
+	        </apex:pageBlockSectionItem>
+            <apex:outputPanel >
+                <apex:outputLabel value="Call Date" style="padding-right:10px;"/> <apex:input type="date" value="{!searchStartDate}"/> &nbsp;
+                <apex:outputLabel value="To" style="padding-right:10px;"/> <apex:input type="date" value="{!searchEndDate}" label="Call End Date"/>
+                <!--<apex:actionSupport event="onchange" action="{!populateCallAndReasonStatus}" reRender="formid"/>-->
+            </apex:outputPanel>
+            <apex:pageBlockSectionItem > 
+                <apex:outputLabel value="Call Status" />
+                <apex:inputField value="{!clObj.Call_Status_Config__c}" >
+                    <!--<apex:actionSupport action="{!populateCallAndReasonStatus}" event="onchange" reRender="formid"/>-->
+                </apex:inputField>
+	        </apex:pageBlockSectionItem>
+            <apex:outputPanel >
+                <apex:outputLabel value="Policy No" style="padding-right:10px;"/>
+                <apex:inputText value="{!searchPolicyNo}" label="Policy No"/>
+                <!--<apex:actionSupport event="onchange" action="{!populateCallAndReasonStatus}" reRender="formid"/>-->
+            </apex:outputPanel>
+            <apex:pageBlockSectionItem helpText="Select Call Status = ''">
+                <apex:outputLabel value="Call Status (Blank)" /> 
+                <apex:inputCheckbox value="{!choosen_callStatus_blank}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem > </apex:pageBlockSectionItem>
+	        <apex:pageBlockSectionItem > 
+	        	<apex:outputLabel value="Reason Status" /> 
+	 			<apex:inputField value="{!clObj.Reason_Status_Config__c}" >
+	              <!--<apex:actionSupport action="{!populateCallAndReasonStatus}" event="onchange" reRender="formid"/>-->
+	          	</apex:inputField>
+	        </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <br/>  
+      <br/>  
+        <span align="center">
+        <!--<apex:commandButton action="{!search}" value="Find"/>&nbsp;-->
+        <!--<apex:commandButton action="{!resetReload}" value="Reset"/>&nbsp;-->
+        <apex:commandButton action="{!populateCallAndReasonStatus}" value="Select" />
+        <br/> <br/> 
+        <apex:commandButton action="{!release}" value="Release"/>&nbsp;
+        <!--apex:commandButton action="{!step1}" value="Next"/-->
+        </span>
+      <br/>
+      <br/>  
+      <table>
+          <tr>
+              <td><apex:outputLabel value="Total Call To Be Reloaded"/></td>
+              <td>:</td>
+              <td><apex:outputLabel value="{!totalPolicies}"/></td>
+          </tr>
+      </table>    
+      <apex:pageBlockSection title="Policy List To Be Reloaded">
+      <!-- <apex:pageBlockTable id="idspec"  value="{!callLineList}" var="assignm" style="overflow:auto;width:850px;" align="center" border="1"> -->
+      <apex:pageBlockTable id="idspec"  value="{!ListToReload}" var="assignm" style="overflow:auto;width:850px;" align="center" border="1">
+        <apex:column headerValue="" >
+			 <apex:facet name="header"><apex:inputCheckbox id="checkboxId" onclick="selectAllCheckboxes(this,'inputId')"/></apex:facet>
+			 <apex:inputCheckbox value="{!assignm.isSelected}" id="inputId"/>
+		</apex:column>
+        <apex:column headerValue="Policy No">{!assignm.policyNo}</apex:column> 	<!-- <apex:column headerValue="Policy No">{!assignm.Policy_No__c}</apex:column> -->
+        <apex:column headerValue="Contact Name">{!assignm.contactName}</apex:column>
+        <apex:column headerValue="Agent">{!assignm.agentName}</apex:column> 	<!-- <apex:column headerValue="Agent"><apex:outputField value="{!assignm.Agent__c}" /></apex:column>  -->
+       	
+       	<apex:column headerValue="Call Status">{!assignm.callStatus}</apex:column>
+       	<apex:column headerValue="Reason Status">{!assignm.reasonStatus}</apex:column>
+       	
+       </apex:pageBlockTable>
+      </apex:pageBlockSection>
+ 
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

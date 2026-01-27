@@ -1,0 +1,1039 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" docType="html-5.0" extensions="PolicyInfoController,RemoteDataController" action="{!initFundInfo}">
+    <!-- HEAD -->
+    <title>Fund Info</title>
+    
+    <!-- Java Script -->
+    <apex:includeScript value="{!$Resource.jquery_1_10_2}"/>
+        
+    <apex:includeScript value="{!$Resource.jquery_ui_1_12_1_JS}"/>
+    <link rel="stylesheet" href="{!$Resource.jquery_ui_1_12_1_css}"/>
+    
+    <apex:includeScript value="/soap/ajax/30.0/connection.js"/>
+    <apex:includeScript value="/support/console/37.0/integration.js"/>
+    
+ 
+  <script type="text/javascript">
+  
+    var convertDate = function(usDate) {
+        var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+    }
+
+  
+    $( document ).ready(function() {
+        $("#dpFTStart").datepicker({
+            dateFormat: 'yy-mm-dd', appendText: " (yyyy-mm-dd)", altFormat: "yy-mm-dd", changeMonth: true, changeYear: true
+        });
+        $("#dpFTStart").on("change", function () {
+            var fromdate = $(this).val();
+        });
+        $("#dpFTEnd").datepicker(
+            {dateFormat: 'yy-mm-dd', appendText: " (yyyy-mm-dd)", changeMonth: true, changeYear: true}
+        );
+        $( "#dpFPHStart" ).datepicker(
+            {dateFormat: 'yy-mm-dd', appendText: " (yyyy-mm-dd)", changeMonth: true, changeYear: true}
+        );
+        $( "#dpFPHEnd" ).datepicker(
+            {dateFormat: 'yy-mm-dd', appendText: " (yyyy-mm-dd)", changeMonth: true, changeYear: true}
+        );
+        
+    });
+
+    function displayLoading(objName) {
+        //document.getElementById('loadingimg').style.display='block';
+        document.getElementById(objName).style.display = 'block';
+    }
+
+    function hideLoading(objName) {
+        //document.getElementById('loadingimg').style.display='none';
+        document.getElementById(objName).style.display = 'none';
+    }
+  </script>
+    
+  <script type="text/javascript">
+    	function changeFilterFundPrice(v){
+            var option = v.value;
+            console.log('option: '+option);
+            
+            if(option =='Opt1'){
+                document.getElementById('valuationDt').style.display = 'inline';
+                document.getElementById('endDt').style.display = 'none';
+                document.getElementById('fundCd').style.display = 'none';
+                document.getElementById('btnShowOpt1').style.display = 'inline';
+                document.getElementById('btnShowOpt2').style.display = 'none';
+            }
+            else{
+                document.getElementById('valuationDt').style.display = 'inline';
+                document.getElementById('endDt').style.display = 'inline';
+                document.getElementById('fundCd').style.display = 'inline';
+                document.getElementById('btnShowOpt1').style.display = 'none';
+                document.getElementById('btnShowOpt2').style.display = 'inline';
+            }
+        }
+    
+    	function callActionValuationDateFunction() {
+            var dateParam = document.getElementById("dpFPHStart").value;
+            var endParam = null;
+            var fundCodeParam = null;
+            console.log('dateParam: '+dateParam);
+            console.log('endParam: '+endParam);
+            console.log('fundCodeParam: '+fundCodeParam);
+                
+            setTimeout(function(){ 
+                afunction(dateParam, endParam, fundCodeParam); 
+            }, 1000);
+        }
+    
+        function callActionFundCodeFunction() {
+            var dateParam = document.getElementById("dpFPHStart").value;
+            var endParam = document.getElementById("dpFPHEnd").value;
+            var fundCodeParam = document.getElementById("txtFundCode").value;
+            console.log('dateParam: '+dateParam);
+            console.log('endParam: '+endParam);
+            console.log('fundCodeParam: '+fundCodeParam);
+                
+            setTimeout(function(){ 
+                afunction(dateParam, endParam, fundCodeParam); 
+            }, 1000);
+        }
+  </script>
+  
+  <script type="text/javascript"> 
+        var Imtech = {};
+        Imtech.Pager = function() {
+            this.datasetname = '';
+            this.pagername = '';
+            this.paragraphsPerPage = 100;
+            this.currentPage = 1;
+            this.pagingControlsContainer = '';
+            //this.pagingContainerPath = '#content';
+            this.pagingInfoContainer = '';
+            this.numberOfRecords = 0;
+            
+            this.firstPage = 1;
+            this.previousPage = 1;
+            this.nextPage = 2;
+            this.numPages = 5;
+            this.lastDataPage = 0;
+            this.lastPage = this.numPages;
+            this.showPage = function(page) {
+                
+                //alert('page selected : ' + page);
+                var startOfRecords = 0;
+                
+                // Set start time
+                var start_time = new Date().getTime();
+                
+                switch (this.datasetname) {
+                    case "FundHistory":
+                        if(page == 1){
+                            // first load
+                            //alert('r');
+                            startOfRecords = (this.numberOfRecords * (page - 1)) + 1;
+                            //loadDataPagingFundHistory(policyNo, entity, policyApp, '', '', 0, startOfRecords, numberOfRecords, page) ; break;
+                            console.log(convertDate(dpFTStart.value) + ' - ' + convertDate(dpFTEnd.value));
+                            
+                            startDateTime = dpFTStart.value + ' 00:00:00';
+                            endDateTime = dpFTEnd.value + ' 23:59:59';
+                            console.log(' date start  '+ startDateTime + '; date end  '+ endDateTime);
+                            loadDataPagingFundHistory(policyNo, entity, policyApp, startDateTime, endDateTime, this.numberOfRecords, startOfRecords, this.numberOfRecords, this.currentPage, page, 1, 1 ); break;
+                        }else{
+                            // next load
+                            startOfRecords = (this.numberOfRecords * (1 - 1)) + 1;
+                            console.log(convertDate(dpFTStart.value) + ' - ' + convertDate(page));
+                            
+                            startDateTime = dpFTStart.value + ' 00:00:00';
+                            endDateTime = page + ' 23:59:59';
+
+                            console.log(' date start  '+ startDateTime + '; date end  '+ endDateTime);
+                            loadDataPagingFundHistory(policyNo, entity, policyApp, startDateTime, endDateTime, this.numberOfRecords, startOfRecords, this.numberOfRecords, this.currentPage, 1, 1, 1 ); break;
+                        }
+                        
+                    case "FundDetail":
+                        //alert('s');
+                        startOfRecords = (this.numberOfRecords * (page - 1)) + 1;
+                        loadDataPagingFundDetail(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, this.currentPage, page, 1, 0) ; break;
+
+                        
+                    case "FundPriceHistory":
+                        //alert('t');
+                        startOfRecords = (this.numberOfRecords * (page - 1)) + 1;
+                        startDateTime = dpFPHStart.value + ' 00:00:00';
+                        endDateTime = dpFPHEnd.value + ' 23:59:59';
+                        var fundCode = txtFPHFundCode.value;
+                        
+                        console.log ('FundPriceHistory ', policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + fundCode + '-' + startOfRecords + '-' + this.numberOfRecords + '-' );
+                        loadDataPagingFundPriceHistory(policyNo, entity, policyApp, startDateTime, endDateTime, fundCode, this.numberOfRecords, startOfRecords, this.numberOfRecords, page, 1, 1) ; break;
+    
+                }
+
+                var request_time = new Date().getTime() - start_time;
+                var request_times = new Date().getTime() + ' - ' + start_time + ' : ' +request_time;
+                
+                //renderControls(this.pagingControlsContainer, page, this.numPages, this.pagername, request_times, this.lastDataPage);
+                if(page == 1){
+                    this.currentPage = page;
+                }else{
+                    this.currentPage = 1;
+                }
+            }
+            
+            this.reRenderControls = function () {
+                console.log('lastDataPage : ' + this.lastDataPage);
+                renderControls(this.pagingControlsContainer, this.currentPage, this.numPages, this.pagername, '', this.lastDataPage);
+                //this.currentPage = page;
+            }
+        
+            var renderControls = function(container, currentPage, numPages, pagername, requestTime, lastDataPage ) {
+                /*
+                var firstPage = 1;
+                var previousPage = currentPage==1 ? 1 : currentPage - 1 ;
+                var nextPage = currentPage + 1;
+                var lastPage = numPages;
+                */
+                console.log (' ** in renderControls **');
+                var firstPage = 1;
+                var previousPage = currentPage == 1 ? 1 : currentPage - 1 ;
+                //var nextPage = currentPage==numPages ? numPages : currentPage + 1;
+                var nextPage = currentPage + 1;
+                var lastPage = numPages;
+                
+                var pagingControls = '';
+                var htmlBtnStatus ='';
+                
+                //pagingControls += '<img id="loadingimg' + pagername + '" style="display:none" src="/img/loading.gif" /> ' ;
+                pagingControls += '<ul class="pagination">' ;
+                
+                if (currentPage == 1) {htmlBtnStatus = ' class="disabled" ';} else {htmlBtnStatus = ' href="#" ';}
+                pagingControls += '<li> <a ' + htmlBtnStatus + ' onclick="' + pagernam +'.showPage(' + firstPag + '); return false;"> First </a> </li> ';
+                pagingControls += '<li> <a ' + htmlBtnStatus + ' onclick="' + pagernam +'.showPage(' + previousPag + '); return false;"> Previous </a> </li>';
+                
+                var j = 0;
+                var penambah = currentPage - 2;
+                if (currentPage == 1) {penambah = 0;}
+                
+                for (var i = 1; i <= numPages; i++) {
+                    //console.log('<li><a href="#" onclick="pager.showPage(' + j + '); return false;">' + j + '</a></li>');
+                    j = i + penambah;
+                    if (j != currentPage) {
+                        if (j > lastDataPage && lastDataPage != 0) {
+                            //pagingControls += '<li>' + j + '</li>';
+                            pagingControls += '<li><a class="disabled" >' + j + '</a></li>';
+                        } else {
+                            pagingControls += '<li><a href="#" onclick="' + pagername +'.showPage(' + j + '); return false;">' + j + '</a></li>';
+                        }
+                    } else {
+                        pagingControls += '<li><a class="active" >' + j + '</a></li>';
+                    }
+                }
+                
+                if ( currentPage >= lastDataPage && lastDataPage != 0) {
+                    pagingControls += '<li><a class="disabled"> Next </a> </li>';
+                }
+                else {
+                    pagingControls += '<li> <a href="#" onclick="' + pagername +'.showPage(' + nextPage + '); return false;"> Next </a> </li>';
+                }
+                pagingControls += '</ul>';
+        
+                $(container).html(pagingControls);
+            }
+            
+            this.renderInfo = function(info) {
+                info = '<small><i>' + info + '</i></small>';
+                $( this.pagingInfoContainer).html(info);
+            }
+        }
+
+    </script>
+    
+    <style type="text/css">
+        /*
+        #pagingControlFundHistory ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlFundHistory li{display:inline;padding-right:0 0.5em}
+        */
+        
+        #pagingControlFundDetail ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlFundDetail li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlFundPriceHistory ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlFundPriceHistory li{display:inline;padding-right:0 0.5em}
+
+        ul.pagination { display: inline-block; padding: 0; margin: 0; }
+        ul.pagination li {display: inline;}
+        ul.pagination li a {display: inline; color: black; float: left; padding: 8px 16px; text-decoration: none; transition: background-color .3s; border: 1px solid #ddd; }
+        .pagination li:first-child a { border-top-left-radius: 5px; border-bottom-left-radius: 5px; }
+        .pagination li:last-child a { border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
+        ul.pagination li a.active { background-color: #338ddb; color: white; border: 1px solid #338ddb; }
+        ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+        ul.pagination li a.disabled { background-color: #ddd; color: grey; border: 1px solid #ddd;}
+        
+    </style>
+    
+    <script type="text/javascript">
+        var fundHistoryPaging = {};
+        var fundDetailPaging = {};
+        var fundPriceHistoryPaging = {};
+    
+        var pagerFundH = new Imtech.Pager();
+        var pagerFundD = new Imtech.Pager();
+        var pagerFundPH = new Imtech.Pager();
+        
+        var numberOfRecords = 100;
+        
+        $(document).ready(function() {
+            
+            initPage();
+             
+            pagerFundH.datasetname = 'FundHistory';
+            pagerFundH.pagername = 'pagerFundH';
+            pagerFundH.pagingControlsContainer = $('#pagingControlFundHistory');
+            pagerFundH.pagingInfoContainer = $('#loadInfoFundHistory');
+            pagerFundH.numberOfRecords = 0{!fundHistoryRowPerPage}; //100;
+            //pagerFundH.paragraphsPerPage = 5; // set amount elements per page
+            pagerFundH.pagingContainer = $('#content'); // set of main container
+            pagerFundH.paragraphs = $('div.z', pagerFundH.pagingContainer); // set of required containers
+            //pagerFundH.showPage(1);
+            
+            pagerFundD.datasetname = 'FundDetail';
+            pagerFundD.pagername = 'pagerFundD';
+            pagerFundD.pagingControlsContainer = $('#pagingControlFundDetail');
+            pagerFundD.pagingInfoContainer = $('#loadInfoFundDetail');
+            pagerFundD.numberOfRecords = 0{!fundDetailRowPerPage}; //100;
+            //pagerFundD.paragraphsPerPage = 5; // set amount elements per page
+            pagerFundD.pagingContainer = $('#content'); // set of main container
+            pagerFundD.paragraphs = $('div.z', pagerFundD.pagingContainer); // set of required containers
+            if ({!isDisplayAFI_AMFS}) { pagerFundD.showPage(1);}
+        
+            pagerFundPH.datasetname = 'FundPriceHistory';
+            pagerFundPH.pagername ='pagerFundPH';
+            pagerFundPH.pagingControlsContainer = $('#pagingControlFundPriceHistory');
+            pagerFundPH.pagingInfoContainer = $('#loadInfoFundPriceHistory');
+            pagerFundPH.numberOfRecords = 0{!fundPriceHistoryRowPerPage}; //100;
+            //pagerFundPH.paragraphsPerPage = 5; // set amount elements per page
+            pagerFundPH.pagingContainer = $('#content'); // set of main container
+            pagerFundPH.paragraphs = $('div.z', pagerFundPH.pagingContainer); // set of required containers
+            //pagerFundPH.showPage(1);
+        
+        
+        });
+        
+        $(document).ready(function() {
+            //initPage();
+        });
+    </script>
+
+    <script type='text/javascript'>
+       function getUrlVars()
+       {
+           var vars = [], hash;
+           var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+           for(var i = 0; i < hashes.length; i++)
+           {
+               hash = hashes[i].split('=');
+               vars.push(hash[0]);
+               vars[hash[0]] = hash[1];
+           }
+           return vars;
+       }
+       var childId = Math.floor((Math.random() * 500) + 1);
+       var listener = function (result)
+       {
+           var jsonstr = result.message;
+       };
+       var parentId = getUrlVars()["parentId"];
+       sforce.console.fireEvent('RequestParentData_'.concat(parentId), childId);
+    </script>
+    
+    <script type="text/javascript">
+        var policyNo = '';
+        var entity = '';
+        var policyApp = '';
+        var contactID = '';
+
+        function initPage () {
+            var sessionId = getUrlVars()["sessionId"];
+            var queryStr = window.location.search;
+            console.log('queryStr : ' + queryStr);
+            var paramPairs = queryStr.substr(1).split('&');
+            
+            var params = {};
+            for (var i = 0; i < paramPairs.length; i++) {
+                var parts = paramPairs[i].split('=');
+                params[parts[0]] = parts[1];
+                //alert(parts[0] +' - '+ parts[1]);
+            }
+            policyNo = params['policyNo'];
+            entity = params['entity'];
+            policyApp = params['policyApp'];
+            contactID = params['contactID'];
+            
+            console.log ('policyNo :' + policyNo);
+            console.log ('entity :' + entity);
+            console.log ('policyApp :' + policyApp);
+            console.log ('contactID :' + contactID);
+        }
+        
+    
+        var dataUsed = null;
+        
+        function refreshPanel (dataName) {
+            if (dataName =='FundHistory') { refreshFundHistory()}
+            
+        }
+        
+        function loadDataPagingFundHistory(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, currentPage, pageNumber, show, extra) {
+                    console.log('parameters: ' + policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber + '-' + show + '-' + extra);
+                    var fundHistoryHolderObj = document.getElementById('{!$Component.formid.blockid.fundHistoryHolder}');
+
+                    var start_time = null;
+                    var end_time = null;
+                    var duration = null;
+                    
+                    if (fundHistoryPaging[pageNumber] != null || fundHistoryPaging[pageNumber] != undefined) {
+                        
+                        if (show == 1 && currentPage == pageNumber) {
+                            pagerFundH.lastDataPage = 0{!fundHistoryLastPageNo};
+                            pagerFundH.reRenderControls();
+                        }
+                        else if (show == 1 && currentPage != pageNumber) {
+                            start_time = performance.now();//new Date().getTime(); 
+                            displayLoading('loadingimgFundHistory');
+                            
+                            console.log('set var on sfdc');
+                            fundHistoryHolderObj.value = fundHistoryPaging[pageNumber];
+                            //console.log('jadi:' + fundHistoryPaging[pageNumber]); 
+                            refreshFundHistory(); refreshPageMessages();
+                            hideLoading('loadingimgFundHistory');
+                            
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerFundH.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration : ' + duration);
+                            
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber = pageNumber + 1;
+                        console.log('extra : ' + extra);
+                        if (extra > 0 && (fundHistoryPaging[nextPageNumber] == null || fundHistoryPaging[nextPageNumber] == undefined)) {
+                            extra = extra - 1;
+                            console.log('masuk : ' + nextPageNumber);
+                            startOfRecords = (numberOfRecords * (nextPageNumber - 1)) + 1;
+                            loadDataPagingFundHistory(policyNo, entity, policyApp, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, currentPage, nextPageNumber, 0, extra) ;
+                        }
+
+                    } else {
+                        //alert ('getRemoteDataFundHistory, extra: ' + extra + ', show : ' + show);
+                        if (show == 1) {displayLoading('loadingimgFundHistory');}
+                        start_time = performance.now(); //new Date().getTime(); 
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : 
+                            // public static string getRemoteDataFundHistory (String policyNo, String entity, String policyApp, string operation,
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber) {
+                            
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataFundHistory}',
+                                policyNo, entity, policyApp, 'Fund', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    fundHistoryPaging[pageNumber] = result;
+                                    console.log ('SET Value of fundHistoryPaging[' + pageNumber + '] : ' + fundHistoryPaging[pageNumber]); 
+                                    console.log('set var on sfdc');
+                                    fundHistoryHolderObj.value = result;
+                                    
+                                    if (show == 1) {
+                                        refreshFundHistory(); refreshPageMessages();
+                                        hideLoading('loadingimgFundHistory');
+                                        
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerFundH.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration : ' + duration);
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber = pageNumber + 1;
+                                    if (extra > 0 && (fundHistoryPaging[nextPageNumber] == null || fundHistoryPaging[nextPageNumber] == undefined)) {
+                                        extra = extra - 1;
+                                        startOfRecords = (numberOfRecords * (nextPageNumber - 1)) + 1;
+                                        loadDataPagingFundHistory(policyNo, entity, policyApp, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, currentPage, nextPageNumber, 0, extra);
+                                    }
+                                }
+                            }, {escape: true}
+                        );
+                   }
+               }
+               
+        function loadDataPagingFundDetail(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, currentPage, pageNumber, show, extra ) {
+                    console.log('parameters: ' + policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber + '-' + show + '-' + extra);
+                    var fundDetailHolderObj = document.getElementById('{!$Component.formid.blockid.fundDetailHolder}');
+                    
+                    var start_time = null;
+                    var end_time = null;
+                    var duration = null;
+                    
+                    if (fundDetailPaging[pageNumber] != null || fundDetailPaging[pageNumber] != undefined) {
+                        
+                        if (show == 1 && currentPage == pageNumber) {
+                            pagerFundD.lastDataPage = 0{!fundDetailLastPageNo};
+                            pagerFundD.reRenderControls();
+                        }
+                        else if (show == 1 && currentPage != pageNumber) {
+                            start_time = performance.now();//new Date().getTime(); 
+                            displayLoading('loadingimgFundDetail');
+                            
+                            console.log('set var on sfdc');
+                            fundDetailHolderObj.value = fundDetailPaging[pageNumber];
+                            //console.log('jadi:' + fundDetailPaging[pageNumber]); 
+                            refreshFundDetail(); refreshPageMessages();
+                            hideLoading('loadingimgFundDetail');
+                            
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerFundD.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration : ' + duration);
+                            
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber = pageNumber + 1;
+                        console.log('extra : ' + extra);
+                        if (extra > 0 && (fundDetailPaging[nextPageNumber] == null || fundDetailPaging[nextPageNumber] == undefined)) {
+                            extra = extra - 1;
+                            console.log('masuk : ' + nextPageNumber);
+                            startOfRecords = (numberOfRecords * (nextPageNumber - 1)) + 1;
+                            loadDataPagingFundDetail(policyNo, entity, policyApp, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, currentPage, nextPageNumber, 0, extra);
+                        }
+
+                    } else {
+                        //alert ('getRemoteDataFundDetail, extra: ' + extra + ', show : ' + show);
+                        if (show == 1) {displayLoading('loadingimgFundDetail');}
+                        start_time = performance.now(); //new Date().getTime(); 
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : 
+                            // public static string getRemoteDataFundDetail (String policyNo, String entity, String policyApp, string operation,
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber) {
+                            
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataFundDetail}',
+                                policyNo, entity, policyApp, 'Fund', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    fundDetailPaging[pageNumber] = result;
+                                    console.log ('SET Value of fundDetailPaging[' + pageNumber + '] : ' + fundDetailPaging[pageNumber]);
+                                    console.log('set var on sfdc');
+                                    fundDetailHolderObj.value = result;
+                                    
+                                    if (show == 1) {
+                                        refreshFundDetail(); refreshPageMessages();
+                                        hideLoading('loadingimgFundDetail'); 
+                                        
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerFundD.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration : ' + duration);
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber = pageNumber + 1;
+                                    if (extra > 0 && (fundDetailPaging[nextPageNumber] == null || fundDetailPaging[nextPageNumber] == undefined)) {
+                                        extra = extra - 1;
+                                        startOfRecords = (numberOfRecords * (nextPageNumber - 1)) + 1;
+                                        loadDataPagingFundDetail(policyNo, entity, policyApp, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, currentPage, nextPageNumber, 0, extra);
+                                    }
+                                }
+                            }, {escape: true}
+                        );
+                   }
+               }
+
+        function loadDataPagingFundDetailOLD(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber, show, extra) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var fundDetailHolderObj = document.getElementById('{!$Component.formid.blockid.fundDetailHolder}');
+                    
+                    if (fundDetailPaging[pageNumber] != null || fundDetailPaging[pageNumber] != undefined) {
+                        fundDetailHolderObj.value = fundDetailPaging[pageNumber];
+                        console.log('jadi:' + fundDetailPaging[pageNumber]);
+                        refreshFundDetail(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataFundDetail}',
+                                policyNo, entity, policyApp, 'Fund', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    //alert(result);
+                                    fundDetailPaging[pageNumber] = result;
+                                    console.log('loadDataPagingFundDetail :' + fundDetailPaging[pageNumber]);
+                                    fundDetailHolderObj.value = result;
+                                    refreshFundDetail(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                   }
+               }
+
+        function loadDataPagingFundPriceHistory(policyNo, entity, policyApp, startDateTime, endDateTime, fundCode, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber ) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var fundPriceHistoryHolderObj = document.getElementById('{!$Component.formid.blockid.fundPriceHistoryHolder}');
+                    console.log('starting load data paging fund price history');
+                    displayLoading('loadingimgFundPriceHistory'); //indah 30juli2018 add loadingbar
+
+                    if (fundPriceHistoryPaging[pageNumber] != null || fundPriceHistoryPaging[pageNumber] != undefined) {
+                        fundPriceHistoryHolderObj.value = fundPriceHistoryPaging[pageNumber];
+                        // console.log(':' + fundPriceHistoryPaging[pageNumber]);
+                        refreshFundPriceHistory(); refreshPageMessages();
+                        hideLoading('loadingimgFundPriceHistory'); //indah 30juli2018 add loadingbar
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataProductFundDetail}',
+                                policyNo, entity, policyApp, 'Fund', startDateTime, endDateTime, fundCode, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    //alert(result);
+                                    // displayLoading('loadingimgFundPriceHistory'); //indah 30juli2018 add loadingbar
+                                    fundPriceHistoryPaging[pageNumber] = result;
+                                    // console.log('loadDataPagingFundPriceHistory :' + fundPriceHistoryPaging[pageNumber]);
+                                    fundPriceHistoryHolderObj.value = result;
+                                    refreshFundPriceHistory(); refreshPageMessages();
+                                    hideLoading('loadingimgFundPriceHistory'); //indah 30juli2018 add loadingbar
+                                    console.log('end of load data paging fund price history')
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        var listOfFundHistory = new Array();
+
+        function loadFundTransaction () {
+            //console.log(convertDate(dpFTStart.value) + ' - ' + convertDate(dpFTEnd.value));
+            
+            //loadDataPagingFundHistory(policyNo, entity, policyApp, startDateTime, endDateTime, 100, 1, 100, 1 );
+            if(dpFTStart.value != '' && dpFTEnd.value != ''){
+                fundHistoryPaging[1] = null;
+                pagerFundH.showPage(1);
+                listOfFundHistory = new Array();
+                var pagingNewFundHistoryDiv = document.getElementById('pagingNewFundHistoryDiv');
+                pagingNewFundHistoryDiv.style = 'display:block;'
+            }else{
+                alert("Start Transaction & End Transaction can't be null");
+            }
+        }
+
+        function nextLoadFundTransaction () {
+            var fundHistoryLastDate = document.getElementById('{!$Component.formid.blockid.fundtransaction.fundHistoryLastDate}').value;
+            console.log('cek fund history value next : '+fundHistoryLastDate);
+            fundHistoryPaging[1] = null;
+            listOfFundHistory.push(fundHistoryLastDate);
+            pagerFundH.showPage(fundHistoryLastDate);
+        }
+
+        function prevLoadFundTransaction () {
+            var fundHistoryLastDate = listOfFundHistory.pop();
+            fundHistoryLastDate = listOfFundHistory.pop();
+            console.log('cek fund history value prev : '+fundHistoryLastDate);
+            fundHistoryPaging[1] = null;
+            if(fundHistoryLastDate == null || typeof fundHistoryLastDate == 'undefined'){
+                pagerFundH.showPage(1);
+            }else{
+                pagerFundH.showPage(fundHistoryLastDate);
+            }
+        }
+        
+        function loadFundPriceHistory () {
+            fundPriceHistoryPaging[1] = null;
+            pagerFundPH.showPage(1);
+        }
+    
+        
+    
+        function openNewSubTabX(tabName) {
+           sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        }
+
+        function openNewTabXX(tabName) {
+           alert("go");
+        }
+    
+        function openNewTab(tabName, arg2, arg3, arg4) {
+            //alert("go");
+            switch (tabName) {
+                case 'GENERATEFUND' :
+                    urlRequestNewTab = '/apex/FundInfoPagePDF?parentId=' + parentId 
+                    + '&contactID=' + contactID + '&sessionID=' + '{!sessionID}' + '&policyNo=' + policyNo + '&entity=' + entity + '&policyApp=' + policyApp + '&startDateTime=' + startDateTime + '&endDateTime=' + endDateTime;
+                    titleSubTab = 'GENERATE FUND';
+                    break;
+            }
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTab);
+            } else {
+                //window.location.href = urlRequestNewTab;
+                //window.parent.location.href=(urlRequestNewTab);
+                javascript:var x=window.open(urlRequestNewTab,'_blank');
+            }
+        }
+    </script>
+    
+
+    <!-- .End of Java Script -->
+    
+    <body>
+        
+        <apex:form id="formid">
+
+            <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+                <!-- 
+                TEST
+                <br/>
+                isDisplayAMFS: {!isDisplayAMFS}<br/>
+                isDisplayAFI : {!isDisplayAFI} <br/>
+                isDisplayMAGI : {!isDisplayMAGI} <br/>
+                isDisplayAFI_AMFS : {!isDisplayAFI_AMFS} <br/>
+                isDisplayAMFS_MAGI : {!isDisplayAMFS_MAGI} <br/>
+                isDisplayAFI_MAGI : {!isDisplayAFI_MAGI} <br/>
+                isDisplayAFI_AMFS_MAGI : {!isDisplayAFI_AMFS_MAGI} <br/>
+                -->
+                <apex:pageBlock mode="maindetail" tabStyle="Case" id="blockid" >
+                    
+                    <apex:outputPanel id="panelFundInfo" rendered="true">
+                    <apex:sectionHeader title="Fund Info" subtitle="{!policyNo} : {!contactName} " printUrl="FundInfoPage" />
+                    
+                    <apex:outputPanel id="panelPageMessages" rendered="{!policyApp != 'DMTM'}"><apex:pageMessages /></apex:outputPanel>
+
+                    <!-- *** FUND -->
+                    <apex:pageBlockSection title="Fund Transaction" collapsible="true" columns="1" rendered="true" id="fundtransaction">
+                        
+                        <p>Start Transaction: <input type="text" id="dpFTStart" />&nbsp;&nbsp; End Transaction: <input type="text" id="dpFTEnd" /> &nbsp;&nbsp;
+                        <input type="button" value="Show" id="showFundTransactionBtn" onClick="loadFundTransaction();" />
+                        <!--<input type="button" value="Generate PDF" id="showFundTransactionBtn" onclick="openNewTab('GENERATEFUND', '', '',''); return false;" />-->
+                        <!--<apex:commandButton action="{!fundHistoryPDF}" value="Generate PDF"/>-->
+                        </p>
+                        <table>
+                            <tr>
+                                <td id="pagingControlFundHistory">
+                                    <div id = "pagingNewFundHistoryDiv" style="display: none;">
+                                        <input type="button" value="Previous" id="PreviousPageFH" onclick="prevLoadFundTransaction(); return false;"/>
+                                        <input type="button" value="Next" id="NextPageFH" onclick="nextLoadFundTransaction(); return false;" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <img id="loadingimgFundHistory" style="display:none" src="/img/loading.gif" />
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <apex:outputPanel id="panelFundHistory" rendered="true">
+                            <apex:inputHidden value="{!fundHistoryLastDate}" id="fundHistoryLastDate" />
+                            <apex:pageBlockTable id="idtrfundtrx" value="{!fundHistoryList}" var="fund" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                                <apex:column ><apex:facet name="header">U/L Fund<br/> Code</apex:facet> {!fund.ULFundCode}</apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Fund Price<br/>Date</apex:facet>
+                                    <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!fund.FundPriceDate}" /></apex:outputText>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Transaction<br/> Unit</apex:facet>
+                                    <apex:outputText value="{0, number, ####.####}">
+                                        <apex:param value="{!fund.TransactionUnit}"/>
+                                    </apex:outputText>
+                                </apex:column>
+                                <!-- <apex:column > <apex:facet name="header">Fund<br/>Currency</apex:facet> {!fund.FundCurrency}</apex:column> -->
+                                <apex:column style="text-align: right;">
+                                    <apex:facet name="header">Unit Price</apex:facet>
+                                    <apex:outputText value="{!polisRider.MataUang}{0, number, ####.####}">
+                                        <apex:param value="{!fund.UnitPrice}"/>
+                                    </apex:outputText>
+                                </apex:column>
+                                <!-- <apex:column > <apex:facet name="header">Spread %</apex:facet> {!fund.Spread}</apex:column> -->
+                                <apex:column style="text-align: right;">
+                                    <apex:facet name="header">Transaction<br/>Amount</apex:facet>
+                                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                        <apex:param value="{!fund.TransactionAmount}"/>
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Transaction<br/>Description</apex:facet> {!fund.TransactionDescription}
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Transaction<br/>Date</apex:facet>
+                                    <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                        <apex:param value="{!fund.TransactionDate}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Transaction<br/>Effective Date</apex:facet>
+                                    <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                        <apex:param value="{!fund.TransactionEffectiveDate}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">U/L Valuation<br/>Date</apex:facet>
+                                    <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                        <apex:param value="{!fund.ULValuationDate}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Processing<br/>Type</apex:facet> {!fund.ProcessingType}
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Processing<br/>Mode</apex:facet> {!fund.ProcessingMode}
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                        <apex:pageBlockSectionItem >
+                            <div id="loadInfoFundHistory"></div>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="Fund Detail" collapsible="true" columns="1" rendered="true">
+                        <table>
+                            <tr>
+                                <td id="pagingControlFundDetail"></td>
+                                <td>
+                                    <img id="loadingimgFundDetail" style="display:none" src="/img/loading.gif" />
+                                </td>
+                            </tr>
+                        </table>
+                        <apex:outputPanel id="panelFundDetail" rendered="true">
+                            <apex:pageBlockTable id="iddetfund" value="{!fundDetailList}" var="detail" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1">
+                                <apex:column headerValue="Fund Code">
+                                    <apex:outputText value="{!detail.FundCode}"></apex:outputText>
+                                </apex:column>
+                                <!--  <apex:column headerValue="Fund Allocation" ><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"><apex:param value="{!detail.FundAllocation}" /></apex:outputText></apex:column> -->
+                                <apex:column headerValue="Fund Allocation" value="{!detail.FundAllocation}"></apex:column>
+                                <apex:column headerValue="Fund Price" style="text-align: right;">
+                                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                        <apex:param value="{!detail.FundPrice}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column headerValue="Total Unit Fund" style="text-align: right;">
+                                    <apex:outputText value="{0, number, ###,###,###,###.00}">
+                                        <apex:param value="{!detail.TotalUnitFund}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column headerValue="Fund Amount" style="text-align: right;">
+                                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                        <apex:param value="{!detail.TotalUnitFund * detail.FundPrice}" />
+                                    </apex:outputText>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                            <table class="detailList" border="0" cellpadding="0" cellspacing="0">
+                               <tbody>
+                                  <tr>
+                                     <th class="labelCol vfLabelColTextWrap  first  last " scope="row">
+                                        <label></label>
+                                     </th>
+                                     <td class="dataCol  first  last "></td>
+                                     <th class="labelCol vfLabelColTextWrap  first  last " scope="row">
+                                        <label>Total Fund Amount:</label>
+                                     </th>
+                                     <td class="dataCol  first  last ">
+                                         <span style="padding-left:1px;">
+                                             <apex:outputText value="{0, number, ###,###,###,###.00}">
+                                                 <apex:param value="{! IF(fundDetailList.empty , 0 , fundDetailList[0].totalFundAmount)}" />
+                                             </apex:outputText>
+                                         </span>
+                                     </td>
+                                  </tr>
+                               </tbody>
+                            </table>
+                            <table class="detailList" border="0" cellpadding="0" cellspacing="0">
+                               <tbody>
+                                  <tr>
+                                     <th class="labelCol vfLabelColTextWrap  first  last " scope="row">
+                                        <label></label>
+                                     </th>
+                                     <td class="dataCol  first  last "></td>
+                                     <th class="labelCol vfLabelColTextWrap  first  last " scope="row">
+                                        <label>NAV Date:</label>
+                                     </th>
+                                     <td class="dataCol  first  last ">
+                                         <span style="padding-left:1px;">
+                                             <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                                 <apex:param value="{! IF(fundDetailList.empty , "" , fundDetailList[0].NAVDate)}" />
+                                             </apex:outputText>
+                                         </span>
+                                     </td>
+                                  </tr>
+                               </tbody>
+                            </table>
+                        </apex:outputPanel>
+                        <apex:pageBlockSectionItem >
+                            <div id="loadInfoFundDetail">info </div>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <!-- *** Fund Price History To AMFS & MAGI *** -->
+                    <!--<apex:pageBlockSection title="Fund Price History" collapsible="true" columns="1" rendered="{!isDisplayAMFS_MAGI}">
+                        <p>
+                            Valuation Date: <input type="text" id="dpFPHStart" />
+                            <input type="hidden" id="txtFPHFundCode" /><input type="hidden" id="dpFPHEnd" />-->
+                            <!-- End Valuation: <input type="text" id="dpFPHEnd" /> &nbsp;&nbsp; 
+                            Fund Code:  <input type="hidden" id="txtFPHFundCode" /> &nbsp;&nbsp; -->
+                            <!--<input type="button" value="Show" id="showFundPriceHistoryBtn" onClick="loadFundPriceHistory();" />
+                        </p>
+                        <table>
+                            <tr>
+                                <td id="pagingControlFundPriceHistory"></td> <!--indah 30juli2018 add loadingbar-->
+                                <!--<td><!--indah 30juli2018 add loadingbar-->
+                                    <!--<img id="loadingimgFundPriceHistory" style="display:none" src="/img/loading.gif" />
+                                </td>
+                            </tr>
+                        </table>
+                        <apex:outputPanel id="panelFundPriceHistory" rendered="true">
+                            <apex:pageBlockTable id="iddetfund" value="{!fundPriceHistoryList}" var="histo" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1">
+                                <apex:column headerValue="Bid Price (UnitPrice)">
+                                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                        <apex:param value="{!histo.BidPrice_UnitPrice}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column headerValue="Offer Price (UnitPrice)">
+                                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                        <apex:param value="{!histo.OfferPrice_UnitPrice}" />
+                                    </apex:outputText>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Effective Date</apex:facet>
+                                    <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                        <apex:param value="{!histo.ValuationDate}" />
+                                    </apex:outputText>
+                                </apex:column>-->
+                                <!-- <apex:column headerValue="Fund Currency">{!histo.FundCurrency}</apex:column> -->
+                                <!--<apex:column headerValue="Fund Code">{!histo.FundCode}</apex:column>
+                                <apex:column headerValue="Fund Description">{!histo.FundDescription}</apex:column>
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                        <apex:pageBlockSectionItem >
+                            <div id="loadInfoFundPriceHistory"></div>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>-->
+                    <!-- *** Fund Price History To AMFS * MAGI *** -->
+                    
+                    
+                    <!-- *** Fund Price History To AMFS, AFI, MAGI *** -->
+                    <apex:pageBlockSection title="Fund Price History" collapsible="true" columns="1" rendered="true">
+                        
+                        <apex:selectRadio id="slcRadio" value="{!selectedRadio}" onchange="changeFilterFundPrice(this);">
+                            <apex:selectOption itemLabel="Search by Valuation Date" itemValue="Opt1" />
+                            <apex:selectOption itemLabel="Search by Fund Code and Date Range" itemValue="Opt2" />
+                            <!--<apex:actionSupport event="onchange" reRender="panelOpt" />-->
+                        </apex:selectRadio>
+                        
+                        <apex:outputPanel id="panelOpt">
+                            <!--<apex:pageBlockSectionItem rendered="{!IF(selectedRadio=='Opt1',true,false)}">
+                            Valuation Date: <input type="text" id="dpFPHStart" style=""/>
+                            &nbsp; &nbsp; &nbsp;
+                            </apex:pageBlockSectionItem>-->
+                            
+                            <!--<apex:pageBlockSectionItem rendered="{!IF(selectedRadio=='Opt1',false,true)}">-->
+                            <div id="valuationDt">
+                            Valuation Date: <input type="text" id="dpFPHStart" style=""/>
+                            <!--<input type="hidden" id="txtFPHFundCode" /><input type="hidden" id="dpFPHEnd" />-->
+                            &nbsp; &nbsp; &nbsp;
+                            </div>
+                            
+                            <div id="endDt" style="display:none;">
+                            End Date: <input type="text" id="dpFPHEnd" /> &nbsp; &nbsp; &nbsp;
+                            </div>
+                            
+                            <div id="fundCd" style="display:none;">
+                            Fund Code: <input type="text" id="txtFundCode"/> &nbsp; &nbsp; &nbsp;
+                            </div>
+                            <!--</apex:pageBlockSectionItem>-->
+                            <!-- End Valuation: <input type="text" id="dpFPHEnd" /> &nbsp;&nbsp; 
+                            Fund Code:  <input type="hidden" id="txtFPHFundCode" /> &nbsp;&nbsp; -->
+                            
+                            <div id="btnShowOpt1" style="">
+                            <input type="button" value="Show" id="showFundPriceHistoryBtnAFI" onClick="callActionValuationDateFunction(); return false;" rerender="formid2"/>
+                            <apex:actionFunction name="afunction" action="{!getFundPriceHistoryList}" reRender="formid2">
+                                <apex:param name="dpFPHStart" value="" assignTo="{!StartDateStr}"/>
+                                <apex:param name="dpFPHEnd" value="" assignTo="{!EndDateStr}"/>
+                                <apex:param name="txtFundCode" value="" assignTo="{!fundCode}"/>
+                            </apex:actionFunction>
+                            </div>
+                            
+                            <div id="btnShowOpt2" style="display:none;">
+                            <input type="button" value="Show" id="showFundPriceHistoryBtnAFI" onClick="callActionFundCodeFunction(); return false;" rerender="formid2"/>
+                            <apex:actionFunction name="afunction" action="{!getFundPriceHistoryList}" reRender="formid2">
+                                <apex:param name="dpFPHStart" value="" assignTo="{!StartDateStr}"/>
+                                <apex:param name="dpFPHEnd" value="" assignTo="{!EndDateStr}"/>
+                                <apex:param name="txtFundCode" value="" assignTo="{!fundCode}"/>
+                            </apex:actionFunction>
+                            </div>
+                        </apex:outputPanel>    
+                            
+                    </apex:pageBlockSection>
+                    <!-- *** Fund Price History To AMFS, AFI, MAGI *** -->
+                    
+
+                    <!-- *** .END OF FUND -->
+                    
+                    <apex:inputHidden value="{!fundHistoryJSON}" id="fundHistoryHolder" />
+                    <apex:actionFunction name="refreshFundHistory" reRender="panelFundHistory" oncomplete="pagerFundH.lastDataPage = {!fundHistoryLastPageNo}; console.log('pagerFundH.lastDataPage : ' + pagerFundH.lastDataPage);  pagerFundH.reRenderControls(); " />
+
+                    <apex:inputHidden value="{!fundDetailJSON}" id="fundDetailHolder" />
+                    <apex:actionFunction name="refreshFundDetail" reRender="panelFundDetail" oncomplete="pagerFundD.lastDataPage = {!fundDetailLastPageNo}; console.log('pagerFundD.lastDataPage : ' + pagerFundD.lastDataPage);  pagerFundD.reRenderControls(); " />
+                    
+                    <apex:inputHidden value="{!fundPriceHistoryJSON}" id="fundPriceHistoryHolder" />
+                    <apex:actionFunction name="refreshFundPriceHistory" reRender="panelFundPriceHistory" oncomplete="pagerFundPH.lastDataPage = {!fundPriceHistoryLastPageNo}; console.log('pagerFundPH.lastDataPage : ' + pagerFundPH.lastDataPage);  pagerFundPH.reRenderControls(); " />
+                    
+                    <apex:actionFunction name="refreshPageMessages" reRender="panelPageMessages"/>
+                    
+                    </apex:outputPanel>
+                </apex:pageBlock> <!-- .END OF <apex:pageBlock mode="maindetail" tabStyle="Contact" > -->
+            </div> <!-- .END OF <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;"> -->
+        
+            <apex:actionFunction name="callMethodSyncDataOfPolicyInfo" action="{!loadDataSeq2and3}" onComplete="afterLoad();" />
+
+        </apex:form>
+        
+        <apex:form id="formid2">
+            <apex:pageBlock mode="maindetail" tabStyle="Case" id="blockid" >
+                <apex:pageBlockSection columns="1" rendered="true">
+                    <apex:outputPanel id="panelFundPriceHistory" rendered="true">
+                        <apex:pageBlockTable id="iddetfund" value="{!fundPriceHistoryList_EIP}" var="histo" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1">
+                            <apex:column headerValue="Bid Price (UnitPrice)">
+                                <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                    <apex:param value="{!histo.BidPrice_UnitPrice}" />
+                                </apex:outputText>
+                            </apex:column>
+                            <apex:column headerValue="Offer Price (UnitPrice)">
+                                <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}">
+                                    <apex:param value="{!histo.OfferPrice_UnitPrice}" />
+                                </apex:outputText>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Effective Date</apex:facet>
+                                <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                    <apex:param value="{!histo.ValuationDate}" />
+                                </apex:outputText>
+                            </apex:column>
+                            <!-- <apex:column headerValue="Fund Currency">{!histo.FundCurrency}</apex:column> -->
+                            <apex:column headerValue="Fund Code">{!histo.FundCode}</apex:column>
+                            <apex:column headerValue="Fund Description">{!histo.FundDescription}</apex:column>
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                    <apex:pageBlockSectionItem >
+                        <div id="loadInfoFundPriceHistory"></div>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+    </body>
+
+</apex:page>

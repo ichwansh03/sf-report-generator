@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_Call__c</fullName>
+    <label>Reason Call</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>at work/meeting</fullName>
+                <default>false</default>
+                <label>at work/meeting</label>
+            </value>
+            <value>
+                <fullName>mailbox</fullName>
+                <default>false</default>
+                <label>mailbox</label>
+            </value>
+            <value>
+                <fullName>miss customer</fullName>
+                <default>false</default>
+                <label>miss customer</label>
+            </value>
+            <value>
+                <fullName>no answer</fullName>
+                <default>false</default>
+                <label>no answer</label>
+            </value>
+            <value>
+                <fullName>wrong number</fullName>
+                <default>false</default>
+                <label>wrong number</label>
+            </value>
+            <value>
+                <fullName>wrong person</fullName>
+                <default>false</default>
+                <label>wrong person</label>
+            </value>
+            <value>
+                <fullName>busy line</fullName>
+                <default>false</default>
+                <label>busy line</label>
+            </value>
+            <value>
+                <fullName>has approved</fullName>
+                <default>false</default>
+                <label>has approved</label>
+            </value>
+            <value>
+                <fullName>data double</fullName>
+                <default>false</default>
+                <label>data double</label>
+            </value>
+            <value>
+                <fullName>Agree</fullName>
+                <default>false</default>
+                <label>Agree</label>
+            </value>
+            <value>
+                <fullName>Agree Update Alamat</fullName>
+                <default>false</default>
+                <label>Agree Update Alamat</label>
+            </value>
+            <value>
+                <fullName>Agree Update Email</fullName>
+                <default>false</default>
+                <label>Agree Update Email</label>
+            </value>
+            <value>
+                <fullName>Disagree</fullName>
+                <default>false</default>
+                <label>Disagree</label>
+            </value>
+            <value>
+                <fullName>Disagree complaint</fullName>
+                <default>false</default>
+                <label>Disagree complaint</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Amount_Paid_Uncontacted__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos; &amp;&amp; TEXT(Call_Status_Config__c)==&apos;Uncontacted&apos; &amp;&amp; TEXT(Status_Paid_Not_Paid__c)==&apos;Paid&apos; &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Renewal Reminder&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Lapse Konven&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;MKP&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Lapse TM&apos;), APE_Convert__c ,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos; &amp;&amp; TEXT(Call_Status_Config__c)==&apos;Cancel&apos; &amp;&amp; TEXT(Status_Paid_Not_Paid__c)==&apos;Paid&apos; &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption TM&apos;),APE_Convert__c,0))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Amount Paid Uncontacted</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

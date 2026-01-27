@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Document_Checklist__c</fullName>
+    <label>Document Checklist</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>KTP</fullName>
+                <default>false</default>
+                <label>KTP</label>
+            </value>
+            <value>
+                <fullName>Surat Kuasa Policy Holder</fullName>
+                <default>false</default>
+                <label>Surat Kuasa Policy Holder</label>
+            </value>
+            <value>
+                <fullName>KTP Penerima Kuasa</fullName>
+                <default>false</default>
+                <label>KTP Penerima Kuasa</label>
+            </value>
+            <value>
+                <fullName>Surat Kuasa</fullName>
+                <default>false</default>
+                <label>Surat Kuasa</label>
+            </value>
+            <value>
+                <fullName>Form Complaint</fullName>
+                <default>false</default>
+                <label>Form Complaint</label>
+            </value>
+            <value>
+                <fullName>Other1</fullName>
+                <default>false</default>
+                <label>Other1</label>
+            </value>
+            <value>
+                <fullName>Other2</fullName>
+                <default>false</default>
+                <label>Other2</label>
+            </value>
+            <value>
+                <fullName>Other3</fullName>
+                <default>false</default>
+                <label>Other3</label>
+            </value>
+            <value>
+                <fullName>Other4</fullName>
+                <default>false</default>
+                <label>Other4</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

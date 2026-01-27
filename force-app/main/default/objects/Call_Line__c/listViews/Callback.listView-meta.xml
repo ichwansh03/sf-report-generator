@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Callback</fullName>
+    <columns>NAME</columns>
+    <columns>Call_Date__c</columns>
+    <columns>Used_Phone__c</columns>
+    <columns>Contacted_Number__c</columns>
+    <columns>Date_When_Customer_Call__c</columns>
+    <columns>Contact__c</columns>
+    <columns>Policy_No__c</columns>
+    <columns>Expired_Date__c</columns>
+    <columns>Entity__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>Activity__c</field>
+        <operation>equals</operation>
+        <value>Callback</value>
+    </filters>
+    <label>Callback</label>
+    <language>en_US</language>
+</ListView>

@@ -1,0 +1,76 @@
+<apex:page standardController="Call_Line__c" extensions="ClaimNumberController" action="{!getClaimNumber}" tabStyle="Call_Line__c">
+    
+    <script>
+    if (window.top === window.self) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const saveBtn = parent.document.querySelector('input[name="save"]');
+            
+            if (saveBtn) {
+                const originalOnClick = saveBtn.onclick;
+                
+                saveBtn.onclick = function(e) {
+                    e.preventDefault();
+                    
+                    const selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                    
+                    if (selectedCount === 0) {
+                        alert('Pilih minimal 1 claim!');
+                        return;
+                    }
+                    
+                    if (typeof saveClaimDataJS === 'function') {
+                        saveClaimDataJS();
+                        
+                        setTimeout(() => {
+                            if (originalOnClick) {
+                            originalOnClick.call(saveBtn);
+                        } else {
+                                   parent.document.querySelector('form').submit();
+                    }
+                }, 500);
+            }
+        };
+                                  }
+                                  });
+    }
+    </script>
+    
+    <apex:form id="claimForm">
+        
+        <div style="margin-left: 50px; margin-top: 10px;">
+            <apex:actionStatus id="actStatus">
+                <apex:facet name="start" >
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                        &nbsp;
+                    </div>
+                    <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                        <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                            <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                            <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+            <apex:outputPanel id="main" rendered="{!isTeleclaim}">
+                
+                <apex:outputText style="font-weight:bold" value="Insert Claim Number"/>
+                <apex:repeat value="{!claimWrappers}" var="cw" id="claimRepeat">
+                    <apex:outputPanel layout="block" style="margin-bottom:6px;">
+                        <apex:commandLink title="delete row" action="{!removeClaimRow}" rendered="{!claimWrappers.size > 1}" reRender="main">
+                            <apex:param name="index" value="{!cw.idx}" assignTo="{!deleteClaim}" />
+                            <apex:image url="{!URLFOR($Resource.ErrorIcon)}" width="18" height="18" style="margin-right: 5px" />
+                        </apex:commandLink>
+                        <apex:selectList value="{!cw.claimNumber}" size="1" style="margin-right: 10px">
+                            <apex:selectOptions value="{!claimResponses}" />
+                        </apex:selectList>
+                        <apex:inputText value="{!cw.description}" html-placeholder="Claim remark" style="margin-right: 10px" />
+                        <apex:commandButton value="+" action="{!addClaimRow}" rendered="{!AND(cw.idx == claimWrappers.size - 1, claimWrappers.size < claimResponses.size)}"
+                                            reRender="main" />
+                    </apex:outputPanel>
+                </apex:repeat>
+                
+                <apex:commandButton action="{!submitSelected}" value="Update" reRender="main" status="actStatus"/>
+            </apex:outputPanel>
+        </div>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,34 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" extensions="PolicyInfoController,RemoteDataController" action="{!initPolicyChangeDetails}">
+    
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <apex:includeScript value="/soap/ajax/30.0/connection.js"/>      
+    <apex:includeScript value="/support/console/37.0/integration.js"/> 
+    
+    <apex:pageBlock mode="maindetail" tabStyle="Contact" id="blockid" >
+        <apex:form >
+            <apex:outputPanel id="panelPolicyChangeDetailInfo" rendered="true">
+                <apex:sectionHeader title="Policy Change Detail Info" subtitle="{!policyNo} : {!contactName} " printUrl="PolicyChangeDetailPage" />
+                <apex:outputPanel id="panelPageMessages" rendered="true"><apex:pageMessages /></apex:outputPanel>
+            </apex:outputPanel>
+            <apex:pageBlockSection title="Policy Change Details" collapsible="true" columns="1">
+                <div id="pagingControlPolicyChangeLife"></div>
+                <apex:outputPanel id="panelPolicyChangeLife" rendered="true">
+                    <apex:pageBlockTable id="idpolchange" value="{!policyChangeLifeListDetail}" var="pc" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Submit Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!pc.SubmitDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Create Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!pc.CreateDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="User ID / Assessment">{!pc.userId}</apex:column>
+                        <apex:column headerValue="Ref. No">{!pc.RefNo}</apex:column>
+                        <apex:column headerValue="Class Name">{!pc.ClassName}</apex:column>
+                        <apex:column headerValue="Class ID">{!pc.ClassID}</apex:column>
+                        <apex:column headerValue="Field">{!pc.Field}</apex:column>
+                        <apex:column headerValue="Old Value">{!pc.Remark1}</apex:column>
+                        <apex:column headerValue="New Value">{!pc.Remark2}</apex:column>
+                        <apex:column headerValue="Endorsement">{!pc.isEndorsement}</apex:column>
+                        <apex:column headerValue="Section">{!pc.Section}</apex:column>
+                        <!-- <apex:column headerValue="Reversal">{!pc.reversalIND}</apex:column> -->
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+            </apex:pageBlockSection> 
+        </apex:form>
+    </apex:pageBlock>
+</apex:page>

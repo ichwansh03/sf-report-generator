@@ -1,0 +1,1054 @@
+<!--
+  @description       : 
+  @author            : Muh Syafiq Hidayatullah
+  @group             : 
+  @last modified on  : 25-09-2025
+  @last modified by  : Muh Syafiq Hidayatullah
+-->
+<apex:page renderAs="PDF" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardController="E_Form_Master_Data__c" extensions="AMFS_PerubahanDataPolis_Controller">
+    <html>
+        <head>
+            <style type="text/css">
+                @page {
+                    size: A4 portrait;
+                    margin-top: 5mm;
+                    margin-left: 5mm;
+                    margin-right: 5mm;
+                    margin-bottom: 20mm;
+                    letter-spacing: 5px;
+
+                    @top-center {
+                        content: element(header);
+                    }
+                    
+                    @bottom-center {
+                        content: element(footer);
+                    }
+                }
+
+                /* Header */
+                div.header {
+                    text-align: center;
+                    font-family: sans-serif !important;
+                    font-weight: bold;
+                }
+
+                /* Footer */
+                div.footer {
+                    position: running(footer);
+                    text-align: center;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                }
+
+                /* Table Styling */
+                table.custom-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 16px;
+                    margin-top: 10px;
+                    text-align: center;
+                }
+
+                table.custom-table th {
+                    background-color: #396cb2;
+                    color: white;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    text-align: center;
+                }
+
+                table.custom-table td {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    vertical-align: top;
+                }
+
+                /* Table Styling */
+                table.custom-table-header {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header td {
+                    padding: 8px;
+                    vertical-align: center;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-subject {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 16px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-subject td {
+                    vertical-align: top;
+                    text-align: center;
+                    font-weight:bold;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-value {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-value td {
+                    vertical-align: top;
+                    text-align: left;
+                }
+
+                table.custom-table-header-value td:first-child {
+                    width: 25%;
+                }
+
+                table.custom-table-header-value td:nth-child(2) {
+                    width: 2em;
+                    text-align: center;
+                }
+                table.custom-table-header-value td:nth-child(3) {
+                    width: auto;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-value-pajak {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-value-pajak td {
+                    vertical-align: top;
+                    text-align: left;
+                    /* border: 1px solid black; */
+                }
+
+                table.custom-table-header-value-pajak td:first-child {
+                    width: 90%;
+                }
+
+                table.custom-table-header-value-pajak td:nth-child(2) {
+                    width: 2em;
+                }
+                /* table.custom-table-header-value-pajak td:nth-child(3) {
+                    width: 10%;
+                } */
+
+                /* Table Styling */
+                table.custom-table-header-pernyatan {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-pernyatan td {
+                    vertical-align: top;
+                    text-align: justify;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-alasan-perubahan {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+                table.custom-table-header-alasan-perubahan td {
+                    vertical-align: top;
+                    text-align: left;
+                }
+                table.custom-table-header-alasan-perubahan td:first-child {
+                    width: 25%;
+                    font-weight: bold;
+
+                }
+                table.custom-table-header-alasan-perubahan td:nth-child(2) {
+                    width: 2em;
+                    text-align: center;
+                }
+                table.custom-table-header-alasan-perubahan td:nth-child(3) {
+                    width: auto;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-cuti-premi {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+                table.custom-table-header-cuti-premi td {
+                    vertical-align: top;
+                    text-align: left;
+                    font-weight: bold;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-pernyatan-tambahan {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-pernyatan-tambahan td {
+                    vertical-align: top;
+                    text-align: justify;
+                }
+
+                table.custom-table-header-pernyatan-tambahan td:first-child {
+                    width: 5%;
+                    text-align: right;
+                }
+
+                table.custom-table-header-pernyatan-tambahan td:nth-child(2) {
+                    width: 95%;
+                    text-align: left;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-pernyatan-cuti {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-pernyatan-cuti td {
+                    vertical-align: top;
+                    text-align: justify;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-perubahan {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-perubahan td {
+                    vertical-align: top;
+                    text-align: left;
+                }
+
+                table.custom-table-header-perubahan td:first-child {
+                    width: 30%;
+                }
+                table.custom-table-header-perubahan td:nth-child(2) {
+                    width: 70%;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-perubahan-alamat {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-perubahan-alamat th {
+                    vertical-align: top;
+                    border: 1px solid black;
+                    text-align: center;
+                    font-weight: bold;
+                }
+
+                table.custom-table-header-perubahan-alamat td {
+                    vertical-align: top;
+                    border: 1px solid black;
+                    padding-left: 5px;
+                }
+
+                table.custom-table-header-perubahan-alamat td:first-child {
+                    text-align: left;
+                    font-weight: bold;
+                    width: 30%;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-perubahan-ahli {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                    table-layout: fixed;
+                }
+
+                table.custom-table-header-perubahan-ahli th {
+                    font-weight: bold;
+                    color: black;
+                    padding: 8px;
+                    border: 1px solid black;
+                    text-align: center;
+                    /* Tambahkan untuk header */
+                    white-space: normal;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+
+                table.custom-table-header-perubahan-ahli td {
+                    vertical-align: center;
+                    text-align: center;
+                    border: 1px solid black;
+                    padding: 8px;
+                    /* Properti penting untuk text wrapping */
+                    white-space: normal !important;
+                    word-break: break-word !important;
+                    overflow-wrap: break-word !important;
+                    max-width: 0;
+                }
+
+                table.custom-table-header-perubahan-ahli td:first-child,
+                table.custom-table-header-perubahan-ahli th:first-child {
+                    width: 16.66%;
+                }
+
+                table.custom-table-header-perubahan-ahli td:nth-child(2),
+                table.custom-table-header-perubahan-ahli th:nth-child(2) {
+                    width: 16.66%;
+                }
+
+                table.custom-table-header-perubahan-ahli td:nth-child(3),
+                table.custom-table-header-perubahan-ahli th:nth-child(3) {
+                    width: 16.66%;
+                }
+
+                table.custom-table-header-perubahan-ahli td:nth-child(4),
+                table.custom-table-header-perubahan-ahli th:nth-child(4) {
+                    width: 16.66%;
+                }
+
+                table.custom-table-header-perubahan-ahli td:nth-child(5),
+                table.custom-table-header-perubahan-ahli th:nth-child(5) {
+                    width: 16.66%;
+                }
+
+                table.custom-table-header-perubahan-ahli td:nth-child(6),
+                table.custom-table-header-perubahan-ahli th:nth-child(6) {
+                    width: 16.66%;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-tambahan {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-tambahan th {
+                    font-weight:bold;
+                    color: black;
+                    padding: 8px;
+                    border: 1px solid black;
+                    text-align: center;
+                }
+
+                table.custom-table-header-tambahan td {
+                    vertical-align: center;
+                    text-align: left;
+                    border: 1px solid black;
+                    padding-left: 5px;
+                }
+
+                table.custom-table-header-tambahan td:first-child {
+                    width: 33.33%;
+                }
+
+                table.custom-table-header-tambahan td:nth-child(2) {
+                    width: 33.33%;
+                }
+                table.custom-table-header-tambahan td:nth-child(3) {
+                    width: 33.33%;
+                }
+
+                /* Table Styling */
+                table.custom-table-header-pernyataan-kuasa {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 10px;
+                }
+
+                table.custom-table-header-pernyataan-kuasa th {
+                    font-weight:bold;
+                    color: black;
+                    padding: 8px;
+                    text-align: center;
+                    font-size: 12px;
+                }
+
+                table.custom-table-header-pernyataan-kuasa td {
+                    vertical-align: top;
+                    text-align: justify;
+                    font-size: 10px;
+                }
+
+                /* Table Styling */
+                table.custom-table-ttd {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 12px;
+                    margin-top: 10px;
+                    font-family: sans-serif !important;
+                }
+
+                table.custom-table-ttd th {
+                    font-weight:bold;
+                    color: black;
+                    padding: 8px;
+                    font-family: sans-serif !important;
+                    border: 1px solid black;
+                    text-align: center;
+                }
+
+                table.custom-table-ttd td {
+                    vertical-align: center;
+                    border: 1px solid black;
+                }
+
+                table.custom-table-ttd td:first-child {
+                    width: 50%;
+                    font-weight:bold;
+                    text-align: center;
+                }
+
+                /* Table Styling */
+                table.custom-table-ttd-time {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-ttd-time td {
+                    vertical-align: top;
+                    font-weight:bold;
+                    text-align: right;
+                }
+
+                .check {
+                    display:inline-block;
+                    width:14px;
+                    height:14px;
+                    border:1px solid #000;
+                    text-align:center;
+                    font-size:12px;
+                    line-height:14px;
+                    color:green;
+                }
+                body, .check {
+                    font-family: DejaVu Sans, Arial Unicode MS, Helvetica, sans-serif;
+                }
+
+
+            </style>
+        </head>
+        
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div >
+                <apex:image value="{!$Resource.ojk_logo_bot}" width="600"></apex:image>
+            </div>
+        </div>
+
+        <!--Head-->
+
+        <div class="header"> 
+            <div>
+                <table class="custom-table-header">
+                    <tr>
+                        <td style="text-align: left;"><apex:image value="{!$Resource.emma_axa }" width="300px"></apex:image></td>
+                        <td style="text-align: right; color:#396cb2">
+                            CCC-{!touchPoint}
+                        </td>
+                    </tr>
+                    
+                </table>        
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <table class="custom-table-header-subject"> 
+                    <tr>
+                        <td>
+                            {!subjectTransaction}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            AXA Mandiri Financial Services
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Nomor Polis : {!polisNo}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Nomor Transaksi : {!subjectTransactionNumber} - {!transNo}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tanggal Pengajuan {!subjectTransactionLower} : {!inputdtmmss}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        INFORMASI PEMEGANG POLIS
+                    </th>
+                </tr>
+            </table>
+            <div>
+                <table class="custom-table-header-value">  
+                    <tr>
+                        <td>Nama Pemegang Polis </td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!phName}</td>
+                    </tr>
+                    <tr>
+                        <td>No.Telepon</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!phone}</td>
+                        <td>
+                            <apex:outputPanel rendered="{!centangTelepon = 'yes'}">
+                                <span class="check">&#10003;</span>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>NIK</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!NIK}</td>
+                        <td>
+                            <apex:outputPanel rendered="{!centangNIK = 'yes'}">
+                                <span class="check">&#10003;</span>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >Tanggal Lahir</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!tanggalLahir}</td>
+                    </tr>
+                    <tr>
+                        <td >Alamat</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!addr}</td>
+                        <td>
+                            <apex:outputPanel rendered="{!centangAlamat = 'yes'}">
+                                <span class="check">&#10003;</span>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >Email</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!email}</td>
+                        <td>
+                            <apex:outputPanel rendered="{!centangEmail = 'yes'}">
+                                <span class="check">&#10003;</span>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >Nama Produk</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!prodName}</td>
+                    </tr>
+                    <tr>
+                        <td >Segmentasi</td>
+                        <td style="width: 1em;">:</td>
+                        <td>{!segmentasi}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        INFORMASI PERPAJAKAN LUAR NEGERI
+                    </th>
+                </tr>
+            </table>
+            <div>
+                <table class="custom-table-header-value-pajak">
+                    <tr>
+                        <td >Apakah Anda Melakukan Pelaporan Pajak di Luar Negara Indonesia ?</td>
+                        <td style="text-align:start">: {!pajak}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        {!subjectTransactionTable}
+                    </th>
+                </tr>
+            </table>
+            <div>
+                <apex:outputPanel rendered="{!NOT(ISNULL(subjectDesc))}">
+                    <table class="custom-table-header-pernyatan" >
+                        <apex:repeat value="{!subjectDesc}" var="per">
+                            <tr>
+                                <td>
+                                    Dengan ini saya mengajukan perubahan data {!per.alasan} dan setuju polis yang saya miliki dilakukan perubahan data sebagai berikut:
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel>
+                <!-- <apex:outputPanel  rendered="{!NOT(ISNULL(subjectDescCuti))}">
+                    <table class="custom-table-header-pernyatan-cuti" >
+                        <apex:repeat value="{!subjectDescCuti}" var="per">
+                            <tr>
+                                <td>
+                                    Dengan ini saya mengajukan {!per.subject} dan menyetujui syarat dan ketentuan {!per.subject} yang berlaku.
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel> -->
+            </div>
+            <div>
+                <apex:outputPanel rendered="{!NOT(ISNULL(valueFooter))}">
+                    <table class="custom-table-header-cuti-premi" >
+                        <apex:repeat value="{!valueFooter}" var="per">
+                            <tr>
+                                <td>
+                                    {!per.alasan}
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel>
+            </div>
+            
+        </div>
+            
+        <div>
+
+            <apex:outputPanel rendered="{!NOT(ISNULL(ahliWaris))}">
+                <table class="custom-table-header-perubahan-ahli">  
+                    <thead>
+                        <tr>
+                            <th>Nama Lengkap (Sesuai kartu identitas)</th>
+                            <th>Tanggal Lahir (tgl/bln/thn)</th>                    
+                            <th>Jenis Kelamin (L/P)</th>
+                            <th>Nomor Identitas</th>
+                            <th>Persentase (%)</th>
+                            <th>Hubungan dengan tertanggung/peserta</th>
+                        </tr>
+                    </thead>
+                    <apex:repeat value="{!ahliWaris}" var="per">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {!per.nama}
+                                </td>
+                                <td>
+                                    {!per.tanggal}
+                                </td>
+                                <td>
+                                    {!per.jenisKel}
+                                </td>
+                                <td>
+                                    {!per.nomorIdentitas}
+                                </td>
+                                <td>
+                                    {!per.persentase}
+                                </td>
+                                <td>
+                                    {!per.hubungan}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
+
+            <!-- <apex:outputPanel rendered="{!NOT(ISNULL(perubahan))}">
+                <table class="custom-table-header-perubahan-alamat" >  
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Pemegang Polis</th>                    
+                            <th>Tertanggung/Peserta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!perubahanAlamat}" var="per">
+                            <tr>
+                                <td>{!per.nama}</td>
+                                <td>{!per.val1}</td>
+                                <td>{!per.val2}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel> -->
+
+            <apex:outputPanel rendered="{!NOT(ISNULL(doublePerubahan))}">
+                <table class="custom-table-header-perubahan-alamat" >  
+                    <thead>
+                        <tr>
+                            <th>{!headerPerubahan}</th>
+                            <th>Pemegang Polis</th>                    
+                            <th>Tertanggung/Peserta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!doublePerubahan}" var="per">
+                            <tr>
+                                <td>{!per.nama}</td>
+                                <td>{!per.val1}</td>
+                                <td>{!per.val2}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(ISNULL(singlePerubahan))}">
+                <table class="custom-table-header-perubahan-alamat" >  
+                    <thead>
+                        <tr>
+                            <th>{!headerPerubahan}</th>
+                            <th>{!headerSingle}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!singlePerubahan}" var="per">
+                            <tr>
+                                <td>{!per.nama}</td>
+                                <td>{!per.val1}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(ISNULL(valueAlasan))}">
+                <table class="custom-table-header-alasan-perubahan" >
+                    <apex:repeat value="{!valueAlasan}" var="per">
+                        <tr>
+                            <td>Alasan Perubahan Data</td>
+                            <td style="width: 1em;">:</td>
+                            <td>{!per.alasan}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(ISNULL(valueAlasanCuti))}">
+                <table class="custom-table-header-alasan-perubahan" >
+                    <apex:repeat value="{!valueAlasanCuti}" var="per">
+                        <tr>
+                            <td>Alasan Pengajuan Cuti</td>
+                            <td style="width: 1em;">:</td>
+                            <td>{!per.alasan}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(ISNULL(valueAlasanAhli))}">
+                <table class="custom-table-header-alasan-perubahan" >
+                    <apex:repeat value="{!valueAlasanAhli}" var="per">
+                        <tr>
+                            <td>Alasan Pengajuan Ahli Waris</td>
+                            <td style="width: 1em;">:</td>
+                            <td>{!per.alasan}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
+            <div>
+            </div>
+        </div>
+
+        <div>
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        KELENGKAPAN DOKUMEN
+                    </th>
+                </tr>
+            </table>
+            <table class="custom-table-header-pernyatan-tambahan" >
+                <apex:repeat value="{!dokumenTambahan}" var="doc">
+                    <!-- <p >{!doc.namaDokumen}</p> -->
+                    <tr>
+                        <td >{!doc.numberAdd}. </td>
+                        <td >{!doc.namaDokumen}</td>
+                    </tr>
+                </apex:repeat>
+            </table>
+        </div>
+
+        <div>
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        KETERANGAN TAMBAHAN
+                    </th>
+                </tr>
+            </table>
+            <table class="custom-table-header-pernyatan-tambahan" >
+                <apex:repeat value="{!formTambahan}" var="form">
+                    <!-- <p >{!form.namaDokumen}</p> -->
+                    <tr>
+
+                        <td >{!form.numberAdd}. </td>
+                        <td >{!form.namaDokumen}</td>
+                    </tr>
+                </apex:repeat>
+            </table>
+        </div>
+
+        
+        <div style="page-break-inside: avoid;">
+            <div>
+                <table  class="custom-table-header-pernyataan-kuasa">
+                    <tr>
+                        <th colspan="2">PERNYATAAN DAN KUASA</th>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">1.</td>
+                        <td>
+                            Saya/Kami telah membaca, memahami, dan menyetujui persyaratan dan ketentuan dalam formulir ini, menjawab dan mengisi bagian yang 
+                            terlampir pada formulir ini dengan sebenar-benarnya tanpa paksaan dari pihak manapun. Saya/Kami tidak memberikan keterangan lain 
+                            dalam bentuk apapun kepada tenaga pemasar AXA Mandiri ataupun Bank (“Tenaga Pemasar”). Saya/Kami bertanggung jawab atas 
+                            seluruh informasi yang tercantum pada formulir ini, jika ternyata keterangan yang diberikan tidak benar dan/atau tidak lengkap serta 
+                            terdapat kesalahan dan/atau kelalaian dalam mengisi formulir ini, maka sepenuhnya akan menjadi tanggung jawab Saya/Kami.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">2.</td>
+                        <td>
+                            Saya/Kami menyetujui dan mengerti apabila diperlukan AXA Mandiri dapat melakukan verifikasi dan konfirmasi sehubungan dengan 
+                            pengajuan transaksi dalam formulir ini. Apabila verifikasi dan konfirmasi tidak berhasil, maka proses pengajuan ini dapat tidak diteruskan 
+                            atau tidak dilanjutkan, dengan tetap mengacu pada ketentuan AXA Mandiri. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">3.</td>
+                        <td>
+                            Saya/Kami mengizinkan AXA Mandiri untuk mencari informasi/konfirmasi mengenai data Saya/Kami yang tersedia/disimpan/dimiliki oleh 
+                            Bank dan afiliasinya sehubungan dengan pengajuan ini. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">4.</td>
+                        <td>
+                            Saya/Kami setuju dan mengizinkan AXA Mandiri untuk menggunakan atau memberikan informasi, keterangan, atau data-data Saya/Kami 
+                            yang diperoleh dan/atau dimiliki AXA Mandiri kepada pihak ketiga (termasuk tapi tidak terbatas pada perusahaan asuransi, reasuransi, 
+                            bank, group dan afiliasi dari Pemegang Saham, serta pihak lain) yang bekerja sama dengan AXA Mandiri baik di dalam atau luar negeri 
+                            dalam rangka pelaksanaan transaksi dan/atau permintaan ini, termasuk tapi tidak terbatas pada pelayanan nasabah dan proses klaim, 
+                            dan/atau penawaran produk. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">5.</td>
+                        <td>
+                            Saya/Kami senantiasa menjamin untuk merahasiakan dan tidak akan menggandakan, mengungkapkan maupun menyebarluaskan setiap 
+                            dan segala informasi pribadi Saya/Kami yang berhubungan dengan termasuk hubungan hukum yang didasarkan atas pengajuan pada 
+                            dokumen/formulir ini antara Saya/Kami dan AXA Mandiri kepada pihak manapun dan melalui media apapun. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">6.</td>
+                        <td>
+                            Saya/Kami mengerti pengajuan ini mengikuti ketentuan-ketentuan yang tercantum dalam Polis dan hanya dapat diproses apabila 
+                            Saya/Kami telah melengkapi persyaratan yang diperlukan oleh AXA Mandiri.  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">7.</td>
+                        <td>
+                            Setiap salinan dokumen yang diterima dan telah disetujui oleh AXA Mandiri bersifat final dan tidak dapat dibatalkan dengan alasan apapun.  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">8.</td>
+                        <td>
+                            Saya/Kami setuju dan akan memberikan dokumen seperti formulir, fotokopi bukti tanda pengenal (KTP/passport/dan lain-lain), fotokopi 
+                            buku tabungan, dan dokumen pendukung lainnya secara softcopy/digital. Saya/Kami setuju untuk memberikan dokumen asli apabila 
+                            diperlukan oleh AXA Mandiri dan Saya/Kami setuju bahwa seluruh dokumen softcopy/digital sama sah dan berlakunya sesuai dengan 
+                            dokumen aslinya. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">9.</td>
+                        <td>
+                            Transaksi keuangan ini tidak berasal dari/untuk tujuan pencucian uang (money laundering), pendanaan terorisme (terrorism financing) 
+                            sebagaimana diatur dalam ketentuan yang berlaku di wilayah hukum Republik Indonesia terkait dengan Anti Pencucian Uang dan 
+                            Pencegahan Pendanaan Terorisme berikut dengan perubahannya dari waktu ke waktu. AXA Mandiri berhak menolak permohonan 
+                            Saya/Kami jika tidak memenuhi dan melanggar ketentuan Undang-Undang.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">10.</td>
+                        <td>
+                            Segala resiko yang timbul sehubungan dengan pengajuan pada Formulir ini sepenuhnya merupakan tanggung jawab Saya/Kami dan 
+                            Saya/Kami membebaskan AXA Mandiri dari segala tanggung jawab, gugatan, kerugian, dan/atau tuntutan dalam bentuk apapun di 
+                            kemudian hari dari pihak manapun termasuk Saya/Kami atas pengajuan Formulir ini, kecuali yang diakibatkan kesalahan dan/atau kelalaian 
+                            AXA Mandiri.  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">11.</td>
+                        <td>
+                            Pernyataan dan Kuasa yang telah diberikan akan tetap berlaku selama Saya/Kami masih hidup maupun sesudah Saya/Kami meninggal 
+                            dunia dan Saya/Kami setuju untuk mengesampingkan ketentuan pada pasal 1813, 1814, dan 1816 Kitab Undang-Undang Hukum 
+                            Perdata.  
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">12.</td>
+                        <td>
+    
+                            <table >
+                                <tr>
+                                    <td colspan="2">
+                                        Perhitungan pajak (bila ada) akan disesuaikan dengan peraturan perpajakan yang berlaku. Pernyataan kepatuhan khusus terkait kewajiban pajak: 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 5%; text-align: center; vertical-align: top">a.)</td>
+                                    <td style="width: 95%">
+                                        Menyetujui bahwa AXA Mandiri dan/atau afiliasinya diwajbkan untuk patuh kepada kewajiban dari Undang-Undang, Pedoman, 
+                                        Perintah, dan syarat yang ditetapkan berdasarkan hukum di Indonesia ataupun hukum Asing termasuk Undang-Undang Kepatuhan 
+                                        Pajak Rekening Luar Negeri Amerika Serikat, Foreign Account Tax Compliance Act of United States of America (FATCA), atau 
+                                        perjanjian-perjanjian atas publik, peradilan, perpajakan, Pemerintahan Indonesia, dan/atau pihak berwenang lainnya, termasuk 
+                                        Direktorat Jenderal Pajak dan Internal Revenue Services (IRS) Amerika Serikat (“Otoritas”) yang berlaku diberbagai yurisdiksi 
+                                        termasuk di Indonesia sebagaimana diundangkan beserta perubahaannya dari waktu ke waktu (“Kewajiban Hukum”). 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 5%; text-align: center; vertical-align: top">b)</td>
+                                    <td style="width: 95%">
+                                        Saya/Kami juga setuju untuk menyediakan bantuan yang mungkin diperlukan untuk AXA Mandiri memenuhi seluruh kewajibannya 
+                                        sebagaimana diatur dalam Kewajiban Hukum tentang diri Saya/Kami atau Polis Saya/Kami. Jika penyediaan informasi atau data 
+                                        melebihi 30 hari sejak transaksidiajukan, maka Saya/Kami akan menanggung semua risiko termasuk tapi tidak terbatas pada 
+                                        penolakan dan/atau pembekuan transaksi. 
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">13.</td>
+                        <td>
+                            Saya setuju bahwa AXA Mandiri tidak bertanggung jawab atas tidak tepatnya pembayaran dana yang ditarik atau bila pembayaran dana tersebut terlambat diterima, 
+                            atau bila pembayaran dana tersebut diterima oleh orang yang tidak berhak dikarenakan salah penafsiran/kelalaian oleh perwakilan Bank atau kelalaian Saya yang menyebabkan tidak jelasnya informasi yang diberikan, 
+                            atau adanya cacat pada berita yang diterima dan hal lain sebagainya yang merupakan kelalaian Saya dan/atau pihak Bank.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">14.</td>
+                        <td>
+                            Dengan dikembalikannya Premi/Kontribusi dan/atau nilai tunai Polis (jika ada) setelah dikurangi dengan biaya administrasi, biaya medis dan biaya lainnya terkait dengan Polis (jika ada) oleh AXA Mandiri ke rekening yang tercantum pada formulir ini maka Polis dinyatakan berakhir dan untuk selanjutnya tidak ada kewajiban apapun dari AXA Mandiri 
+                            terhadap Pemegang Polis dan atau Tertanggung atau Peserta atau pihak yang berkepentingan atas Polis.
+                        </td>
+                    </tr> -->
+                </table>
+
+            </div>
+        </div>
+
+        <!--TANDA TANGAN-->
+        <div>
+            <table class="custom-table-ttd-time">
+                <tr>
+                    <td>
+                        {!touchPoint}, {!inputDate}
+                    </td>
+                </tr>
+            </table>
+            <apex:outputPanel rendered="{!sign != ''}">
+                <table class="custom-table-ttd">
+                    <tr>
+                        <th>
+                            Nama Pemegang Polis
+                        </th>
+                        <th>
+                            Tanda Tangan
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {!phName}
+                        </td>
+                        <td align="center; vertical-align:center; height: 100px;" >
+                            <img src="{!imgUrl}"  width="150px" style="padding:5px 5px;"/>
+                        </td>
+                    </tr>
+                </table>
+
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!signTP != ''}">
+                <table class="custom-table-ttd">
+                    <tr>
+                        <th>
+                            Nama Tertanggung / Peserta
+                        </th>
+                        <th>
+                            Tanda Tangan
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {!nameTT}
+                        </td>
+                        <td align="center; vertical-align:center; height: 100px;" >
+                            <img src="{!imgUrlTP}"  width="150px" style="padding:5px 5px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            <table class="custom-table-ttd-time">
+                <tr>
+                    <td>Customer Service : {!csName}</td>
+                </tr>
+            </table>
+        </div>
+    </html>
+</apex:page>

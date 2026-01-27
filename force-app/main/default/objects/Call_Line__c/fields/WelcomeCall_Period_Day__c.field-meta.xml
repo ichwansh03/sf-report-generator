@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_Period_Day__c</fullName>
+    <externalId>false</externalId>
+    <formula>(
+	IF(
+		OR(
+			AND(
+				WEEKDAY(Contact__r.WelcomeCall_Issued_Date__c ) = 6,
+				NOT(Contact__r.Is_Unit_Link_Product__c)
+			),
+			AND(
+				OR(WEEKDAY(Contact__r.WelcomeCall_Issued_Date__c ) = 2, WEEKDAY(Contact__r.WelcomeCall_Issued_Date__c ) = 3),
+				Contact__r.Is_Unit_Link_Product__c
+			)
+		),
+		17,
+		IF(
+			AND(
+				WEEKDAY(Contact__r.WelcomeCall_Issued_Date__c ) != 6,
+				NOT(Contact__r.Is_Unit_Link_Product__c)
+			),
+			15,
+			19
+		)
+	)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>WelcomeCall Period Day</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

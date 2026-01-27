@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ALI_Status_Done_UpdateEmail_must_filled</fullName>
+    <active>true</active>
+    <errorConditionFormula>TEXT(Entity__c) == &apos;ALI&apos; &amp;&amp;
+TEXT( Call_List__r.Case_Type__c) == &apos;Update Data&apos; &amp;&amp;
+TEXT(Reason_Status_Config__c) == &apos;DONE&apos; &amp;&amp;  ISBLANK(TEXT( Update_Email__c))</errorConditionFormula>
+    <errorDisplayField>Update_Email__c</errorDisplayField>
+    <errorMessage>Update Email must filled</errorMessage>
+</ValidationRule>

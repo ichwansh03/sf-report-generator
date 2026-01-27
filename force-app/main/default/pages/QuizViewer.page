@@ -1,0 +1,179 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page controller="QuizViewerController" action="{!initializeQuestions}" docType="html-5.0" sidebar="false" showHeader="{!showSFHeader}" standardStylesheets="false" cache="false">
+
+    <apex:form >
+
+        <apex:composition template="LMS_Template">
+
+            <apex:define name="head">
+                <title>{!questionLine.Quiz__r.Name}</title>
+            </apex:define>
+
+            <apex:define name="body">
+
+                <apex:outputPanel id="quizBody" style="padding:0 1rem;" layout="block">
+
+                    <apex:actionStatus id="status">
+                        <apex:facet name="start">
+                            <c:LMSStatus statusComponentId="{!$Component.status}"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+
+                    <apex:outputPanel layout="none" rendered="{!hasMessages}">
+                        <div class="slds-notify slds-notify--toast slds-theme--error" style="width: 100%;margin: 0;" role="alert">
+                            <div class="slds-notify__content slds-grid">
+                                <div class="slds-col slds-align-middle">
+                                  <apex:pageMessages />
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="block" styleClass="slds-m-top--medium slds-m-bottom--medium" rendered="{!showBackNoSaveMessage}" >
+                        <div class="slds-notify slds-notify--toast slds-theme--alert" style="width: 100%;margin: 0;" role="alert">
+                            <div class="slds-notify__content slds-grid">
+                                <div class="slds-col slds-align-middle">
+                                  {!$Label.ALMS_Click} <apex:commandLink value="{!$Label.ALMS_here}" action="{!previousNoSave}" styleClass="alert-link" rendered="{!showPreviousButton}" onclick="if(!confirm('{!JSINHTMLENCODE($Label.ALMS_Quiz_Back_Warning)}')){return false};"/> {!$Label.ALMS_Quiz_Back_Warning_Message}
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+
+                    <style>
+                        table.htmlDetailElementTable td{
+                            border:0 !important;
+                        }
+                    </style>
+
+                    <apex:outputPanel id="mainPanel" rendered="{!assignment.id != null}">
+
+                        <script>
+
+                            function setFocusOnLoad(){}
+
+                            function strcontains(aa,bbb) {
+                                var a = aa.split(';');
+                                for ( var i = 0;i<a.length; i++){
+                                    if (a[i] == bbb){
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            }
+
+                            function getByName(name){
+                                return jQuery('[name="'+name+'"]');
+                            }
+
+                            function multiset( which,selectresponse, ele ) {
+                                var target = getByName(which)[0];
+                                var targetSelectResponse = getByName(selectresponse)[0];
+                                var source = getByName(ele.name); // list of checkboxes
+                                var sourceLabels = getByName(ele.name+'label'); // list of labels
+                                var st ='';
+                                var stLabel = '';
+                                for (var i =0; i < source.length; i++) {
+                                    if (source[i].checked){
+                                        st = st+source[i].value+';';
+                                        stLabel = stLabel+sourceLabels[i].innerHTML+';';
+                                    }
+                                }
+                                target.value = st;
+                                targetSelectResponse.value = stLabel;
+                            }
+
+                        </script>
+
+                        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                                <div class="slds-text-heading--large slds-m-bottom--large">{!questionLine.Quiz__r.Name} - {!questionLine.Name}</div>
+                            </div>
+                            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                                <div class="slds-text-longform slds-m-bottom--medium">
+                                    <p>{!questionLine.Description__c}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <apex:repeat value="{!quizItemList}" var="qi">
+                            <div class="quiz-question-wrapper">
+                                <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                                    <div class="slds-p-horizontal--small slds-size--1-of-1 slds-m-bottom--medium">
+                                        <div class="slds-text-body--regular">
+                                            <apex:outputField value="{!qi.question.Description__c}" rendered="{!qi.question.Description__c != null}"/>
+                                            <apex:outputPanel layout="block" rendered="{!qi.question.Description_RTA__c != null}" style="padding: 10px 0;">
+                                                <apex:outputField value="{!qi.question.Description_RTA__c}" />
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                    <div class="slds-p-horizontal--small slds-size--1-of-1 quiz-response-panel">
+                                        <c:SelectOneQuestion QuizItem="{!qi}" rendered="{!qi.question.Type__c == 'SelectOneQuestion'}"/>
+                                        <c:SelectMultipleQuestion QuizItem="{!qi}" rendered="{!qi.question.Type__c == 'SelectMultipleQuestion'}"/>
+                                        <c:SelectBooleanQuestion QuizItem="{!qi}" rendered="{!qi.question.Type__c == 'Boolean'}"/>
+
+                                        <apex:outputPanel layout="block" rendered="{!qi.question.Type__c == 'Number' || qi.question.Type__c == 'Text'}" style="padding: 10px 0 0 0;">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputField value="{!qi.response.Number_Response__c}" rendered="{!qi.question.Type__c == 'Number'}" style="width:100%;" styleClass="slds-input"/>
+                                                    <apex:inputField value="{!qi.response.Response_Text_Long__c}" rendered="{!qi.question.Type__c == 'Text'}" style="width:100%;" styleClass="slds-input"/>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+
+
+                        <apex:outputPanel styleClass="almond-button-wrap">
+
+                            <apex:commandButton value="{!$Label.ALMS_Quiz_Reset}" action="{!reset}" rendered="{!showStartButton}" styleClass="almond-warning-btn small-btn" style="margin-right: 10px;" onclick="if(!confirm('{!JSINHTMLENCODE($Label.ALMS_Quiz_Reset_Warning)}')){return false};" />
+
+                            <apex:commandButton value="{!$Label.ALMS_Quiz_Back}" action="{!previous}" styleClass="almond-secondary-btn small-btn" style="margin-right: 10px;" rendered="{!showPreviousButton}" onclick="forceShowStatus()" />
+
+                            <apex:commandButton value="{!$Label.ALMS_Quiz_Next}" action="{!next}" styleClass="almond-secondary-btn small-btn" style="margin-right: 10px;" rendered="{!showNextButton}" onclick="forceShowStatus()"/>
+
+                            <apex:commandButton value="{!$Label.ALMS_Quiz_Submit}" action="{!done}" styleClass="almond-default-btn small-btn" style="margin-right: 10px;" rendered="{!showDoneButton}" onclick="if(!confirm('{!JSINHTMLENCODE($Label.ALMS_Confirm_Alert)}')){return false};" />
+
+                            <apex:commandButton value="{!$Label.ALMS_Quiz_Cancel}" action="{!backToTrainingPlan}" styleClass="almond-danger-btn small-btn" />
+
+                        </apex:outputPanel>
+
+                    </apex:outputPanel>
+
+
+                </apex:outputPanel>
+
+            </apex:define>
+
+        </apex:composition>
+
+    </apex:form>
+
+</apex:page>

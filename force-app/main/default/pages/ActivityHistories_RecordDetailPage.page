@@ -1,0 +1,153 @@
+<apex:page controller="ActivityHistories_CustomPage_ctrl" showHeader="{!isConsole}" sidebar="{!isConsole}">
+     <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold; 
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/cd32.png"/></td>
+                        <td><div><STRONG>Activity History</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!activity_histories.data.Name}</div></td>
+                    </tr>
+                </table>
+                <!--div class="efhpRow ">
+                    <div class="efhpValue efhpDescription">{!mid_pay.data.Description}</div>
+                </div>-->
+            </td>
+        </tr>
+    </table>
+    <apex:form id="formId">
+        <apex:pageMessages />        
+        <apex:pageBlock id="ActivityHistoriesDetail" mode="maindetail" tabStyle="Activity_History__c" title="">
+            <br/>
+            <apex:pageBlockSection title="Activity History Detail" columns="2" collapsible="false" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Activity History No"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.Name}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Owner"></apex:outputLabel>
+                    <apex:outputPanel ><img style="vertical-align: bottom;" width="15" height="15" src="/profilephoto/005/T"/>&nbsp;<apex:outputLink value="/{!activity_histories.data.ownerId}" >{!activity_histories.data.ownerId_name}</apex:outputLink></apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Call Bucket"></apex:outputLabel>
+                    <apex:outputLink value="/apex/CallLine_RecordDetailPage?id={!activity_histories.data.call_Bucket_c}" >{!activity_histories.data.call_Bucket_c_name}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Activity Result"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.activity_Result_c}"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Call Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!activity_histories.data.call_Date_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Call Duration (Minutes)"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.call_Duration_Minutes_c}"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Call Result"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.call_Result_c}"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent"></apex:outputLabel>
+                   <apex:outputLink value="/{!activity_histories.data.agent_c}" >{!activity_histories.data.agent_C_name}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Campaign Type"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.campaign_Type_c}"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Entity"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.entity_c}"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Owner Entity"></apex:outputLabel>
+                    <apex:outputText value="{!activity_histories.data.owner_Entity_c}"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!activity_histories.data.CreatedById}" >{!activity_histories.data.CreatedById_name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!activity_histories.data.CreatedDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!activity_histories.data.LastModifiedById}" >{!activity_histories.data.LastModifiedById_name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!activity_histories.data.LastModifiedDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+               
+            </apex:pageBlockSection>
+            
+           
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

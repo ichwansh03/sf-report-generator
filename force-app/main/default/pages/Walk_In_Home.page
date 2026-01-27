@@ -1,0 +1,17 @@
+<apex:page applyBodyTag="false">
+    <head>
+        <style> 
+            body { font-family: 'Arial Unicode MS'; }
+            .companyName { font: bold 30px; color: blue; }  
+        </style>
+    </head>
+    <body>
+        <center>
+        <!--h1>New Account Name!</h1-->
+     
+        <apex:panelGrid columns="1" width="100%">
+            <apex:outputText value="Welcome, {!$User.FirstName} {!$User.LastName}!" styleClass="companyName"/>
+        </apex:panelGrid>
+        </center>
+    </body>
+</apex:page>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Retention_Alasan_Pembatalan__c</fullName>
+    <label>Retention - Alasan Pembatalan</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Agent Personal Closing</fullName>
+                <default>false</default>
+                <label>Agent Personal Closing</label>
+            </value>
+            <value>
+                <fullName>Client Did Not Received Renewal Notice</fullName>
+                <default>false</default>
+                <label>Client Did Not Received Renewal Notice</label>
+            </value>
+            <value>
+                <fullName>Client is not Willing to Disclose Surrender Reason</fullName>
+                <default>false</default>
+                <label>Client is not Willing to Disclose Surrender Reason</label>
+            </value>
+            <value>
+                <fullName>Client Was Forced to Buy Policy in the Beginning</fullName>
+                <default>false</default>
+                <label>Client Was Forced to Buy Policy in the Beginning</label>
+            </value>
+            <value>
+                <fullName>Credit Card / Account Cancellation</fullName>
+                <default>false</default>
+                <label>Credit Card / Account Cancellation</label>
+            </value>
+            <value>
+                <fullName>Death Claim</fullName>
+                <default>false</default>
+                <label>Death Claim</label>
+            </value>
+            <value>
+                <fullName>Disapoitment and Rejected Claim</fullName>
+                <default>false</default>
+                <label>Disapoitment and Rejected Claim</label>
+            </value>
+            <value>
+                <fullName>Disapoitment Of Axa Service</fullName>
+                <default>false</default>
+                <label>Disapoitment Of Axa Service</label>
+            </value>
+            <value>
+                <fullName>Ex Agent To Other Influence (FA/Agent Change)</fullName>
+                <default>false</default>
+                <label>Ex Agent To Other Influence (FA/Agent Change)</label>
+            </value>
+            <value>
+                <fullName>Family Reason</fullName>
+                <default>false</default>
+                <label>Family Reason</label>
+            </value>
+            <value>
+                <fullName>Financial Difficulty</fullName>
+                <default>false</default>
+                <label>Financial Difficulty</label>
+            </value>
+            <value>
+                <fullName>Have Many Insurances</fullName>
+                <default>false</default>
+                <label>Have Many Insurances</label>
+            </value>
+            <value>
+                <fullName>Moved to Competitor</fullName>
+                <default>false</default>
+                <label>Moved to Competitor</label>
+            </value>
+            <value>
+                <fullName>No Confidence to AXA Indonesia</fullName>
+                <default>false</default>
+                <label>No Confidence to AXA Indonesia</label>
+            </value>
+            <value>
+                <fullName>No Phone Number Available (Weong Phone, Fax, Sound, Move, Resign,Ect)</fullName>
+                <default>false</default>
+                <label>No Phone Number Available (Weong Phone, Fax, Sound, Move, Resign,Ect)</label>
+            </value>
+            <value>
+                <fullName>Other Reason ( emmigration, bankrupt, etc )</fullName>
+                <default>false</default>
+                <label>Other Reason ( emmigration, bankrupt, etc )</label>
+            </value>
+            <value>
+                <fullName>Paid</fullName>
+                <default>false</default>
+                <label>Paid</label>
+            </value>
+            <value>
+                <fullName>Policy Delivering</fullName>
+                <default>false</default>
+                <label>Policy Delivering</label>
+            </value>
+            <value>
+                <fullName>Poor Agent Service</fullName>
+                <default>false</default>
+                <label>Poor Agent Service</label>
+            </value>
+            <value>
+                <fullName>Product Features or Product Complaint</fullName>
+                <default>false</default>
+                <label>Product Features or Product Complaint</label>
+            </value>
+            <value>
+                <fullName>Product Replacement (Switch to Other Product)</fullName>
+                <default>false</default>
+                <label>Product Replacement (Switch to Other Product)</label>
+            </value>
+            <value>
+                <fullName>Swicth To Other Her Instrument Investment</fullName>
+                <default>false</default>
+                <label>Swicth To Other Her Instrument Investment</label>
+            </value>
+            <value>
+                <fullName>Switch To Other Bank Mandiri Product</fullName>
+                <default>false</default>
+                <label>Switch To Other Bank Mandiri Product</label>
+            </value>
+            <value>
+                <fullName>UNCONTACTED (BUSY ON THE LINE, No Pick Up, ETC)</fullName>
+                <default>false</default>
+                <label>UNCONTACTED (BUSY ON THE LINE, No Pick Up, ETC)</label>
+            </value>
+            <value>
+                <fullName>Unit Price Fluctuation</fullName>
+                <default>false</default>
+                <label>Unit Price Fluctuation</label>
+            </value>
+            <value>
+                <fullName>Walk In Customer</fullName>
+                <default>false</default>
+                <label>Walk In Customer</label>
+            </value>
+            <value>
+                <fullName>Without Consent</fullName>
+                <default>false</default>
+                <label>Without Consent</label>
+            </value>
+            <value>
+                <fullName>Surrender wait NCB</fullName>
+                <default>false</default>
+                <label>Surrender wait NCB</label>
+            </value>
+            <value>
+                <fullName>NCB has been auto generated</fullName>
+                <default>false</default>
+                <label>NCB has been auto generated</label>
+            </value>
+            <value>
+                <fullName>Policy keeps inforce</fullName>
+                <default>false</default>
+                <label>Policy keeps inforce</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

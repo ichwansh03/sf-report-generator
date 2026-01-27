@@ -1,0 +1,106 @@
+<apex:page controller="CaseMilestone_CustomPage_ctrl">
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/custom51_100/chip32.png"/></td>
+                        <td><div><STRONG>Case Milestone</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <!--td style="vertical-align: bottom;"><div class="efhpTitle">{!log.data.Name}</div></td-->
+                    </tr>
+                </table>
+                <!--div class="efhpRow ">
+                    <div class="efhpValue efhpDescription">{!log.data.Description}</div>
+                </div>-->
+            </td>
+        </tr>
+    </table>
+    <apex:form id="formId">
+        <apex:pageMessages />        
+        <apex:pageBlock id="LogDetail" mode="maindetail" tabStyle="CaseMilestone" title="">
+            <br/>
+            <apex:pageBlockButtons >
+                <!--apex:commandButton action="{!save}" value="Save" status="actStatusId"/>-->
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Case Milestone" columns="2" collapsible="false" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Case"></apex:outputLabel>
+                    <apex:outputLink value="/{!cs_milestone.data.caseid}" >{!cs_milestone.data.caseName}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!cs_milestone.data.startDate}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Milestone"></apex:outputLabel>
+                    <apex:outputLink value="/{!cs_milestone.data.milestoneTypeId}" >{!cs_milestone.data.MileStoneName}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!cs_milestone.data.targetDate}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Completion Date"></apex:outputLabel>
+                 	<apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!cs_milestone.data.completionDate}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Response (Mins)"></apex:outputLabel>
+                    <apex:outputText value="{!cs_milestone.data.targetResponseInMins}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Violation"></apex:outputLabel>
+                    <img src="/img/checkbox_{!IF(!cs_milestone.data.isViolated, 'un', '')}checked.gif"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Time Remaining (Min:Sec)"></apex:outputLabel>
+                    <apex:outputText value="{!cs_milestone.data.timeRemainingInMins}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Completed"></apex:outputLabel>
+                    <img src="/img/checkbox_{!IF(!cs_milestone.data.isCompleted, 'un', '')}checked.gif"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Elapsed Time (Mins)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!cs_milestone.data.elapsedTimeInMins}" /> </apex:outputText>  
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Business Hours"></apex:outputLabel>
+                     <apex:outputLink value="/{!cs_milestone.data.businessHoursId}" >{!cs_milestone.data.businessHoursName}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

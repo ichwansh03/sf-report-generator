@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>COB__c</fullName>
+    <label>COB</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ENGINEERING</fullName>
+                <default>false</default>
+                <label>ENGINEERING</label>
+            </value>
+            <value>
+                <fullName>GENERAL ACCIDENT (PA)</fullName>
+                <default>false</default>
+                <label>GENERAL ACCIDENT (PA)</label>
+            </value>
+            <value>
+                <fullName>LIABILITY</fullName>
+                <default>false</default>
+                <label>LIABILITY</label>
+            </value>
+            <value>
+                <fullName>MARINE CARGO</fullName>
+                <default>false</default>
+                <label>MARINE CARGO</label>
+            </value>
+            <value>
+                <fullName>MARINE HULL</fullName>
+                <default>false</default>
+                <label>MARINE HULL</label>
+            </value>
+            <value>
+                <fullName>MISCELLANEOUS (OTHERS)</fullName>
+                <default>false</default>
+                <label>MISCELLANEOUS (OTHERS)</label>
+            </value>
+            <value>
+                <fullName>MOTOR VEHICLE</fullName>
+                <default>false</default>
+                <label>MOTOR VEHICLE</label>
+            </value>
+            <value>
+                <fullName>PROPERTY</fullName>
+                <default>false</default>
+                <label>PROPERTY</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

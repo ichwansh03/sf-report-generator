@@ -1,0 +1,562 @@
+<!--
+  @description       : 
+  @author            : Mario Carlos Eyo
+  @group             : 
+  @last modified on  : 18-07-2025
+  @last modified by  : Muh Syafiq Hidayatullah
+-->
+<apex:page renderAs="PDF" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardController="E_Form_Master_Data__c" extensions="AMFS_PengajuanPenarikanDana_Controller">
+    <html>
+        <head>
+            <style type="text/css">
+                @page {
+                margin-top: 0.1%;
+                margin-bottom: 0;
+                margin-left: 0;
+                margin-right: 0;
+                size: A4 portrait;
+                page-break:always; 
+                page-break-inside:avoid;
+                letter-spacing: 5px;
+                
+                @top-left {
+                content: element(header);                
+                }
+                
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                
+                div.header {
+                padding: 0px;
+                position: running(header);
+                font-family: Arial, sans-serif;
+                }
+                
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                font-family: Arial, sans-serif;
+                }
+                
+                .pagefooter:before{
+                content: "Page : " counter(page) "/" counter(pages);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.content{
+                width:100%;
+                font-family:sans-serif !important;
+                }
+                .grid, .grid th, .grid td{
+                border: 1px solid;
+                border-collapse: collapse;
+                padding:3px;
+                }
+                .grid th{
+                background-color:#E8E8E8;
+                }
+                .center{
+                text-align: center;
+                }
+                .right{
+                text-align: right;
+                }
+                .left{
+                text-align: left;
+                }
+                .top{
+                vertical-align:top;
+                }
+                .uppercase{
+                text-transform: uppercase;
+                }
+                .justify{
+                text-align: justify;
+                }
+                .tdHeader{
+                width: 70%; 
+                height: 15px;
+                font-size:12px;
+                text-align: justify;
+                
+                }
+                .table-wrapper {
+                    border: 2px solid black;
+                    display: inline-block; /* Ensures the border wraps the table */
+                    padding: 0px; /* Prevents extra spacing */
+                }
+
+                /* Standard table styling */
+                table.custom-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    font-size: 11px;
+                }
+                table.standard-table{
+                    width: 95%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                }
+                .table { 
+                    width: 100%; 
+                    border-collapse: collapse; }
+                .table td { 
+                    padding: 5px; 
+                }
+                .checkbox-symbol { 
+                    width: 14px; 
+                    height: 14px; 
+                    border: 1px solid #000; 
+                    display: inline-block; 
+                    text-align: center; 
+                    line-height: 12px; 
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+                .checked::before {
+                    content: "✔"; /* Menampilkan tanda centang */
+                    color: black;
+                }
+                .italic {
+                    font-style: italic; 
+                    }
+                .boxpersyaratan{
+                    width: 100%;
+                    height: 5%;
+                    border: 1px solid black;
+                }
+                .contain {
+                    border: 1px solid black;
+                    padding: 10px;
+                    width: 62%;
+                    height: 470px;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .head {
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+
+                .side-box {
+                    display: inline-block;
+                    width: 120px;
+                    border: 1px solid black;
+                    padding: 5px;
+                    font-size: 12px;
+                    vertical-align: top;
+                }
+                .side-box .tabl1 {
+                    width: 100%;
+                }
+                .checkbox-label {
+                    display: inline-block;
+                    border: 1px solid black;
+                    width: 10px;
+                    height: 10px;
+                    margin-right: 5px;
+                }
+
+                .checked::before {
+                    content: "V"; /* Menampilkan tanda centang */
+                    color: black;
+                }
+
+                .tbl2{
+                    width: 100%
+                }
+                .box2{
+                    border: 1px solid black;
+                    display: inline-block;
+                    width: 35%;
+                    height: 80px;
+                }
+                .box3{
+                    border: 1px solid black;
+                    display: inline-block;
+                    width:35%;
+                    height: 80px;
+                }
+                .tbl{
+                    width: 60%;
+                    border: 1px solid black;
+                    font-size: 12px;
+                }
+                .tda, .thc{
+                    border: 1px solid black;
+                    padding: 5px;
+                    text-align: left;
+                }
+                .box6{
+                    border: 1px solid black;
+                    width:100%; 
+                    height:320px;
+                }
+
+                .signature-container {
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                .tables {
+                    width: 100%;
+                    border-collapse: collapse;
+                    padding: 50px;
+                }
+
+                .boxs {
+                    width: 50%;
+                    height: 30px;
+                    border: 1px solid black;
+                    font-weight: bold;
+                    font-size: 12px;
+                }
+
+                .info-header {
+                    background-color: #005aa7;
+                    color: white;
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+                
+                .penarikan {
+                    background-color: #8091a0;
+                    color: rgb(49, 47, 47);
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+                .dana{
+                    background-color: #eef2f5;
+                    color: rgb(173, 168, 168);
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .info-container {
+                    width: 98%;
+                    padding: 5px;
+                    border-radius: 6px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                td.label {
+                    font-weight: normal;
+                    color: #444;
+                    width: 50%;
+                    font-size: 12px;
+                }
+                td.value {
+                    font-weight: bold;
+                    color: #000;
+                    font-size: 12px;
+                    width: 50%;
+                    text-align: right;
+                }
+                .section-title {
+                    background-color: #D9D9D9;
+                    font-weight: bold;
+                    text-align: left;
+                }
+                .signature-area {
+                    height: 80px;
+                }
+                .note {
+                    font-size: 8pt;
+                    font-style: italic;
+                }
+            </style>
+        </head>
+        
+
+         <!-- FOOTER -->
+        <div style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 12px;">
+            <div class="right" style="margin-right:20px;">
+                <div class="pagefooter"></div>
+            </div>
+            <div class="left" style="margin-left:20px;" >
+                <apex:image value="{!$Resource.ojk_logo_bot}" width="350px"></apex:image>
+            </div>
+        </div>
+
+        <!--Head-->
+
+        <div>
+            <div>
+                <table class="standard-table" style="font-family: Arial, sans-serif;" >
+                    
+                    <tr>
+                        <td style="width: 50%; height: 30px;" align="Left" ><apex:image value="{!$Resource.emma_axa }" width="200px"></apex:image></td>
+                        <td style="width: 30%; height: 40px; margin-left:30px;">
+                            <p style="font-family: Arial, sans-serif; color:#075eab; font-weight:bold; text-align:right;">Formulir Pengajuan Penarikan Dana</p>
+                            <p style="font-size:10px; color:#7c94a9; text-align:right;">Tanggal Terbit: {!inputdt}</p>
+                        </td>
+                    </tr>
+                    
+                </table>        
+            </div>
+        </div>
+
+        <div class="info-container">
+            <h2 style="text-align:center; font-size:16px;">Pengajuan Penarikan Dana</h2>
+            <table class="tables">
+                <tr>
+                    <td class="boxs" style="background-color:rgb(8, 8, 130); color:white; padding: 10px 14px; vertical-align: top;">NOMOR POLIS : {!polisNo}</td>
+                    <td class="boxs" style="padding: 10px 14px; vertical-align: top;">NOMOR TRANSAKSI : {!subject}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="info-container">
+            <h2 style="text-align:center; font-size:16px;">Informasi Pemegang Polis</h2>
+            <div class="info-header">Detail Informasi</div>
+            <table style="width: 100%">
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">Tanggal Pengajuan</td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!inputdt}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">Nama Pemilik Polis </td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!phName}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">Nama Tertanggung</td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!Tertanggung}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">No Telepon</td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!phone}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">Nama Produk</td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!prodName}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">Email </td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!email}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="text-align: left; padding: 10px 0;">Alamat </td>
+                    <td class="value" style="text-align: right; padding: 10px 0;">{!addr}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="info-container">
+            <h2 style="text-align:center; font-size:16px;">PERHITUNGAN ESTIMASI</h2>
+            <div class="info-header">Estimasi Jumlah Penarikan Dana</div>
+            <table>
+                <tr>
+                    <th style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">No. Polis</th>
+                    <th style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">Nilai Tunai Sementara</th>
+                    <th style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">Jumlah Penarikan Dana</th>
+                    <th style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px; color: red;">Biaya Transaksi</th>
+                    <th style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">Jumlah Setelah Biaya Transaksi</th>
+                    <th style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px; width:100px;">Sisa Dana</th>
+                </tr>
+                <tr>
+                    <td  style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">{!polisNo}</td>
+                    <td  style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">{!mataUang} {!awal}</td>
+                    <td  style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">{!mataUang} {!jumlah}</td>
+                    <td  style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px; color: red;">{!biaya} %</td>
+                    <td  style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">{!mataUang} {!setelah}</td>
+                    <td  style=" padding: 5px 14px; vertical-align: top; text-align:center; font-size:11px;">{!mataUang} {!sisa} </td>
+                </tr>
+            </table>
+            <div class="penarikan">
+                Alasan Penarikan Dana
+            </div>
+            <div class="dana">
+                {!alasan}
+            </div>
+        </div>
+        
+        <div style="font-size:12px; color:#8091a0">*Tanggal valuasi estimasi {!inputDate}</div>
+        <div class="info-container">
+            <div class="info-header">Informasi Nomor Rekening</div>
+            <table>
+                <tr>
+                    <th style=" padding: 5px 40px; vertical-align: top; text-align:center; font-size:12px;">No. Polis</th>
+                    <th style=" padding: 5px 40px; vertical-align: top; text-align:center; font-size:12px;">Nama Pemilik Rekening</th>
+                    <th style=" padding: 5px 40px; vertical-align: top; text-align:center; font-size:12px;">Bank</th>
+                    <th style=" padding: 5px 40px; vertical-align: top; text-align:center; font-size:12px;">Nomor Rekening</th>
+                    <th style=" padding: 5px 40px; vertical-align: top; text-align:center; font-size:12px;">Mata Uang Rekening</th>
+                </tr>
+                <tr>
+                    <td  style=" padding: 5px 20px; vertical-align: top; text-align:center; font-size:12px;">{!polisNo}</td>
+                    <td  style=" padding: 5px 20px; vertical-align: top; text-align:center; font-size:12px;">{!namaRekening}</td>
+                    <td  style=" padding: 5px 20px; vertical-align: top; text-align:center; font-size:12px;">{!namaBank}</td>
+                    <td  style=" padding: 5px 20px; vertical-align: top; text-align:center; font-size:12px;">{!nomorRekening}</td>
+                    <td  style=" padding: 5px 20px; vertical-align: top; text-align:center; font-size:12px;">{!mataUang}</td>
+                </tr>
+            </table>
+        </div>    
+
+        <br/>
+
+        <!--Informasi pajak luar negri-->
+         <div class="info-container">
+            <div class="info-header">Informasi Pelaporan Pajak Luar Negeri</div>
+                <table>
+                    <tr>
+                        <td class="label" style=" padding: 10px 14px; vertical-align: top; text-align:left;">Apakah Anda Melakukan Pelaporan Pajak di Luar
+    Negara Indonesia ? </td>
+                        <td class="value" style=" padding: 10px 14px; vertical-align: top; text-align:right;">{!pajak}</td>
+                    </tr>
+                </table>
+            <br/>
+        </div>
+           
+        <!--TANDA TANGAN-->
+        
+
+        <div class="info-container">
+            <br/>
+            <div style="page-break-before: always">
+                <br/>
+                <p style="font-size:12px; font-weight:bold; text-align:center;font-family: Arial, sans-serif;">Pernyataan dan Kuasa</p>
+                <p style="font-size:12px;font-family: Arial, sans-serif;margin-left:15px">Dengan ini, Saya/Kami menyatakan dan menyetujui hal-hal berikut:</p>
+                <div style="font-size:12px; text-align: justify;padding-left:20px;padding-right:20px;font-family: Arial, sans-serif;">
+                    <p>1. Saya telah membaca, memahami, dan menyetujui persyaratan dan ketentuan dalam dokumen/formulir ini,
+                        menjawab dan mengisi bagian yang terlampir pada dokumen/formulir ini dengan sebenar-benarnya tanpa
+                        paksaan dari pihak manapun. Saya tidak memberikan keterangan lain dalam bentuk apapun kepada tenaga
+                        pemasar AXA Mandiri ataupun Bank ("Tenaga Pemasar"). Saya bertanggung jawab atas seluruh informasi
+                        yang tercantum pada formulir ini, jika ternyata keterangan yang diberikan tidak benar dan/atau tidak lengkap
+                        serta terdapat kesalahan dan/atau kelalaian dalam mengisi dokumen/formulir ini, maka sepenuhnya akan
+                        menjadi tanggung jawab Saya.</p>
+                    <p>2. Saya menyetujui dan mengerti apabila diperlukan AXA Mandiri dapat melakukan verifikasi dan konfirmasi
+                        sehubungan dengan pengajuan transaksi dalam dokumen/formulir ini. Apabila verifikasi dan konfirmasi tidak
+                        berhasil, maka proses pengajuan ini dapat tidak diteruskan atau tidak dilanjutkan, dengan tetap mengacu
+                        pada ketentuan AXA Mandiri.</p>
+                    <p>3. Saya mengizinkan AXA Mandiri untuk mencari informasi/konfirmasi mengenai data Saya yang tersedia
+                        /disimpan/dimiliki oleh PT Bank Mandiri (Persero) Tbk ("Bank") dan afiliasinya sehubungan dengan pengajuan
+                        ini.</p>
+                    <p>4. Saya setuju dan mengizinkan AXA Mandiri untuk menggunakan atau memberikan informasi, keterangan, atau
+                        data-data Saya yang diperoleh dan/atau dimiliki AXA Mandiri kepada pihak ketiga (termasuk tapi tidak
+                        terbatas pada perusahaan asuransi, reasuransi, bank, group dan afiliasi dari Pemegang Saham, serta pihak
+                        lain) yang bekerja sama dengan AXA Mandiri baik di dalam atau luar negeri dalam rangka pelaksanaan
+                        transaksi dan/atau permintaan ini, termasuk tapi tidak terbatas pada pelayanan nasabah dan proses klaim, dan
+                        /atau penawaran produk.</p>
+                    <p>5. Saya senantiasa menjamin untuk merahasiakan dan tidak akan menggandakan, mengungkapkan maupun
+                        menyebarluaskan setiap dan segala informasi pribadi Saya yang berhubungan dengan termasuk hubungan
+                        hukum yang didasarkan atas pengajuan pada dokumen/formulir ini antara Saya dan AXA Mandiri kepada
+                        pihak manapun dan melalui media apapun.</p>
+                    <p>6. Saya mengerti pengajuan ini mengikuti ketentuan-ketentuan yang tercantum dalam Polis dan hanya dapat
+                        diproses apabila Saya telah melengkapi persyaratan yang diperlukan oleh AXA Mandiri.</p>
+                    <p>7. Setiap salinan dokumen yang diterima dan telah disetujui oleh AXA Mandiri bersifat final dan tidak dapat
+                        dibatalkan dengan alasan apapun.</p>
+                    <p>8. Saya setuju dan akan memberikan dokumen seperti formulir, fotokopi bukti tanda pengenal (KTP/passport/dll),
+                        fotokopi buku tabungan, dan dokumen pendukung lainnya secara softcopy/digital. Saya setuju untuk
+                        memberikan dokumen asli apabila diperlukan oleh AXA Mandiri dan Saya setuju bahwa seluruh dokumen
+                        softcopy/digital sama sah dan berlakunya sesuai dengan dokumen aslinya.</p>
+                    <p>9. Segala risiko yang timbul sehubungan dengan pengajuan pada Formulir ini sepenuhnya merupakan tanggung
+                        jawab Saya dan Saya membebaskan AXA Mandiri dari segala tanggung jawab, gugatan, kerugian, dan/atau
+                        tuntutan dalam bentuk apapun di kemudian hari dari pihak manapun termasuk Saya atas pengajuan Formulir
+                        ini, kecuali yang diakibatkan kesalahan dan/atau kelalaian AXA Mandiri.</p>
+                    <p>10. Pernyataan dan Kuasa yang telah diberikan akan tetap berlaku selama Saya masih hidup maupun sesudah
+                        Saya meninggal dunia dan Saya setuju untuk mengesampingkan ketentuan pada pasal 1813, 1814, dan 1816
+                        Kitab Undang-Undang Hukum Perdata.</p>
+                    <p>11. Transaksi keuangan ini tidak berasal dari/untuk tujuan pencucian uang (money laundering) dan pendanaan
+                        terorisme (terrorism financing) sebagaimana diatur dalam ketentuan yang berlaku di wilayah hukum Republik
+                        Indonesia terkait dengan Anti Pencucian Uang dan Pencegahan Pendanaan Terorisme berikut dengan
+                        perubahannya dari waktu ke waktu. AXA Mandiri berhak menolak permohonan Saya jika tidak memenuhi dan
+                        melanggar ketentuan Undang-Undang.</p>
+                    <p>12. Perhitungan pajak (bila ada) akan disesuaikan dengan peraturan perpajakan yang berlaku. Pernyataan
+                        kepatuhan khusus terkait kewajiban pajak:
+                        <ul>
+                            <li><p>Menyetujui bahwa AXA Mandiri dan/atau afiliasinya diwajbkan untuk patuh kepada kewajiban dari
+                            Undang-Undang, Pedoman, Perintah, dan syarat yang ditetapkan berdasarkan Hukum di Indonesia
+                            ataupun Hukum Asing termasuk Undang-Undang Kepatuhan Pajak Rekening Luar Negeri Amerika
+                            Serikat, Foreign Account Tax Compliance Act of United States of America (FATCA), atau perjanjian-
+                            perjanjian atas publik, peradilan, perpajakan, Pemerintahan Indonesia, dan/atau pihak berwenang
+                            lainnya, termasuk Direktorat Jenderal Pajak dan Internal Revenue Services (IRS) Amerika Serikat
+                            ("Otoritas") yang berlaku diberbagai yurisdiksi termasuk di Indonesia sebagaimana diundangkan
+                            beserta perubahannya dari waktu ke waktu ("Kewajiban Hukum").</p></li>
+                            <li><p> Saya juga setuju untuk menyediakan bantuan yang mungkin diperlukan untuk AXA Mandiri
+                            memenuhi seluruh kewajibannya sebagaimana diatur dalam Kewajiban Hukum tentang diri Saya
+                            atau polis Saya. Jika penyediaan informasi atau data melebihi 30 hari sejak transaksi diajukan,
+                            maka Saya akan menanggung semua risiko termasuk tapi tidak terbatas pada penolakan dan/atau
+                            pembekuan transaksi.</p></li>        
+                        </ul></p>
+                    <p>
+                        13. Saya setuju bahwa AXA Mandiri tidak bertanggung jawab atas tidak tepatnya pembayaran dana yang ditarik,
+                        atau bila pembayaran dana tersebut terlambat diterima, atau bila pembayaran dana tersebut diterima oleh
+                        orang yang tidak berhak dikarenakan salah penafsiran/kelalaian oleh perwakilan Bank atau kelalaian Saya
+                        yang menyebabkan tidak jelasnya informasi yang diberikan, atau adanya cacat pada berita yang diterima dan
+                        hal lain sebagainya yang merupakan kelalaian Saya dan/atau pihak Bank.
+                    </p>
+                    <p>
+                       14. Saya telah membaca, memahami bahwa dokumen/formulir ini dibuat dan dicetak dengan sistem
+                        komputerisasi sehingga tidak memerlukan tanda tangan.
+                    </p>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+         <div style="bottom: 5px; left: 0; width: 100%;">
+            <table style=" width:100%; border-collapse:collapse;">
+                
+                <tr style="background-color: #c0c0c0;">
+                    <td>
+                        <span align="Left" style="font-size:15px;color:blue;font-family: Arial Unicode MS;" >
+                            TANDA TANGAN
+                        </span> 
+                        <span align="Left" style="font-size:10px;font-style: italic;font-family: Arial, sans-serif" > 
+                            Dilarang menandatangani formulis perubahan data polis ini dalam keadaan kosong    
+                        </span> 
+                    </td>
+                </tr>
+            </table>
+
+            <table style=" width:100%; font-family: Arial Unicode MS;font-size:12px;border-collapse:collapse;" border="2px solid">
+                
+                <tr style="background-color: #ddd6e5;text-align: center">
+                    <td style="width:50%">
+                        NAMA Pemegang Polis
+                    </td>
+                    <td style="width:50%">
+                        Tanda Tangan
+                    </td>
+                </tr>
+                <tr style="text-align: Center; vertical-align: center; height: 150px">
+                    <td style="width:50%; text-align: center; vertical-align: Center">
+                        <span style="font-size:12px;font-family: Arial, sans-serif;"> 
+                            {!phName}
+                        </span> 
+                    </td>
+                    <td style="width:50%">
+                        <img src="{!imgUrl}" width="150px"/> <br/>
+                        <span style="font-size:10px;font-style: italic;font-family: Arial, sans-serif; color:#c0c0c0;" > 
+                            Tanda tangan sesuai SPAJ atau Specimen terakhir, jika berbeda mohon lampirkan formulir pernyataan tanda tangan
+                        </span> 
+                    </td>
+                </tr>
+
+            </table>
+
+            <table class="standard-table">
+                <tr style="height: 30px">
+                    <td style="width:50%"></td>
+
+                    <td style="width:50%; text-align: center;vertical-align: center">Customer Service: {!csName} - {!touchPoint}</td>
+                </tr>
+
+            </table>
+         </div>
+        </div>
+    </html>
+</apex:page>

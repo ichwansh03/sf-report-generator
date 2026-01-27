@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type_of_Case__c</fullName>
+    <label>Type of Case</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Buku Polis</fullName>
+                <default>false</default>
+                <label>Buku Polis</label>
+            </value>
+            <value>
+                <fullName>Buku Polis + Thank You Letter</fullName>
+                <default>false</default>
+                <label>Buku Polis + Thank You Letter</label>
+            </value>
+            <value>
+                <fullName>Dokumen Jawaban Pending</fullName>
+                <default>false</default>
+                <label>Dokumen Jawaban Pending</label>
+            </value>
+            <value>
+                <fullName>Duplikat Polis</fullName>
+                <default>false</default>
+                <label>Duplikat Polis</label>
+            </value>
+            <value>
+                <fullName>Surat Endorsement</fullName>
+                <default>false</default>
+                <label>Surat Endorsement</label>
+            </value>
+            <value>
+                <fullName>Surat Pending Investigasi</fullName>
+                <default>false</default>
+                <label>Surat Pending Investigasi</label>
+            </value>
+            <value>
+                <fullName>Surat Penyelesaian Keluhan</fullName>
+                <default>false</default>
+                <label>Surat Penyelesaian Keluhan</label>
+            </value>
+            <value>
+                <fullName>Surat Cancel/Drop case</fullName>
+                <default>false</default>
+                <label>Surat Cancel/Drop case</label>
+            </value>
+            <value>
+                <fullName>Surat Persetujuan Klaim</fullName>
+                <default>false</default>
+                <label>Surat Persetujuan Klaim</label>
+            </value>
+            <value>
+                <fullName>Surat Penolakan Klaim</fullName>
+                <default>false</default>
+                <label>Surat Penolakan Klaim</label>
+            </value>
+            <value>
+                <fullName>Cancel Trx</fullName>
+                <default>false</default>
+                <label>Cancel Trx</label>
+            </value>
+            <value>
+                <fullName>Cek Payment</fullName>
+                <default>false</default>
+                <label>Cek Payment</label>
+            </value>
+            <value>
+                <fullName>Cek Perubahan Polis</fullName>
+                <default>false</default>
+                <label>Cek Perubahan Polis</label>
+            </value>
+            <value>
+                <fullName>Cek Redemption</fullName>
+                <default>false</default>
+                <label>Cek Redemption</label>
+            </value>
+            <value>
+                <fullName>Cek Saldo</fullName>
+                <default>false</default>
+                <label>Cek Saldo</label>
+            </value>
+            <value>
+                <fullName>Cek Status Complaint</fullName>
+                <default>false</default>
+                <label>Cek Status Complaint</label>
+            </value>
+            <value>
+                <fullName>Cek Status Polis</fullName>
+                <default>false</default>
+                <label>Cek Status Polis</label>
+            </value>
+            <value>
+                <fullName>Cek Withdrwal</fullName>
+                <default>false</default>
+                <label>Cek Withdrwal</label>
+            </value>
+            <value>
+                <fullName>Complaint</fullName>
+                <default>false</default>
+                <label>Complaint</label>
+            </value>
+            <value>
+                <fullName>Cuti Premi</fullName>
+                <default>false</default>
+                <label>Cuti Premi</label>
+            </value>
+            <value>
+                <fullName>Info Product</fullName>
+                <default>false</default>
+                <label>Info Product</label>
+            </value>
+            <value>
+                <fullName>Info Manfaat Polis</fullName>
+                <default>false</default>
+                <label>Info Manfaat Polis</label>
+            </value>
+            <value>
+                <fullName>NONE</fullName>
+                <default>false</default>
+                <label>NONE</label>
+            </value>
+            <value>
+                <fullName>Penyelesaian Keluhan</fullName>
+                <default>false</default>
+                <label>Penyelesaian Keluhan</label>
+            </value>
+            <value>
+                <fullName>Perubahan Dana Investasi</fullName>
+                <default>false</default>
+                <label>Perubahan Dana Investasi</label>
+            </value>
+            <value>
+                <fullName>Duplikat Polis / Duplikat Kartu</fullName>
+                <default>false</default>
+                <label>Duplikat Polis / Duplikat Kartu</label>
+            </value>
+            <value>
+                <fullName>Perubahan Premi</fullName>
+                <default>false</default>
+                <label>Perubahan Premi</label>
+            </value>
+            <value>
+                <fullName>Perubahan SKDKK</fullName>
+                <default>false</default>
+                <label>Perubahan SKDKK</label>
+            </value>
+            <value>
+                <fullName>Print PT/Rincian Transaksi</fullName>
+                <default>false</default>
+                <label>Print PT/Rincian Transaksi</label>
+            </value>
+            <value>
+                <fullName>Redemption</fullName>
+                <default>false</default>
+                <label>Redemption</label>
+            </value>
+            <value>
+                <fullName>Req / Ambil Doc / Aplikasi</fullName>
+                <default>false</default>
+                <label>Req / Ambil Doc / Aplikasi</label>
+            </value>
+            <value>
+                <fullName>Submit Claim Ketidakmampuan</fullName>
+                <default>false</default>
+                <label>Submit Claim Ketidakmampuan</label>
+            </value>
+            <value>
+                <fullName>Submit Claim Meninggal Dunia</fullName>
+                <default>false</default>
+                <label>Submit Claim Meninggal Dunia</label>
+            </value>
+            <value>
+                <fullName>Submit Claim Rawat Inap</fullName>
+                <default>false</default>
+                <label>Submit Claim Rawat Inap</label>
+            </value>
+            <value>
+                <fullName>surat TA</fullName>
+                <default>false</default>
+                <label>surat TA</label>
+            </value>
+            <value>
+                <fullName>Submit Claim Sakit Kritis</fullName>
+                <default>false</default>
+                <label>Submit Claim Sakit Kritis</label>
+            </value>
+            <value>
+                <fullName>Submit Express Claim</fullName>
+                <default>false</default>
+                <label>Submit Express Claim</label>
+            </value>
+            <value>
+                <fullName>Submit Kelengkapan SPAJ</fullName>
+                <default>false</default>
+                <label>Submit Kelengkapan SPAJ</label>
+            </value>
+            <value>
+                <fullName>Submit Kelengkapan Doc Claim</fullName>
+                <default>false</default>
+                <label>Submit Kelengkapan Doc Claim</label>
+            </value>
+            <value>
+                <fullName>Submit Kelengkapan Doc CMU</fullName>
+                <default>false</default>
+                <label>Submit Kelengkapan Doc CMU</label>
+            </value>
+            <value>
+                <fullName>Submit Kelengkapan Doc POS</fullName>
+                <default>false</default>
+                <label>Submit Kelengkapan Doc POS</label>
+            </value>
+            <value>
+                <fullName>Submit Kelengkapan Doc ADS</fullName>
+                <default>false</default>
+                <label>Submit Kelengkapan Doc ADS</label>
+            </value>
+            <value>
+                <fullName>Tanya Prosedure/Mekanisme</fullName>
+                <default>false</default>
+                <label>Tanya Prosedure/Mekanisme</label>
+            </value>
+            <value>
+                <fullName>Withdrawal</fullName>
+                <default>false</default>
+                <label>Withdrawal</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

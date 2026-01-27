@@ -1,0 +1,187 @@
+<apex:page controller="Email2CaseControllerALI" >
+<head> 
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+
+    <!--  !!! Important !!! Don't forget to call the JQuery library.first -->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, '/jquery-ui-1.10.3.custom/js/jquery-1.9.1.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, '/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js')}"  />
+    <apex:stylesheet value="{!URLFOR($Resource.Jquery, '/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css')}"  />
+    <apex:includeScript value="{!$Resource.jqueryDataTables}" />
+    <apex:includeScript value="{!$Resource.jqueryDataTablesFixedHeader}" /> 
+    <apex:stylesheet value="{!$Resource.jqueryDataTablesCSS}" /> 
+    <apex:stylesheet value="{!$Resource.jqueryDataTablesFixedHeaderCSS}" /> 
+    <apex:includeScript value="{!$Resource.StickyHeader}" />
+    <script>
+        $ = jQuery.noConflict(); 
+                      
+        $(document).ready(function() {
+            stickHeader('contacttable', 'headerClass');
+            var contactTable = $('[id$="contacttable"]').DataTable({
+                "paging": false,    /*  "pagingType": "full_numbers",   */
+                /*  "pageLength": 20,   */
+                "bLengthChange": false, 
+                "searching": false,
+                 fixedHeader: { 
+                    header: false,
+                    footer: false
+                },
+                "info": false,
+            });
+        });
+        
+        function reInitializeTableSorter() {
+            $('[id$="checkboxId"]').attr("checked",false);
+            
+            var contactTable = $('[id$="contacttable"]').DataTable({
+                "paging": false,
+                "bLengthChange": false, 
+                "searching": false,
+                 fixedHeader: { 
+                    header: false,
+                    footer: false
+                },
+                "info": false,
+            });
+        }
+
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");
+            for(var i=0; i<inputCheckBox.length; i++){
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+    </script>
+      
+    <style type="text/css">
+        .sorting {
+            background: #f2f3f3 url('{! URLFOR($Resource.jQueryDataTablesZip, 'images/sort_both.png') }') no-repeat center right !important;
+            padding-right: 20px !important;
+        }
+        .sorting_asc {
+            background: #f2f3f3 url('{! URLFOR($Resource.jQueryDataTablesZip, 'images/sort_asc.png') }') no-repeat center right !important;
+            padding-right: 20px !important;
+        }
+        .sorting_desc {
+            background: #f2f3f3 url('{! URLFOR($Resource.jQueryDataTablesZip, 'images/sort_desc.png') }') no-repeat center right !important;
+            padding-right: 20px !important;
+        }
+        table.dataTable tr.odd { 
+            background-color: #f2f2d6;
+        }
+        table.dataTable tr.even {
+            background-color: #d6e7f2; 
+        }
+    </style>
+</head>
+
+<body>
+<apex:sectionHeader title="Case" subtitle="Email to Case Inbox" />
+
+<apex:form id="formid">
+<apex:pageMessages />
+<apex:Messages style="color:red; font-weight: bold; font-size: 13pxl"/>
+    <apex:pageBlock >   
+        <apex:actionFunction action="{!refreshGrid}" name="queryByPage" reRender="myPanel,myButtons" oncomplete="reInitializeTableSorter();">
+            <apex:param name="firstParam" assignTo="{!selectedPage}" value="" />
+        </apex:actionFunction>
+    
+        <!------- Upper section (legend & refresh button) --------->
+        <apex:pageBlockSection columns="7">
+            <apex:outputPanel id="opId" layout="block" style="border-width: 1px; border-style: solid; color:black; line-height:130%; padding-top:5px; padding-bottom:5px; width:360px;">
+                <apex:outputLabel value="Legend" style="font-weight: bold; padding-left:10px;" /><br/>
+                <div style="width:94%;height:2px; background-color: red !important; margin-left:10px; margin-right:10px; margin-bottom:5px;" ><br /></div>
+                <apex:outputLabel style="padding-left:10px;"> 
+                    <apex:image url="https://{!host}/servlet/servlet.FileDownload?file=0156F00000CZ6XD" width="20" height="20"/>
+                </apex:outputLabel> <apex:outputText style="vertical-align: center;">: Unread</apex:outputText>&nbsp;
+                <apex:outputLabel style="padding-left:20px;">
+                    <apex:image url="https://{!host}/servlet/servlet.FileDownload?file=0156F00000CZ6XB" width="20" height="20"/>
+                </apex:outputLabel> <apex:outputText style="vertical-align: center;">: Read</apex:outputText>&nbsp;
+                <apex:outputLabel style="padding-left:20px;">
+                    <apex:image url="https://{!host}/servlet/servlet.FileDownload?file=0156F00000CZ6XC" width="20" height="20"/>
+                </apex:outputLabel> <apex:outputText style="vertical-align: center;">: Replied</apex:outputText>
+                <apex:outputLabel style="padding-left:20px;">
+                    <apex:image url="https://{!host}/servlet/servlet.FileDownload?file=0156F00000CZ6X7" width="20" height="20"/>
+                </apex:outputLabel> <apex:outputText style="vertical-align: center;">: Followed Up</apex:outputText>
+            </apex:outputPanel>
+                <apex:commandButton action="{!refreshList}" value="Refresh" style="margin-left:200px; font: normal 11px helvetica, sans-serif;" />&nbsp;
+            <apex:outputPanel > </apex:outputPanel> 
+            <!-- 
+            <apex:selectList value="{!assignedAgent}" id="picklist" label="Agent" size="1" rendered="{!isSupervisor}">
+                    <apex:selectOption itemValue="" itemLabel="-" /> 
+                   <apex:actionSupport event="onchange" action="{!agentPicklist}" reRender="opId"/> 
+                   <apex:selectOptions value="{!agentOptList}"/>
+            </apex:selectList>
+            <apex:actionFunction name="CallApexMethod" action="{!assignUser}" />
+            <apex:commandButton action="{!assignUser}" value="Assign" rendered="{!isSupervisor}" />
+             -->
+        </apex:pageBlockSection>
+        <br/>
+        
+        <!------- Middle section (inbox dropdown and Agent dropdown) --------->      
+        <apex:pageBlockSection columns="3" >
+            <apex:outputPanel >
+                <apex:outputLabel value="Filter By" style="padding-right:10px;"/>
+                <apex:selectList value="{!assignedInbox}" id="picklistInbox" size="1" >
+                    <apex:selectOption itemValue="" itemLabel="-" /> 
+                    <apex:selectOptions value="{!inboxOptList}"/>
+                </apex:selectList>
+                <apex:commandButton action="{!selectedInbox}" value="Select" />                
+                <!--input type="button" value="Select" onclick="doSelect();" /-->
+            </apex:outputPanel>
+            <apex:outputPanel />
+            <apex:outputPanel style="margin-left:100px;" rendered="{!isSupervisor}"> 
+                <apex:outputLabel value="Agent" style="padding-right:10px;" />      
+                <apex:selectList value="{!assignedAgent}" id="picklistAgent" size="1" >
+                    <apex:selectOption itemValue="" itemLabel="-" /> 
+                    <apex:actionSupport event="onchange" action="{!agentPicklist}" reRender="contacttable"/> 
+                    <apex:selectOptions value="{!agentOptList}"/>
+                </apex:selectList>
+                <apex:commandButton action="{!assignUser}" value="Assign" />
+            </apex:outputPanel>
+        </apex:pageBlockSection>
+        <br/>
+     
+        <!--  Table section -->
+        <apex:outputPanel id="myPanel">
+            <apex:pageBlockTable id="contacttable" value="{!caseRecords}" var="c" style="table-layout:fixed; width:100%;" columnsWidth="{!colWidth}" align="center" border="1">   
+            <!--<apex:pageBlockTable id="contacttable" value="{!caseListWrapper_new}" var="c" style="table-layout:fixed; width:100%;" columnsWidth="{!colWidth}" align="center" border="1"> -->
+                <apex:column headerValue="" headerClass="headerClass" rendered="{!isSupervisor}" >
+                     <apex:facet name="header"><apex:inputCheckbox id="checkboxId" onclick="selectAllCheckboxes(this,'inputId')"/></apex:facet>
+                     <apex:inputCheckbox value="{!c.isSelected}" id="inputId"/>
+                </apex:column>
+                <apex:column headerValue="" headerClass="headerClass"><apex:outputText value="{!c.followUp}" escape="false" /></apex:column>
+                <apex:column headerValue="" headerClass="headerClass">
+                     <apex:facet name="header">Email<br/>Status</apex:facet>
+                     <apex:outputText value="{!c.Indikator}" escape="false" /> 
+                </apex:column>
+                <apex:column headerValue="" headerClass="headerClass">
+                     <apex:facet name="header">Case<br/>Number</apex:facet>
+                     <apex:outputText value="{!c.caseNumber}" escape="false" />     <!--  <a href="/{!c.id}">{!c.caseNumber}</a>    -->
+                </apex:column>
+                <apex:column headerValue="Sender Email" headerClass="headerClass" style="word-wrap: break-word;">{!c.senderEmail}</apex:column>
+                <apex:column headerValue="To Address" headerClass="headerClass" style="word-wrap: break-word;">{!c.toAddress} </apex:column>
+                <apex:column headerValue="CC Address" headerClass="headerClass" style="word-wrap: break-word;">{!c.ccAddress} </apex:column>
+                <apex:column headerValue="BCC Address" headerClass="headerClass" style="word-wrap: break-word;">{!c.bccAddress} </apex:column>
+                <apex:column headerValue="Email Date" headerClass="headerClass">{!c.messageDate}</apex:column>
+                <!--  <apex:column headerValue="Email SLA" headerClass="headerClass">{!c.messageSlaDate}</apex:column>  -->
+                <apex:column headerValue="Customer Name" headerClass="headerClass" style="word-wrap: break-word;">{!c.customerName}</apex:column>
+                <!--  <apex:column headerValue="Status" headerClass="headerClass">{!c.status}</apex:column> -->
+                <apex:column headerValue="Subject" headerClass="headerClass" style="word-wrap: break-word;">{!c.subject}</apex:column>
+                <apex:column headerValue="Message" headerClass="headerClass" style="word-wrap: break-word;"> <span title="{!c.Description}"> {!c.subDescription} </span> </apex:column> 
+                <apex:column headerValue="Assignee" headerClass="headerClass" style="word-wrap: break-word;" rendered="{!isSupervisor}">{!c.assignedTo}</apex:column>
+            </apex:pageBlockTable>
+            <apex:outputText style="margin-right:360px; letter-spacing:1.3px;" value="Showing {!(pageNumber * size)+1-size} to {!IF((pageNumber * size)>noOfRecords, noOfRecords, (pageNumber * size))} of {!noOfRecords}" />    
+        </apex:outputPanel>
+        
+        <!--  pagination -->
+        <apex:dynamicComponent componentValue="{!pagingButtons}" id="pagingBtn" />
+        <!--apex:actionFunction name="doSelect" action="{!selectedInbox}" rerender="contacttable"/-->
+    </apex:pageBlock>
+</apex:form>
+</body>
+
+</apex:page>

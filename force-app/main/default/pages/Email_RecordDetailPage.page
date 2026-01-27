@@ -1,0 +1,169 @@
+<apex:page controller="Email_CustomPage_ctrl" action="{!redirect}">
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/mail32.png"/></td>
+                        <td><div><STRONG>Email Message : {!if(email.data.incoming, 'Inbound', 'Outbound')}</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!email.data.subject}</div></td>
+                    </tr>
+                </table>
+                <!--div class="efhpRow ">
+                    <div class="efhpValue efhpDescription">{!email.data.Description}</div>
+                </div>-->
+            </td>
+        </tr>
+    </table>
+    <apex:form id="formId">
+        <apex:pageMessages />        
+        <apex:pageBlock id="EmailDetail" mode="maindetail" tabStyle="EmailMessage" title="">
+            <br/>
+            <apex:pageBlockButtons >
+                <!--apex:commandButton action="{!save}" value="Save" status="actStatusId"/>-->
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information" columns="2" collapsible="true" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Parent Case"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/apex/Case_RecordDetailPage?id={!email.data.parentId}">{!email.data.Parent_Name}</apex:outputLink></apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="First Response Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!email.data.first_Response_Date_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Message Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.messageDate}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="MessageDate Temporary"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.messageDate_Temporary_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Datetime"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.target_Datetime_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Duration F"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Datetime (1 Day)"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.target_Datetime_1_Day_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reason"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.reason_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Response Date"></apex:outputLabel>
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.last_Response_Date_c}" /> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent Queue ID"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.agent_Queue_ID_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target TAT"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.target_TAT_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!email.data.lastModifiedById}">{!email.data.lastModifiedById_Name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.lastModifiedDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Over SLA Email AFI 3"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.over_SLA_Email_AFI_3_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Over SLA Email AFI (1 Day)"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.Over_SLA_Email_AFI_1_Day_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >&nbsp;</apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputLink value="/{!email.data.createdById}">{!email.data.createdById_Name}</apex:outputLink>,&nbsp;
+                        <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!email.data.createdDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Address Information" columns="1" collapsible="true" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="From Address"></apex:outputLabel>
+                    <apex:outputLink value="mailto:{!email.data.fromAddress}">{!email.data.FromAddress}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="From Name"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.fromName}"/>
+                </apex:pageBlockSectionItem>           
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="To Address"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.toAddress}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="CC Address"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.ccAddress}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="BCC Address"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.bccAddress}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Message Content" columns="1" collapsible="true" showHeader="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Subject"></apex:outputLabel>
+                    <apex:outputText value="{!email.data.Subject}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="HTML Body"></apex:outputLabel>
+                    <apex:commandLink onclick="JavaScript:window.open('/apex/Email_BodyHTMLVersion?id={!email.data.Id}','{!email.data.Subject}','height=500, width=500'); return false;">Click here to view HTML version</apex:commandLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Text Body"></apex:outputLabel>
+                    <apex:outputText escape="false" value="{!SUBSTITUTE(JSENCODE(email.data.textBody),'\n','<br/>')}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <br/><br/>
+        <!--c:Attachment_RelatedList parentId="{!id}" />-->
+    </apex:form>
+</apex:page>

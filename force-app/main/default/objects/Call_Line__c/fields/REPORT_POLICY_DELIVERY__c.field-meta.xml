@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>REPORT_POLICY_DELIVERY__c</fullName>
+    <description>ALI</description>
+    <externalId>false</externalId>
+    <inlineHelpText>ALI
+Exp : 28/08/2017 08:50</inlineHelpText>
+    <label>REPORT POLICY DELIVERY</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

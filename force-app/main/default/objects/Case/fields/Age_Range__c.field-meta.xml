@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Age_Range__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( Age__c &gt; 180, &quot;&gt;6m - 12m&quot;, 
+IF( Age__c &gt;= 90, &quot;3m - 6m&quot;, 
+IF( Age__c &gt; 31, &quot;&gt;1m - &lt; 3m&quot;, 
+IF( Age__c &gt;= 15, &quot;15 - 30&quot;, 
+IF( Age__c &gt;= 8, &quot;&apos;8 - 14&quot;, 
+IF( Age__c &gt;= 4, &quot;&apos;4 - 7&quot;, 
+&quot;&apos;0 - 3&quot; ))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Age Range</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

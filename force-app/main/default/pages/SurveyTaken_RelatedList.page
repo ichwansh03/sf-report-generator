@@ -1,0 +1,236 @@
+<apex:page standardController="Contact" extensions="SurveyTaken_CustomPage_ctrl" sidebar="false" showHeader="false">
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>   
+    <apex:includeScript value="/support/console/37.0/integration.js"/>    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">  
+
+        var urlRequestNewTabRelatedContactSurveyTaken ='';
+        var titleNewTabRelatedContactSurveyTaken ='';
+  
+        function openNewTabRelatedContacSurveyTaken(el) {
+            console.log(el);    
+            let SurveyTakenId = el.getAttribute('data-id');
+            let uniqueId = el.getAttribute('data-lastId');
+            console.log(SurveyTakenId);
+            titleNewTabRelatedContactSurveyTaken = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactSurveyTaken ='/apex/SurveyTaken_RecordDetailPage?id='+ SurveyTakenId+'&lastId='+uniqueId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactSurveyTaken);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactSurveyTaken,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactSurveyTaken(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactSurveyTaken+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactSurveyTaken , false, titleNewTabRelatedContactSurveyTaken, null, null, titleNewTabRelatedContactSurveyTaken);
+        } 
+    
+    
+        var urlRequestNewTabRelatedContactCase ='';
+        var titleNewTabRelatedContactCase ='';
+  
+        function openNewTabRelatedContactCase(el) {
+            console.log(el);    
+            let CaseId = el.getAttribute('data-id'); 
+            console.log(CaseId);
+            titleNewTabRelatedContactCase = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactCase ='/apex/Case_RecordDetailPage?id='+ CaseId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactCase);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactCase,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactCase(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactCase+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactCase , false, titleNewTabRelatedContactCase, null, null, titleNewTabRelatedContactCase);
+        }
+
+        function openSuccessRelatedContactCase(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    
+    
+        var urlRequestNewTabRelatedContactUser ='';
+        var titleNewTabRelatedContactUser ='';
+  
+        function openNewTabRelatedContacUser(el) {
+            console.log(el);    
+            let UserId = el.getAttribute('data-id'); 
+            console.log(UserId);
+            titleNewTabRelatedContactUser = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactUser ='/'+ UserId;
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactUser);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactUser,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactUser(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactUser+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactUser , false, titleNewTabRelatedContactUser, null, null, titleNewTabRelatedContactUser);
+        } 
+  
+        var urlRequestNewTabRelatedContactMstSurvey ='';
+        var titleNewTabRelatedContactMstSurvey ='';
+  
+        function openNewTabRelatedContactMstSurvey(el) {
+            console.log(el);    
+            let MstSurveyId = el.getAttribute('data-id'); 
+            console.log(MstSurveyId);
+            titleNewTabRelatedContactMstSurvey = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactMstSurvey ='/'+ MstSurveyId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactMstSurvey);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactMstSurvey,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactMstSurvey(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactMstSurvey+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactMstSurvey , false, titleNewTabRelatedContactMstSurvey, null, null, titleNewTabRelatedContactMstSurvey);
+        }
+
+        function openSuccessRelatedContactMstSurvey(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    
+    </script>  
+    
+    <style>
+        
+        .slds-text-title_caps {
+        border-left: 0.5px solid grey; 
+        border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+        text-align:center;
+        width: 100%;
+        word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        
+        /* Dimensions */
+        width: 100%;
+        height: 300%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+        /* Background color */
+        border: solid 2px #ffba1a;
+        background-color: white;
+        
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 75px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+        }
+    </style>
+    <apex:form >   
+        <apex:pageblock id="surveyTaken" title="Survey Taken" tabStyle="Case">
+            <apex:actionStatus id="status" >
+                <apex:facet name="start"> 
+                    <apex:outputPanel >
+                        Loading...<br/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:outputPanel > 
+                        <apex:commandButton value="Reload" action="{!loadSurvey}" rerender="surveyTaken" status="status" /><br/>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus><br/>
+            <apex:pageBlockTable value="{!listSurveyTaken}" var="em" rendered="{!listSurveyTaken.size != 0}">
+                <apex:column headerValue="ID"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!em.lastId}" data-id="{!em.id}" data-title="{!em.name}" onclick="openNewTabRelatedContacSurveyTaken(this);">{!em.name}</a></apex:outputText> </apex:column> 
+                <apex:column rendered="{!IF(entityContact == 'AMFS',true,false)}" headerValue="Case"><apex:outputText ><a href="javascript:void(0);"  data-id="{!em.case_c}" data-title="{!em.caseNumber}" onclick="openNewTabRelatedContactCase(this);"> {!em.caseNumber}</a></apex:outputText> </apex:column>
+                <apex:column rendered="{!IF(entityContact == 'AMFS',true,false)}" headerValue="Survey"><apex:outputText ><a href="javascript:void(0);"  data-id="{!em.survey_c}" data-title="{!em.surveyName}" onclick="openNewTabRelatedContactMstSurvey(this);"> {!em.surveyName}</a></apex:outputText> </apex:column> 
+                <apex:column headerValue="Created Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!em.createdDate}" /> </apex:outputText></apex:column>  
+                <apex:column headerValue="Created By">
+                    <apex:outputText ><a href="javascript:void(0);"  data-id="{!em.CreatedById}" data-title="{!em.createdByName}" onclick="openNewTabRelatedContacUser(this);"> {!em.createdByName}</a></apex:outputText>,
+                    <apex:outputText value="{0,date,M/d/yyyy h:m a}"> <apex:param value="{!em.createdDate}" /> </apex:outputText>
+                </apex:column>  
+            </apex:pageBlockTable> 
+            <apex:outputLabel value="No records to display" rendered="{!listSurveyTaken.size == 0}" styleClass="noRowsHeader"></apex:outputLabel> 
+            <apex:outputPanel id="pagination"> 
+                <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="surveyTaken">First</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="surveyTaken">Previous&nbsp;</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                        <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="surveyTaken">
+                            <apex:param name="nickName"
+                                        value="{!i}"
+                                        assignTo="{!to_page}"/>
+                        </apex:commandLink>
+                        <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                        &nbsp;|&nbsp;
+                    </apex:repeat>
+                    
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="surveyTaken">Next</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="surveyTaken">Last</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+        </apex:pageblock>        
+    </apex:form>
+</apex:page>

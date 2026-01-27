@@ -1,0 +1,337 @@
+<apex:page controller="Call_Line_AMFS_ChangeOwner_Ctrl2" showHeader="true" sidebar="false">
+    <apex:sectionHeader title="" subtitle="Manage AMFS Call Line Owner"/>
+    <apex:includeScript value="/soap/ajax/33.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/33.0/apex.js"/>
+    <apex:includeScript value="/support/console/40.0/integration.js"/>
+    <apex:include pageName="PageJS"/>
+    <script type="text/javascript">
+    //jQuery.noConflict();
+    function telepon(nomor_telp, id_call, contactid) {
+        //alert(nomor_telp+", "+id_call+", "+contactid);
+        //var j$ = jQuery.noConflict();
+        var validasi = false;
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        var userid = sforce.connection.getUserInfo(); 
+        var user = sforce.connection.query("SELECT sip__c from user where id ='"+userid.userId+"' limit 1"); 
+        //var iduser = {!$User.SIP__c};
+        var records = user.getArray("records"); 
+        //alert("records : "+records);
+        //alert("userid : "+userid.userId); 
+        var log = new sforce.SObject("Log_CTI_Valdo__c");
+        log.sip__c = records[0].SIP__c;
+        log.to__c = nomor_telp;
+        log.Mode__c = 'API Call Out';
+        log.Status__c = 'Outbound';
+        log.call_line__c = id_call;
+        log.Contact__c = contactid;
+        var cl = sforce.connection.query("SELECT  Reason_Status_Config__c, contact__c from call_line__c where id ='"+id_call+"' limit 1");
+        var recorder = cl.getArray("records"); 
+        var reason_status = recorder[0].Reason_Status_Config__c;
+        var val_split = "{!$Label.Validation_Reason_Status}";
+        if(reason_status!=null && reason_status!=''){
+            var temp = val_split.split(",");
+            var i;
+            for(i = 0; i<temp.length; i++){
+                if(temp[i] == reason_status){
+                    validasi = true;
+                    break;
+                }
+            }
+        }
+        jQuery('[id$=myHiddenField]').val(id_call);
+        //j$('[id$=myHiddenField]').val(id_call);
+        //passStringToController();
+        
+        try{
+            if(validasi == true){
+                alert("Cannot call");
+            }
+            else{
+                var result1 = sforce.connection.create([log]);
+                //alert(result1);
+                if(result1[0].getBoolean("success"))
+                {
+                    //alert('Success');
+                    //setTimeout(function(){ alert("Success"); },10000);
+                    consolelink('/'+id_call,'_blank');
+                    var ul = document.getElementById('el_loading');
+                    ul.style.display = 'inline';
+                    setTimeout(function(){ resultAPI(result1[0].id, id_call); ul.style.display = "none";  } , 15000);
+                    
+                }
+                else{
+                    alert('Error : '+result1);
+                }
+            }
+        }catch(err){
+            alert(err);
+        }
+    }
+    
+    function resultAPI(id_sf, id_call){
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        //var userid = sforce.connection.getUserInfo(); 
+        var log = sforce.connection.query("SELECT ID_Valdo__c, Response_API__c from Log_CTI_Valdo__c where id ='"+id_sf+"' limit 1"); 
+        //var iduser = {!$User.SIP__c};
+        var records = log.getArray("records"); 
+        //alert(""+records[0].Response_API__c);
+        //var str = records[0].Response_API__c;
+        var str = records[0].ID_Valdo__c;
+        //alert(""+str);
+        if(str!="" && str!=null){
+            alert("Success");
+            //consolelink('/'+id_call,'_blank');
+        }
+        else{
+            alert("Please Retry");
+        }
+    }
+    
+    function onUpload()
+    {
+        var ul = document.getElementById('el_loading');
+        ul.style.display = 'inline';
+        setTimeout(function(){ ul.style.display = none;  } , 15000);
+    }
+    </script>
+    <style>
+        .requiredLoaderBG {
+        background-color: rgb(71,71,71);
+        opacity:0.7;
+        filter:alpha(opacity=70);
+        background-image:url('{!$Resource.ajaxLoadGif}');
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+        }
+        
+        #el_loading
+        {
+        display: none;
+        }
+    </style>
+    
+    <apex:form id="formid">
+        <apex:actionstatus startStyleClass="requiredLoaderBG" id="ajaxStatus" />
+        <apex:pageMessages />
+        <apex:pageBlock >
+            <div align="left">
+                <apex:pageBlockButtons >
+                    <apex:commandButton action="{!save}" value="Save" />
+                </apex:pageBlockButtons>
+            </div>
+            
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton reRender="formid" value="Refresh" action="{!reloadPage}" status="ajaxStatus"/>
+                <apex:commandButton value="<<" rerender="formid" action="{!beginning}" disabled="{!prev}" status="ajaxStatus" />
+                <apex:commandButton value="<" rerender="formid" action="{!previous}" disabled="{!prev}" status="ajaxStatus"/>
+                <apex:commandButton value=">" rerender="formid" action="{!next}" disabled="{!nxt}" status="ajaxStatus"/>
+                <apex:commandButton value=">>" rerender="formid" action="{!end}" disabled="{!nxt}" status="ajaxStatus"/> 
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Please select campaign">
+                <apex:selectList value="{!choosen_campaign}" label="Campaign" size="1" >
+                    <apex:actionSupport event="onchange" action="{!populateFreshData}" status="ajaxStatus" reRender="formid" />
+                    <apex:selectOption itemValue="" itemLabel="-"/>
+                    <!--<apex:actionSupport event="onchange" action="{!populateFreshData}" reRender="formid"/>-->
+                    <apex:selectOptions value="{!optionCampaign_list}"/>
+                </apex:selectList> 
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+                <apex:selectList value="{!prev_user}" label="From" size="1" >
+                    <apex:actionSupport event="onchange" action="{!populateFreshData}" status="ajaxStatus" reRender="formid" />
+                    <apex:selectOption itemValue="" itemLabel="-"/>
+                    <!--<apex:actionSupport event="onchange" action="{!searchAgent}" reRender="formid"/>-->
+                    <apex:selectOptions value="{!prevUser_list}"/>
+                </apex:selectList> 
+                <apex:selectList value="{!choosen_user}" label="To" size="1" >
+                    <apex:selectOption itemValue="" itemLabel="-"/>
+                    <!--<apex:actionSupport event="onchange" reRender="formid"/>-->
+                    <apex:selectOptions value="{!optionUser_list}"/>
+                </apex:selectList>
+                <apex:selectList value="{!statusHasCall}" label="Status Has Call" size="1" >
+                    <apex:actionSupport event="onchange" action="{!populateFreshData}" status="ajaxStatus" reRender="formid" />
+                    <apex:selectOption itemValue="" itemLabel="All"/>
+                    <!--<apex:actionSupport event="onchange" action="{!searchAgent}" reRender="formid"/>-->
+                    <apex:selectOptions value="{!statusHasCall_List}"/>
+                </apex:selectList> 
+                <!--<apex:commandButton value="Search" action="{!populateFreshData}"/>-->
+                
+                <!--coba mus-->
+                <apex:selectList value="{!ReasonStatusSet}" label="Reason Status" size="1" >
+                    <apex:actionSupport event="onchange" action="{!populateFreshData}" status="ajaxStatus" reRender="formid" />
+                    <apex:selectOption itemValue="All" itemLabel="All"/>
+                    <apex:selectOptions value="{!ReasonStatusConfig}"/>
+                </apex:selectList> 
+                <!--coba mus-->
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Blocksize : &nbsp;&nbsp;&nbsp;</apex:outputLabel>
+                    <apex:selectList id="brand" value="{!BlockSize}"  size="1" >
+                        <apex:selectOptions value="{!Block_Size}"/>
+                        <apex:actionSupport event="onchange"  rerender="formid" action="{!beginning}" status="ajaxStatus" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <!--coba mus-->
+            <!--ini belum dipakai
+<apex:pageBlockSection >
+<apex:selectList value="{!CallStatusSet}" label="Call Status" size="1" >
+<apex:actionSupport event="onchange" action="{!populateFreshData}" />
+<apex:selectOption itemValue="All" itemLabel="All"/>
+<apex:selectOptions value="{!CallStatusConfig}"/>
+</apex:selectList> 
+</apex:pageBlockSection>
+ini belum dipakai-->
+            <!--coba mus-->
+            
+            <apex:pageBlockSection >
+                <apex:commandButton value="Select All" action="{!selectAll}" rerender="formid" status="ajaxStatus"/>
+            </apex:pageBlockSection>
+            <br/> 
+            <br/>
+            
+            <apex:pageBlockSection title="List of Distributed Call Line`s">
+                <!-- coba mus-->              
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Total Record : &nbsp;&nbsp;&nbsp;</apex:outputLabel>
+                    <apex:outputText value="{!tempCallLineListSize} of {!allDataSize}"/>
+                </apex:pageBlockSectionItem> <br/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Selected : &nbsp;&nbsp;&nbsp;</apex:outputLabel>
+                    <apex:outputText value="{!selectSize} Record" id="selected"/>
+                </apex:pageBlockSectionItem> <br/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Page : &nbsp;&nbsp;&nbsp;</apex:outputLabel>
+                    <apex:outputText value="{!pageOf} of {!allPage}" id="selected"/>
+                </apex:pageBlockSectionItem> <br/>
+                <!-- coba mus-->
+            </apex:pageBlockSection>
+                
+                <apex:pageBlockTable id="idpbt" value="{!ListCall}" var="cl">
+                    <!--coba mus-->
+                    <apex:column headerValue="Select">
+                        <apex:inputCheckbox value="{!cl.cl_isSelected}">
+                            <apex:actionSupport event="onchange" rerender="selected" action="{!selectedSizeCount}" status="ajaxStatus" />
+                        </apex:inputCheckbox>
+                    </apex:column>
+                    <!--coba mus-->
+                    
+                    <apex:column headerValue="{!$ObjectType.Call_Line__c.fields.CreatedDate.Label}" value="{!cl.cl_createdDate}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="{!$ObjectType.Call_Line__c.fields.CreatedDate.Label} {!IF(sortField == 'CreatedDate', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="CreatedDate" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Current Owner" value="{!cl.cl_AgentName}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Current Owner {!IF(sortField == 'Owner.Name', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Owner.Name" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Call Line Number">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Call Line Number {!IF(sortField == 'Name', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" action="{!toggleSort}" rerender="formid" status="ajaxStatus">
+                                <apex:param name="sortField" value="Name" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                        <apex:outputLink value="/{!cl.cl_id}">{!cl.cl_Number}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Policy No." value="{!cl.cl_PolicyNo}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Policy No. {!IF(sortField == 'Policy_No__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Policy_No__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Contact Name">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Contact Name {!IF(sortField == 'Contact__r.Name', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" action="{!toggleSort}" rerender="formid" status="ajaxStatus">
+                                <apex:param name="sortField" value="Contact__r.Name" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                        <apex:outputLink value="/{!cl.cl_ContactId}">{!cl.cl_ContactName}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Nilai Premi" value="{!cl.cl_TotalAmount}" rendered="{!LapseTmOrRedemptionTm == true}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Nilai Premi {!IF(sortField == 'APE_Total_Child__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="APE_Total_Child__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Nilai Amount" value="{!cl.cl_TotalAmount}" rendered="{!WithdrawalOrRedemptionKonven == true}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Nilai Amount {!IF(sortField == 'APE_Total_Child__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="APE_Total_Child__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Nilai APE" value="{!cl.cl_TotalAmount}" rendered="{!restCampaign == true}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Nilai APE {!IF(sortField == 'APE_Total_Child__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="APE_Total_Child__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Product" value="{!cl.cl_product}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Product {!IF(sortField == 'Formula_Product__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Formula_Product__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Currency" value="{!cl.cl_Currency}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Currency {!IF(sortField == 'Currency__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Currency__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Count" value="{!cl.childCount}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Count {!IF(sortField == 'Child_Count_Formula__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Child_Count_Formula__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Effective Date" value="{!cl.cl_effectiveDate}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Effective Date {!IF(sortField == 'Contact__r.WelcomeCall_Effective_Date__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Contact__r.WelcomeCall_Effective_Date__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Call Status" value="{!cl.cl_callStatus}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Call Status {!IF(sortField == 'Call_Status_Config__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Call_Status_Config__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Reason Status" value="{!cl.cl_ReasonStatus}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="Reason Status {!IF(sortField == 'Reason_Status_Config__c', IF(sortDir == 'asc', 'ASC' ,'DESC'), '')}" rerender="formid" action="{!toggleSort}" status="ajaxStatus">
+                                <apex:param name="sortField" value="Reason_Status_Config__c" assignTo="{!sortField}"/>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.75;width:100%;">
+        <div class="waitingHolder" style="top: 100px; width: 91px;">
+            <img class="waitingImage" src="{!$Resource.ajaxLoadGif}" title="Please Wait..."  style="width: 40;height:40;"/>
+            <span class="waitingDescription">Please Wait .  .  .  .  .</span>
+        </div>
+    </div>
+</apex:page>

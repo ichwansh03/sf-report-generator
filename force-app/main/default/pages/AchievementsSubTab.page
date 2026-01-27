@@ -1,0 +1,83 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page controller="MyProfileController" docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false">
+    <head>
+        <link href="{!URLFOR($Resource.almond_uilib, '/slds/styles/salesforce-lightning-design-system-vf.min.css')}" rel="stylesheet" media="screen" />
+        <link href="{!URLFOR($Resource.almond_uilib, '/css/almondui.min.css')}" rel="stylesheet" media="screen" />
+    </head>
+    <body>
+
+        <style>
+            body,.almond,.almond .wrap,.oneContent,.oneAlohaPage{
+                background-color: #fff !important;
+            }
+        </style>
+
+        <div class="almond almond-bs almond-slds">
+            <div class="slds-container--center slds-container--x-large" style="padding:0;">
+
+                <apex:form >
+
+                    <apex:actionStatus id="status">
+                        <apex:facet name="start">
+                            <c:LMSStatus statusComponentId="{!$Component.status}"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                    
+                    <div class="slds-tabs--scoped" style="margin-top:10px;">
+                      <ul class="slds-tabs--scoped__nav" role="tablist">
+                          <apex:repeat value="{!achievementTypes}" var="at">
+                              <li class="slds-tabs--scoped__item slds-text-title--caps {!IF(achievementType == at.name,'slds-active','')}" title="{!at.name}" role="presentation">
+                                  <apex:commandLink value="{!at.label}" action="{!changeAchievementType}" status="status" rerender="theForm" styleClass="slds-tabs--scoped__link" html-role="tab" tabindex="0" html-aria-selected="true" html-aria-controls="tab-scoped-1">
+                                      <apex:param value="{!at.name}" name="type"/>
+                                      <apex:param value="true" name="subtab"/>
+                                  </apex:commandLink>
+                              </li>
+                          </apex:repeat>
+                      </ul>
+                      <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item">
+                          <apex:outputPanel layout="none" rendered="{!lcategories != null && lcategories.size > 0}">
+                              <c:AchievementsList achievements="{!lcategories}" badgeContainerClass="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--3-of-12 slds-large-size--3-of-12"/>
+                          </apex:outputPanel>
+                          <apex:outputPanel layout="none" rendered="{!lcategories == null || lcategories.size == 0}">
+                              <div style="width:100%;text-align:center;padding:20px;0;">
+                                  <div class="slds-text-heading--medium">{!$Label.ALMS_Nothing_to_see}</div>
+                              </div>
+                          </apex:outputPanel>
+                      </div>
+                    </div>
+                </apex:form>
+
+            </div>
+        </div>
+
+        <apex:includeScript value="{!URLFOR($Resource.almond_uilib, '/js/jquery.min.js')}"/>
+
+    </body>
+
+</apex:page>

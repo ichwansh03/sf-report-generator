@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Return_to_CCC</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Return to CCC</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/33.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/33.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)} 
+
+sforce.connection.sessionId=&quot;{!$Api.Session_ID}&quot;; 
+var user = sforce.connection.getUserInfo(); 
+//alert(&apos;{!User.Return_Case_to_CCC__c}&apos;);
+var flag = &apos;{!User.Return_Case_to_CCC__c}&apos;;
+
+if(flag == true) {
+var cs = sforce.connection.query(&quot;SELECT id, ownerid, named_user__c from case where id =&apos;{!Case.Id}&apos; limit 1&quot;); 
+var records = cs.getArray(&quot;records&quot;); 
+var myObj = records[0]; 
+
+myObj.OwnerId = &apos;{!Case.CreatedById}&apos;; 
+myObj.Named_User__c = &apos;{!Case.CreatedBy}&apos;; 
+myObj.Status = &apos;Escalated&apos;; 
+try{ 
+var result1 = sforce.connection.update([myObj]); 
+if(result1[0].getBoolean(&quot;success&quot;)) 
+{ 
+alert(&apos;Success&apos;); 
+window.location.reload(); 
+} 
+else{ 
+alert(&apos;Error : &apos;+result1); 
+} 
+}catch(err){ 
+alert(err); 
+}
+} else {
+alert(&apos;User don\&apos;t have permission to return case to CCC.&apos;);
+}</url>
+</WebLink>

@@ -1,0 +1,70 @@
+<apex:page standardController="Call_Line__c" extensions="DetailNasabahRMCtrl" showHeader="false" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False" applyHtmlTag="False" action="{!loadDataEip}">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <style>
+      .THIS .custom-background {
+            background-color: white;
+        }
+    </style>
+    <head>
+      <apex:slds /> 
+    </head>
+    
+<body class="slds-scope">
+    <apex:pageMessages />
+    <apex:form >
+      <apex:outputPanel rendered="true" id="detailNsbId">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+              <tbody>
+              <tr class="slds-hint-parent">
+                  <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Date of Birth">Date of Birth</div>
+                  </th>
+                  <td data-label="Date of Birth" colspan="3">
+                    <div class="slds-truncate" title="{!dTask.birthDate}">
+                        <apex:outputText styleClass="slds-input" value="{0,date,dd-MMMM-yyyy}">
+                            <apex:param value="{!dTask.birthDate}" />
+                        </apex:outputText>
+                    </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" ></div>
+                  </th>
+                  <td colspan="5"></td>
+              </tr>
+              <tr class="slds-hint-parent">
+                  <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Due Date">Due Date</div>
+                  </th>
+                  <td data-label="Due Date" colspan="3">
+                     <div class="slds-truncate" title="{!dTask.dueDate}">
+                          <apex:outputText styleClass="slds-input" value="{0,date,dd-MMMM-yyyy}">
+                              <apex:param value="{!dTask.dueDate}" />
+                          </apex:outputText>
+                      </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" ></div>
+                  </th>
+                  <td colspan="5"></td>
+              </tr>
+              <tr class="slds-hint-parent">
+                  <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Total Premium">Total Premium</div>
+                  </th>
+                  <td data-label="Total Premium" colspan="3">
+                    <div class="slds-truncate" title="{!dTask.totalPremium}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.totalPremium}"/>
+                    </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" ></div>
+                  </th>
+                  <td colspan="5"></td>
+              </tr>
+              </tbody>
+              </table>
+          </apex:outputPanel>
+    </apex:form>
+</body>
+</html>
+</apex:page>

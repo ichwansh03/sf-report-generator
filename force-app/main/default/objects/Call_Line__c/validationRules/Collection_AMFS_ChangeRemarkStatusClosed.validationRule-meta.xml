@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_AMFS_ChangeRemarkStatusClosed</fullName>
+    <active>true</active>
+    <errorConditionFormula>CONTAINS(RecordType.Name, &apos;Collection&apos;) &amp;&amp; PRIORVALUE(Call_Remarks__c)!=&apos;&apos;  &amp;&amp; ISCHANGED(Call_Remarks__c) &amp;&amp; (TEXT(PRIORVALUE(Status_has_call__c))=&apos;Closed&apos; || TEXT(PRIORVALUE(Status_has_call__c))=&apos;Takeout&apos;)</errorConditionFormula>
+    <errorDisplayField>Call_Remarks__c</errorDisplayField>
+    <errorMessage>Tidak bisa mengubah Remark jika Status has call sudah Closed atau Takeout !!!</errorMessage>
+</ValidationRule>

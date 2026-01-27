@@ -1,0 +1,446 @@
+<apex:page controller="PureCloud_CallAgent_CustomPage_ctrl" showHeader="true" sidebar="true">
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/people32.png"/></td>
+                        <td><div><STRONG>PureCloud-Call Agent</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!detail.data.Name}</div></td>
+                    </tr>
+                </table>
+                <!--div class="efhpRow ">
+                    <div class="efhpValue efhpDescription">{!detail.data.Description}</div>
+                </div>-->
+            </td>
+        </tr>
+    </table>
+   
+    <apex:pageBlock id="callAgent" mode="maindetail" tabStyle="purecloud__c" title="">
+        <br/>
+        <apex:pageBlockButtons >
+            <!--apex:commandButton action="{!save}" value="Save" status="actStatusId"/>-->
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="PureCloud-Call Agent Detail" columns="2" collapsible="false" showHeader="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="PureCloud- Name"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Name}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Owner"></apex:outputLabel>
+                <apex:outputPanel ><img style="vertical-align: bottom;" width="15" height="15" src="/profilephoto/005/T"/>&nbsp;<apex:outputLink value="/{!detail.data.OwnerId}" target="_blank">{!detail.data.OwnerName}</apex:outputLink></apex:outputPanel>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Agent"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Agent_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Periode"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Periode_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Agent Name"></apex:outputLabel>
+                <apex:outputPanel ><apex:outputLink value="/{!detail.data.Agent_Name_c}" target="_blank">{!detail.data.agentName}</apex:outputLink>  </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Queue Group"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Queue_Group_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Entity"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Entity_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="External ID"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.External_ID_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Formula"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Formula_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Queue PureCloud"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Queue_PureCloud_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="isActive"></apex:outputLabel>
+                <img src="/img/checkbox_{!IF(detail.data.isActive_c != 'true', 'un', '')}checked.gif"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="API 1 - User Aggregate Response" columns="2" collapsible="true" showHeader="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Date"></apex:outputLabel>
+                <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!detail.data.Date_c}" /> </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available Sum"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Sum_c}" /> </apex:outputText> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="SIP"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.SIP_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Total Available Time"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Total_Available_Time_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Away (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Away_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API Check API1"></apex:outputLabel>
+                <img src="/img/checkbox_{!IF(detail.data.API_Check_API1_c != 'true', 'un', '')}checked.gif"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Pray (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Pray_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API Check API1 Date"></apex:outputLabel>
+                <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.API_Check_API1_Date_c}" /> </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Rest (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Rest_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API Check API1 Status"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.API_Check_API1_Status_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Lunch (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Lunch_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Queue Percent"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Queue_Percent_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Other (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Other_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="On Queue"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.On_Queue_Sum_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Busy (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Busy_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Meeting (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Meeting_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Training (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Training_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="API 2 - U Stat Detail Response" columns="2" collapsible="true" showHeader="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Start Login"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Start_Login_c}"/> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Staffed Seconds"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Staffed_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="End Login"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.End_Login_c}"/>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Total Time Staffed"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Total_Time_Staffed_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Away (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Away_Count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Schedule Login"></apex:outputLabel> 
+                <!--apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!detail.data.Schedule_Login_c}" /> </apex:outputText-->
+                <apex:outputText value="{!detail.data.Schedule_Login_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Pray (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Pray_Count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Status Login"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Status_Login_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Rest (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Rest_Count_c}" /> </apex:outputText> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Late Duration Minute"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Late_Duration_Minute_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Lunch (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.break_Lunch_Count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Productivity"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Productivity_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Break - Other (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Break_Other_Count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Hari"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Hari_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Busy (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Busy_Count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Outsource Type"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Outsource_Type_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Meeting (count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Meeting_count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API Check API2"></apex:outputLabel>
+                <img src="/img/checkbox_{!IF(detail.data.API_Check_API2_c != 'true', 'un', '')}checked.gif"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Training (count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Training_count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API Check API2 Date"></apex:outputLabel>
+                <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.API_Check_API2_Date_c}" /> </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API Check API2 Status"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.API_Check_API2_Status_c}"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="New API 1 & API 2 - Available & Training" columns="2" collapsible="true" showHeader="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Admin (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Admin_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Admin (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Admin_Count_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Follow Up (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Follow_Up_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Follow Up (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Follow_Up_Count_c}" /> </apex:outputText> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Outbound (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Outbound_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Outbound (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Outbound_Count_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Walk IN (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Walk_IN_Sum_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Walk IN (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Walk_IN_Count_c}" /> </apex:outputText>    
+            </apex:pageBlockSectionItem>
+            <!--apex:pageBlockSectionItem >
+                <apex:outputLabel value="AHT Outbound"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.AHT_Outbound_c}"/>
+            </apex:pageBlockSectionItem-->
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Available - Other (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Available_Other_Sum_c}" /> </apex:outputText>     
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Training - Training (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Training_Training_Sum_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Training - Coaching (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Training_Coaching_Count_c}" /> </apex:outputText>    
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Training - Coaching (Duration)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Training_Coaching_Sum_c}" /> </apex:outputText>    
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Training - Training (Count)"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Training_Training_Count_c}" /> </apex:outputText>     
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="API 3 - Conversation Agregate Response" columns="2" collapsible="true" showHeader="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Type"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.Type_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="AVG ACW Seconds"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.AVG_ACW_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="ACD Calls"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.ACD_Count_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="AVG ACW Time"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.AVG_ACW_Time_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Handle Sum"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Handle_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="ACW Seconds"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.ACW_Sum_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Handle Count"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Handle_Count_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="ACW Count"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.ACW_Count_c}" /> </apex:outputText> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="AHT Seconds"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.AHT_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Talk Sum"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Talk_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="AHT"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.AHT_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Talk Count"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Talk_Count_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="AHT Outbound Seconds"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.AHT_Outbound_Sum_c}" /> </apex:outputText> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Hold Sum"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Hold_Sum_c}" /> </apex:outputText>  
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="AHT Outbound"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.AHT_Outbound_c}"/> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Hold Count"></apex:outputLabel>
+                <apex:outputText value="{0, number, ###,###}"> <apex:param value="{!detail.data.Hold_Count_c}" /> </apex:outputText>   
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API CHeck API3"></apex:outputLabel>
+                <img src="/img/checkbox_{!IF(detail.data.API_CHeck_API3_c != 'true', 'un', '')}checked.gif"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API CHeck API3 Date"></apex:outputLabel>
+                <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.API_CHeck_API3_Date_c}" /> </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="API CHeck API3 Status"></apex:outputLabel>
+                <apex:outputText value="{!detail.data.API_CHeck_API3_Status_c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Created By"></apex:outputLabel>
+                <apex:outputLabel >
+                    <apex:outputLink value="/{!detail.data.CreatedById}" target="_blank">{!detail.data.CreatedByName}</apex:outputLink>,&nbsp;
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.CreatedDate}" /> </apex:outputText>
+                </apex:outputLabel> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Last Modified By"></apex:outputLabel>
+                <apex:outputLabel >
+                    <apex:outputLink value="/{!detail.data.LastModifiedById}" target="_blank">{!detail.data.LastModifiedByName}</apex:outputLink>,&nbsp;
+                    <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.LastModifiedDate}" /> </apex:outputText>
+                </apex:outputLabel> 
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>   
+    <apex:pageblock id="openActivity" title="Open Activity" tabStyle="purecloud__c">  
+        <apex:pageBlockTable value="{!listOpenTask}"  var="lot">
+            <apex:column headerValue="Subject"><apex:outputLink value="/apex/Task_recorddetailpage?id={!lot.id}" target="_blank">{!lot.subject}</apex:outputLink> </apex:column>
+            <apex:column headerValue="Name" value="{!lot.what_name}"/>
+            <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!lot.isClosed, 'un', '')}checked.gif"/></apex:column>
+                <apex:column headerValue="Due Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!lot.ActivityDate}" /> </apex:outputText></apex:column>   
+            <apex:column headerValue="Status" value="{!lot.status}"/>
+            <apex:column headerValue="Priority" value="{!lot.Priority}"/>
+                <apex:column headerValue="Assigned To"><apex:outputLink value="/{!lot.ownerId}" target="_blank">{!lot.owner_name}</apex:outputLink> </apex:column>  
+        </apex:pageBlockTable>  
+    </apex:pageblock> 
+    <apex:pageblock id="History" title="Activity History" tabStyle="purecloud__c">  
+        <apex:pageBlockTable value="{!listHistoryTask}"  var="lht"> 
+               <apex:column headerValue="Subject"><apex:outputLink value="/apex/Task_recorddetailpage?id={!lht.id}" target="_blank">{!lht.subject}</apex:outputLink> </apex:column>
+               <apex:column headerValue="Name" value="{!lht.what_name}"/>
+               <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!lht.isClosed, 'un', '')}checked.gif"/></apex:column>
+                <apex:column headerValue="Due Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!lht.ActivityDate}" /> </apex:outputText></apex:column>   
+                <apex:column headerValue="Assigned To"><apex:outputLink value="/{!lht.ownerId}" target="_blank">{!lht.owner_name}</apex:outputLink> </apex:column> 
+                <apex:column headerValue="Last Modified Date/Time"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!lht.lastModifiedDate}" /> </apex:outputText></apex:column>  
+        </apex:pageBlockTable>  
+    </apex:pageblock>  
+</apex:page>

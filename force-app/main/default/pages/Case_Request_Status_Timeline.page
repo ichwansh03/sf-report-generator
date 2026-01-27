@@ -1,0 +1,132 @@
+<apex:page standardController="Case" extensions="ComplaintRequestStatusController">
+
+	<head>
+		<apex:includeScript value="{!$Resource.jquery_1_10_2}"/>
+		<apex:includeScript value="{!$Resource.progressStepJS}"/>        
+		<apex:includeScript value="{!$Resource.raphaelJS}"/>
+		<style>
+			p {
+			    font-family: Helvetica, Arial, sans-serif;
+			    font-weight: lighter;
+			}
+			
+			button {
+			    font-family: Helvetica, Arial, sans-serif;
+			    font-size: 1.0em;    
+			}
+			
+			div#progressBar {
+			    width: 90%; 
+			    height: 100px;
+			    align: center;
+			}
+		
+		</style>
+        <script>
+        	var statuslist = JSON.parse('{!StatusListJSON}');
+			function init() {
+        		startLoop();
+        	}
+            function onClick() {
+                //console.log("Clicked: " + this.index);
+                //return true;
+            }
+            
+            function beforeEntry() {
+                console.log("Before entry: " + this.index);
+                return true;
+            }
+
+            function afterEntry() {
+                console.log("After entry: " + this.index);
+            }
+        
+            function beforeExit() {
+                console.log("Before exit: " + this.index);
+                return true;
+            }
+
+            function afterExit() {
+                console.log("After exit: " + this.index);
+            }
+
+            $(document).ready(function () {
+                var $progressDiv = $("#progressBar");
+                var $progressBar = $progressDiv.progressStep();
+				
+				for (var stepCounter = 0; stepCounter < statuslist.length; stepCounter++)		{		
+					$progressBar.addStep(statuslist[stepCounter]);
+				}				
+				
+                for (var stepCounter = 0; stepCounter < statuslist.length; stepCounter++) {
+                    var currentStep = $progressBar.getStep(stepCounter);
+                    currentStep.onClick = onClick;
+                    currentStep.beforeEntry = beforeEntry;
+                    currentStep.afterEntry = afterEntry;
+                    currentStep.beforeExit = beforeExit;
+                    currentStep.afterExit = afterExit;
+                }
+                
+                $progressBar.setCurrentStep(0);
+                $progressBar.refreshLayout();
+                
+                
+                function resetVisited() {
+                    for (var counter = 0; counter < statuslist.length; counter++) {
+                        var currentStep = $progressBar.getStep(counter);
+                        currentStep.setVisited(false);
+                    }
+                }
+                
+                var counter = 0;
+                var intervalId = null;
+                function startLoop() {
+                    if (intervalId) {
+                        // continue
+                    }
+                    else {
+                        intervalId = setInterval(function () {
+                            if (counter == 0) {
+                                resetVisited();
+                            }
+                            $progressBar.setCurrentStep(counter);
+                            console.log('{!status}');                            
+                            if ( statuslist[counter] == "{!status}" ) {
+                            	stopLoop();
+                            }
+                            
+                            counter++;
+                            
+                            if (counter > statuslist.length) {
+                                //counter = 0;
+                                stopLoop();
+                            }
+                        }, 100);
+                    }
+                }
+                
+                function stopLoop() {
+                    if (intervalId) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                }
+                
+                $("document").ready(startLoop);
+                $("#startLoop").click(startLoop);
+                $("#stopLoop").click(stopLoop);
+                $("#resetVisited").click(resetVisited);
+            });
+            
+            
+        </script>
+    </head>
+    <body onLoad="initPage();">
+        <div id="progressBar"></div>
+        <!--  <p>To manipulate the progress bar, click on a step above, or use one of the buttons below. Events logged to the console.</p>
+        <button id="startLoop">Start Loop</button> <button id="stopLoop">Stop Loop</button> <button id="resetVisited">Reset Visited</button>
+        -->
+    </body>
+
+
+</apex:page>

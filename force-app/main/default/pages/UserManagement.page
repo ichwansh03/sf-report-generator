@@ -1,0 +1,429 @@
+<apex:page standardController="Contact" extensions="UserManagement" action="{!init}" showHeader="true" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False">
+    <apex:includeScript value="{!URLFOR($Resource.Jquery)}"  />
+    
+    <script type="text/javascript" >
+    $(document).ready(function() {
+        // $('.searchSelect').select2();
+        reloadSearchSelect();
+        //indah - policy address reset value
+        $('#province').change(function(){
+            this.city = '';
+            this.subDistrict = '';
+            this.village = '';
+        }); 
+        
+        $('#city').change(function(){
+            this.subDistrict = '';
+            this.village = '';
+        }); 
+        
+        $('#subDistrict').change(function(){
+            this.village = '';
+        }); 
+    });
+    
+    function SetMaxLength(id){
+        var input = document.getElementById(id);
+        input.maxLength = 24;
+    }
+    
+    function reloadSearchSelect(){
+        $('.searchSelect'); 
+    }
+    
+    function inputLimiter(e,allow) {
+        var AllowableCharacters = '';
+        
+        if (allow == 'Letters'){AllowableCharacters=' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';}
+        if (allow == 'Numbers'){AllowableCharacters='1234567890';}
+        if (allow == 'NumbersAndPlus'){AllowableCharacters='1234567890+';}
+        if (allow == 'NameCharacters'){AllowableCharacters=' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-.\'';}
+        if (allow == 'NameCharactersAndNumbers'){AllowableCharacters='1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-\'';}
+        if (allow == 'Currency'){AllowableCharacters='1234567890.';}
+        
+        var k = document.all?parseInt(e.keyCode): parseInt(e.which);
+        if (k!=13 && k!=8 && k!=0){
+            if ((e.ctrlKey==false) && (e.altKey==false)) {
+                return (AllowableCharacters.indexOf(String.fromCharCode(k))!=-1);
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } 
+    </script>
+    <body class="slds-scope">
+        <apex:sectionHeader title="Customer Portal Menu"/>
+        <c:StatusLoading />
+        <apex:form id="getUserMngmnt">
+            <apex:pageMessages escape="false" id="errorMsgId"/>
+            <apex:pageBlock >
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h3>Option<span class="titleSeparatingColon">:</span></h3>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputText value="Type Of Request"/>
+                        <apex:selectList size="1" value="{!typeOfRequest}" required="true" label="Type Of Request"> 
+                            <apex:selectOptions value="{!typeOfRequestList}"/>
+                            <apex:actionSupport reRender="getUserMngmnt,populate" event="onchange" status="stSearch"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette" style="display:{!IF(typeOfRequest!='','','none')}">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h3>{!typeOfRequest}<span class="titleSeparatingColon">:</span></h3>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <apex:pageBlockSection id="populate" rendered="{!IF(typeOfRequest!='', true,false)}" columns="{!IF(typeOfRequest=='Request for Reset Password','2','1')}">
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest=='Resend Activation Link',typeOfRequest == 'Request User ID',typeOfRequest == 'Inquiry Data', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Data Online Registration'),true,false)}">
+                        <apex:outputText value="Policy Number"/>
+                        <apex:input type="text" value="{!policyNo}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest == 'Resend Activation Link',typeOfRequest == 'Inquiry Data Guest',typeOfRequest == 'Update Data',typeOfRequest == 'Inquiry Customer',typeOfRequest == 'Inquiry Data',typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Status Tracking',typeOfRequest == 'Inquiry Tracking List',typeOfRequest == 'Inquiry Data Online Registration', typeOfRequest =='Inquiry Status Karyawan'),false,true)}">
+                        <apex:outputText value="Login ID" />
+                        <apex:input type="text" value="{!userInfos}"/>
+                    </apex:pageBlockSectionItem>                    
+                                      
+                    <apex:pageBlockSectionItem rendered="{!IF(AND(OR(typeOfRequest == 'Resend Activation Link',typeOfRequest == 'Inquiry Data Guest', typeOfRequest == 'Inquiry Data', typeOfRequest == 'Inquiry Data Online Registration',typeOfRequest == 'Update Data',typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Status Tracking',typeOfRequest == 'Inquiry Tracking List', typeOfRequest =='Inquiry Status Karyawan')),false,true)}">
+                        <apex:outputText value="CIF"/>
+                        <apex:input type="text" value="{!cif}"/>                      
+                    </apex:pageBlockSectionItem> 
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest == 'Inquiry Data Online Registration', typeOfRequest=='Inquiry Data'),true,false)}">
+                        <apex:outputText value="KTP"/>
+                        <apex:input type="text" value="{!ktp}"/>                      
+                    </apex:pageBlockSectionItem> 
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest=='Resend Activation Link',typeOfRequest=='Request for Reset Password',typeOfRequest == 'Request User ID', typeOfRequest=='Inquiry Customer', typeOfRequest=='Inquiry Status Karyawan'),true,false)}">
+                        <apex:outputText value="Email"/>
+                        <apex:input type="text" value="{!email}"/>
+                    </apex:pageBlockSectionItem>
+                    <!--Add By Fajar Salam-->
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest == 'Request User ID'),true,false)}"> 
+                        <apex:outputText value="Gender"/>
+                        <apex:selectRadio value="{!gender}">
+            				<apex:selectOptions value="{!genders}"/>
+            			</apex:selectRadio>           
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest=='Inquiry Data', typeOfRequest == 'Inquiry Data Guest', typeOfRequest == 'Inquiry Status Karyawan'),true,false)}">
+                        <apex:outputText value="Phone Number"/>
+                        <apex:inputText value="{!phone}" html-placeholder="62" onkeypress="return inputLimiter(event,'NumbersAndPlus');"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfRequest == 'Inquiry Tracking List',true,false)}">
+                        <apex:outputText value="Start Date"/>
+                        <apex:input type="date" value="{!startDate}" id="startDate"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfRequest == 'Inquiry Tracking List',true,false)}">
+                        <apex:outputText value="End Date"/>
+                        <apex:input type="date" value="{!endDate}" id="endDate"/>
+                    </apex:pageBlockSectionItem>
+                    <!--#####################-->  
+                    <apex:pageBlockSectionItem rendered="{!IF(OR(typeOfRequest=='Resend Activation Link',typeOfRequest=='Request for Reset Password',typeOfRequest == 'Request User ID'),true,false)}">
+                        <apex:outputText value="Owner DOB"/>
+                        <apex:input type="date" value="{!dob}" id="dob"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfRequest=='Update Data',true,false)}">
+                        <apex:outputText value="Type Of Data"/>
+                        <apex:selectList size="1" value="{!typeOfData}" required="{!IF(typeOfRequest=='Update Data',true,false)}" label="Type Of Request"> 
+                            <apex:selectOptions value="{!typeOfDataList}"/>
+                            <apex:actionSupport reRender="getUserMngmnt,updateData" event="onchange" status="stSearch"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette" style="display:{!IF(AND(typeOfData!='',typeOfRequest=='Update Data'),'','none')}">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h3>{!typeOfRequest} - {!typeOfData}<span class="titleSeparatingColon">:</span></h3>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <apex:pageBlockSection id="updateData" rendered="{!IF(AND(typeOfData!='',typeOfRequest=='Update Data'),true,false)}" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputText value="Login ID" />
+                        <apex:input type="text" value="{!userInfos}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Alamat Korespondensi Lama"/>
+                        <apex:inputTextarea disabled="true" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Alamat Korespondensi Baru"/>
+                        <apex:inputTextarea rows="5" cols="50" value="{!address}" />
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Provinsi"/>
+                        <apex:actionRegion >
+                            <apex:selectList size="1" value="{!province}" label="Province" style="display: block;" styleClass="searchSelect borderRed">
+                                <apex:selectOptions value="{!provincesSelectList}"/>
+                                <apex:actionSupport event="onchange" reRender="city,subDistrict,village,postal" status="stSearch" oncomplete="reloadSearchSelect();"></apex:actionSupport>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Kota"/>
+                        <apex:actionRegion >
+                            <apex:selectList id="city" size="1" value="{!city}" label="City" style="display: block;" styleClass="searchSelect borderRed">
+                                <apex:selectOptions value="{!citiesSelectList}"/>
+                                <apex:actionSupport event="onchange" reRender="subDistrict,village,postal" status="stSearch" oncomplete="reloadSearchSelect();"></apex:actionSupport>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Kecamatan"/>
+                        <apex:actionRegion >
+                            <apex:selectList id="subDistrict" size="1" value="{!subDistrict}" label="Sub District" style="display: block;"> 
+                                <apex:selectOptions value="{!subDistrictsSelectList}"/>
+                                <apex:actionSupport event="onchange" reRender="village,postal" status="stSearch" oncomplete="reloadSearchSelect();"></apex:actionSupport>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Kelurahan"/>
+                        <apex:actionRegion >
+                            <apex:selectList id="village" size="1" value="{!village}" label="Village" style="display: block;">
+                                <apex:selectOptions value="{!villagesSelectList}"/>
+                                <apex:actionSupport event="onchange" reRender="postal" action="{!getPostalCode}" status="stSearch"/>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Korespondensi',true,false)}">
+                        <apex:outputText value="Kode Pos"/>
+                        <apex:outputText id="postal" value="{!postalCD}" styleClass="underline"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Email',true,false)}">
+                        <apex:outputText value="Alamat Email Lama"/>
+                        <apex:inputTextarea value="{!email}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Alamat Email',true,false)}">
+                        <apex:outputText value="Alamat Email Baru"/>
+                        <apex:inputTextarea value="{!newEmail}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Nomor Handphone',true,false)}">
+                        <apex:outputText value="Nomor Handphone Lama"/>
+                        <apex:inputTextarea disabled="true" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Nomor Handphone',true,false)}">
+                        <apex:outputText value="Nomor Handphone Baru"/>
+                        <apex:inputText value="{!phone}" onkeypress="return inputLimiter(event,'NumbersAndPlus');"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Nomor Whatsapp',true,false)}">
+                        <apex:outputText value="Nomor Whatsapp Lama"/>
+                        <apex:inputText disabled="true" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(typeOfData=='Nomor Whatsapp',true,false)}">
+                        <apex:outputText value="Nomor Whatsapp Baru"/>
+                        <apex:inputText value="{!phone}" />
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette" style="display:{!IF(AND(typeOfRequest=='Inquiry Data Guest', hasAddPolicy),'','none')}">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h3>Add Policy<span class="titleSeparatingColon">:</span></h3>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette" style="display:{!IF(AND(typeOfRequest=='Inquiry Data', hasAddPolicy),'','none')}">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h3>Add Policy<span class="titleSeparatingColon">:</span></h3>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <apex:pageBlockSection id="populate2" rendered="{!IF(typeOfRequest!='',true,false)}" columns="{!IF(typeOfRequest=='Request for Reset Password','2','1')}">
+                    
+                    <apex:pageBlockSectionItem rendered="{!IF(AND(typeOfRequest=='Inquiry Data Guest', hasAddPolicy),'','none')}">
+                        <apex:outputText value="Policy Number"/>
+                        <apex:input type="text" value="{!policyNo}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IF(AND(typeOfRequest=='Inquiry Data Guest', hasAddPolicy),'','none')}">
+                        <apex:outputText value="Identity No"/>
+                        <apex:input type="text" value="{!ktp}"/>                      
+                    </apex:pageBlockSectionItem>
+                    
+                <apex:pageBlockSectionItem rendered="{!IF(AND(typeOfRequest=='Inquiry Data Guest', hasAddPolicy),'','none')}"> 
+                        <apex:outputText value="Gender"/>
+                        <apex:selectRadio value="{!gender}">
+            				<apex:selectOptions value="{!genders}"/>
+            			</apex:selectRadio>           
+                    </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(AND(typeOfRequest=='Inquiry Data Guest', hasAddPolicy),'','none')}">
+                        <apex:outputText value="Owner DOB"/>
+                        <apex:input type="date" value="{!dob}" id="dob"/>
+                    </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                
+                <apex:pageBlockButtons >
+                    <apex:commandButton id="submit" value="Submit" action="{!submit}"/>
+                    <apex:commandButton id="canceAddPolicy" value="Cancel Add Policy" action="{!cancelAddPolicy}" rendered="{!IF(AND(typeOfRequest == 'Inquiry Data Guest', hasAddPolicy),true,false)}"/>
+                    <apex:commandButton value="Add Policy" action="{!addPolicy}" rendered="{!IF(AND(typeOfRequest == 'Inquiry Data Guest', buttonAddPolicy),true,false)}" />
+                    <apex:commandButton id="resendEmployeeActivationLink" value="Re-Send Activation Link" action="{!resendEmployeeActivation}" rendered="{!IF(AND(typeOfRequest == 'Inquiry Status Karyawan', isEmployeeActive == 'false'), true, false)}"/> 
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            <!--Added By Fajar Salam-->
+            <apex:pageBlock >
+            <apex:pageBlockSection title="History Request" rendered="{!IF(typeOfRequest == 'Request User ID',true,false)}">
+                <apex:pageBlockTable id="idpbt" value="{!historyRequest}" var="reqHistory" style="overflow:auto;width:850px;" border="1">
+                    <!--<apex:column headerValue="Email History">{!reqHistory.Email_History__c}</apex:column>-->
+                    <!--<apex:column headerValue="Active Email">{!reqHistory.Active_Email__c}</apex:column>-->
+                    <apex:column headerValue="Tanggal Request">{!reqHistory.Request_Date__c}</apex:column>
+					<apex:column headerValue="Request Type">{!reqHistory.Type_Request__c}</apex:column>                        
+                    <apex:column headerValue="Status">{!reqHistory.Status__c}</apex:column>                    
+                    <apex:column headerValue="Finish Date">{!reqHistory.Finish_Date__c}</apex:column>                    
+                </apex:pageBlockTable>
+             </apex:pageBlockSection>
+           </apex:pageBlock>
+            <!--##############-->
+            
+            <apex:pageBlock title="Response {!typeOfRequest}" rendered="{! !ISBLANK(responseStatus)}">
+                
+                <apex:pageMessage severity="Error" summary="{!responseMessage}" strength="1" rendered="{! isError}"/>
+                <apex:pageBlockSection columns="1" rendered="{! !isError}">
+                    
+                    <apex:pageBlockTable value="{!responseCustomers}" var="data" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="CIF" rendered="{!IF(AND(typeOfRequest != 'Request User ID', typeOfRequest != 'Inquiry Data Online Registration', typeOfRequest != 'Inquiry Data Guest',typeOfRequest != 'Inquiry Status Tracking', typeOfRequest !='Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.cif}"/>
+                        </apex:column>
+                        <apex:column headerValue="First Name" rendered="{!IF(AND(typeOfRequest != 'Request User ID', typeOfRequest != 'Inquiry Data Online Registration',typeOfRequest != 'Inquiry Status Tracking', typeOfRequest !='Inquiry Tracking List', typeOfRequest !='Inquiry Status Karyawan'),true,false)}">
+                            <apex:outputText value="{!data.fullName}"/>
+                        </apex:column>
+                        <apex:column headerValue="Gender" rendered="{!IF(typeOfRequest != 'Inquiry Data Online Registration',true,false)}">
+                            <apex:outputText value="{!data.gender}"/>
+                        </apex:column>
+                        <apex:column headerValue="Login ID" rendered="{!IF((typeOfRequest != 'Inquiry Data Online Registration'),true,false)}">
+                            <apex:outputText value="{!data.loginId}"/>
+                        </apex:column>
+                        <apex:column headerValue="Email" rendered="{!IF(OR(typeOfRequest != 'Inquiry Data Online Registration', typeOfRequest != 'Inquiry Data Guest'),true,false)}">
+                            <apex:outputText value="{!data.email}"/>
+                        </apex:column>
+                        <apex:column headerValue="Phone Number" rendered="{!IF(AND(typeOfRequest != 'Inquiry Data Online Registration', typeOfRequest != 'Inquiry Status Karyawan'),true,false)}">
+                            <apex:outputText value="{!data.mobileNumber}"/>
+                        </apex:column>
+                        <apex:column headerValue="Account Status" rendered="{!IF(AND(typeOfRequest != 'Request User ID',typeOfRequest != 'Inquiry Data Online Registration', typeOfRequest != 'Inquiry Status Tracking', typeOfRequest !='Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.isBlock}"/>
+                        </apex:column>
+                        <apex:column headerValue="Activation Date"  rendered="{!IF(AND(typeOfRequest != 'Request User ID', typeOfRequest != 'Inquiry Data Guest', typeOfRequest != 'Inquiry Data Online Registration',typeOfRequest != 'Inquiry Status Tracking', typeOfRequest !='Inquiry Tracking List', typeOfRequest !='Inquiry Status Karyawan'),true,false)}">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss a}"><apex:param value="{!data.activationDate}"/></apex:outputText>
+                        </apex:column>
+                        <apex:column headerValue="Registration Remark" rendered="{!IF(typeOfRequest = 'Inquiry Data Online Registration',true,false)}">
+                            <apex:outputText value="{!data.registrationRemark}"/>
+                        </apex:column>
+                        <apex:column headerValue="KTP" rendered="{!IF(typeOfRequest = 'Inquiry Data Online Registration',true,false)}">
+                            <apex:outputText value="{!data.KTP}"/>
+                        </apex:column>
+                        <apex:column headerValue="Date of Birth">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}">
+                                <apex:param value="{!data.dob}"/></apex:outputText>
+                        </apex:column>
+                        <apex:column headerValue="Address"  rendered="{!IF(AND(typeOfRequest != 'Request User ID', typeOfRequest != 'Inquiry Data Guest', typeOfRequest != 'Inquiry Data Online Registration',typeOfRequest != 'Inquiry Status Tracking', typeOfRequest !='Inquiry Tracking List', typeOfRequest != 'Inquiry Status Karyawan'),true,false)}">
+                            <apex:outputText value="{!data.address}"/>
+                        </apex:column>
+                       <!-- <apex:column headerValue="Whatsapp Number"  rendered="{!IF(AND(typeOfRequest != 'Request User ID', typeOfRequest != 'Inquiry Data Online Registration',typeOfRequest != 'Inquiry Status Tracking', typeOfRequest !='Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.whatsappNumber}"/>
+                        </apex:column>-->                        
+                        <!--Added By Fajar Salam-->
+                        <apex:column headerValue="Created Date"  rendered="{!IF(OR(typeOfRequest == 'Inquiry Data', typeOfRequest == 'Request User ID'),true,false)}">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss a}"><apex:param value="{!data.createdDate}"/></apex:outputText>
+                        </apex:column>
+                        <apex:column headerValue="Policy Number" rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Data Online Registration', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Tracking List', typeOfRequest == 'Inquiry Status Karyawan'),true,false)}">
+                            <apex:outputText value="{!data.policyNumber}"/>
+                        </apex:column>
+                        <apex:column headerValue="Input Time" rendered="{!IF(typeOfRequest = 'Inquiry Data Online Registration',true,false)}">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss a}"><apex:param value="{!data.inputTime}"/></apex:outputText>
+                        </apex:column>                        
+                        <apex:column headerValue="Date Modify" rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss a}"><apex:param value="{!data.modifyDate}"/></apex:outputText>
+                            
+                        </apex:column>
+                        <apex:column headerValue="Created By" rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.registredBy}"/>
+                        </apex:column>                        
+                        <apex:column headerValue="Modify By" rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.modifyBy}"/>
+                        </apex:column>
+                        <apex:column headerValue="Status" rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Data Online Registration', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.status}"/>
+                        </apex:column>
+                        <apex:column headerValue="Remark" rendered="{!IF(OR(typeOfRequest == 'Request User ID', typeOfRequest == 'Inquiry Status Tracking', typeOfRequest == 'Inquiry Tracking List'),true,false)}">
+                            <apex:outputText value="{!data.remark}"/>
+                        </apex:column>
+                        
+                        
+                        <apex:column headerValue="Send Date"  rendered="{!IF(typeOfRequest == 'Inquiry Data',true,false)}">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss a}"><apex:param value="{!data.sendDate}"/></apex:outputText>
+                        </apex:column>
+                        <apex:column headerValue="Send To"  rendered="{!IF(typeOfRequest == 'Inquiry Data',true,false)}">
+                            <apex:outputText value="{!data.sendTo}"/>                           
+                        </apex:column>
+                        <apex:column headerValue="Email MDM"  rendered="{!IF(typeOfRequest == 'Inquiry Data',true,false)}">
+                            <apex:outputText value="{!data.emailMDM}"/>
+                        </apex:column>
+                        <apex:column headerValue="Phone Number MDM"  rendered="{!IF(typeOfRequest == 'Inquiry Data',true,false)}">
+                            <apex:outputText value="{!data.mobilePhoneMDM}"/>
+                        </apex:column>
+                        <apex:column headerValue="Last Login Date"  rendered="{!IF(typeOfRequest == 'Inquiry Data',true,false)}">
+                            <apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss a}"><apex:param value="{!data.lastLogin}"/></apex:outputText>
+                        </apex:column>
+                        
+                        <!--
+<apex:column headerValue="Street Name">
+<apex:outputText value="{!data.street}"/>
+</apex:column>
+<apex:column headerValue="Subdistrict">
+<apex:outputText value="{!data.subDistrict}"/>
+</apex:column>
+<apex:column headerValue="District">
+<apex:outputText value="{!data.district}"/>
+</apex:column>
+<apex:column headerValue="City">
+<apex:outputText value="{!data.city}"/>
+</apex:column>
+<apex:column headerValue="Province">
+<apex:outputText value="{!data.province}"/>
+</apex:column>
+<apex:column headerValue="Postal Code">
+<apex:outputText value="{!data.postalCode}"/>
+</apex:column>
+-->
+                    <apex:facet name="footer"><i>About {!responseTotalData} results. Showing Page # {!responsePage} of {!totalPages}</i></apex:facet>
+                    </apex:pageBlockTable>
+                    
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons >                    
+                    <apex:commandButton value="Previous" action="{!previousPage}" disabled="{! NOT(hasPrevious) }" />
+                    <apex:commandButton value="Next" action="{!nextPage}" disabled="{!NOT(hasNext)}" />
+                    <!--<apex:commandButton value="Download Sumary" action="{!downloadSumary}" rendered="{!IF(typeOfRequest =='Inquiry Tracking List',true,false)}"/>-->
+                    <apex:commandButton value="Download Report" action="{!downloadReport}" rendered="{!IF(AND(typeOfRequest == 'Inquiry Tracking List', checkUserAllowance),true,false)}"/>
+                </apex:pageBlockButtons>
+                
+            </apex:pageBlock>
+            
+           
+        </apex:form>
+    </body>
+</apex:page>

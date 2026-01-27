@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Request_Recordtype_ID__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(TEXT(Entity_Backup__c) = &apos;ALI&apos;,&apos;0126F000001MIGOQA4&apos;,
+IF(Entity__c = &apos;AFI&apos;,&apos;01290000000mOga&apos;,
+IF(Entity__c = &apos;AMFS&apos;,&apos;01290000000msDh&apos;, &apos;01290000000msDm&apos;)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Request Recordtype ID</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

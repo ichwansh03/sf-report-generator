@@ -1,0 +1,1058 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" extensions="PolicyDetailController" action="{!callDataviaWS}">
+   <!--head-->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <!--apex:includeScript value="{!$Resource.WebserviceJS}"/-->
+    <!--apex:includeScript value="{!$Label.WS_IP}/Web_JavaScript/WebService_MD.js"/-->
+    
+    <script type="text/javascript">
+        //window.open("{!$Label.WS_IP}/Web_JavaScript/SFDC_PopUpWindow_RLS.htm");
+        //SFDC1('{!policyNo}', '{!policyApp}', '{!entity}', '{!token}' );
+        //window.open('http://www.kompas.com');
+    
+       
+           var EPISODES = EPISODES || {};
+           EPISODES.q = []; // command queue
+           EPISODES.mark = function(mn, mt) { EPISODES.q.push( ["mark", mn, mt || new Date().getTime()] ); };
+           EPISODES.measure = function(en, st, et) { EPISODES.q.push( ["measure", en, st, et || new Date().getTime()] ); };
+           EPISODES.mark("firstbyte");
+           EPISODES.bSendBeacon = 1;
+    </script>
+
+       <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+       <script src="../../resource/1445396331000/EpisodeJS" type="text/javascript"></script>         
+       <script src="../../soap/ajax/32.0/connection.js" type="text/javascript"></script>
+   <!--/head-->
+   
+   <!--body-->
+   <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+    <apex:pageMessages />
+    <apex:pageBlock mode="maindetail" tabStyle="Contact" rendered="{!isDisplayed}">
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy Owner ID"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.CustomerID}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Gender"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.Gender}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Date of Birth"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!pelanggan.DOB}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Place of Birth"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.PlaceofBirth}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 1"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.Alamat1}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 2"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.Alamat2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 3"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.Alamat3}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 4"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.Alamat4}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent Servicing Code"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.AgentServicing}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent Producing Code"></apex:outputLabel>
+                    <apex:outputText value="{!pelanggan.AgentProducer}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" title="Policy Detail" collapsible="true" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Source Code"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.ReferenceNumber}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Total Premium"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.TotalPremium}"/> </apex:outputText>
+                    <!-- Alternatively: value="{0,number,currency}" -->
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" title="Policy Detail" collapsible="true" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy No"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PolicyNumber}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Total Modal Premium"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.TotalPremium}"/> </apex:outputText>
+                    <!-- Alternatively: value="{0,number,currency}" -->
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Plan Code"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.ProductCode}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Total Sum Insured"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.TotalSumInsured}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Product Code"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.ProductCode}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Total Sum Insured"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.TotalSumInsured}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Plan Name"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.ProductName}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Top Up Premium"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.RegularTopUp}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Product Name"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.ProductName}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="RTU Premium"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.RegularTopUp}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy Status"></apex:outputLabel>
+                    <!--  <apex:outputText value="{!polisRider.PolicyStatus}" ></apex:outputText> -->
+                    <apex:outputText value="{!polisRider.PolicyStatus}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Initial Lump Sum"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.LumpSumTopUp}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy Status"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PolicyStatus}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Lump Sum Premium"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.LumpSumTopUp}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Application Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.DateofApplication}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Method"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PaymentMethod}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <!-- 
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Basic Regular Premium"></apex:outputLabel>
+                    <apex:outputText value="Rp{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.BasicRegPrem}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Method"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PaymentMethod}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            -->
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Application Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.DateofApplication}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Basic Rider Modal Premium"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.BasicRiderModPrem}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Issue Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.IssuedDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Basic Sum Insured"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.BasicSI}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Issue Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.IssuedDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Mode"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PaymentMode}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Effective Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param name="effDat" value="{!polisRider.EffectiveDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status Description"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.Description}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Effective Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.EffectiveDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Type"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PaymentMethod}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Expired Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.ExpiredDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Premium Holiday Start Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.PremiumHolidayStart}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>    
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Expired Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.ExpiredDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Mode"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PaymentMode}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2"  rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Due Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.DueDate1}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Premium Holiday End Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.PremiumHolidayEnd}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Due Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.DueDate2}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Premium Holiday Start Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.PremiumHolidayStart}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>    
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Termination Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.TerminationDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="USPRRLTN"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.USPRRLTN}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Termination Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.TerminationDate}"/></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Premium Holiday End Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.PremiumHolidayEnd}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>    
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Cash Value"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.CashValue}"/> </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status Description"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.Description}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection columns="2" title="Agent Info" collapsible="true">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.AgentName}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomeAddress1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent ID"></apex:outputLabel>
+                    <apex:outputText value="{!agen.AgentID}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomeAddress2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Agent No"></apex:outputLabel>
+                    <apex:outputText value="{!agen.AgentNo}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 3"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomeAddress3}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Entity"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Entity}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 4"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomeAddress4}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Email"></apex:outputLabel>
+                    <apex:outputText value="{!agen.EmailAddress}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <!--Change Label From Office Address To Leader by Sandhi 251115-->
+                    <apex:outputLabel value="Leader 1"></apex:outputLabel>  
+                    <apex:outputText value="{!agen.OfficeAddress1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Status}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <!--Change Label From Office Address To Leader by Sandhi 251115-->
+                    <apex:outputLabel value="Leader 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficeAddress2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Area"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Area}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <!--Change Label From Office Address To Leader by Sandhi 251115-->            
+                    <apex:outputLabel value="Leader 3"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficeAddress3}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Distribution Code"></apex:outputLabel>
+                    <apex:outputText value="{!agen.DistributionCode}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <!--Change Label From Office Address To Leader by Sandhi 251115-->            
+                    <apex:outputLabel value="Leader 4"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficeAddress4}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Distribution Type"></apex:outputLabel>
+                    <apex:outputText value="{!agen.DistributionType}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Home Phone 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomePhone1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Mobile"></apex:outputLabel>
+                    <apex:outputText value="{!agen.MobilePhone1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Home Phone 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomePhone2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Join Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!agen.JoinDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Office Phone"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficePhone}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Insured Detail" collapsible="true" columns="10">
+            <apex:pageBlockTable id="idinsrd" value="{!insuredList}" var="tertanggung" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="ID No">{!tertanggung.IdentificationNo}</apex:column>
+                <apex:column headerValue="Name">{!tertanggung.Name}</apex:column>
+                <apex:column headerValue="Place of Birth">{!tertanggung.PlaceofBirth}</apex:column>
+                <apex:column headerValue="Date of Birth"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!tertanggung.DOB}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Gender">{!tertanggung.Gender}</apex:column>
+                <apex:column headerValue="Email">{!tertanggung.EmailAddress}</apex:column>
+                <apex:column headerValue="Mobile">{!tertanggung.MobilePhoneNumber}</apex:column>
+                <!-- <apex:column headerValue="Relation With Policy Holder" rendered="{!AdditionalNonRLS}">{!tertanggung.RelationwithPolicyHolder}</apex:column>  -->
+                <apex:column rendered="{!AdditionalNonRLS}"> <apex:facet name="header">Relation With<br/>Policy Holder</apex:facet> {!tertanggung.RelationwithPolicyHolder}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>       
+        <!-- payment history for RLS -->
+        <apex:pageBlockSection title="Payment History" collapsible="true" columns="6" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idtrxpym" value="{!trxPaymentList}" var="payment" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Payment Method">{!payment.TransactionType}</apex:column>
+                <apex:column headerValue="Payment Submission Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!payment.SubmissionDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Payment Transaction Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!payment.PaymentDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Payment Due Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!payment.DueDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Payment Amount" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!payment.Amount}"/> </apex:outputText></apex:column>           
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <!-- payment history for Non RLS -->
+        <apex:pageBlockSection title="Payment History" collapsible="true" columns="6" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockTable id="idtrxpym" value="{!trxPaymentList}" var="payment" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Payment Type">{!payment.TransactionType}</apex:column>
+                <apex:column headerValue="Payment Submission Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!payment.SubmissionDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Payment Transaction Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!payment.PaymentDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Payment Due Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!payment.DueDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Payment Amount" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!payment.Amount}"/> </apex:outputText></apex:column>           
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+               
+        <apex:pageBlockSection title="Claim History" collapsible="true" columns="6" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idtrxcla" value="{!trxClaimList}" var="claim" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Product Type">{!claim.ProductType}</apex:column>
+                <apex:column headerValue="Claim No">{!claim.ClaimNumber}</apex:column>
+                <apex:column headerValue="Claim Type">{!claim.ClaimType}</apex:column>
+                <apex:column headerValue="Claim Plan">{!claim.ClaimPlan}</apex:column>
+                <apex:column headerValue="Claim Submission Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.SubmissionDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Claim Approval Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.ApprovalDate}" /></apex:outputText></apex:column>
+                <!--  <apex:column headerValue="Claim Currency">{!claim.ClaimCurrency}</apex:column>  -->         
+                <apex:column headerValue="Claim Amount" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!claim.Amount}"/> </apex:outputText></apex:column>
+                <apex:column headerValue="Claim Status 1">{!claim.ClaimStatus1}</apex:column>
+                <apex:column headerValue="Claim Status 2">{!claim.ClaimStatus2}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Claim History" collapsible="true" columns="5" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockTable id="idtrxcla" value="{!trxClaimList}" var="claim" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Claim No">{!claim.ClaimNumber}</apex:column>
+                <apex:column headerValue="Claim Submission Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.SubmissionDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Claim Approval Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.ApprovalDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Claim Amount" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!claim.Amount}"/> </apex:outputText></apex:column>
+                <apex:column headerValue="Claim Status">{!claim.ClaimStatus1}</apex:column>
+               <!--  <apex:column headerValue="Status Description">{!claim.StatusDesc}</apex:column> -->
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <!-- Fund Detail u/ RLS -->
+        <apex:pageBlockSection title="Fund Detail" collapsible="true" columns="4" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="iddetfund" value="{!detailFundList}" var="detail" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Fund Code">{!detail.FundCode}</apex:column>
+                <!--  <apex:column headerValue="Fund Allocation" ><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"><apex:param value="{!detail.FundAllocation}" /></apex:outputText></apex:column> -->
+                <apex:column headerValue="Fund Allocation" >{!detail.FundAllocation}</apex:column>
+                <apex:column headerValue="Fund Price" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"><apex:param value="{!detail.FundPrice}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Total Unit Fund"><apex:outputText value="{0, number, ####.####}"><apex:param value="{!detail.TotalUnitFund}" /></apex:outputText></apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:outputText ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Total Fund Amount:"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}" style="padding-left:17px;"> <apex:param value="{!detailFund.TotFundAmount}"/></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!displayRLSOnly}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:outputText ></apex:outputText>
+            </apex:pageBlockSectionItem>    
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="NAV Date:"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}" style="padding-left:17px;"><apex:param value="{!detailFund.NAVDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <!-- Fund Detail u/ Non-RLS -->
+        <apex:pageBlockSection title="Fund Detail" collapsible="true" columns="4" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockTable id="iddetfund2" value="{!detailFundList}" var="detail" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Fund Code">{!detail.FundCode}</apex:column>
+                <!-- <apex:column headerValue="Fund Amount"><apex:outputText value="{0, number, ####.####}"><apex:param value="{!detail.FundAllocation}" /></apex:outputText></apex:column> -->
+                <apex:column headerValue="Fund Amount">{!detail.FundAllocation}</apex:column>
+                <apex:column headerValue="Fund Price" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"><apex:param value="{!detail.FundPrice}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Fund Unit"><apex:outputText value="{0, number, ####.####}"><apex:param value="{!detail.TotalUnitFund}" /></apex:outputText></apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:outputText ></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Fund Total:"></apex:outputLabel>
+                    <apex:outputText value="{0, number, ###,###,###,###.00}" style="padding-left:17px;"> <apex:param value="{!detailFund.TotFundAmount}"/></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:outputText ></apex:outputText>
+            </apex:pageBlockSectionItem>    
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Fund NAV Date:"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}" style="padding-left:17px;"><apex:param value="{!detailFund.NAVDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Fund Transaction" collapsible="true" columns="6" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idtrfundtrx" value="{!fundTrxList}" var="fund" style="overflow:auto;width:1000px;word-wrap: break-word;" align="center" border="1">
+                <apex:column > <apex:facet name="header">U/L Fund<br/> Code</apex:facet> {!fund.FundCodes}</apex:column>
+                <apex:column > <apex:facet name="header">Fund Price<br/>Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.FundPriceDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/> Unit</apex:facet> <apex:outputText value="{0, number, ####.####}"> <apex:param value="{!fund.TrxUnit}"/> </apex:outputText></apex:column>
+                <!-- <apex:column > <apex:facet name="header">Fund<br/>Currency</apex:facet> {!fund.FundCurrency}</apex:column> -->
+                <apex:column style="text-align: right;"> <apex:facet name="header">Unit Price</apex:facet> <apex:outputText value="{!polisRider.MataUang}{0, number, ####.####}"> <apex:param value="{!fund.UnitPrice}"/> </apex:outputText></apex:column>
+                <!-- <apex:column > <apex:facet name="header">Spread %</apex:facet> {!fund.Spread}</apex:column> -->
+                <apex:column style="text-align: right;"> <apex:facet name="header">Transaction<br/>Amount</apex:facet> <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!fund.TrxAmount}"/></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/>Code</apex:facet> {!fund.TrxCode}</apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/>Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.TrxDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/>Effective Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.TrxEffectiveDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">U/L Valuation<br/>Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.ValuationDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Processing<br/>Type</apex:facet> {!fund.ProcessingType}</apex:column>
+                <apex:column > <apex:facet name="header">Processing<br/>Mode</apex:facet> {!fund.ProcessingMode}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+          
+        <apex:pageBlockSection title="Fund Transaction History" collapsible="true" columns="6" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockTable id="idtrfundtrx" value="{!fundTrxList}" var="fund" style="overflow:auto;width:1000px;word-wrap: break-word;" align="center" border="1">
+                <apex:column > <apex:facet name="header">U/L Fund<br/> Code</apex:facet> {!fund.FundCodes}</apex:column>
+                <apex:column > <apex:facet name="header">Fund Price<br/>Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.FundPriceDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/> Unit</apex:facet> {!fund.TrxUnit}</apex:column>
+              <apex:column > <apex:facet name="header">Fund<br/>Currency</apex:facet> {!fund.FundCurrency}</apex:column>
+                <apex:column style="text-align: right;"> <apex:facet name="header">Unit Price</apex:facet> <apex:outputText value="{0, number, ####.####}"> <apex:param value="{!fund.UnitPrice}"/> </apex:outputText></apex:column>
+                <!--  <apex:column > <apex:facet name="header">Spread %</apex:facet> {!fund.Spread}</apex:column> -->
+                <apex:column style="text-align: right;"> <apex:facet name="header">Transaction<br/>Amount</apex:facet> <apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!fund.TrxAmount}"/></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/>Code</apex:facet> {!fund.TrxCode}</apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/>Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.TrxDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Transaction<br/>Effective Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.TrxEffectiveDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">U/L Valuation<br/>Date</apex:facet><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!fund.ValuationDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Processing<br/>Type</apex:facet> {!fund.ProcessingType}</apex:column>
+                <apex:column > <apex:facet name="header">Processing<br/>Mode</apex:facet> {!fund.ProcessingMode}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+                     
+        <apex:pageBlockSection title="Cash Value Detail" collapsible="true" columns="7" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idcashValue" value="{!cashValueList}" var="cash" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Loan" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.Loan}"/> </apex:outputText></apex:column>
+                <apex:column headerValue="Loan Interest" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.LoanInterest}"/> </apex:outputText></apex:column>           
+                <apex:column headerValue="Dividend" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.Dividend}"/> </apex:outputText></apex:column>
+                <apex:column headerValue="Dividend Interest" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.DividendInterest}"/> </apex:outputText></apex:column>
+                <!-- <apex:column headerValue="Future Premium Deposit" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FtrPremDeposit}"/> </apex:outputText></apex:column>  -->
+                <!-- <apex:column headerValue="Future Premium Deposit Interest" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FtrPremDepInter}"/> </apex:outputText></apex:column>  -->
+                <apex:column style="text-align: right;"> <apex:facet name="header">Future Premium<br/>Deposit</apex:facet> <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FtrPremDeposit}"/> </apex:outputText></apex:column>
+                <apex:column style="text-align: right;"> <apex:facet name="header">Future Premium<br/>Deposit Interest</apex:facet> <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FtrPremDepInter}"/> </apex:outputText></apex:column>
+                <apex:column headerValue="Cash Value" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.CashValue}"/> </apex:outputText></apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Beneficiary Detail" collapsible="true" columns="6">
+            <apex:pageBlockTable id="idbnf" value="{!beneficiaryList}" var="benefit" style="overflow:auto;width:1000px;table-layout:fixed;" align="center" border="1">
+                <apex:column headerValue="Name">{!benefit.Name}</apex:column>
+                <apex:column headerValue="Place of Birth">{!benefit.PlaceofBirth}</apex:column>
+                <apex:column headerValue="Date of Birth"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!benefit.DOB}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Gender">{!benefit.Gender}</apex:column>
+                <apex:column headerValue="Relation">{!benefit.RelationwithInsured}</apex:column>           
+                <apex:column headerValue="Percentage">{!benefit.PercentageofBenefit}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="Account Detail" collapsible="true" columns="6" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idaccDetail" value="{!accountDetailList}" var="accDet" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Account No">{!accDet.AccountNo}</apex:column>
+                <apex:column headerValue="Account Name">{!accDet.AccountName}</apex:column>
+                <apex:column headerValue="Account Effective Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!accDet.AccountEff}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Account Expired Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!accDet.AccountExp}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Account Type">{!accDet.AccountType}</apex:column>
+                <apex:column headerValue="Account Status">{!accDet.AccountStatus}</apex:column>
+                <apex:column headerValue="Collection Bank">{!accDet.CollectionBank}</apex:column>
+                <apex:column headerValue="Branch">{!accDet.AcchBranch}</apex:column>
+                <apex:column headerValue="Reject Code">{!accDet.RejectCode}</apex:column>
+                <apex:column headerValue="Reject Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!accDet.RejectDate}" /></apex:outputText></apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <!--  Additional Section (DO NOT DELETE...!!!)
+        <apex:pageBlockSection title="Premium Detail" collapsible="true" columns="6" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idpremDetail" value="{!premiumDetailList}" var="premDet" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Premium Type">{!premDet.PremiumType}</apex:column>
+                <apex:column headerValue="PMREF">{!premDet.PremRef}</apex:column>
+                <apex:column headerValue="PMRMKC">{!premDet.PMRMKC}</apex:column>
+                <apex:column headerValue="PMRMKD">{!premDet.PMRMKD}</apex:column>
+                <apex:column headerValue="PMRMKD2">{!premDet.PMRMKD2}</apex:column>
+                <apex:column headerValue="PMRMKD3">{!premDet.PMRMKD3}</apex:column>
+                <apex:column headerValue="PMDEPT">{!premDet.PMDEPT}</apex:column>
+                <apex:column headerValue="PMUSER">{!premDet.PMUSER}</apex:column>
+                <apex:column headerValue="PMLUPD">{!premDet.PMLUPD}</apex:column>
+                <apex:column headerValue="PMCOMD">{!premDet.PMCOMD}</apex:column>
+                <apex:column headerValue="PMCOMS">{!premDet.PMCOMS}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        -->
+        <apex:pageBlockSection title="Premium Breakdown" collapsible="true" columns="6" rendered="{!displayRLSOnly}">
+            <apex:pageBlockTable id="idprembreak" value="{!premiumBreakdownList}" var="prem" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Plan Code">{!prem.PlanCode}</apex:column>
+                <!--  <apex:column headerValue="Basic Plan"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.BasicPlan}"/> </apex:outputText></apex:column> -->
+                <apex:column headerValue="Plan Type">{!prem.PlanType}</apex:column>
+                <apex:column headerValue="Plan Effective Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!prem.EffectiveDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Plan Expired Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!prem.ExpiredDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Plan SI" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.PlanSi}"/> </apex:outputText></apex:column>
+                <apex:column headerValue="Modal Plan Premium" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.ModalPlanPremium}"/></apex:outputText></apex:column>
+                <apex:column headerValue="Plan Status">{!prem.PlanStatus}</apex:column>
+                <apex:column headerValue="Class Code">{!prem.ClassCode}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Premium Breakdown" collapsible="true" columns="6" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockTable id="idprembreak2" value="{!premiumBreakdownList}" var="prem" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Plan Code">{!prem.PlanCode}</apex:column>
+                <apex:column headerValue="Plan Type">{!prem.PlanType}</apex:column>
+                <apex:column headerValue="Plan SI" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.PlanSi}"/></apex:outputText></apex:column>
+                <apex:column headerValue="Modal Plan Premium" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.ModalPlanPremium}"/></apex:outputText></apex:column>
+                <apex:column headerValue="Modal Plan Loading" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.ModalPlanLoading}"/></apex:outputText></apex:column>
+                <apex:column headerValue="Effective Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!prem.EffectiveDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Expired Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!prem.ExpiredDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Termination Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!prem.TerminationDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Plan Status">{!prem.PlanStatus}</apex:column>           
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="Policy Change" collapsible="true" columns="6" rendered="{!AdditionalNonRLS}">
+            <apex:pageBlockTable id="idpolchange" value="{!policyChangeList}" var="pc" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Transaction Code">{!pc.TransactionCode}</apex:column>
+                <apex:column headerValue="Transaction Description">{!pc.TransactionDesc}</apex:column>
+                <apex:column headerValue="Submit Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!pc.SubmitDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Create Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!pc.CreateDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Status">{!pc.Status}</apex:column>
+                <apex:column headerValue="Remark">{!pc.Remark}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <!-- This block is used to handle GI policy -->
+    <apex:pageBlock mode="maindetail" tabStyle="Contact" rendered="{!displayGIOnly}">
+        <apex:pageBlockSection columns="2" title="Policy Detail" collapsible="true">        
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy No"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PolicyNumber}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.PolicyDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy Holder"></apex:outputLabel>
+                    <apex:outputText value="{!agen.PHOLDER}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reference Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.ReferenceDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Cover No"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.CoverNo}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Cover Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.CoverDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Insured"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.Insured}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Segment"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.Segment}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Description"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.Description}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Branch Name"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.Branch}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">        
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.StartDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <!-- 
+                    <apex:outputLabel value="Status Description"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.StatusDesc}"></apex:outputText>
+                    -->
+                    <apex:outputLabel value="Branch Code"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.BranchCode}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="End Date"></apex:outputLabel>
+                    <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!polisRider.EndDate}" /></apex:outputText>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.PolicyStatus}" ></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Premium"></apex:outputLabel>
+                    <!--apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.PremiumGI}"/></apex:outputText #remarked by WK, 2015112 : quickwins 2-->
+                    <apex:outputText value="{!polisRider.PremiumGIS}"></apex:outputText>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="TSI"></apex:outputLabel>
+                    <!--apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!polisRider.TSI}"/></apex:outputText #remarked by WK, 2015112 : quickwins 2-->
+                    <apex:outputText value="{!polisRider.TSIS}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+ 
+         <apex:pageBlockSection columns="1">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="AID"></apex:outputLabel>
+                    <apex:outputText value="{!polisRider.aids}"></apex:outputText>
+            </apex:pageBlockSectionItem>        
+        </apex:pageBlockSection>
+       
+        
+        <apex:pageBlockSection columns="2" title="Account Info" collapsible="true">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="No"></apex:outputLabel>
+                    <apex:outputText value="{!agen.AgentNo}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Phone 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomePhone1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Name2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Phone 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.HomePhone2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="First Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.FirstName}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Mobile 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.MobilePhone1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Middle Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.MidName}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Mobile 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.MobilePhone2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.LastName}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Email 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Email1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Salutation"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Salutation}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Email 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Email_2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Title"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Title}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Fax 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Fax1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Insured Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.AgentName}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Fax 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Fax2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Customer ID"></apex:outputLabel>
+                    <apex:outputText value="{!agen.ID}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Zip Code"></apex:outputLabel>
+                    <apex:outputText value="{!agen.ZipCode}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Customer Policy No"></apex:outputLabel>
+                    <apex:outputText value="{!agen.CPOLICYNO}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="City"></apex:outputLabel>
+                    <apex:outputText value="{!agen.City}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Inputer ID"></apex:outputLabel>
+                    <apex:outputText value="{!agen.UserID}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Marketing Officer Name"></apex:outputLabel>
+                    <apex:outputText value="{!agen.MO_Name}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 1"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficeAddress1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Marketing Officer Code"></apex:outputLabel>
+                    <apex:outputText value="{!agen.MO_Code}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 2"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficeAddress2}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Marketing Officer Dept"></apex:outputLabel>
+                    <apex:outputText value="{!agen.CT}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Address 3"></apex:outputLabel>
+                    <apex:outputText value="{!agen.OfficeAddress3}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Transaction Type"></apex:outputLabel>
+                    <apex:outputText value="{!agen.A_Type}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Contact"></apex:outputLabel>
+                    <apex:outputText value="{!agen.ContactPerson}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Intermediary Type"></apex:outputLabel>
+                    <apex:outputText value="{!agen.P_Type}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Contact Address"></apex:outputLabel>
+                    <apex:outputText value="{!agen.ContactAddress}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Customer Type"></apex:outputLabel>
+                    <apex:outputText value="{!agen.C_Type}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Contact Phone"></apex:outputLabel>
+                    <apex:outputText value="{!agen.ContactPhone}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Related Policy"></apex:outputLabel>
+                    <apex:outputText value="{!agen.ConjunctionF}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Currency"></apex:outputLabel>
+                    <apex:outputText value="{!agen.AgentID}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Description"></apex:outputLabel>
+                    <apex:outputText value="{!agen.Description1}"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+                
+        <apex:pageBlockSection title="Insured Information" collapsible="true" columns="2">
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Table No: " style="float:left;padding-left:10px;">&nbsp;<apex:outputText value="{!agen.TOC}"></apex:outputText></apex:outputLabel>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:outputText ></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="4">
+            <apex:pageBlockTable id="idtable" value="{!TOCList}" var="toc" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:variable value="{!toc.tableLabel1}" var="colTitle1" />
+                    <apex:column headerValue="{!colTitle1}" rendered="{!IF((colTitle1 != '' && toc.tableValue1 != '') || (colTitle1 = '' && toc.tableValue1 != '') || (colTitle1 != '' && toc.tableValue1 = ''),'true','false')}">{!toc.tableValue1}</apex:column>
+                <apex:variable value="{!toc.tableLabel2}" var="colTitle2" />
+                    <apex:column headerValue="{!colTitle2}" rendered="{!IF((colTitle2 != '' && toc.tableValue2 != '') || (colTitle2 = '' && toc.tableValue2 != '') || (colTitle2 != '' && toc.tableValue2 = ''),'true','false')}">{!toc.tableValue2}</apex:column>
+                <apex:variable value="{!toc.tableLabel3}" var="colTitle3" />
+                    <apex:column headerValue="{!colTitle3}" rendered="{!IF((colTitle3 != '' && toc.tableValue3 != '') || (colTitle3 = '' && toc.tableValue3 != '') || (colTitle3 != '' && toc.tableValue3 = ''),'true','false')}">{!toc.tableValue3}</apex:column>
+                <apex:variable value="{!toc.tableLabel4}" var="colTitle4" />
+                    <apex:column headerValue="{!colTitle4}" rendered="{!IF((colTitle4 != '' && toc.tableValue4 != '') || (colTitle4 = '' && toc.tableValue4 != '') || (colTitle4 != '' && toc.tableValue4 = ''),'true','false')}">{!toc.tableValue4}</apex:column>
+                <apex:variable value="{!toc.tableLabel5}" var="colTitle5" />
+                    <apex:column headerValue="{!colTitle5}" rendered="{!IF((colTitle5 != '' && toc.tableValue5 != '') || (colTitle5 = '' && toc.tableValue5 != '') || (colTitle5 != '' && toc.tableValue5 = ''),'true','false')}">{!toc.tableValue5}</apex:column>
+                <apex:variable value="{!toc.tableLabel6}" var="colTitle6" />
+                    <apex:column headerValue="{!colTitle6}" rendered="{!IF((colTitle6 != '' && toc.tableValue6 != '') || (colTitle6 = '' && toc.tableValue6 != '') || (colTitle6 != '' && toc.tableValue6 = ''),'true','false')}">{!toc.tableValue6}</apex:column>
+                <apex:variable value="{!toc.tableLabel7}" var="colTitle7" />
+                    <apex:column headerValue="{!colTitle7}" rendered="{!IF((colTitle7 != '' && toc.tableValue7 != '') || (colTitle7 = '' && toc.tableValue7 != '') || (colTitle7 != '' && toc.tableValue7 = ''),'true','false')}">{!toc.tableValue7}</apex:column>
+                <apex:variable value="{!toc.tableLabel8}" var="colTitle8" />
+                    <apex:column headerValue="{!colTitle8}" rendered="{!IF((colTitle8 != '' && toc.tableValue8 != '') || (colTitle8 = '' && toc.tableValue8 != '') || (colTitle8 != '' && toc.tableValue8 = ''),'true','false')}">{!toc.tableValue8}</apex:column>
+                <apex:variable value="{!toc.tableLabel9}" var="colTitle9" />
+                    <apex:column headerValue="{!colTitle9}" rendered="{!IF((colTitle9 != '' && toc.tableValue9 != '') || (colTitle9 = '' && toc.tableValue9 != '') || (colTitle9 != '' && toc.tableValue9 = ''),'true','false')}">{!toc.tableValue9}</apex:column>
+                <apex:variable value="{!toc.tableLabel10}" var="colTitle10" />
+                    <apex:column headerValue="{!colTitle10}" rendered="{!IF((colTitle10 != '' && toc.tableValue10 != '') || (colTitle10 = '' && toc.tableValue10 != '') || (colTitle10 != '' && toc.tableValue10 = ''),'true','false')}">{!toc.tableValue10}</apex:column>
+                <apex:variable value="{!toc.tableLabel11}" var="colTitle11" />
+                    <apex:column headerValue="{!colTitle11}" rendered="{!IF((colTitle11 != '' && toc.tableValue11 != '') || (colTitle11 = '' && toc.tableValue11 != '') || (colTitle11 != '' && toc.tableValue11 = ''),'true','false')}">{!toc.tableValue11}</apex:column>
+                <apex:variable value="{!toc.tableLabel12}" var="colTitle12" />
+                    <apex:column headerValue="{!colTitle12}" rendered="{!IF((colTitle12 != '' && toc.tableValue12 != '') || (colTitle12 = '' && toc.tableValue12 != '') || (colTitle12 != '' && toc.tableValue12 = ''),'true','false')}">{!toc.tableValue12}</apex:column>
+                <apex:variable value="{!toc.tableLabel13}" var="colTitle13" />
+                    <apex:column headerValue="{!colTitle13}" rendered="{!IF((colTitle13 != '' && toc.tableValue13 != '') || (colTitle13 = '' && toc.tableValue13 != '') || (colTitle13 != '' && toc.tableValue13 = ''),'true','false')}">{!toc.tableValue13}</apex:column>
+                <apex:variable value="{!toc.tableLabel14}" var="colTitle14" />
+                    <apex:column headerValue="{!colTitle14}" rendered="{!IF((colTitle14 != '' && toc.tableValue14 != '') || (colTitle14 = '' && toc.tableValue14 != '') || (colTitle14 != '' && toc.tableValue14 = ''),'true','false')}">{!toc.tableValue14}</apex:column>
+                <apex:variable value="{!toc.tableLabel15}" var="colTitle15" />
+                    <apex:column headerValue="{!colTitle15}" rendered="{!IF((colTitle15 != '' && toc.tableValue15 != '') || (colTitle15 = '' && toc.tableValue15 != '') || (colTitle15 != '' && toc.tableValue15 = ''),'true','false')}">{!toc.tableValue15}</apex:column>
+                   <apex:column headerValue=""></apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+         
+        <apex:pageBlockSection title="Claim" collapsible="true" columns="6">
+            <apex:pageBlockTable id="idtrxgia" value="{!giClaimList}" var="claim" style="overflow:auto;width:1000px;word-wrap: break-word;" align="center" border="1">
+                <!-- <apex:column > <apex:facet name="header">Policy<br/> No</apex:facet> {!claim.PolicyNo}</apex:column>  -->
+                <apex:column > <apex:facet name="header">Claim<br/>Registration No</apex:facet> {!claim.ClaimRegNo}</apex:column>
+                <apex:column > <apex:facet name="header">Claim<br/>Status</apex:facet> {!claim.ClaimStatus}</apex:column>
+                <apex:column > <apex:facet name="header">Branch<br/>Code</apex:facet> {!claim.Branch}</apex:column>
+                <apex:column > <apex:facet name="header">Client Name</apex:facet> {!claim.ClientName}</apex:column> 
+                <apex:column > <apex:facet name="header">Notification<br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.NotifDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Registration<br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.RegDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Date of<br/>Loss</apex:facet> <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.DateofLoss}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Description</apex:facet> {!claim.Description}</apex:column>
+                <apex:column > <apex:facet name="header">Accident<br/>Place</apex:facet> {!claim.AccidentPlace}</apex:column>
+                <apex:column > <apex:facet name="header">Repair<br/>Shop</apex:facet> {!claim.RepairShop}</apex:column>
+                <apex:column > <apex:facet name="header">Approval<br/>Payment Date</apex:facet> <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.ApprPayDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Payment<br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!claim.PaymentDate}" /></apex:outputText></apex:column>
+                <apex:column > <apex:facet name="header">Driver Name</apex:facet> {!claim.DriverName}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="Endorsement" collapsible="true" columns="6">
+            <apex:pageBlockTable id="idendorse" value="{!giEndorsementList}" var="endor" style="overflow:auto;width:1000px;" align="center" border="1">
+                <!-- <apex:column headerValue="Policy No">{!endor.PolicyNo}</apex:column>  -->
+                <apex:column headerValue="Certificate No">{!endor.CertificateNo}</apex:column>
+                <apex:column headerValue="Contract Type">{!endor.ContractType}</apex:column>
+                <apex:column headerValue="Inforce Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!endor.InforceDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Start Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!endor.StartDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="End Date"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="{!endor.EndDate}" /></apex:outputText></apex:column>
+                <apex:column headerValue="Endorsement Remark">{!endor.EndorsementRemark}</apex:column>
+                <apex:column headerValue="Status">{!endor.Status}</apex:column>
+                <apex:column headerValue="Type">{!endor.TypeGI}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="Interest Info" collapsible="true" columns="6">
+            <apex:pageBlockTable id="idinterest" value="{!interestInfoList}" var="inter" style="overflow:auto;width:1000px;" align="center" border="1">
+                <apex:column headerValue="Add Cover Code">{!inter.AddCoverCode}</apex:column>
+                <apex:column headerValue="Add Cover Name">{!inter.AddCoverName}</apex:column>
+                <apex:column headerValue="Add Cover Type">{!inter.AddCoverType}</apex:column>
+                <apex:column headerValue="Add Cover Premium" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!inter.AddCoverPremium}"/></apex:outputText></apex:column>
+                <apex:column headerValue="Sum Insured of Add Cover" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!inter.SIofAddCover}"/></apex:outputText></apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <!-- End of block for GI policy -->
+  </div>
+  <!--/body-->
+       <script type="text/javascript">
+           window.onload = function(){
+               //alert("page load starts : "+EPISODES.starts["page load time"]);
+               //alert("total load starts : "+EPISODES.starts["total load time"]);
+               //alert("total load duration : "+EPISODES.measures["total load time"]);
+               //alert("page load duration : "+EPISODES.measures["page load time"]);
+               var st = window.performance.timing.navigationStart;
+               setTimeout(
+                   function(){
+                       var dur = (window.performance.timing.loadEventEnd - st);
+                       //alert("page load duration : "+dur);
+                   },
+                   0
+               );
+           }
+       </script>
+
+</apex:page>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nature_Config__c</fullName>
+    <label>Nature</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Administrative procedures</fullName>
+                <default>false</default>
+                <label>Administrative procedures</label>
+            </value>
+            <value>
+                <fullName>Claims</fullName>
+                <default>false</default>
+                <label>Claims</label>
+            </value>
+            <value>
+                <fullName>Claim</fullName>
+                <default>false</default>
+                <label>Claim</label>
+            </value>
+            <value>
+                <fullName>Claim Decision</fullName>
+                <default>false</default>
+                <label>Claim Decision</label>
+            </value>
+            <value>
+                <fullName>Comben</fullName>
+                <default>false</default>
+                <label>Comben</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery</fullName>
+                <default>false</default>
+                <label>Courier Delivery</label>
+            </value>
+            <value>
+                <fullName>Courier Investigation</fullName>
+                <default>false</default>
+                <label>Courier Investigation</label>
+            </value>
+            <value>
+                <fullName>Financial Advisor Service</fullName>
+                <default>false</default>
+                <label>Financial Advisor Service</label>
+            </value>
+            <value>
+                <fullName>Forgery</fullName>
+                <default>false</default>
+                <label>Forgery</label>
+            </value>
+            <value>
+                <fullName>Misappropriation</fullName>
+                <default>false</default>
+                <label>Misappropriation</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation</fullName>
+                <default>false</default>
+                <label>Misrepresentation</label>
+            </value>
+            <value>
+                <fullName>New Business</fullName>
+                <default>false</default>
+                <label>New Business</label>
+            </value>
+            <value>
+                <fullName>Non Disclosure</fullName>
+                <default>false</default>
+                <label>Non Disclosure</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>POS</fullName>
+                <default>false</default>
+                <label>POS</label>
+            </value>
+            <value>
+                <fullName>Policy Duplicate</fullName>
+                <default>false</default>
+                <label>Policy Duplicate</label>
+            </value>
+            <value>
+                <fullName>Policy Retur</fullName>
+                <default>false</default>
+                <label>Policy Retur</label>
+            </value>
+            <value>
+                <fullName>Process</fullName>
+                <default>false</default>
+                <label>Process</label>
+            </value>
+            <value>
+                <fullName>Sales</fullName>
+                <default>false</default>
+                <label>Sales</label>
+            </value>
+            <value>
+                <fullName>TM Service</fullName>
+                <default>false</default>
+                <label>TM Service</label>
+            </value>
+            <value>
+                <fullName>Twisting/Chunning</fullName>
+                <default>false</default>
+                <label>Twisting/Chunning</label>
+            </value>
+            <value>
+                <fullName>Underwriting</fullName>
+                <default>false</default>
+                <label>Underwriting</label>
+            </value>
+            <value>
+                <fullName>Without Consent</fullName>
+                <default>false</default>
+                <label>Without Consent</label>
+            </value>
+            <value>
+                <fullName>Processing Error</fullName>
+                <default>false</default>
+                <label>Processing Error</label>
+            </value>
+            <value>
+                <fullName>Agent Services</fullName>
+                <default>false</default>
+                <label>Agent Services</label>
+            </value>
+            <value>
+                <fullName>Human Error</fullName>
+                <default>false</default>
+                <label>Human Error</label>
+            </value>
+            <value>
+                <fullName>Processing Times</fullName>
+                <default>false</default>
+                <label>Processing Times</label>
+            </value>
+            <value>
+                <fullName>Service provided by 3rd parties</fullName>
+                <default>false</default>
+                <label>Service provided by 3rd parties</label>
+            </value>
+            <value>
+                <fullName>Service provided by the internal Staff</fullName>
+                <default>false</default>
+                <label>Service provided by the internal Staff</label>
+            </value>
+            <value>
+                <fullName>Service provided by the Distributors</fullName>
+                <default>false</default>
+                <label>Service provided by the Distributors</label>
+            </value>
+            <value>
+                <fullName>Information /  communication</fullName>
+                <default>false</default>
+                <label>Information /  communication</label>
+            </value>
+            <value>
+                <fullName>Price</fullName>
+                <default>false</default>
+                <label>Price</label>
+            </value>
+            <value>
+                <fullName>Web / App</fullName>
+                <default>false</default>
+                <label>Web / App</label>
+            </value>
+            <value>
+                <fullName>DC-Forgery</fullName>
+                <default>false</default>
+                <label>DC-Forgery</label>
+            </value>
+            <value>
+                <fullName>DC-Incomplete Information</fullName>
+                <default>false</default>
+                <label>DC-Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>DC-Knowledge/Attitude</fullName>
+                <default>false</default>
+                <label>DC-Knowledge/Attitude</label>
+            </value>
+            <value>
+                <fullName>DC-Lack of follow-up</fullName>
+                <default>false</default>
+                <label>DC-Lack of follow-up</label>
+            </value>
+            <value>
+                <fullName>DC-Misappropriation</fullName>
+                <default>false</default>
+                <label>DC-Misappropriation</label>
+            </value>
+            <value>
+                <fullName>DC-Misrepresentation</fullName>
+                <default>false</default>
+                <label>DC-Misrepresentation</label>
+            </value>
+            <value>
+                <fullName>DC-Non disclosure</fullName>
+                <default>false</default>
+                <label>DC-Non disclosure</label>
+            </value>
+            <value>
+                <fullName>DC-Twisting</fullName>
+                <default>false</default>
+                <label>DC-Twisting</label>
+            </value>
+            <value>
+                <fullName>DC-Without Consent</fullName>
+                <default>false</default>
+                <label>DC-Without Consent</label>
+            </value>
+            <value>
+                <fullName>CS-Missing document</fullName>
+                <default>false</default>
+                <label>CS-Missing document</label>
+            </value>
+            <value>
+                <fullName>CS-Process Deficiency</fullName>
+                <default>false</default>
+                <label>CS-Process Deficiency</label>
+            </value>
+            <value>
+                <fullName>CS-Processing Error</fullName>
+                <default>false</default>
+                <label>CS-Processing Error</label>
+            </value>
+            <value>
+                <fullName>CS-Underwriting Decisions</fullName>
+                <default>false</default>
+                <label>CS-Underwriting Decisions</label>
+            </value>
+            <value>
+                <fullName>CS-Claims Delay</fullName>
+                <default>false</default>
+                <label>CS-Claims Delay</label>
+            </value>
+            <value>
+                <fullName>CS-Process Delay</fullName>
+                <default>false</default>
+                <label>CS-Process Delay</label>
+            </value>
+            <value>
+                <fullName>CS-Underwriting Delay</fullName>
+                <default>false</default>
+                <label>CS-Underwriting Delay</label>
+            </value>
+            <value>
+                <fullName>CS-3rd parties related</fullName>
+                <default>false</default>
+                <label>CS-3rd parties related</label>
+            </value>
+            <value>
+                <fullName>CS-Claims Decision</fullName>
+                <default>false</default>
+                <label>CS-Claims Decision</label>
+            </value>
+            <value>
+                <fullName>CS-Incomplete Information</fullName>
+                <default>false</default>
+                <label>CS-Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>CS-Knowledge/Attitude</fullName>
+                <default>false</default>
+                <label>CS-Knowledge/Attitude</label>
+            </value>
+            <value>
+                <fullName>CS-Lack of follow-up</fullName>
+                <default>false</default>
+                <label>CS-Lack of follow-up</label>
+            </value>
+            <value>
+                <fullName>TFC</fullName>
+                <default>false</default>
+                <label>TFC</label>
+            </value>
+            <value>
+                <fullName>Transaction</fullName>
+                <default>false</default>
+                <label>Transaction</label>
+            </value>
+            <value>
+                <fullName>Complain CS</fullName>
+                <default>false</default>
+                <label>Complain CS</label>
+            </value>
+            <value>
+                <fullName>Complain DC</fullName>
+                <default>false</default>
+                <label>Complain DC</label>
+            </value>
+            <value>
+                <fullName>Complain MKT</fullName>
+                <default>false</default>
+                <label>Complain MKT</label>
+            </value>
+            <value>
+                <fullName>Renewals</fullName>
+                <default>false</default>
+                <label>Renewals</label>
+            </value>
+            <value>
+                <fullName>MKT-Information and communication not clear / relevant</fullName>
+                <default>false</default>
+                <label>MKT-Information and communication not clear / relevant</label>
+            </value>
+            <value>
+                <fullName>MKT-Difficult to find information</fullName>
+                <default>false</default>
+                <label>MKT-Difficult to find information</label>
+            </value>
+            <value>
+                <fullName>MKT-Higher price versus competition</fullName>
+                <default>false</default>
+                <label>MKT-Higher price versus competition</label>
+            </value>
+            <value>
+                <fullName>MKT-Price Increases</fullName>
+                <default>false</default>
+                <label>MKT-Price Increases</label>
+            </value>
+            <value>
+                <fullName>MKT-App/ Website Related</fullName>
+                <default>false</default>
+                <label>MKT-App/ Website Related</label>
+            </value>
+            <value>
+                <fullName>AFI DC</fullName>
+                <default>false</default>
+                <label>AFI DC</label>
+            </value>
+            <value>
+                <fullName>AFI CS</fullName>
+                <default>false</default>
+                <label>AFI CS</label>
+            </value>
+            <value>
+                <fullName>AFI MKT</fullName>
+                <default>false</default>
+                <label>AFI MKT</label>
+            </value>
+            <value>
+                <fullName>AFI TC</fullName>
+                <default>false</default>
+                <label>AFI TC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

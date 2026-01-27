@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Line_Queue__c</fullName>
+    <description>for AFI, Feb2020</description>
+    <label>Line Queue</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Agency</fullName>
+                <default>false</default>
+                <label>Agency</label>
+            </value>
+            <value>
+                <fullName>Telemarketing</fullName>
+                <default>false</default>
+                <label>Telemarketing</label>
+            </value>
+            <value>
+                <fullName>Syariah</fullName>
+                <default>false</default>
+                <label>Syariah</label>
+            </value>
+            <value>
+                <fullName>Corporate</fullName>
+                <default>false</default>
+                <label>Corporate</label>
+            </value>
+            <value>
+                <fullName>DPLK</fullName>
+                <default>false</default>
+                <label>DPLK</label>
+            </value>
+            <value>
+                <fullName>SOE</fullName>
+                <default>false</default>
+                <label>SOE</label>
+            </value>
+            <value>
+                <fullName>Tenaga Pemasar</fullName>
+                <default>false</default>
+                <label>Tenaga Pemasar</label>
+            </value>
+            <value>
+                <fullName>Non Customer</fullName>
+                <default>false</default>
+                <label>Non Customer</label>
+            </value>
+            <value>
+                <fullName>Helpline</fullName>
+                <default>false</default>
+                <label>Helpline</label>
+            </value>
+            <value>
+                <fullName>Non Customer (Anonymous)</fullName>
+                <default>false</default>
+                <label>Non Customer (Anonymous)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

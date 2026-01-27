@@ -1,0 +1,83 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page controller="MyTrainingController" readOnly="true" docType="html-5.0" sidebar="false" showHeader="{!showSFHeader}" standardStylesheets="false">
+
+    <apex:composition template="LMS_Template">
+
+        <apex:define name="head">
+            <title>{!$Label.ALMS_My_Training}</title>
+        </apex:define>
+
+        <apex:define name="body">
+
+            <div class="slds-tabs--scoped">
+              <ul class="slds-tabs--scoped__nav" role="tablist">
+                <li class="slds-tabs--scoped__item slds-text-title--caps {!IF(selectedType=='Not Started','slds-active','')}" title="{!$Label.ALMS_NotStarted}" role="presentation">
+                    <a lms-status-id="Not Started" class="slds-tabs--scoped__link" href="javascript:void(0);" onclick="almond.myTrainingMenuHandler(this,'{!$Page.MyTraining}');" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                        {!$Label.ALMS_NotStarted}
+                    </a>
+                </li>
+                <li class="slds-tabs--scoped__item slds-text-title--caps {!IF(selectedType=='In Progress','slds-active','')}" title="{!$Label.ALMS_InProgress}" role="presentation">
+                    <a lms-status-id="In Progress" class="slds-tabs--scoped__link" href="javascript:void(0);" onclick="almond.myTrainingMenuHandler(this,'{!$Page.MyTraining}');" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                        {!$Label.ALMS_InProgress}
+                    </a>
+                </li>
+                <li class="slds-tabs--scoped__item slds-text-title--caps {!IF(selectedType=='Completed','slds-active','')}" title="{!$Label.ALMS_Completed}" role="presentation">
+                    <a lms-status-id="Completed" class="slds-tabs--scoped__link" href="javascript:void(0);" onclick="almond.myTrainingMenuHandler(this,'{!$Page.MyTraining}');" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                        {!$Label.ALMS_Completed}
+                    </a>
+                </li>
+                  
+                <!-- Update by MII, 28 April 2020 -->
+                <li class="slds-tabs--scoped__item slds-text-title--caps {!IF(selectedType=='Failed','slds-active','')}" title="{!$Label.ALMS_Failed}" role="presentation">
+                    <a lms-status-id="Failed" class="slds-tabs--scoped__link" href="javascript:void(0);" onclick="almond.myTrainingMenuHandler(this,'{!$Page.MyTraining}');" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                        {!$Label.ALMS_Failed}
+                    </a>
+                </li>
+                <!-- END - Update by MII, 28 April 2020 -->
+                  
+              </ul>
+              <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item">
+                  <c:trainingPlanInfo tplanObj="{!tPlans}" id="body_comp"/>
+              </div>
+            </div>
+        
+            <apex:actionStatus id="status">
+                <apex:facet name="start">
+                    <apex:outputPanel >
+                        <c:LMSStatus statusComponentId="{!$Component.status}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus>
+
+
+        </apex:define>
+
+    </apex:composition>
+
+</apex:page>

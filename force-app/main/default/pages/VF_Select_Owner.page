@@ -1,0 +1,199 @@
+<apex:page controller="SelectOwnerController" sidebar="false" lightningStylesheets="true" standardStylesheets="false" >
+    <apex:includeScript value="/support/console/46.0/integration.js"/>
+    <apex:form id="myForm">
+        <style>
+            body, .apexDefaultPage, .apexDefaultPageBody { background: #f4f6fb; }
+            .custom-block {
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px #e0e0e0;
+                padding: 30px 40px 20px 40px;
+                margin: 40px auto;
+                max-width: 500px;
+            }
+            .custom-title {
+                font-size: 1.5em;
+                color: #2a3f54;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .custom-label {
+                font-size: 1.1em;
+                color: #34495e;
+                margin-bottom: 8px;
+                display: block;
+            }
+            .custom-select {
+                width: 100%;
+                padding: 8px 12px;
+                border-radius: 5px;
+                border: 1px solid #bfc9d4;
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+            .custom-btn {
+                background: #ed0202;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 30px;
+                font-size: 1.1em;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background 0.2s;
+
+            }
+            .custom-btn:hover {
+                background: #e93434;
+            }
+            .loading-msg {
+                color: #0070d2;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 15px;
+            }
+        </style>
+
+        <apex:actionStatus id="submitStatus">
+            <facet name="start">
+                <div class="loading-msg">
+                    <img src="/img/loading.gif" alt="Loading..." style="vertical-align:middle; margin-right:8px;" />
+                    Processing...
+                </div>
+            </facet>
+        </apex:actionStatus>
+
+        <div class="custom-block">
+            <div class="custom-title">
+                <img src="/img/icon/t4v35/standard/queue_120.png" style="height:32px;vertical-align:middle;margin-right:8px;" />
+                Select Queue Owner
+            </div>
+
+
+
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="1" >
+                    <label class="custom-label" for="queueSelect">Select Queue Owner</label>
+                    <apex:selectList value="{!selectedQueueId}" size="1" id="queueSelect" styleClass="custom-select">
+                        <apex:selectOptions value="{!queueOptions}"/>
+                         <apex:actionSupport event="onchange" action="{!changeQueue}" rerender="userSelect"/>
+                    </apex:selectList>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection columns="1" >
+                    <label class="custom-label" for="userSelect">Select User</label>
+                    <apex:selectList value="{!selectedUserId}" size="1" id="userSelect" styleClass="custom-select">
+                        <apex:selectOptions value="{!userOptions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <div style="text-align:center; margin-top:16px;">
+                <apex:commandButton action="{!submit}" 
+                    value="Submit" 
+                   
+                    style="margin-right:10px; background: #0070d2;color: #fff;border: none;border-radius: 5px;padding: 10px 30px;font-size: 1.1em;font-weight: bold;cursor: pointer;transition: background 0.2s;" 
+                    status="submitStatus" 
+                    rerender="msg,scriptBlock"
+                    id="submitBtn"
+                    onclick="this.disabled=true;this.value='Processing...';"
+                />
+                <button 
+                    type="button" 
+                    class="custom-btn" 
+                    onclick="closeTabVF();"
+                >Close Tab</button>
+            </div>
+            
+                <apex:outputPanel rendered="{!NOT(ISNULL(selectedCases)) && (selectedCases.size > 0)}">
+            <div style="margin-top:30px;">
+                <div class="custom-title" style="font-size:1.2em;">Selected Cases List</div>
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr style="background:#f4f6fb;">
+                        <th style="padding:8px;border-bottom:1px solid #e0e0e0;">Case Number</th>
+                        <th style="padding:8px;border-bottom:1px solid #e0e0e0;">Subject</th>
+                        <th style="padding:8px;border-bottom:1px solid #e0e0e0;">Status</th>
+                        <th style="padding:8px;border-bottom:1px solid #e0e0e0;">Owner</th>
+                    </tr>
+                    <apex:repeat value="{!selectedCases}" var="cs">
+                        <tr>
+                            <td style="padding:8px;border-bottom:1px solid #e0e0e0;">{!cs.CaseNumber}</td>
+                            <td style="padding:8px;border-bottom:1px solid #e0e0e0;">{!cs.Subject}</td>
+                            <td style="padding:8px;border-bottom:1px solid #e0e0e0;">{!cs.Status}</td>
+                            <td style="padding:8px;border-bottom:1px solid #e0e0e0;">{!cs.Owner.Name}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+
+        </div>
+
+        <apex:outputPanel id="scriptBlock">
+            <script>
+                if(!{!isDispatcher}) {
+                   alert('Anda tidak memiliki akses untuk mengubah owner case. Hanya Dispatcher yang dapat melakukan perubahan Owner.');
+                  closeTabVF();
+                }
+
+
+
+                if({!isEmpty}){
+                    alert('Select owner target, please!');
+                    document.getElementById('{!$Component.myForm.submitBtn}').disabled = false;
+                    document.getElementById('{!$Component.myForm.submitBtn}').value = 'Submit';
+                    
+                }
+                if({!isClosed}) {
+                    document.getElementById('{!$Component.myForm.submitBtn}').disabled = false;
+                    document.getElementById('{!$Component.myForm.submitBtn}').value = 'Submit';
+                    alert('Select case status other than Closed, Closed - Duplicate, Closed - Follow Up, and Merged  please!');
+
+                  if (typeof sforce != 'undefined' && sforce.console && sforce.console.isInConsole()) {
+                    // Untuk Lightning Console
+                    if (window.sforce && sforce.one) {
+                        sforce.one.closeTab();
+                    } else {
+                        // Untuk Classic Console
+                        sforce.console.getEnclosingTabId(function(result) {
+                            var tabId = result.id;
+                            sforce.console.closeTab(tabId);
+                        });
+                    }
+                } else {
+                    // Jika bukan di console, bisa redirect atau tutup window
+                    window.close();
+                }
+                  
+                }
+                if ({!isSuccess}) {
+                    alert('Process done with Successfully!');
+                    window.location.href = '/{!$ObjectType.Case}';
+                }
+
+
+                function closeTabVF() {
+                    
+                    if (typeof sforce != 'undefined' && sforce.console && sforce.console.isInConsole()) {
+                        console.log('close :>> ', true);
+                        // Untuk Lightning Console
+                        if (window.sforce && sforce.one) {
+                            sforce.one.closeTab();
+                        } else {
+                            // Untuk Classic Console
+                            sforce.console.getEnclosingTabId(function(result) {
+                                var tabId = result.id;
+                                sforce.console.closeTab(tabId);
+                            });
+                        }
+                    } else {
+                        // Jika bukan di console, bisa redirect atau tutup window
+                    
+                        window.close();
+                    }
+                }
+            </script>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Progress__c</fullName>
+    <label>Progress</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Reason_Status_Config__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Not Presented</fullName>
+                <default>false</default>
+                <label>Not Presented</label>
+            </value>
+            <value>
+                <fullName>Presented</fullName>
+                <default>false</default>
+                <label>Presented</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Financial Dificulities</controllingFieldValue>
+            <controllingFieldValue>Done FU</controllingFieldValue>
+            <controllingFieldValue>Has Approve</controllingFieldValue>
+            <controllingFieldValue>Agent Personal Closing (Tdk Pernah Setuju)</controllingFieldValue>
+            <controllingFieldValue>Credit Card OR Account Cancellation</controllingFieldValue>
+            <controllingFieldValue>Disappointed of AXA Service</controllingFieldValue>
+            <controllingFieldValue>Disappointed or Rejected Claim</controllingFieldValue>
+            <controllingFieldValue>Family Reason</controllingFieldValue>
+            <controllingFieldValue>Have Many Insurances</controllingFieldValue>
+            <controllingFieldValue>Other Reason, e.g Emmigration, Bankrupt, etc</controllingFieldValue>
+            <controllingFieldValue>Policy Delivering</controllingFieldValue>
+            <controllingFieldValue>Poor Agent Services</controllingFieldValue>
+            <controllingFieldValue>Product Features</controllingFieldValue>
+            <controllingFieldValue>Product Replacement</controllingFieldValue>
+            <controllingFieldValue>Move to Competitor</controllingFieldValue>
+            <controllingFieldValue>Client Was Forced To Buy Policy In The Beginning</controllingFieldValue>
+            <controllingFieldValue>Ex Agent or Other Influence (FA/Agent Change)</controllingFieldValue>
+            <controllingFieldValue>Fictive Creation Customer</controllingFieldValue>
+            <controllingFieldValue>Uncontacted (Busy On The Line, Etc)</controllingFieldValue>
+            <controllingFieldValue>No Phone Number Available (Wrong Phone No, Fax, Sound, Move, Resign, Etc)</controllingFieldValue>
+            <controllingFieldValue>Claim Setup By Agent, Policy Party, Medical Practisioner-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Hospital Or Clinic-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Cause Of Death-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Identitiy Of Cover Person-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Claim Document Not Look Authentic-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Rider Exclusion-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Reported By External Provider-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Frequency Of Claim Within 12 Month-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Geographical Location-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Prolong Hospital Stay-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Market/Industry Information-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Client Did Not Received Renewal Notice</controllingFieldValue>
+            <controllingFieldValue>Large Sa Vs Low Premium-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Multiple Insurance Cover-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>NCB Has Been Auto Generated</controllingFieldValue>
+            <controllingFieldValue>Not Covered In The List Of Illness Stipulated-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Pleace Of Claim Occurred-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Other-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Policy Duration-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>No Confidence To Axa Indonesia</controllingFieldValue>
+            <controllingFieldValue>Death Claim</controllingFieldValue>
+            <controllingFieldValue>Switch To Other Her Instrument Investment</controllingFieldValue>
+            <controllingFieldValue>Unit Price Fluctuation</controllingFieldValue>
+            <controllingFieldValue>Client Is Not Willing To Disclose Surrender Reason</controllingFieldValue>
+            <controllingFieldValue>Sales Personnel-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Reported By Axa Staff-[Claim Investigation]</controllingFieldValue>
+            <controllingFieldValue>Switch To Other Bank Mandiri Product</controllingFieldValue>
+            <controllingFieldValue>Walk In Customer</controllingFieldValue>
+            <controllingFieldValue>Surrender Wait NCB</controllingFieldValue>
+            <controllingFieldValue>Malpractice Or Misrepresentation-[Claim Investigation]</controllingFieldValue>
+            <valueName>Presented</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>At Work/Meeting</controllingFieldValue>
+            <controllingFieldValue>Busy Line</controllingFieldValue>
+            <controllingFieldValue>Mailbox</controllingFieldValue>
+            <controllingFieldValue>No Answer</controllingFieldValue>
+            <controllingFieldValue>No Phone Number</controllingFieldValue>
+            <controllingFieldValue>Surrender Wait NCB</controllingFieldValue>
+            <valueName>Not Presented</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

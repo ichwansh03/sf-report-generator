@@ -1,0 +1,152 @@
+<apex:page controller="LogCoreIntegrationController" docType="html-5.0">
+    <apex:includeScript value="/soap/ajax/18.0/connection.js"/>
+    <apex:form >
+        <apex:pageMessages />
+        <script>
+        
+        function handleSearch(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                SearchAction()
+            }
+        }
+        
+        </script>
+        <apex:pageBlock id="logResponse">
+            <apex:pageBlockSection >
+                <apex:outputText value="Log Core Auto Assesment" style="font-size: 18px; font-weight: bold;"/>
+            </apex:pageBlockSection>
+            <br/>
+            <apex:actionStatus id="actStatus">
+                <apex:facet name="start" >
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                        &nbsp;
+                    </div>
+                    <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                        <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                            <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                            <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    Report
+                    <apex:selectList id="selectReport" value="{!reportName}" size="1">
+                        <apex:selectOption itemValue="All Reports" itemLabel="All Reports"/>
+                        <apex:selectOption itemValue="AMFS Collection Robot RLS" itemLabel="AMFS Collection Robot RLS"/>
+                        <apex:selectOption itemValue="Customize Correspondence Robot RLS" itemLabel="Customize Correspondence Robot RLS"/>
+                        <apex:selectOption itemValue="Customize Inbound Robot RLS" itemLabel="Customize Inbound Robot RLS"/>
+                        <apex:selectOption itemValue="AMFS Collection Robot DMTM" itemLabel="AMFS Collection Robot DMTM"/>
+                        <apex:selectOption itemValue="Customize Correspondence Robot DMTM" itemLabel="Customize Correspondence Robot DMTM"/>
+                        <apex:selectOption itemValue="Customize Inbound Robot DMTM" itemLabel="Customize Inbound Robot DMTM"/>
+                        <apex:selectOption itemValue="Report Assesment WeCall" itemLabel="Report Assesment WeCall"/>
+                        <apex:selectOption itemValue="Report Contacted & Uncontacted TelUW" itemLabel="Report Contacted & Uncontacted TelUW"/>
+                        <apex:actionSupport event="onchange" action="{!showReport}" reRender="logResponse" status="actStatus"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    &emsp;&emsp;Start&emsp;
+                    <apex:input type="datetime-local" value="{!startDate}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    Policy App
+                    <apex:selectList id="selectStatus" value="{!policyApp}" size="1">
+                        <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                        <apex:selectOption itemValue="RLS" itemLabel="RLS"/>
+                        <apex:selectOption itemValue="DMTM" itemLabel="DMTM"/>
+                        <apex:actionSupport event="onchange" action="{!showReport}" reRender="logResponse" status="actStatus"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    &emsp;&emsp;&nbsp;End&emsp;
+                    <apex:input type="datetime-local" value="{!endDate}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    Status
+                    <apex:selectList id="selectStatus" value="{!statusOpt}" size="1">
+                        <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                        <apex:selectOption itemValue="Success" itemLabel="Success"/>
+                        <apex:selectOption itemValue="Error" itemLabel="Error"/>
+                        <apex:selectOption itemValue="Invalid" itemLabel="Invalid"/>
+                        <apex:actionSupport event="onchange" action="{!showReport}" reRender="logResponse" status="actStatus"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+              
+                <apex:pageBlockSectionItem >
+                    <apex:outputText />
+
+                    <apex:commandButton value="Export" action="{!exportLogs}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    Entries
+                    <apex:selectList id="entry" value="{!selectSize}" size="1">
+                        <apex:selectOption itemValue="25" itemLabel="25"/>
+                        <apex:selectOption itemValue="50" itemLabel="50"/>
+                        <apex:selectOption itemValue="100" itemLabel="100"/>
+                        <apex:actionSupport event="onchange" action="{!entries}" reRender="logResponse" status="actStatus"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+            <br/>
+            <br/>
+            <apex:pageBlockSection columns="4">
+                <apex:pageBlockSectionItem >
+                    <apex:inputText value="{!policy}" id="search" html-placeholder="Search by Policy No" onkeydown="handleSearch(event)"/>
+                    <apex:actionFunction name="SearchAction" action="{!searchPolicy}" reRender="logResponse" status="actStatus"/>
+                </apex:pageBlockSectionItem>
+                <apex:outputText />
+                <apex:outputText />
+                <apex:pageBlockSectionItem >
+                    <apex:pageBlockSectionItem >
+                        <apex:commandButton value="Invalidate Selected" reRender="logResponse" status="actStatus" action="{!updateToInvalid}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:commandButton value="Retry Selected" reRender="logResponse" status="actStatus" action="{!retryCoreAssesment}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <br/>
+            <apex:outputPanel id="tableLog">
+                <apex:pageBlockTable value="{!logs}" var="log">
+                    <apex:column headerValue="Name">
+                        <apex:outputLink value="/{!log.Id}">{!log.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column value="{!log.Policy_No__c}" headerValue="Policy No"/>
+                    <apex:column value="{!log.Report_Name__c}" headerValue="Report"/>
+                    <apex:column value="{!log.Case_Type__c}" headerValue="Case Type"/>
+                    <apex:column value="{!log.Status__c}" headerValue="Status"/>
+                    <apex:column value="{!log.Error_Message__c}" headerValue="Error Message"/>
+                    <apex:column value="{!log.LastModifiedDate}" headerValue="Request Time"/>
+                    <apex:column headerValue="Update Status">
+                        <apex:outputPanel layout="none">
+                            <apex:inputCheckbox id="selectedLog" value="{!selectedLogs[log.Id]}" rendered="{!log.Status__c != 'Success'}"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:outputPanel>
+            <br/>
+            <apex:pageBlockSection columns="3">
+                <apex:panelGrid columns="8" style="line-height:2em" border="1">
+                    <apex:commandButton status="notify" reRender="logResponse" value="|<" title="First" action="{!first}" disabled="{!NOT(logList.hasPrevious)}" styleClass="btn"/>
+                    <apex:commandButton status="notify" reRender="logResponse" value="<<" title="Previous" action="{!previous}" disabled="{!NOT(logList.hasPrevious)}" styleClass="btn"/>
+                    <apex:commandButton status="notify" reRender="logResponse" value=">>" title="Next" action="{!next}" disabled="{!NOT(logList.hasNext)}" styleClass="btn"/>
+                    <apex:commandButton status="notify" reRender="logResponse" value=">|" title="Last" action="{!last}" disabled="{!NOT(logList.hasNext)}" styleClass="btn"/>
+                    <apex:actionStatus id="notify" startText="Loading..." stopText=" "></apex:actionStatus>
+                    <apex:outputText >
+                        Page {!pageNumber} to
+                        {!logList.pageSize} of {!resultSize} records
+                    </apex:outputText>
+                </apex:panelGrid>
+                <apex:outputText />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

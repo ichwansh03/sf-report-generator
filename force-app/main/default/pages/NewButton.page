@@ -1,0 +1,57 @@
+<apex:page standardController="Case" extensions="UpdateGetCurrentAgentController">
+    <apex:form >
+        <style>
+            .blueButton {
+                width:120px !important;
+                font-weight: bold;
+                background-color:orange !important;
+                text-align:center; padding-top:6px !important;
+            }
+            
+            .redText {
+                color: black;
+            	font-weight: bold;
+            }
+            
+            .greenText {
+                color: green;
+            }
+            
+            .statusContainer {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+            }
+            
+            .statusText {
+                margin-right: 10px;
+            }
+        </style>
+        <apex:pageBlock title="Update User Sprout">
+            <apex:outputPanel id="statusInfo" layout="block" styleClass="statusContainer">
+                <apex:actionStatus id="status">
+                    <apex:facet name="start">
+                        <apex:outputText >Status: Sedang Mengganti User...</apex:outputText>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputText >Status: User Updated!</apex:outputText>
+                    </apex:facet>
+                </apex:actionStatus>
+                
+            </apex:outputPanel>
+            
+            
+            <apex:pageBlockButtons location="top" style="float:right;">
+                <apex:outputText value="Klik Update Akun Sprout!" styleClass="redText statusText" rendered="{!NOT(updated)}" style="font-size: 16px"/>
+                <apex:outputText value="Updated" styleClass="greenText statusText" rendered="{!updated}" />
+                <apex:commandButton value="Update GetInfo" action="{!updateGetInfo}"  status="status"  styleClass="blueButton"  style="background:orange;width:120px;font-weight: bold;font-size: 14px;" disabled="{!isButtonDisabled}" />
+            </apex:pageBlockButtons>
+            
+            <!--<apex:pageBlockSection >
+                <apex:outputField value="{!currentCase.GetInfo__c}" />
+            </apex:pageBlockSection>-->
+             
+            <apex:pageMessages id="msg" />
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

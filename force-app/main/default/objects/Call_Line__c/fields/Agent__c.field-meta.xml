@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agent__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Agent</label>
+    <lookupFilter>
+        <active>false</active>
+        <errorMessage>No outbound agent has been configured yet</errorMessage>
+        <filterItems>
+            <field>User.Profile.Name</field>
+            <operation>contains</operation>
+            <value>Outbound Agent</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.Entity__c</field>
+            <operation>equals</operation>
+            <valueField>User.Entity__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>User.Agent__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Call_Lines</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

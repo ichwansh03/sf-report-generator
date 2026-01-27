@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Unit_Link_Product__c</fullName>
+    <formula>OR(LEFT(WelcomeCall_Product_Code_Plan__c , 1) = &apos;H&apos;,LEFT(WelcomeCall_Product_Code_Plan__c , 1) = &apos;U&apos;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Unit Link Product</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Queue_Name__c</fullName>
+    <label>Customer Queue Name</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AFI - Email Other Queue</fullName>
+                <default>false</default>
+                <label>AFI - Email Other Queue</label>
+            </value>
+            <value>
+                <fullName>AFI - Email Regular Queue</fullName>
+                <default>false</default>
+                <label>AFI - Email Regular Queue</label>
+            </value>
+            <value>
+                <fullName>AFI - Email Blacklist Queue</fullName>
+                <default>false</default>
+                <label>AFI - Email Blacklist Queue</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

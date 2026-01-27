@@ -1,0 +1,67 @@
+<apex:page standardController="Contact" showHeader="false" sidebar="false" id="mainPage" extensions="InteractionStatistic_Controller">
+    <apex:includeScript value="/support/console/26.0/integration.js" />
+    
+    <script>
+    function openCase(caseId, caseNumber) {
+        console.log("Case ID = " + caseId);
+        var caseUrl = "/" + caseId;
+        console.log("Is Console = " + sforce.console.isInConsole());
+        if (sforce.console.isInConsole()) {
+            sforce.console.getEnclosingPrimaryTabId(function openSubtab(result) {
+				var tabId = result.id;
+                console.log("primary tab ID = " + tabId);
+				sforce.console.openSubtab(tabId, caseUrl, true, caseNumber, null);
+            });
+        } else {
+        	window.location.href = '';
+        }
+	}
+    </script>
+    
+    <style>
+        .clearfix {
+            overflow: auto;
+        }
+        
+        .report1Section{
+            float: left;
+            width: 50%;
+            padding: 0px;
+            margin-left: 0 auto;
+        }
+        
+        .report2Section{
+            float: left;
+            width: 50%;
+            padding: 0px;
+            margin-left: 0 auto;
+        }
+    </style>
+    
+    <apex:pageBlock id="idPB">
+            <apex:pageBlockTable value="{!listCase}" var="cases" id="pbTable" rows="10">
+                <apex:column >
+                    <!--<apex:outputField value="{!cases.CaseNumber}" id="caseNumber" />-->
+                    <!--<apex:outputLink onclick="/{!cases.Id}">{!cases.CaseNumber}</apex:outputLink>-->
+                    <apex:facet name="header">Case Number</apex:facet>
+                    <a id="policyLink" href="#" onclick="openCase('{!cases.Id}','{!cases.CaseNumber}')">{!cases.CaseNumber}</a>   
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!cases.Origin}" id="caseOrigin" />
+                    <apex:facet name="header">Case Origin</apex:facet>
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!cases.Case_Type__c}" id="caseType" />
+                    <apex:facet name="header">Case Type</apex:facet>
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!cases.Status}" id="caseStatus" />
+                    <apex:facet name="header">Status</apex:facet>
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!cases.CreatedDate}" id="caseCreatedDate" />
+                    <apex:facet name="header">Created Date</apex:facet>
+                </apex:column>
+            </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

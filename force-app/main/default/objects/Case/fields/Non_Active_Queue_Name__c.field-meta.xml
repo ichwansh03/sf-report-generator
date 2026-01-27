@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Non_Active_Queue_Name__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggVBUAY&apos;, &apos;AFI - Email Non Active Agent VIP Queue&apos;, 
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggW4UAI&apos;, &apos;AFI - Email Non Active Standart Queue&apos;, 
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggUwUAI&apos;, &apos;AFI - Email NonActive Customer VIP Queue&apos;, 
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggVuUAI&apos;, &apos;AFI - Email Non Active Priority Queue&apos;,  
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggVkUAI&apos;, &apos;AFI - Email Non Active Regular Queue&apos;,  
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggVQUAY&apos;, &apos;AFI - Email Non Active Other Queue&apos;,  
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggVaUAI&apos;, &apos;AFI - Email Non Active Combine Queue&apos;, 
+IF(First_Queue_ID__c != &apos;&apos; &amp;&amp; First_Queue_ID__c == &apos;00G0K000004ggW9UAI&apos;, &apos;AFI - Email Non Active Blacklist Queue&apos;, &apos;Have not Non Active Queue&apos;) ) ) ) ) ) ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Non Active Queue Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_Criteria__c</fullName>
+    <label>Criteria</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>HVC</fullName>
+                <default>false</default>
+                <label>HVC</label>
+            </value>
+            <value>
+                <fullName>RETAIL</fullName>
+                <default>false</default>
+                <label>RETAIL</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

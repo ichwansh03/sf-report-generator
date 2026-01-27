@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_mandatory_Corrective_Action</fullName>
+    <active>true</active>
+    <description>Corrective Action can&apos;t be empty when close case for AMFS</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(Type, &apos;Complaint&apos;),
+ISPICKVAL(Entity_Backup__c, &apos;AMFS&apos;),
+OR(ISPICKVAL(CHS_Status__c, &apos;Closed - Invalid&apos;), ISPICKVAL(CHS_Status__c, &apos;Closed - Valid&apos;)),
+OR(ISBLANK( Corrective_Action__c)))</errorConditionFormula>
+    <errorDisplayField>Corrective_Action__c</errorDisplayField>
+    <errorMessage>Corrective Action can&apos;t be empty when close case</errorMessage>
+</ValidationRule>

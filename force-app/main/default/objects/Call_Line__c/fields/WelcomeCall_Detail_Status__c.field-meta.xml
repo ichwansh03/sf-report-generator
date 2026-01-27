@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_Detail_Status__c</fullName>
+    <label>Detail Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Verification__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Belum terima e-pol</fullName>
+                <default>false</default>
+                <label>Belum terima e-pol</label>
+            </value>
+            <value>
+                <fullName>Correspondence Address</fullName>
+                <default>false</default>
+                <label>Correspondence Address</label>
+            </value>
+            <value>
+                <fullName>Customer wants to meet FA</fullName>
+                <color>#66E9BD</color>
+                <default>false</default>
+                <label>Customer wants to meet FA</label>
+            </value>
+            <value>
+                <fullName>Email</fullName>
+                <default>false</default>
+                <label>Email</label>
+            </value>
+            <value>
+                <fullName>FA perlu menjelaskan kembali</fullName>
+                <default>false</default>
+                <label>FA perlu menjelaskan kembali</label>
+            </value>
+            <value>
+                <fullName>FA Service</fullName>
+                <color>#FF0000</color>
+                <default>false</default>
+                <label>FA Service</label>
+            </value>
+            <value>
+                <fullName>Kecewa dengan layanan FA</fullName>
+                <default>false</default>
+                <label>Kecewa dengan layanan FA</label>
+            </value>
+            <value>
+                <fullName>Kenal dengan PP</fullName>
+                <default>false</default>
+                <label>Kenal dengan PP</label>
+            </value>
+            <value>
+                <fullName>Nasabah butuh dana</fullName>
+                <color>#FF9900</color>
+                <default>false</default>
+                <label>Nasabah butuh dana</label>
+            </value>
+            <value>
+                <fullName>Nasabah merasa tidak pernah diinformasikan akan dihubungi oleh AXA Mandiri</fullName>
+                <default>false</default>
+                <label>Nasabah merasa tidak pernah diinformasikan akan dihubungi oleh AXA Mandiri</label>
+            </value>
+            <value>
+                <fullName>Nasabah Sibuk</fullName>
+                <default>false</default>
+                <label>Nasabah Sibuk</label>
+            </value>
+            <value>
+                <fullName>Nasabah Takut Penipuan</fullName>
+                <default>false</default>
+                <label>Nasabah Takut Penipuan</label>
+            </value>
+            <value>
+                <fullName>Nasabah Tidak Mau Dikonfirmasi</fullName>
+                <default>false</default>
+                <label>Nasabah Tidak Mau Dikonfirmasi</label>
+            </value>
+            <value>
+                <fullName>Nasabah Tidak Mau Direkam</fullName>
+                <default>false</default>
+                <label>Nasabah Tidak Mau Direkam</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <color>#FFFF66</color>
+                <default>false</default>
+                <label>Others</label>
+            </value>
+            <value>
+                <fullName>Penjelasan FA tidak sesuai dengan product spec</fullName>
+                <default>false</default>
+                <label>Penjelasan FA tidak sesuai dengan product spec</label>
+            </value>
+            <value>
+                <fullName>Polis tidak sesuai</fullName>
+                <color>#0B6FCE</color>
+                <default>false</default>
+                <label>Polis tidak sesuai</label>
+            </value>
+            <value>
+                <fullName>PP info tidak ketemu dengan FA tapi dengan staff BM/selain FA</fullName>
+                <default>false</default>
+                <label>PP info tidak ketemu dengan FA tapi dengan staff BM/selain FA</label>
+            </value>
+            <value>
+                <fullName>Produk Tidak Sesuai</fullName>
+                <color>#33CC00</color>
+                <default>false</default>
+                <label>Produk Tidak Sesuai</label>
+            </value>
+            <value>
+                <fullName>SAGT - Kecewa dengan Service FA</fullName>
+                <default>false</default>
+                <label>SAGT - Kecewa dengan Service FA</label>
+            </value>
+            <value>
+                <fullName>Sedang proses pembatalan polis di POS</fullName>
+                <color>#A845DC</color>
+                <default>false</default>
+                <label>Sedang proses pembatalan polis di POS</label>
+            </value>
+            <value>
+                <fullName>SFAM - Alasan keluarga</fullName>
+                <default>false</default>
+                <label>SFAM - Alasan keluarga</label>
+            </value>
+            <value>
+                <fullName>SFIN - Nasabah butuh dana</fullName>
+                <default>false</default>
+                <label>SFIN - Nasabah butuh dana</label>
+            </value>
+            <value>
+                <fullName>SMIN - Terlalu banyak asuransi</fullName>
+                <default>false</default>
+                <label>SMIN - Terlalu banyak asuransi</label>
+            </value>
+            <value>
+                <fullName>SPRO - Produk tidak sesuai</fullName>
+                <default>false</default>
+                <label>SPRO - Produk tidak sesuai</label>
+            </value>
+            <value>
+                <fullName>Suspicious - tidak merasa membeli polis</fullName>
+                <default>false</default>
+                <label>Suspicious - tidak merasa membeli polis</label>
+            </value>
+            <value>
+                <fullName>Terdapat ketidaksesuaian data pada proses NBUW</fullName>
+                <default>false</default>
+                <label>Terdapat ketidaksesuaian data pada proses NBUW</label>
+            </value>
+            <value>
+                <fullName>Tidak kenal dengan PP</fullName>
+                <default>false</default>
+                <label>Tidak kenal dengan PP</label>
+            </value>
+            <value>
+                <fullName>Tidak mau sebutkan alasannya</fullName>
+                <default>false</default>
+                <label>Tidak mau sebutkan alasannya</label>
+            </value>
+            <value>
+                <fullName>Verification is not succeed</fullName>
+                <default>false</default>
+                <label>Verification is not succeed</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Wrong Number</controllingFieldValue>
+            <valueName>Kenal dengan PP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Wrong Number</controllingFieldValue>
+            <valueName>Tidak kenal dengan PP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agree - Agree to pay via Autodebet</controllingFieldValue>
+            <controllingFieldValue>Hold</controllingFieldValue>
+            <valueName>Customer wants to meet FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with Note</controllingFieldValue>
+            <valueName>Belum terima e-pol</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with Note</controllingFieldValue>
+            <valueName>Kecewa dengan layanan FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with Note</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Success with data changes</controllingFieldValue>
+            <controllingFieldValue>Un-willing to be confirmed</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>Others</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with Note</controllingFieldValue>
+            <valueName>Penjelasan FA tidak sesuai dengan product spec</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with Note</controllingFieldValue>
+            <valueName>PP info tidak ketemu dengan FA tapi dengan staff BM/selain FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with Note</controllingFieldValue>
+            <valueName>Terdapat ketidaksesuaian data pada proses NBUW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>Polis tidak sesuai</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>SAGT - Kecewa dengan Service FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>Sedang proses pembatalan polis di POS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>SFAM - Alasan keluarga</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>SFIN - Nasabah butuh dana</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>SMIN - Terlalu banyak asuransi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>SPRO - Produk tidak sesuai</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>Suspicious - tidak merasa membeli polis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cancel the Policy</controllingFieldValue>
+            <controllingFieldValue>Cancel the Policy – tidak setuju biaya UCO</controllingFieldValue>
+            <valueName>Tidak mau sebutkan alasannya</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with data changes</controllingFieldValue>
+            <valueName>Correspondence Address</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Success with data changes</controllingFieldValue>
+            <valueName>Email</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un-Verified</controllingFieldValue>
+            <valueName>Verification is not succeed</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un success/need meet FA</controllingFieldValue>
+            <valueName>FA perlu menjelaskan kembali</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un-willing to be confirmed</controllingFieldValue>
+            <valueName>Nasabah merasa tidak pernah diinformasikan akan dihubungi oleh AXA Mandiri</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un-willing to be confirmed</controllingFieldValue>
+            <valueName>Nasabah Sibuk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un-willing to be confirmed</controllingFieldValue>
+            <valueName>Nasabah Takut Penipuan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un-willing to be confirmed</controllingFieldValue>
+            <valueName>Nasabah Tidak Mau Dikonfirmasi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Un-willing to be confirmed</controllingFieldValue>
+            <valueName>Nasabah Tidak Mau Direkam</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,1495 @@
+<!--
+  @description       : 
+  @author            : Mario Carlos Eyo
+  @group             : 
+  @last modified on  : 06-10-2025
+  @last modified by  : Mario Carlos Eyo
+-->
+<apex:page renderAs="PDF" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardController="E_Form_Master_Data__c" extensions="AMFS_PemulihanPolis_Controller">
+    <html>
+        <head>
+            <style type="text/css">
+                @page {
+                margin-top: 2%;
+                margin-bottom: 50pt;
+                margin-left: 0;
+                margin-right: 0;
+                size: A4 portrait;
+                page-break:always; 
+                page-break-inside:avoid;
+                letter-spacing: 5px;
+                font-family: Arial, sans-serif;
+                
+                @top-left {
+                content: element(header);                
+                }
+                
+                @bottom-left { content: element(footer); }
+                }
+                
+                /* Header */
+                div.header {
+                    text-align: center;
+                    font-family: sans-serif !important;
+                    font-weight: bold;
+                }
+                
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                font-family: Arial, sans-serif;
+                }
+
+                /* { position: running(footer); padding-top: 2mm; text-align:center; } */
+                
+                .pagefooter:before{
+                content: "Page : " counter(page) "/" counter(pages);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.content{
+                width:100%;
+                font-family:sans-serif !important;
+                }
+                .grid, .grid th, .grid td{
+                border: 1px solid;
+                border-collapse: collapse;
+                padding:3px;
+                }
+                .grid th{
+                background-color:#E8E8E8;
+                }
+                .center{
+                text-align: center;
+                }
+                .right{
+                text-align: right;
+                }
+                .left{
+                text-align: left;
+                }
+                .top{
+                vertical-align:top;
+                }
+                .uppercase{
+                text-transform: uppercase;
+                }
+                .justify{
+                text-align: justify;
+                }
+                .tdHeader{
+                width: 70%; 
+                height: 15px;
+                font-size:12px;
+                text-align: justify;
+                
+                }
+                .table-wrapper {
+                    border: 2px solid black;
+                    display: inline-block; /* Ensures the border wraps the table */
+                    padding: 0px; /* Prevents extra spacing */
+                }
+
+                /* Standard table styling */
+                table.custom-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif;
+                    font-size: 11px;
+                }
+                table.standard-table{
+                    width: 95%;
+                    border-collapse: collapse;
+                    font-family: sans-serif;
+                    font-size: 12px;
+                }
+                .table { 
+                    width: 100%; 
+                    border-collapse: collapse; }
+                .table td { 
+                    padding: 5px; 
+                }
+                .checkbox-symbol { 
+                    width: 14px; 
+                    height: 14px; 
+                    border: 1px solid #000; 
+                    display: inline-block; 
+                    text-align: center; 
+                    line-height: 12px; 
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+                .checked::before {
+                    content: "✔"; /* Menampilkan tanda centang */
+                    color: black;
+                }
+                .italic {
+                    font-style: italic; 
+                    }
+                .boxpersyaratan{
+                    width: 100%;
+                    height: 5%;
+                    border: 1px solid black;
+                }
+                .contain {
+                    border: 1px solid black;
+                    padding: 10px;
+                    width: 62%;
+                    height: 470px;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .head {
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+
+                .side-box {
+                    display: inline-block;
+                    width: 120px;
+                    border: 1px solid black;
+                    padding: 5px;
+                    font-size: 12px;
+                    vertical-align: top;
+                }
+                .side-box .tabl1 {
+                    width: 100%;
+                }
+                .checkbox-label {
+                    display: inline-block;
+                    border: 1px solid black;
+                    width: 10px;
+                    height: 10px;
+                    margin-right: 5px;
+                }
+
+                .checked::before {
+                    content: "V"; /* Menampilkan tanda centang */
+                    color: black;
+                }
+
+                .tbl2{
+                    width: 100%
+                }
+                .box2{
+                    border: 1px solid black;
+                    display: inline-block;
+                    width: 35%;
+                    height: 80px;
+                }
+                .box3{
+                    border: 1px solid black;
+                    display: inline-block;
+                    width:35%;
+                    height: 80px;
+                }
+                .tbl{
+                    width: 60%;
+                    border: 1px solid black;
+                    font-size: 12px;
+                }
+                .tda, .thc{
+                    border: 1px solid black;
+                    padding: 5px;
+                    text-align: left;
+                }
+                .box6{
+                    border: 1px solid black;
+                    width:100%; 
+                    height:320px;
+                }
+
+                .signature-container {
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                .tables {
+                    width: 100%;
+                    border-collapse: collapse;
+                    padding: 10px;
+                    margin-top: 25px;
+                    font-size: 12px;
+                }
+
+                .boxs {
+                    width: 20%;
+                    height: 10px;
+                    border: 1px solid black;
+                    font-size: 12px;
+                }
+
+                .info-header {
+                    background-color: #396cb2;
+                    color: white;
+                    padding: 8px;
+                    text-align: center;
+                    font-weight: bold;
+                }
+                
+                .penarikan {
+                    background-color: #8091a0;
+                    color: rgb(49, 47, 47);
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+                .dana{
+                    background-color: #eef2f5;
+                    color: rgb(173, 168, 168);
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .info-container {
+                    width: 98%;
+                    padding: 0;
+                    margin: 0;
+                    border-radius: 6px;
+                    line-height: 1.1;
+                    font-family:sans-serif !important;
+                }
+                
+                td.label {
+                    width: 45%;
+                    font-size: 12px;
+                    font-family: sans-serif !important;
+                }
+                td.value {
+                    color: #000;
+                    font-size: 12px;
+                    font-weight: bold;
+                    font-family: sans-serif !important;
+                }
+
+                .font {
+                    font-family: sans-serif !important;
+                }
+
+                .dpp {
+                    width: 60%;
+                    font-size: 12px;
+                }
+
+                .tr, .td { 
+                    page-break-inside: avoid; 
+                }
+
+
+                /* Table Styling */
+                table.custom-table-header-pernyataan-kuasa {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 10px;
+                }
+
+                table.custom-table-header-pernyataan-kuasa th {
+                    font-weight:bold;
+                    color: black;
+                    padding: 8px;
+                    text-align: center;
+                    font-size: 12px;
+                }
+
+                table.custom-table-header-pernyataan-kuasa td {
+                    vertical-align: top;
+                    text-align: justify;
+                    font-size: 10px;
+                }
+
+                 /* Table Styling */
+                table.custom-table-header {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header td {
+                    padding: 8px;
+                    vertical-align: center;
+                }
+                /* Table Styling */
+                table.custom-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 16px;
+                    margin-top: 10px;
+                    text-align: center;
+                }
+
+                table.custom-table th {
+                    background-color: #396cb2;
+                    color: white;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    text-align: center;
+                }
+
+                table.custom-table td {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    vertical-align: top;
+                }
+                /* Table Styling */
+                table.custom-table-header-value-pajak {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: sans-serif !important;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                table.custom-table-header-value-pajak td {
+                    vertical-align: top;
+                    text-align: left;
+                    /* border: 1px solid black; */
+                }
+
+                table.custom-table-header-value-pajak td:first-child {
+                    width: 90%;
+                }
+
+                table.custom-table-header-value-pajak td:nth-child(2) {
+                    width: 10%;
+                }
+            </style>
+        </head>
+        
+
+        <!-- FOOTER -->
+        <footer>
+           <div class="footer" style="bottom: 10px; width: 100%; text-align: center; font-size: 12px;">
+              <div class="left" style="margin-left:50px;" >
+                  <apex:image value="{!$Resource.ojk_logo_bot}" width="300px"></apex:image>
+              </div>
+          </div>
+        </footer>
+
+        <!--Head-->
+        <div class="header"> 
+            <div>
+                <table class="custom-table-header">
+                    <tr>
+                        <td style="text-align: left;"><apex:image value="{!$Resource.emma_axa }" width="300px"></apex:image></td>
+                        <td style="text-align: right; color:#396cb2">
+                            CCC-{!touchPoint}
+                        </td>
+                    </tr>
+                    
+                </table>        
+            </div>
+        </div>
+
+        <div class="info-container">
+            <p style="text-align:center; font-size:16px; font-weight:bold;">
+                PEMULIHAN POLIS
+                <br/>
+                AXA Mandiri Financial Services
+                <br/>
+                Nomor Polis : {!polisNo}
+                <br/>
+                Nomor Transaksi: Pemulihan Polis - {!transNo}
+                <br/>
+                Tanggal Pengajuan Pemulihan Polis: {!inputdtmmss}
+            </p>
+        </div>
+
+
+        <div>
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        INFORMASI PEMEGANG POLIS
+                    </th>
+                </tr>
+            </table>
+            <table>  
+                <tr>
+                    <td class="label" style="vertical-align: top;">Nama Pemegang Polis </td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style="vertical-align: top;">{!phName}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" vertical-align: top;">No.Telepon</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style=" vertical-align: top;">{!noTelp}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" vertical-align: top;">Alamat</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style=" vertical-align: top;">{!addr}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" vertical-align: top;">Email</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style=" vertical-align: top;">{!email}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" vertical-align: top;">NIK</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style="vertical-align: top;">{!noIdentitas}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" vertical-align: top;">Tanggal Lahir</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style="vertical-align: top;">{!tglLahir}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style="vertical-align: top;">Nama Produk</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style=" vertical-align: top;">{!prodName}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" vertical-align: top;">Segmentasi</td>
+                    <td style="vertical-align: top;">:</td>
+                    <td class="value" style="vertical-align: top;">{!segmentasi}</td>
+                </tr>
+               
+            </table>
+            <div>
+                <table class="custom-table">
+                    <tr>
+                        <th>
+                            INFORMASI PELAPORAN PAJAK LUAR NEGERI
+                        </th>
+                    </tr>
+                </table>
+                <div>
+                    <table class="custom-table-header-value-pajak">
+                            <tr>
+                                <td >Apakah Anda Melakukan Pelaporan Pajak di Luar Negara Indonesia ?</td>
+                                <td style="text-align:start">: {!pajak}</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+
+            <table class="custom-table">
+                <tr>
+                    <th>
+                        RINCIAN DATA PEKERJAAN DAN KESEHATAN
+                    </th>
+                </tr>
+            </table>
+            <!-- <apex:outputPanel rendered="{!jenisPengkinianData == 'PPTP'}"> 
+                <table style="width: 100%; font-size: 12px; border-collapse: collapse; font-family:sans-serif;" border="2px solid">
+                    <tr>
+                        <td style="width:35%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Rincian Data</td>
+                        <td style="width:30%; padding: 5px 10px; vertical-align: top; text-align:center; font-weight:bold;">Pemegang Polis</td>
+                        <td style="width:35%; padding: 5px 10px; vertical-align: top; text-align:center; font-weight:bold;">Tertanggung/Peserta</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Nama Pemegang Polis</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!phName}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!namaTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Pekerjaan Saat ini</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!pekerjaanPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!pekerjaanTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Jabatan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!jabatanPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!jabatanTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Nama Perusahaan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!namaPerusahaanPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!namaPerusahaanTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Bidang Usaha</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!bidangUsahaPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!bidangUsahaTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Rincian Tugas</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!rincianTugasPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!rincianTugasTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Alat bantu yang digunakan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!alatBantuPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!alatBantuTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Tinggi Badan saat ini (cm)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanSaatIniPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanSaatIniTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Berat Badan saat ini (kg)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanSaatIniPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanSaatIniTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Tinggi Badan tahun lalu (cm)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanTahunLaluPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanTahunLaluTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Berat Badan tahun lalu (kg)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanTahunLaluPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanTahunLaluTP}</td>  
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Alasan perubahan tinggi/berat badan Anda, Mohon dijelaskan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!alasanPerubahanPP}</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!alasanPerubahanTP}</td>  
+                    </tr>
+                </table>
+            </apex:outputPanel> -->
+
+            <!-- JENIS PENGKINIAN DATA TP -->
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'TP'}">
+                <table style="width: 100%; font-size: 12px; border-collapse: collapse; font-family:sans-serif;" border="2px solid">
+                    <tr>
+                        <td style="width:35%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Rincian Data</td>
+                        <td style="width:35%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Tertanggung/Peserta</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Nama Pemegang Polis</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!namaTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Pekerjaan Saat ini</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!pekerjaanTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Jabatan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!jabatanTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Nama Perusahaan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!namaPerusahaanTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Bidang Usaha</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!bidangUsahaTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Rincian Tugas</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!rincianTugasTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Alat bantu yang digunakan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!alatBantuTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Tinggi Badan saat ini (cm)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanSaatIniTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Berat Badan saat ini (kg)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanSaatIniTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Tinggi Badan tahun lalu (cm)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanTahunLaluTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Berat Badan tahun lalu (kg)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanTahunLaluTP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Alasan perubahan tinggi/berat badan Anda, Mohon dijelaskan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!E_Form_Master_Data__c.Alasan_perubahan_tinggi_berat_badan_TP__c}</td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'TP'}">
+                <table class="custom-table" style="page-break-before: always;">
+                <tr>
+                    <th>
+                        INFORMASI KESEHATAN TERTANGGUNG
+                    </th>
+                </tr>
+            </table>
+                <table style="width: 100%; font-size: 9px; border-collapse: collapse; font-family:sans-serif;" border="2px solid">
+                    <tr>
+                        <td style="width:50%; vertical-align: top; font-weight:bold;padding: 5px 10px; vertical-align: top;">Pertanyaan</td>
+                        <td style="width:10%; vertical-align: top; font-weight:bold;padding: 5px 10px; vertical-align: top; text-align:center;">Tertanggung / Peserta</td>
+                        <td style="width:20%; vertical-align: top; font-weight:bold;padding: 5px 10px; vertical-align: top; text-align:center;">Penjelasan</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold;">
+                            C. Data Pribadi dan Kebiasaan</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            a. Apakah pernah permohonan asuransi dan/atau polis anda pernah ditolak, ditunda, dikenakan tambahan/ekstra premi/Kontribusi atau dikecualikan dari asuransi lain atau dirubah/dihentikan oleh perusahaan Asuransi?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKRBTP1}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan_TP__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            b. Apakah anda sedang mendapatkan manfaat atas ketidakmampuan untuk bekerja atau Anda pernah mengajukan klaim atas ketidakmampuan , kecelakaan, perawatan medis atau juga penyakit kritis, atau manfaat lainnya?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKRBTP2}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan1_TP__c}</td>
+                    </tr>
+                    <tr >
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        c. Apakah Anda merokok atau menggunakan tembakau jenis apapun atau tembakau tanpa asap dalam 12 bulan terakhir ?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKRBTP3}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan2_TP__c}</td>
+                    </tr>
+                    <apex:outputPanel rendered="{!DTPKRBTP3 == 'YA'}" layout="none">
+                        <tr>
+                            <td colspan="3">
+                                <table style=" width:100%; border-collapse:collapse;font-size:10px;font-family: sans-serif; font-size: 10px">
+                                <tr>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Rokok(Batang/Hari)</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Sejak</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Rokok Elektrik(ml/Hari)</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Sejak Elektrik</td>    
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Tanpa Asap</td> 
+                                </tr>
+                                <tr>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!rokokTP}</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!sejakTP}</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!rokokElektrikTP}</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!sejekElektrikTP}</td>
+                                    <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!tanpaAsapTP}</td>       
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                    </apex:outputPanel>
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        d. Apakah Anda memiliki hobi/kegiatan/aktifitas yang berisiko tinggi termasuk yang berkaitan dengan pekerjaan Anda?(contoh: terjun payung, mendaki gunung, menyelam, balap Mobil/motor/ kendaraan lainnya, penerbangan, gantole,caving,dan lain-lain)?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKRBTP4}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan3_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">e. Apakah Anda mengkonsumsi minuman alkohol?</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKRBTP5}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan4_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        f. Apakah anda pernah memiliki kebiasaan mengkonsumsi obat-obatan atau telarang/ narkotika/obat penenang, atau pernah direhabilitasi atau melakukan konsultasi untuk masalah narkoba?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKRBTP6}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan5_TP__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid;">
+                            D1. Data Kesehatan
+                        </td>
+                    </tr>
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        a. Apakah anda pernah menerima/menjalani perawatan medis atau diresepkan obat untuk kondisi penyakit selain kondisi ringan seperti pilek atau flu?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBTP1}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b. Apakah anda pernah dianjurkan untuk pemeriksaan medis terkait kendala kesehatan Anda?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBTP2}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan1_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        c. Apakah anda sedang menunggu hasil/test investigasi mengenai kesehatan Anda?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBTP3}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan2_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        d. Apakah anda pernah dirawat/dioperasi?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBTP4}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan3_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; font-family:sans-serif;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        e. khusus untuk Tertanggung/Peserta anak kurang dari 5 tahun: Apakah ada komplikasi saat dilahirkan?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBTP5}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan4_TP__c}</td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!FTP= 'FTP'}" layout="none">
+                <table style="width: 100%; font-size: 9px; border-collapse: collapse; font-family:sans-serif;" border="2px solid">
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid;">D2. Data kesehatan khusus Wanita</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="width:50%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        Apakah Anda saat ini sedang hamil? Sebutkan kehamilan keberapa dan hari pertama haid terakhir
+                        </td>
+                        <td style="width:10%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTWARBTP}</td>
+                        <td style="width:20%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_khusus_wanita_TP__c}</td>
+                    </tr>
+                    </table>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'TP'}" layout="none">
+                <table style="width: 100%; font-size: 9px; border-collapse: collapse; font-family:sans-serif;" border="2px solid">
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid;">D3. Data Kesehatan Tambahan</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;" colspan="3">
+                        Penyakit/gangguan/kelainan kesehatan yang sedang dan/atau pernah diderita:
+                        </td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="width:50%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        a) Sistem saraf : vertigo, stroke, epilepsi atau gangguan saraf lainnya
+                        </td>
+                        <td style="width:10%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP2}</td>
+                        <td style="width:20%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan1_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b) Sistem hormonal: diabetes, diabetes gestasional, penyakit tiroid (hipertiroid/hipotiroid), atau gangguan sistem hormonal lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP3}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan2_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        c) Kelainan darah: anemia, thalasemia, hemofilia, atau gangguan kelainan dan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP4}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan3_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        d) Penyakit telinga, hidung,tenggorokan: tuli,infeksi telinga / otitis media / otitis interna, tonsilitis, sinusitis, atau gangguan penyakit telinga, hidung, tenggorokan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP5}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan4_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            e) Gangguan penglihatan mata: kebutaan (buta total atau parsial), konjungtivitis, glaukoma, katarak, atau gangguan penyakit mata lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP6}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan5_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            f) Gangguan fungsi paru-paru: infeksi saluran pernapasan atas (ISPA), asma, tuberkulosis (TBC), bronkitis, pneumonia, dan gangguan sistem pernapasan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP7}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan6_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            g) Gangguan jantung dan pembuluh darah: hipertensi, nyeri dada, penyakit jantung koroner (PJK), kolesterol, varises vena, pre eklampsia/eklampsia,atau penyakit jantung dan gangguan pembuluh darah lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP8}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan7_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            h) Sistem pencernaan: gastritis (maag), gangguan liver, penyakit usus buntu, hernia, gastroenteritis akut, gangguan kantung empedu, hepatitis, tukak lambung, atau gangguan penyakit sistem pencernaan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP9}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan8_TP__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside:">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            i) Saluran kemih dan sistem reproduksi: infeksi saluran kencing (ISK), kencing batu/batu ginjal, infeksi ginjal, gagal ginjal, penyakit prostat, kelainan/gangguan menstruasi, penyakit payudara,atau gangguan lain pada saluran kemih dan sistem reproduksi
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP10}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan9_TP__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            j) Penyakit tulang dan kulit: sakit tulang belakang, patah tulang, polio, amputasi, arthtritis, gout, eczema, dermattis, atau penyakit tulang dan kulit lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP11}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan10_TP__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            k) Pertumbuhan sel : Segala jenis tumor, kanker, kista, fibroid, fibroadenoma, atau segala pertumbuhan abnormal lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP12}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan11_TP__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            l) Sistem daya tahan tubuh dan infeksi: HIV/AIDS, malaria, demam berdarah, systemic lupus erythematosus (SLE), atau gangguan penyakit daya tahan tubuh dan infeksi lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP13}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan12_TP__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            m) Gangguan kejiwaan, kecacatan, cacat bawaan, atau gangguan psikologis dan penyakit bawaan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP14}</td>
+                        <!-- <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan13_TP__c}</td> -->
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            n) Lainnya yang belum disebutkan di atas
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBTP15}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan14_TP__c}</td>
+                    </tr>                   
+                    
+
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid;">E. Data Riwayat Keluarga</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b) Sistem hormonal: diabetes, diabetes gestasional, penyakit tiroid (hipertiroid/hipotiroid), atau gangguan sistem hormonal lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKRKRBTP1}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_rwyt_keluarga_TP__c}</td>
+                    </tr>
+                 </table>
+            </apex:outputPanel>
+             
+            <br/>
+
+            <!-- JENIS PENGKINIAN DATA PP -->
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'PP' }">
+                <table style="width: 100%; font-size: 9px; border-collapse: collapse; font-family:sans-serif;" border="2px solid">
+                    <tr>
+                        <td style="width:35%; padding: 5px 10px; vertical-align: top; font-weight:bold; text-align:center;">Rincian Data</td>
+                        <td style="width:30%; padding: 5px 10px; vertical-align: top; font-weight:bold; text-align:center;">Pemegang Polis</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Nama Pemegang Polis</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!phName}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Pekerjaan Saat ini</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!pekerjaanPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Jabatan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!jabatanPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Nama Perusahaan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!namaPerusahaanPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Bidang Usaha</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!bidangUsahaPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Rincian Tugas</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!rincianTugasPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Alat bantu yang digunakan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!alatBantuPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Tinggi Badan saat ini (cm)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanSaatIniPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Berat Badan saat ini (kg)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanSaatIniPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Tinggi Badan tahun lalu (cm)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!tinggiBadanTahunLaluPP}</td>
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Berat Badan tahun lalu (kg)</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!beratBadanTahunLaluPP}</td> 
+                    </tr>
+                    <tr>
+                        <td style=" padding: 5px 10px; vertical-align: top;">Alasan perubahan tinggi/berat badan Anda, Mohon dijelaskan</td>
+                        <td style=" padding: 5px 10px; vertical-align: top;">{!E_Form_Master_Data__c.Alasan_perubahan_tinggi_berat_badan__c}</td> 
+                    </tr>
+                </table>
+
+                
+                    <!-- <div>SECTION PEMEGANG POLIS</div> -->
+                
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'PP' }">
+                <div style="page-break-before: always; padding-top:10px;"></div>
+                <table class="custom-table">
+                <tr>
+                    <th>
+                        INFORMASI KESEHATAN PEMEGANG POLIS
+                    </th>
+                </tr>
+             </table>
+                <table style="width: 100%; font-size: 9px; border-collapse: collapse; page-break-inside:auto; font-family:sans-serif;" border="2px solid" >
+                    <tr style="page-break-inside: avoid;">
+                        <td style="width:50%; padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid;">Pertanyaan</td>
+                        <td style="width:10%;  padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid; text-align:center; font-weight:bold;">Pemegang Polis</td>
+                        <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid; text-align:center; font-weight:bold;">Penjelasan</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid; font-family:sans-serif;">C. Data Pribadi dan Kebiasaan</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        a. Apakah pernah permohonan asuransi dan/atau polis anda pernah ditolak, ditunda, dikenakan tambahan/ekstra premi/Kontribusi atau dikecualikan dari asuransi lain atau dirubah/dihentikan oleh perusahaan Asuransi?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center; ">{!DTPKPPRBPP1}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify; ">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b. Apakah anda sedang mendapatkan manfaat atas ketidakmampuan untuk bekerja atau Anda pernah mengajukan klaim atas ketidakmampuan , kecelakaan, perawatan medis atau juga penyakit kritis, atau manfaat lainnya?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKPPRBPP2}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan1__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        c. Apakah Anda merokok atau menggunakan tembakau jenis apapun atau tembakau tanpa asap dalam 12 bulan terakhir ?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKPPRBPP3}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan2__c}</td>
+                    </tr>
+                    <apex:outputPanel rendered="{!DTPKPPRBPP3 == 'YA'}" layout="none">
+                    <tr>
+                        <td colspan="3">
+                            <table style=" width:100%; border-collapse:collapse;font-size:10px;font-family: sans-serif;">
+                            <tr>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Rokok(Batang/Hari)</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Sejak</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Rokok Elektrik(ml/Hari)</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Sejak Elektrik</td>    
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">Tanpa Asap</td> 
+                            </tr>
+                            <tr>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!rokokPP}</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!sejakPP}</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!rokokElektrikPP}</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!sejekElektrikPP}</td>
+                                <td style="width:20%; padding: 5px 10px; vertical-align: top; font-weight:bold;">{!tanpaAsapPP}</td>       
+                            </tr>
+                        </table>
+                        </td>
+                    </tr>
+                    </apex:outputPanel>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        d. Apakah Anda memiliki hobi/kegiatan/aktifitas yang berisiko tinggi termasuk yang berkaitan dengan pekerjaan Anda?(contoh: terjun payung, mendaki gunung, menyelam, balap Mobil/motor/ kendaraan lainnya, penerbangan, gantole,caving,dan lain-lain)?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKPPRBPP4}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan3__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; ">e. Apakah Anda mengkonsumsi minuman alkohol?</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKPPRBPP5}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan4__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        f. Apakah anda pernah memiliki kebiasaan mengkonsumsi obat-obatan atau telarang/ narkotika/obat penenang, atau pernah direhabilitasi atau melakukan konsultasi untuk masalah narkoba?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTPKPPRBPP6}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_pribadi_kebiasaan5__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid; font-family:sans-serif;">D1. Data Kesehatan</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        a. Apakah anda pernah menerima/menjalani perawatan medis atau diresepkan obat untuk kondisi penyakit selain kondisi ringan seperti pilek atau flu?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBPP1}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b. Apakah anda pernah dianjurkan untuk pemeriksaan medis terkait kendala kesehatan Anda?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBPP2}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan1__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        c. Apakah anda sedang menunggu hasil/test investigasi mengenai kesehatan Anda?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBPP3}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan2__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        d. Apakah anda ernah dirawat/dioperasi?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBPP4}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan3__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        e. khusus untuk Tertanggung/Peserta anak kurang dari 5 tahun: Apakah ada komplikasi saat dilahirkan?
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESRBPP5}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan4__c}</td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!FPP = 'FPP'}" layout="none">
+                <table style="width: 100%; font-size: 9px; border-collapse: collapse; page-break-inside:auto;" border="2px solid">
+                    
+                    <tr>
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid; font-family:sans-serif;">D2. Data kesehatan khusus Wanita</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        
+                        <td style="width:50%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        Apakah Anda saat ini sedang hamil? Sebutkan kehamilan keberapa dan hari pertama haid terakhir
+                        </td>
+                        <td style="width:10%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTWARBPP}</td>
+                        <td style="width:20%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_khusus_wanita__c}</td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+                <apex:outputPanel rendered="{!jenisPengkinianData == 'PP'}" layout="none">
+                    <table style="width: 100%; font-size: 9px; border-collapse: collapse; font-family:sans-serif; page-break-inside: auto;" border="2px solid">
+                    
+
+                        <tr style="page-break-inside: avoid;">
+                            <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold;">D3. Data Kesehatan Tambahan</td>
+                        </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;" colspan="3">
+                        Penyakit/gangguan/kelainan kesehatan yang sedang dan/atau pernah diderita:
+                        </td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="width:50%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        a) Sistem saraf : vertigo, stroke, epilepsi atau gangguan saraf lainnya
+                        </td>
+                        <td style="width:10%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP2}</td>
+                        <td style="width:20%; padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan1__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b) Sistem hormonal: diabetes, diabetes gestasional, penyakit tiroid (hipertiroid/hipotiroid), atau gangguan sistem hormonal lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP3}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan2__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        c) Kelainan darah: anemia, thalasemia, hemofilia, atau gangguan kelainan dan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP4}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan3__c}</td>
+                    </tr>
+
+                    <tr style=" margon-top:20px;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        d) Penyakit telinga, hidung,tenggorokan: tuli,infeksi telinga / otitis media / otitis interna, tonsilitis, sinusitis, atau gangguan penyakit telinga, hidung, tenggorokan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP5}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan4__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            e) Gangguan penglihatan mata: kebutaan (buta total atau parsial), konjungtivitis, glaukoma, katarak, atau gangguan penyakit mata lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP6}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan5__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            f) Gangguan fungsi paru-paru: infeksi saluran pernapasan atas (ISPA), asma, tuberkulosis (TBC), bronkitis, pneumonia, dan gangguan sistem pernapasan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP7}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan6__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            g) Gangguan jantung dan pembuluh darah: hipertensi, nyeri dada, penyakit jantung koroner (PJK), kolesterol, varises vena, pre eklampsia/eklampsia,atau penyakit jantung dan gangguan pembuluh darah lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP8}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan7__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            h) Sistem pencernaan: gastritis (maag), gangguan liver, penyakit usus buntu, hernia, gastroenteritis akut, gangguan kantung empedu, hepatitis, tukak lambung, atau gangguan penyakit sistem pencernaan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP9}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan8__c}</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid; ">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; ">
+                            i) Saluran kemih dan sistem reproduksi: infeksi saluran kencing (ISK), kencing batu/batu ginjal, infeksi ginjal, gagal ginjal, penyakit prostat, kelainan/gangguan menstruasi, penyakit payudara,atau gangguan lain pada saluran kemih dan sistem reproduksi
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP10}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan9__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid; ">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; ">
+                            j) Penyakit tulang dan kulit: sakit tulang belakang, patah tulang, polio, amputasi, arthtritis, gout, eczema, dermattis, atau penyakit tulang dan kulit lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP11}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan10__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            k) Pertumbuhan sel : Segala jenis tumor, kanker, kista, fibroid, fibroadenoma, atau segala pertumbuhan abnormal lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP12}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan11__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            l) Sistem daya tahan tubuh dan infeksi: HIV/AIDS, malaria, demam berdarah, systemic lupus erythematosus (SLE), atau gangguan penyakit daya tahan tubuh dan infeksi lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP13}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan12__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            m) Gangguan kejiwaan, kecacatan, cacat bawaan, atau gangguan psikologis dan penyakit bawaan lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP14}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan13__c}</td>
+                    </tr>
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                            n) Lainnya yang belum disebutkan di atas
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKESTAMRBPP15}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_kesehatan_tambahan14__c}</td>
+                    </tr>
+                    
+
+                    <tr style="page-break-inside: avoid;">
+                        <td colspan="3" style="padding: 5px 10px; vertical-align: top; font-weight:bold; page-break-inside: avoid; font-family:sans-serif;">E. Data Riwayat Keluarga</td>
+                    </tr>
+
+                    <tr style="page-break-inside: avoid;">
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid;">
+                        b) Sistem hormonal: diabetes, diabetes gestasional, penyakit tiroid (hipertiroid/hipotiroid), atau gangguan sistem hormonal lainnya
+                        </td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:center;">{!DTKRKRBPP1}</td>
+                        <td style="padding: 5px 10px; vertical-align: top; page-break-inside: avoid; text-align:justify;">{!E_Form_Master_Data__c.Penjelasan_dt_rwyt_keluarga__c}</td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+
+            <div style=" padding-top: 20px; font-size: 12px; font-family:sans-serif; page-break-inside: avoid;">
+            
+                <p style="font-size:12px; font-weight:bold; text-align:left;font-family:sans-serif;">
+                    Dengan ini saya mengajukan pemulihan polis dan bersedia melakukan pembayaran sejumlah premi yang tertunggak.
+                </p>
+                <table class="standard-table">
+                    <tr style="page-break-inside: avoid;">
+                        <td style="text-align:left; width:40%; font-size:10px; font-weight:bold; vertical-align: top;">ALASAN PEMULIHAN POLIS</td>
+                        <td style="vertical-align: top;">:</td>
+                        <td style="text-align: justify; width: 58%;">{!alasanPemulihanPolis}</td>
+                    </tr>
+                </table>
+                    <br/>
+
+                  <div class="info-header">KELENGKAPAN DOKUMEN </div>
+                   <ol style="font-size: 12px; font-family:sans-serif;">
+                        <apex:repeat value="{!dokumenTambahanList}" var="doc">
+                            <li>{!doc}</li>
+                        </apex:repeat>
+                    </ol>
+
+                <br/>
+                    <div class="info-header">KETERANGAN TAMBAHAN </div>
+                    <ol style="font-size: 12px; font-family:Arial, sans-serif ">
+                        <apex:repeat value="{!transactionsList}" var="transaction">
+                            <li>{!transaction}</li>
+                        </apex:repeat>
+                    </ol>
+                
+                <br/>
+
+                
+            </div>
+
+            
+
+        </div>
+
+        <div>
+            <div class="info-container" style="page-break-before: always;">
+                <br/>
+                <table  class="custom-table-header-pernyataan-kuasa">
+                    <tr>
+                        <th colspan="2">PERNYATAAN DAN KUASA</th>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">1.</td>
+                        <td>
+                            Saya telah membaca, memahami, dan menyetujui persyaratan dan ketentuan dalam formulir ini, 
+                            menjawab dan mengisi bagian yang terlampir pada formulir ini dengan sebenar-benarnya tanpa paksaan dari pihak manapun. 
+                            Saya tidak memberikan keterangan lain dalam bentuk apapun kepada tenaga pemasar AXA Mandiri ataupun Bank (“Tenaga Pemasar”). Saya bertanggung jawab atas seluruh informasi yang tercantum pada formulir ini, jika ternyata keterangan yang diberikan tidak benar dan/atau tidak lengkap serta terdapat kesalahan dan/atau kelalaian dalam mengisi formulir ini, maka sepenuhnya akan menjadi tanggung jawab Saya.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">2.</td>
+                        <td>
+                            Saya menyetujui dan mengerti apabila diperlukan AXA Mandiri dapat melakukan verifikasi dan konfirmasi sehubungan dengan pengajuan transaksi dalam formulir ini. 
+                            Apabila verifikasi dan konfirmasi tidak berhasil, maka proses pengajuan ini dapat tidak diteruskan atau tidak dilanjutkan, 
+                            dengan tetap mengacu pada ketentuan AXA Mandiri.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">3.</td>
+                        <td>
+                            Saya mengizinkan AXA Mandiri untuk mencari informasi/konfirmasi mengenai data Saya yang tersedia/disimpan/dimiliki oleh Bank dan 
+                            afiliasinya sehubungan dengan pengajuan ini.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">4.</td>
+                        <td>
+                            Saya setuju dan mengizinkan AXA Mandiri untuk menggunakan atau memberikan informasi, keterangan, atau data-data Saya yang diperoleh dan/atau 
+                            dimiliki AXA Mandiri kepada pihak ketiga (termasuk tapi tidak terbatas pada perusahaan asuransi, reasuransi, bank, group dan afiliasi dari Pemegang Saham, serta pihak lain) yang bekerja sama dengan AXA Mandiri baik didalam atau luar negeri dalam rangka pelaksanaan transaksi dan/atau permintaan ini, 
+                            termasuk tapi tidak terbatas pada pelayanan nasabah, proses klaim, dan/atau penawaran produk.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">5.</td>
+                        <td>
+                            Saya senantiasa menjamin untuk merahasiakan dan tidak akan menggandakan, mengungkapkan maupun menyebarluaskan setiap dan segala informasi pribadi Saya yang berhubungan 
+                            dengan termasuk hubungan hukum yang didasarkan atas pengajuan pada dokumen/formulir ini antara Saya dan AXA Mandiri kepada pihak manapun dan melalui media apapun.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">6.</td>
+                        <td>
+                            Saya mengerti pengajuan ini mengikuti ketentuan-ketentuan yan tercantum dalam Polis dan hanya dapat diproses apabila Saya telah melengkapi persyaratan yang diperlukan oleh AXA Mandiri.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">7.</td>
+                        <td>
+                            Setiap salinan dokumen yang diterima dan telah disetujui oleh AXA Mandiri bersifat final dan tidak dapat dibatalkan dengan alasan apapun.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">8.</td>
+                        <td>
+                            Saya setuju dan akan memberikan dokumen seperti formulir, fotokopi bukti tanda pengenal (KTP/passport/dan lain-lain), fotokopi buku tabungan, dan dokumen pendukung lainnya secara softcopy/digital.
+                            Saya setuju untuk memberikan dokumen asli apabila diperlukan oleh AXA Mandiri dan Saya setuju bahwa seluruh dokumen softcopy/digital sama sah dan berlakunya sesuai dengan dokumen aslinya.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">9.</td>
+                        <td>
+                            Pernyataan dan Kuasa yang telah diberikan akan tetap berlaku selama Saya masih hidup maupun sesudah Saya meninggal dunia dan Saya setuju untuk mengesampingkan ketentuan pada pasal 1813, 1814, dan 1816 Kitab Undang-Undang Hukum Perdata.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">10.</td>
+                        <td>
+                            Segala resiko yang timbul sehubungan dengan pengajuan pada Formulir ini sepenuhnya merupakan tanggung jawab Saya dan Saya membebaskan AXA Mandiri dari segala tanggung jawab, gugatan, kerugian, dan/atau tuntutan dalam bentuk apapun di kemudian hari dari pihak manapun termasuk Saya atas pengajuan Formulir ini, kecuali yang diakibatkan kesalahan dan/atau kelalaian AXA Mandiri.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">11.</td>
+                        <td>
+                            Transaksi keuangan ini tidak berasal dari/untuk tujuan pencucian uang (money laundering), pendanaan terorisme (terrorism financing) sebagaimana diatur dalam ketentuan yang berlaku di wilayah hukum Republik Indonesia terkait dengan Anti Pencucian Uang dan Pencegahan Pendanaan Terorisme berikut dengan perubahannya dari waktu ke waktu. AXA Mandiri berhak menolak permohonan Saya/Kami jika tidak memenuhi dan melanggar ketentuan Undang-Undang.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">12.</td>
+                        <td>
+    
+                            <table >
+                                <tr>
+                                    <td colspan="2">
+                                       Perhitungan pajak (bila ada) akan disesuaikan dengan peraturan perpajakan yang berlaku. Pernyataan kepatuhan khusus terkait kewajiban pajak:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 5%; text-align: center; vertical-align: top">a.)</td>
+                                    <td style="width: 95%">
+                                       Menyetujui bahwa AXA Mandiri dan/atau afiliasinya diwajbkan untuk patuh kepada kewajiban dari Undang-Undang, Pedoman, Perintah, dan syarat yang ditetapkan
+                                       berdasarkan hukum di Indonesia ataupun hukum Asing termasuk Undang-Undang Kepatuhan Pajak Rekening Luar Negeri Amerika Serikat, Foreign Account Tax Compliance Act of United States of America (FATCA), atau perjanjian-perjanjian atas publik, peradilan, perpajakan, Pemerintahan Indonesia, dan/atau pihak berwenang lainnya, termasuk Direktorat Jenderal Pajak dan Internal Revenue S
+                                       ervices (IRS) Amerika Serikat (“Otoritas”) yang berlaku diberbagai yurisdiksi termasuk di Indonesia sebagaimana diundangkan beserta perubahaannya dari waktu ke waktu (“Kewajiban Hukum”).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 5%; text-align: center; vertical-align: top">b)</td>
+                                    <td style="width: 95%">
+                                        Saya juga setuju untuk menyediakan bantuan yang mungkin diperlukan untuk AXA Mandiri memenuhi seluruh kewajibannya sebagaimana 
+                                        diatur dalam kewajiban hukum tentang diri  Saya atau Polis Saya. Jika penyediaan informasi atau data melebihi 30 hari sejak transaksi diajukan, maka Saya akan menanggung semua risiko termasuk tapi 
+                                        tidak terbatas pada penolakan dan/atau pembekuan transaksi.
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">13.</td>
+                        <td>
+                            Saya setuju bahwa AXA Mandiri tidak bertanggung jawab atas tidak tepatnya pembayaran dana yang ditarik atau bila pembayaran dana 
+                            tersebut terlambat diterima, atau bila pembayaran dana tersebut diterima oleh orang yang tidak berhak dikarenakan 
+                            salah penafsiran/kelalaian oleh perwakilan Bank atau kelalaian Saya yang menyebabkan tidak jelasnya informasi yang diberikan, 
+                            atau adanya cacat pada berita yang diterima dan hal lain sebagainya yang merupakan kelalaian Saya dan/atau pihak Bank.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%; text-align: center; vertical-align: top">14.</td>
+                        <td>
+                            Dengan dikembalikannya Premi/Kontribusi dan/atau nilai tunai Polis (jika ada) setelah dikurangi dengan biaya administrasi, biaya medis dan biaya lainnya terkait 
+                            dengan Polis (jika ada) oleh AXA Mandiri ke rekening yang tercantum pada formulir ini maka Polis dinyatakan berakhir dan untuk selanjutnya tidak ada kewajiban apapun dari AXA Mandiri terhadap Pemegang Polis
+                            dan atau Tertanggung atau Peserta atau pihak yang berkepentingan atas Polis.
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+        </div>
+
+        
+        <!--TANDA TANGAN-->
+        <div style="bottom: 5px; left: 0; width: 100%; page-break-inside: avoid;">
+            <div style="font-size:12px;font-family:sans-serif; font-weight:bold; text-align:right; padding:5px 14px;">{!touchPoint}, {!inputDate}</div>
+            <!-- <apex:outputPanel rendered="{!jenisPengkinianData == 'PPTP'}">
+                <table style=" width:100%; font-family:sans-serif; font-size:12px;border-collapse:collapse;" border="2px solid">
+                    <tr style="text-align: center">
+                        <td style="width:50%; font-weight: bold;">
+                            Tanda Tangan Pemegang Polis
+                        </td>
+                    </tr>
+                    <tr style="text-align: Center; vertical-align: Center; height: 100px">
+                        <td style="width:50%">
+                            <img src="{!imgUrl}" width="90px"/> <br/>
+                        </td>
+                    </tr>
+                    <tr style="text-align: center">
+                        <td style="width:50%">
+                        <span style="font-size:12px;font-family:sans-serif;"> 
+                            {!phName}
+                            </span> 
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel> -->
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'PP'}">
+                <table style=" width:100%; font-family:sans-serif; font-size:12px;border-collapse:collapse;" border="2px solid">
+                    <tr style="text-align: center">
+                        <th>
+                            Nama Pemegang Polis
+                        </th>
+                        <th>
+                            Tanda Tangan Pemegang Polis
+                        </th>
+                    </tr>
+                    <tr style="text-align: Center; vertical-align: Center; height: 100px">
+                        <td>
+                            {!phName}
+                        </td>
+                        <td align="center; vertical-align:center; height: 100px;" >
+                            <img src="{!imgUrl}"  width="90px" style="width:50%"/>
+                        </td>
+                    </tr>
+                </table>
+
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!jenisPengkinianData == 'TP'}">
+                <table style=" width:100%; font-family:sans-serif; font-size:12px;border-collapse:collapse;" border="2px solid">
+                    <tr style="text-align: center">
+                        <th>
+                            Nama Pemegang Polis
+                        </th>
+                        <th>
+                            Tanda Tangan Pemegang Polis
+                        </th>
+                    </tr>
+                    <tr style="text-align: Center; vertical-align: Center; height: 100px">
+                        <td>
+                            {!namaTP}
+                        </td>
+                        <td style="width:50%">
+                            <img src="{!imgUrlTP}" width="90px"/> <br/>
+                        
+                            
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+           
+
+            
+
+            <table class="standard-table" style="width: 100%">
+                <tr style="height: 30px">
+                    <td style="width:50%"></td>
+
+                    <td style="width:50%; text-align: right;vertical-align: center; font-weight: bold">Customer Service: {!csName}</td>
+                </tr>
+
+            </table>
+        </div>
+
+        
+
+    </html>
+</apex:page>

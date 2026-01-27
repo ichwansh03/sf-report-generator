@@ -1,0 +1,376 @@
+<apex:page showHeader="false" controller="prechatform_Controller">
+  <!-- This script takes the endpoint URL parameter passed from the deployment page and makes it the action for the form -->
+  <script type='text/javascript'>
+  (function() {
+    function handlePageLoad() {
+      var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+      document.getElementById('prechatForm').setAttribute('action',
+      decodeURIComponent(endpointMatcher.exec(document.location.search)[1]));
+    } if (window.addEventListener) {
+      window.addEventListener('load', handlePageLoad, false);
+    } else {
+      window.attachEvent('onload', handlePageLoad, false);
+    }
+  })();
+  
+  function submitform(resParam){
+        var policy = document.getElementById('Policy_No_Numeric__c').value;
+        var contactParam;
+        if(resParam == 'Policy_No_Numeric__c' && policy != 'anonymous'){
+            document.getElementById('Policy_No_Numeric__c').value = document.getElementById('Policy_No_Numeric__c').value+'_';
+        }
+        var contactValue = resParam+", true";
+        document.getElementById('findContact').value= contactValue;
+        document.getElementById('prechatForm').submit();
+    }
+    
+    /*get search parameter*/
+    function getSearchParam(){
+        var policy = document.getElementById('Policy_No_Numeric__c').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+
+        if(policy == 'anonymous'){
+            policy = 'No Policy Number';
+        }else {
+            policy = policy+'_';
+        }
+        
+        //console.log('Policy '+policy);
+        
+        var myParam = policy+';'+phone+';'+email;
+        //console.log('myParam '+myParam);
+        
+      Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.prechatform_Controller.getParam}', myParam, function(result, event){
+                if (event.status) {
+                    var res = result;
+                    submitform(res);
+                    console.log('result '+result);
+                } else if (event.type === 'exception') {
+                    console.log('exception');
+                } else {
+                    console.log('error');
+                }
+            },
+            {escape: true}
+        );
+    }
+  </script>
+
+    <!-- JS placeholder for ie9 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://mathiasbynens.github.io/jquery-placeholder/jquery.placeholder.js"></script>
+    <script>
+
+       $(function() {
+          $('input, textarea').placeholder({customClass:'my-placeholder'});
+        });
+    </script>
+    
+  <img id="liveagent_button_online_5736F000000XZLj" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('5736F000000XZLj')" src="https://ali-axaindonesia.cs57.force.com/resource/1509791527000/Online_C" />
+  <img id="liveagent_button_offline_5736F000000XZLj" style="display: none; border: 0px none; " src="https://ali-axaindonesia.cs57.force.com/resource/1509791527000/Offline_C" />
+
+  <script type="text/javascript">
+    if (!window._laq) { 
+        window._laq = []; 
+    }
+    window._laq.push(function(){liveagent.showWhenOnline('5736F000000XZLj', document.getElementById('liveagent_button_online_5736F000000XZLj'));
+     liveagent.showWhenOffline('5736F000000XZLj', document.getElementById('liveagent_button_offline_5736F000000XZLj'));
+    });
+  </script>
+
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+
+    <link href="https://www.axa-mandiri.co.id/wp-content/themes/axamandiri/style.css" rel="stylesheet"/>
+  <style type="text/css">
+
+    h1{
+    font-size: 28px;
+    }
+
+  </style>
+  <section class="prechat">
+    <h1>Isi Form Berikut Ini :</h1>
+    <!-- Form that gathers information from the chat visitor and sets the values to Live Agent Custom Details used later in the example -->
+    <form method='post' id='prechatForm'>
+      <input type='text' class="custom-file-input" name='liveagent.prechat.name' id='prechat_field_name' placeholder = "Nama" required="true" />
+      <!-- Last name: <input type='text' name='liveagent.prechat:ContactLastName' id='lastName' required/><br /> -->
+      <input type='text' class="custom-file-input" name='liveagent.prechat:ContactEmail' id='email' placeholder = "Email" required="true" />
+      <input type='text' class="custom-file-input" name='liveagent.prechat:ContactPhone' id='phone' placeholder = "Phone" required="true" />
+
+      <select class="custom-file-input" id="polis__c" name="entity" disabled="" >
+        <option value="">--Tipe Asuransi--</option>
+        <option value="AFI">Agency : Pembelian polis via agent/tenaga pemasar</option>
+        <option value="ALI">Telemarketing : pembelian polis via telephone/web</option>
+      </select>
+      <select class="custom-file-input" id="subjectChange" name="liveagent.prechat:CaseSubject" required="true" disabled="disabled">
+        <option value="">Pilih Subject</option>
+      </select>
+      <select class="custom-file-input" id="nasabahChange" name="status_nasabah" style="visibility:hidden;">
+        <option value="">Apakah Anda Nasabah?</option>
+        <option value="y">Ya</option>
+        <option value="t">Tidak</option>
+      </select>
+      <input type='text' class="custom-file-input cp-display--none" name='liveagent.prechat:ContactPolicy_No_Numeric' id='Policy_No_Numeric__c' placeholder = "Nomor Polis"/>
+
+      <!-- <input type='text' class="custom-file-input" name='liveagent.prechat:ContactPolicy_No_Numeric' placeholder = "Nomor Polis" id='polis__c'/> -->
+        <input type="hidden" name="liveagent.prechat.buttons" id="valID" value="" />
+      <!-- Department: <select name="liveagent.prechat.buttons"> -->
+        <!-- Values are LiveChatButton and/or User IDs. -->
+        <!-- <option value="">General</option>
+        <option value="5736F0000000Fe7">ALI</option>
+        <option value="5736F0000000FeH">AFI</option>
+      </select> -->
+      <!-- Hidden fields used to set additional custom details -->
+      <input type="hidden" name="liveagent.prechat:CaseStatus" value="New" /><br />
+
+      <!-- This example assumes that "Chat" was added as picklist value to the Case Origin field -->
+      <input type="hidden" name="liveagent.prechat:CaseOrigin" value="Chat" /><br />
+
+      <!-- This example will set the Case Record Type to a specific value for the record type configured on the org. Lookup the case record type's id on your org and set it here -->
+      <input type="hidden" name="liveagent.prechat:CaseRecordType" value="" />
+      <input type="hidden" name="liveagent.prechat:ContactName" id="contact_name" value="" />
+      <!-- Used to set the visitor's name for the agent in the Console -->
+      <!-- <input type="hidden" name="liveagent.prechat.name" id="prechat_field_name" /> -->
+      <!-- map: Use the data from prechat form to map it to the Salesforce record's fields -->
+      <input type="hidden" name="liveagent.prechat.findorcreate.map:Contact" value="Name,name;Email,ContactEmail;Phone,ContactPhone;Policy_No_Numeric__c,ContactPolicy_No_Numeric" />
+      <input type="hidden" name="liveagent.prechat.findorcreate.map:Case" value="Subject,CaseSubject;Status,CaseStatus;Origin,CaseOrigin;RecordTypeId" />
+      <!-- doFind, doCreate and isExactMatch example for a Contact:
+      Find a contact whose Email exactly matches the value provided by the customer in the form
+      If there's no match, then create a Contact record and set it's First Name, Last Name, Email, and Phone to the values provided by the customer -->
+      <input type="hidden" name="liveagent.prechat.findorcreate.map.doFind:Contact" id="findContact" value="Policy_No_Numeric__c,true" />
+      <input type="hidden" name="liveagent.prechat.findorcreate.map.isExactMatch:Contact" id="matchContact" value="Policy_No_Numeric__c,true" />
+      <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Contact" value="Name,true;Email,true;Phone,true;Policy_No_Numeric__c,true" />
+      <!-- doCreate example for a Case: create a case to attach to the chat, set the Case Subject to the value provided by the customer and set the case's Status and Origin fields -->
+      <!--
+        <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Case" value="Subject,true;Status,true;Origin,true" />
+      -->
+      <!-- linkToEntity: Set the record Contact record, found/created above, as the Contact on the Case that's created -->
+      <input type="hidden" name="liveagent.prechat.findorcreate.linkToEntity:Contact" value="Case,ContactId" />
+      <!-- showOnCreate: Open the Contact and Case records as sub-tabs to the chat for the agent in the Console -->
+      <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Contact" value="true" />
+      <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Case" value="true" />
+      <!-- saveToTranscript: Associates the records found / created, i.e. Contact and Case, to the Live Chat Transcript record. -->
+      <input type="hidden" name="liveagent.prechat.save:ContactName" value="Visitor_Name__c" />
+      <input type="hidden" name="liveagent.prechat.save:ContactEmail" value="Visitor_Email__c" />
+      <input type="hidden" name="liveagent.prechat.save:ContactPhone" value="Visitor_Phone_Number__c" />
+      <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Contact" value="ContactId" />
+      <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Case" value="CaseId" />
+      <!-- displayToAgent: Hides the case record type from the agent -->
+      <input type="hidden" name="liveagent.prechat.findorcreate.displayToAgent:CaseRecordType" value="false" />
+      <!-- searchKnowledge: Searches knowledge article based on the text, this assumes that Knowledge is setup -->
+      <input type="hidden" name="liveagent.prechat.knowledgeSearch:CaseSubject" value="true" />
+      <input type='button' class="custom-file-submit" value='Chat Now' id='prechat_submit' onclick="javascript: getSearchParam();"/>
+      <!-- Set the visitor's name for the agent in the Console to first and last name provided by the customer -->
+      <script type="text/javascript">
+      jQuery('#Policy_No_Numeric__c').keyup(function () {
+          this.value = this.value.replace(/[^0-9\.]/g,'');
+      });
+
+      $('#polis__c')
+        .keydown(function (e) {
+          var key = e.charCode || e.keyCode || 0;
+          $polis = $(this);
+          // Auto-format- do not expose the mask as the user begins to type
+          if (key !== 8 && key !== 9) {
+            if ($polis.val().length === 3) {
+              $polis.val($polis.val() + '-');
+            }
+          }
+          // Allow numeric (and tab, backspace, delete) keys only
+          return (key == 8 ||
+              key == 9 ||
+              key == 46 ||
+              key == 189 ||
+              (key >= 48 && key <= 57) ||
+              (key >= 96 && key <= 105));
+        })
+        function setName() {
+          document.getElementById("prechat_field_name").value =
+          document.getElementById("firstName").value + " " + document.getElementById("lastName").value;
+        }
+        
+          $('#polis__c').change(function() {
+        <!--   $(document).ready(function() { -->
+          //var entity = $(this).val(),
+          var entity = $('#polis__c').val();
+          caseTypeALI = '<option value="">Pilih Subject</option><option value="Informasi Produk">Informasi Produk</option><option value="Informasi Polis">Informasi Polis</option><option value="Informasi Status Klaim">Informasi Status Klaim</option><option value=" Informasi Saldo Investasi"> Informasi Saldo Investasi</option><option value="Prosedur Klaim">Prosedur Klaim</option><option value="Prosedur Penarikan Dana">Prosedur Penarikan Dana</option><option value="Prosedur Pengkinian Data">Prosedur Pengkinian Data</option><option value="Prosedur Keluhan">Prosedur Keluhan</option><option value="Other">Other</option>';
+          caseTypeAFI = '<option value="">Pilih Subject</option><option value="Informasi Produk">Informasi Produk</option><option value="Informasi Polis">Informasi Polis</option><option value="Informasi Status Klaim">Informasi Status Klaim</option><option value=" Informasi Saldo Investasi"> Informasi Saldo Investasi</option><option value="Prosedur Klaim">Prosedur Klaim</option><option value="Prosedur Penarikan Dana">Prosedur Penarikan Dana</option><option value="Prosedur Pengkinian Data">Prosedur Pengkinian Data</option><option value="Prosedur Keluhan">Prosedur Keluhan</option><option value="Other">Other</option>';
+          //caseTypeAFI = '<option value="">Pilih Subject</option><option value="Informasi Produk">Informasi Produk</option><option value="Informasi Polis">Informasi Polis</option><option value="Informasi Status Klaim">Informasi Status Klaim</option><option value="Layanan Derek">Layanan Derek</option><option value="Other">Other</option>'
+          if (entity != '') {
+            $('#subjectChange').empty();
+            if (entity == 'ALI') {
+              $('#valID').val('5736F000000XZLo');
+              $('#subjectChange').append(caseTypeALI);
+            }
+            if (entity == 'AFI') {
+              $('#subjectChange').append(caseTypeAFI);
+              $('#valID').val('5736F0000008dkj');
+            }
+            $('#subjectChange').removeAttr('disabled');
+          } else {
+            $('#subjectChange').attr('disabled', 'disabled');
+          }
+
+          if (entity == "AFI") {
+            $('#Policy_No_Numeric__c').val("Non Customer AFI");
+          } else if (entity == "ALI") {
+            //$('#Policy_No_Numeric__c').val("Non Customer ALI");
+            //set Default Policy_No_Numeric__c to anonymous - Septi 27/2/2018
+            $('#Policy_No_Numeric__c').val("anonymous");
+          } else {
+            $('#Policy_No_Numeric__c').val("");
+          }
+        });
+
+        /*$('#nasabahChange').change(function() {
+            var prechat = $('#prechat_field_name').val();
+            $('#contact_name').val(prechat);
+            console.log($('#contact_name').val());
+            var statusNasabah = $(this).val();
+            $('.custom-file-submit').removeClass("cp-display--none");
+            console.log('Change');
+            if (statusNasabah == 'y') {
+              $('#Policy_No_Numeric__c').removeAttr('disabled');
+              $('#Policy_No_Numeric__c').attr('required', 'required');
+              $('#Policy_No_Numeric__c').val('');
+              $('#Policy_No_Numeric__c').removeClass("cp-display--none"); 
+            } else {
+              $('#Policy_No_Numeric__c').addClass("cp-display--none");
+
+              $('#Policy_No_Numeric__c').removeAttr('required', 'required');
+
+              if ($('#polis__c').val() == "ALI") {
+                $('#Policy_No_Numeric__c').val("anonymous");
+              } else if ($('#polis__c').val() == "AFI") {
+                $('#Policy_No_Numeric__c').val("anonymous");
+              } else {
+                $('#Policy_No_Numeric__c').val("");
+              }
+            }
+          })*/
+
+        (function ($) {
+          $.support.placeholder = ('placeholder' in document.createElement('input'));
+        })(jQuery);
+
+
+        //fix for IE7 and IE8
+        $(function () {
+          if (!$.support.placeholder) {
+             $("[placeholder]").focus(function () {
+                 if ($(this).val() == $(this).attr("placeholder")) $(this).val("");
+             }).blur(function () {
+                 if ($(this).val() == "") $(this).val($(this).attr("placeholder"));
+             }).blur();
+
+             $("[placeholder]").parents("form").submit(function () {
+                 $(this).find('[placeholder]').each(function() {
+                     if ($(this).val() == $(this).attr("placeholder")) {
+                         $(this).val("");
+                     }
+                 });
+             });
+          }
+        });
+      </script>
+      <style type="text/css">
+      p {font-weight: bolder }
+      </style>
+    </form>
+    <!-- 
+    <h2>Jam Operasional Live Chat:</h2> <br/>
+    Senin – Jumat<br/>
+    09.00 – 17.00 WIB<br/>
+    Sabtu<br/>
+    10.00 – 13.30 WIB<br/><br/>
+    
+    //Nasabah Yth, mulai tanggal 1 Februari 2019, nomor call centre kami adalah 1500-940, terima kasih<br/><br/>
+      
+    Nasabah Yth,<br/>
+    Efektif tanggal 1 Febuari 2019, nomor call center kami berubah 1500-940<br/>
+    Tekan 1 Nasabah Agency<br/>
+    Tekan 2 Nasabah Telemarketing<br/>
+    Tekan 3 Nasabah Corporate <br/>
+    Tekan 4 Nasabah Syariah<br/>
+    Tekan 5 Nasabah DPLK<br/> -->
+
+    <table style="font-size:13px;">
+      <tr>
+          <td colspan="4"><h2>Jam layanan Customer Care Center:</h2></td>
+      </tr>
+      <tr>
+          <td>*</td>
+          <td>Call Center</td>
+          <td> : </td>
+          <td>1500 940 </td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>(Senin – Jumat, 08.00 – 17.00 WIB)</td>
+      </tr>
+      <tr>
+          <td>&nbsp;</td>
+      </tr>
+      <tr>
+          <td>*</td>
+          <td>Email</td>
+          <td> : </td>
+          <td><a href="mailto:customer@axa-financial.co.id?Subject=Hello%20AXA" target="_top">customer@axa-financial.co.id</a></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>(Senin – Jumat, 08.00 – 17.00 WIB)</td>
+      </tr>
+      <tr>
+          <td>&nbsp;</td>
+      </tr>
+      <tr>
+          <td>*</td>
+          <td>Live Chat</td>
+          <td> : </td>
+          <td><a href="http://bit.ly/LiveChatAXADirect">http://bit.ly/LiveChatAXADirect</a></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>(Senin – Jumat, 08.00 – 17.00 WIB)</td>
+      </tr>
+      <tr>
+          <td>&nbsp;</td>
+      </tr>
+      <tr>
+          <td>*</td>
+          <td>Website</td>
+          <td> : </td>
+          <td><a href="http://www.axa.co.id">www.axa.co.id</a></td>
+      </tr>
+      <tr>
+          <td>&nbsp;</td>
+      </tr>
+      <tr>
+          <td>*</td>
+          <td>Walk In</td>
+          <td> : </td>
+          <td>AXA Tower lt. GF, Jl. Prof.Dr.Satrio Kav.18 Kuningan City, Jakarta 12940, Indonesia</td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>(Senin – Jumat, 08.00 – 16.00 WIB)</td>
+      </tr>
+      <tr>
+          <td>&nbsp;</td>
+      </tr>
+      <tr>
+          <td colspan="4">Kami tidak beroperasi pada hari Sabtu, Minggu dan Libur Nasional</td>
+      </tr>
+    </table>
+  </section>
+</apex:page>

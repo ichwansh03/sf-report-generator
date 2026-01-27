@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Cancel__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Call_List__r.RecordType.Name ==&quot;Collection AMFS&quot; &amp;&amp; TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption TM&apos; &amp;&amp; TEXT(Call_Status_Config__c)== &apos;Inforced&apos;,1,0)</formula>
+    <label>Total Cancel</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

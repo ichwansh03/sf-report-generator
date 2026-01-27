@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Non_FCR__c</fullName>
+    <description>IF( ISBLANK(ParentId),
+IF(ISBLANK(Last_Child_Case__c), FALSE, TRUE),
+FALSE
+)</description>
+    <formula>IF (First_Interaction2__c &amp;&amp; FCR2__c, 
+FALSE, 
+IF( Repeat_Call2__c, FALSE, TRUE)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Non FCR</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

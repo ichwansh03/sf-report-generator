@@ -1,0 +1,45 @@
+<apex:page standardController="Contact" showHeader="false" sidebar="false" id="mainPage" extensions="InteractionStatistic_Controller">
+    <style>
+        .clearfix {
+            overflow: auto;
+        }
+        
+        .container {
+            overflow-x:auto;
+            display:Block;
+            white-space: nowrap;
+            line-height: 150px;
+        }
+        
+        .container .chart {
+            display:inline-block;
+            width: 230px;
+            padding: 0px;
+            margin: 0 auto;
+            vertical-align: middle;
+            line-height: normal;
+        }
+    </style>
+    
+    <apex:pageBlock id="idPB">
+        <div class="container">
+            <div class="chart" align="center">
+                    <apex:chart height="150" width="300" data="{!PieData}" >
+                        <!--<apex:legend position="bottom" />-->
+                        <apex:pieSeries dataField="data" highlight="false" tips="true" colorSet="#5D9CEC,#48CFAD,#FFCE54,#ED5565,#AC92EC,#4FC1E9,#A0D468,#FC6E51">
+                            <apex:chartLabel display="none" field="name" />
+                        </apex:pieSeries>
+                    </apex:chart>
+            </div>
+            <div class="chart">
+                <apex:chart data="{!PieData}" width="250" height="150" >
+                    <apex:axis type="Category" position="left" fields="name" />                   
+                    <apex:axis type="Numeric" position="bottom" fields="data" minimum="0" maximum="{!(dataCount+modCount)}" steps="{!IF(dataCount > 10 , ((dataCount+modCount)/10) - 1,(dataCount - 1))}" />
+                    <apex:barSeries orientation="horizontal" axis="bottom" xField="data" yField="name" colorsProgressWithinSeries="true" colorSet="#5D9CEC,#48CFAD,#FFCE54,#ED5565,#AC92EC,#4FC1E9,#A0D468,#FC6E51">
+                        <apex:chartLabel field="data" display="outside" />
+                    </apex:barSeries>
+                </apex:chart>
+            </div>
+        </div>
+    </apex:pageBlock>
+</apex:page>

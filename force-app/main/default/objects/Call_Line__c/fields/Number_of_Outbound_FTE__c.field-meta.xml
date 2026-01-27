@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Number_of_Outbound_FTE__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption Konven&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Lapse TM&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Withdrawal&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Lapse Konven&apos;),7,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption TM&apos;),8,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; TEXT(Call_List__r.Case_Type_Config__c) == &apos;Renewal Reminder&apos; &amp;&amp; MONTH( Call_List__r.Generated_Date__c)=3,4,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; TEXT(Call_List__r.Case_Type_Config__c) == &apos;Renewal Reminder&apos; &amp;&amp; MONTH(Call_List__r.Generated_Date__c)!=3,5,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Cuti Premi&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;MKP&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;RTU&apos;),1,0)))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Number of Outbound FTE</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

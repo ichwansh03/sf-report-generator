@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case_Type_Config__c</fullName>
+    <label>Case Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Activity__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Premium Pending</fullName>
+                <default>false</default>
+                <label>Premium Pending</label>
+            </value>
+            <value>
+                <fullName>Claim Pending</fullName>
+                <default>false</default>
+                <label>Claim Pending</label>
+            </value>
+            <value>
+                <fullName>Welcome Call</fullName>
+                <default>false</default>
+                <label>Welcome Call</label>
+            </value>
+            <value>
+                <fullName>Retain Redemption</fullName>
+                <default>false</default>
+                <label>Retain Redemption</label>
+            </value>
+            <value>
+                <fullName>Retain Withdrawal</fullName>
+                <default>false</default>
+                <label>Retain Withdrawal</label>
+            </value>
+            <value>
+                <fullName>Policy Elapse</fullName>
+                <default>false</default>
+                <label>Policy Elapse</label>
+            </value>
+            <value>
+                <fullName>Debt Failure</fullName>
+                <default>false</default>
+                <label>Debt Failure</label>
+            </value>
+            <value>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+                <label>Renewal</label>
+            </value>
+            <value>
+                <fullName>Survey of Claim Service</fullName>
+                <default>false</default>
+                <label>Survey of Claim Service</label>
+            </value>
+            <value>
+                <fullName>Survey of ERA/Towing Service</fullName>
+                <default>false</default>
+                <label>Survey of ERA/Towing Service</label>
+            </value>
+            <value>
+                <fullName>Pending Document POS</fullName>
+                <default>false</default>
+                <label>Pending Document POS</label>
+            </value>
+            <value>
+                <fullName>Request ERA/Towing</fullName>
+                <default>false</default>
+                <label>Request ERA/Towing</label>
+            </value>
+            <value>
+                <fullName>Complaint Follow Up</fullName>
+                <default>false</default>
+                <label>Complaint Follow Up</label>
+            </value>
+            <value>
+                <fullName>Update Data</fullName>
+                <default>false</default>
+                <label>Update Data</label>
+            </value>
+            <value>
+                <fullName>SMS Pull Confirmation</fullName>
+                <default>false</default>
+                <label>SMS Pull Confirmation</label>
+            </value>
+            <value>
+                <fullName>Premium Holiday Passive</fullName>
+                <default>false</default>
+                <label>Premium Holiday Passive</label>
+            </value>
+            <value>
+                <fullName>Premium Reminder</fullName>
+                <default>false</default>
+                <label>Premium Reminder</label>
+            </value>
+            <value>
+                <fullName>Grace Period</fullName>
+                <default>false</default>
+                <label>Grace Period</label>
+            </value>
+            <value>
+                <fullName>Welcome Call (NBUW)</fullName>
+                <default>false</default>
+                <label>Welcome Call (NBUW)</label>
+            </value>
+            <value>
+                <fullName>Teleclaim</fullName>
+                <default>false</default>
+                <label>Teleclaim</label>
+            </value>
+            <value>
+                <fullName>Retain Tahapan</fullName>
+                <default>false</default>
+                <label>Retain Tahapan</label>
+            </value>
+            <value>
+                <fullName>Request Quick Response</fullName>
+                <default>false</default>
+                <label>Request Quick Response</label>
+            </value>
+            <value>
+                <fullName>Big RTU Complaint</fullName>
+                <default>false</default>
+                <label>Big RTU Complaint</label>
+            </value>
+            <value>
+                <fullName>No Claim Bonus</fullName>
+                <default>false</default>
+                <label>No Claim Bonus</label>
+            </value>
+            <value>
+                <fullName>Withdrawal</fullName>
+                <default>false</default>
+                <label>Withdrawal</label>
+            </value>
+            <value>
+                <fullName>Birthday greeting</fullName>
+                <default>false</default>
+                <label>Birthday greeting</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <default>false</default>
+                <label>Others</label>
+            </value>
+            <value>
+                <fullName>Claim</fullName>
+                <default>false</default>
+                <label>Claim</label>
+            </value>
+            <value>
+                <fullName>Collection Task</fullName>
+                <default>false</default>
+                <label>Collection Task</label>
+            </value>
+            <value>
+                <fullName>Reinstate</fullName>
+                <default>false</default>
+                <label>Reinstate</label>
+            </value>
+            <value>
+                <fullName>Premium FU</fullName>
+                <default>false</default>
+                <label>Premium FU</label>
+            </value>
+            <value>
+                <fullName>NCB</fullName>
+                <default>false</default>
+                <label>NCB</label>
+            </value>
+            <value>
+                <fullName>Major Minor</fullName>
+                <default>false</default>
+                <label>Major Minor</label>
+            </value>
+            <value>
+                <fullName>Survey - I Claim</fullName>
+                <default>false</default>
+                <label>Survey - I Claim</label>
+            </value>
+            <value>
+                <fullName>Survey - I Ask</fullName>
+                <default>false</default>
+                <label>Survey - I Ask</label>
+            </value>
+            <value>
+                <fullName>Survey - I Buy</fullName>
+                <default>false</default>
+                <label>Survey - I Buy</label>
+            </value>
+            <value>
+                <fullName>Renewal Reminder</fullName>
+                <default>false</default>
+                <label>Renewal Reminder</label>
+            </value>
+            <value>
+                <fullName>Lapse Konven</fullName>
+                <default>false</default>
+                <label>Lapse Konven</label>
+            </value>
+            <value>
+                <fullName>MKP</fullName>
+                <default>false</default>
+                <label>MKP</label>
+            </value>
+            <value>
+                <fullName>Cuti Premi</fullName>
+                <default>false</default>
+                <label>Cuti Premi</label>
+            </value>
+            <value>
+                <fullName>RTU</fullName>
+                <default>false</default>
+                <label>RTU</label>
+            </value>
+            <value>
+                <fullName>Redemption Konven</fullName>
+                <default>false</default>
+                <label>Redemption Konven</label>
+            </value>
+            <value>
+                <fullName>Lapse TM</fullName>
+                <default>false</default>
+                <label>Lapse TM</label>
+            </value>
+            <value>
+                <fullName>Redemption TM</fullName>
+                <default>false</default>
+                <label>Redemption TM</label>
+            </value>
+            <value>
+                <fullName>Add/Remove Policy Cust Portal</fullName>
+                <default>false</default>
+                <label>Add/Remove Policy Cust Portal</label>
+            </value>
+            <value>
+                <fullName>TRO Project</fullName>
+                <default>false</default>
+                <label>TRO Project</label>
+            </value>
+            <value>
+                <fullName>Others - Gagal Debet</fullName>
+                <default>false</default>
+                <label>Others - Gagal Debet</label>
+            </value>
+            <value>
+                <fullName>Collection-Redemption Konven MPS</fullName>
+                <default>false</default>
+                <label>Collection-Redemption Konven MPS</label>
+            </value>
+            <value>
+                <fullName>Collection-Withdrawal MPS</fullName>
+                <default>false</default>
+                <label>Collection-Withdrawal MPS</label>
+            </value>
+            <value>
+                <fullName>TelUW</fullName>
+                <default>false</default>
+                <label>TelUW</label>
+            </value>
+            <value>
+                <fullName>Welcome Call Paydi</fullName>
+                <default>false</default>
+                <label>Welcome Call Paydi</label>
+            </value>
+            <value>
+                <fullName>ICF Survey Inquiry</fullName>
+                <default>false</default>
+                <label>ICF Survey Inquiry</label>
+            </value>
+            <value>
+                <fullName>ICF Survey Claim</fullName>
+                <default>false</default>
+                <label>ICF Survey Claim</label>
+            </value>
+            <value>
+                <fullName>ICF Survey Complaint</fullName>
+                <default>false</default>
+                <label>ICF Survey Complaint</label>
+            </value>
+            <value>
+                <fullName>Adhoc</fullName>
+                <default>false</default>
+                <label>Adhoc</label>
+            </value>
+            <value>
+                <fullName>Collection</fullName>
+                <default>false</default>
+                <label>Collection</label>
+            </value>
+            <value>
+                <fullName>Other - Lapse Konven</fullName>
+                <default>false</default>
+                <label>Other - Lapse Konven</label>
+            </value>
+            <value>
+                <fullName>DMU</fullName>
+                <default>false</default>
+                <label>DMU</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Premium Pending</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Claim Pending</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Welcome Call</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Retain Withdrawal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Policy Elapse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Debt Failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Renewal</controllingFieldValue>
+            <valueName>Renewal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Pending Document POS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Request ERA/Towing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Complaint Follow Up</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Customer Segmentation</controllingFieldValue>
+            <valueName>Update Data</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>SMS Pull Confirmation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Premium Holiday Passive</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Premium Reminder</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Grace Period</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Welcome Call (NBUW)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Teleclaim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Request Quick Response</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Big RTU Complaint</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>No Claim Bonus</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Withdrawal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Birthday greeting</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Customer Segmentation</controllingFieldValue>
+            <valueName>Others</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Collection Task</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Major Minor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Add/Remove Policy Cust Portal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>TelUW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Welcome Call Paydi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Adhoc</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>Collection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confirmation</controllingFieldValue>
+            <valueName>DMU</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Retain Redemption</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Retain Tahapan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Reinstate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>Premium FU</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Conservation</controllingFieldValue>
+            <valueName>NCB</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Survey</controllingFieldValue>
+            <controllingFieldValue>Teleservices</controllingFieldValue>
+            <valueName>Survey of Claim Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Survey</controllingFieldValue>
+            <controllingFieldValue>Teleservices</controllingFieldValue>
+            <valueName>Survey of ERA/Towing Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Survey Feedback</controllingFieldValue>
+            <valueName>Survey - I Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Survey Feedback</controllingFieldValue>
+            <valueName>Survey - I Ask</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Survey Feedback</controllingFieldValue>
+            <valueName>Survey - I Buy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaint Case</controllingFieldValue>
+            <valueName>ICF Survey Complaint</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Renewal Reminder</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Lapse Konven</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>MKP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Cuti Premi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>RTU</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Redemption Konven</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Lapse TM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Redemption TM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>TRO Project</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Others - Gagal Debet</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Collection-Redemption Konven MPS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Collection-Withdrawal MPS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Collection</controllingFieldValue>
+            <valueName>Other - Lapse Konven</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Teleservices</controllingFieldValue>
+            <valueName>ICF Survey Inquiry</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Teleservices</controllingFieldValue>
+            <valueName>ICF Survey Claim</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

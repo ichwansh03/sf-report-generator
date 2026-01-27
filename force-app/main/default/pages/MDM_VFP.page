@@ -1,0 +1,477 @@
+<apex:page standardController="Contact" extensions="MDM_Controller" showHeader="true" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False" action="{!initGetData}">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        
+        <!-- HEAD -->
+        <apex:includeScript value="{!URLFOR($Resource.Jquery)}"  />
+        <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>  
+        <apex:includeScript value="/soap/ajax/32.0/connection.js"/>     
+        <apex:includeScript value="/support/console/37.0/integration.js"/>      
+        <!--  <script src="../../resource/1445396331000/EpisodeJS" type="text/javascript"></script>      -->  
+<!--  <script src="../../soap/ajax/32.0/connection.js" type="text/javascript"></script> -->
+        <!--  <apex:includeScript value="/support/console/22.0/integration.js"/> --> 
+        <style>
+            .slds-text-title_caps {
+            border-left: 0.5px solid grey; 
+            border-right: 0.5px solid grey;
+            }
+            
+            .slds-truncate{
+            text-align:center;
+            width: 100%;
+            word-wrap: break-word;
+            }
+        </style>
+        
+        <script type="text/javascript">
+        $(document).ready(function(){
+            console.log($("[id$=logDate]"));
+            $("[id$=dob]").datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true});
+        });
+        </script>
+        <head>
+            <apex:slds /> 
+        </head>
+        <apex:sectionHeader title="{!titleMDM}"/>
+        <div class="apexp">
+            <apex:pageMessages escape="false" id="errorMsgId"/>
+            <div class="bPageBlock brandSecondaryBrd apexDefaultPageBlock secondaryPalette"> 
+                <div class="pbBody" style="margin:0px">
+                    <apex:form >
+                        <c:StatusLoading />
+                        <apex:outputPanel id="getMDMData" style="display:{!isDisplaySearch}">
+                            <apex:pageBlock mode="maindetail" tabStyle="Contact">
+                                <!--
+                                <div class="pbHeader">
+                                    <table style="width:50%" cellspacing="0" cellpadding="0" border="0">
+                                        <tr>
+                                            <td>
+                                                <apex:outputLabel value="Entity"/>
+                                            </td>
+                                            <td>
+                                                <apex:selectList size="1" value="{!entity}" required="true" label="Entity"> 
+                                                    <apex:selectOptions value="{!entityList}"/>
+                                                </apex:selectList>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <apex:outputLabel value="MDM Prefered Format"/>
+                                            </td>
+                                            <td>
+                                                <apex:selectList size="1" value="{!relatedPolicy}" required="true" label="MDM Prefered Format"> 
+                                                    <apex:selectOptions value="{!relatedPolicyList}"/>  
+                                                </apex:selectList>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <apex:outputLabel value="Search Filter"/>
+                                            </td>
+                                            <td>
+                                                <apex:selectList size="1" value="{!sourceCInd}" id="test2" required="true" label="Search Filter"> 
+                                                    <apex:selectOptions value="{!sourceCIndList}"/>
+                                                    <apex:actionSupport reRender="MDMdata,getMDMData" event="onchange" status="stSearch"/>
+                                                </apex:selectList>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'MDM_ID','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="mdmIdLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="MDM ID"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="mdmId">
+                                                    <apex:inputText value="{!customerID}" />
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'POLICY_NO','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="polisNoLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="Policy No"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="polisNo">
+                                                    <apex:input type="text" value="{!polisNo}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'ID_DOC','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="idDocLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="Identity No"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="idDoc">
+                                                    <apex:input type="text" value="{!socialSecurityNO}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'ACC_NO','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="accNoLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="Account No"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="accNo">
+                                                    <apex:input type="text" value="{!accountNO}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'PHONE_NO','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="phoneLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="Mobile / Telephone No"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="phone">
+                                                        <apex:input type="text" value="{!telephoneNo}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'EMAIL','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="emailLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="Email Address"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                             <td>
+                                                <apex:outputPanel id="email">
+                                                    <apex:input type="text" value="{!emailAddress}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'PHONE_NO','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="addTypeLabel" layout="block" styleClass="pbSubsection">
+                                                    <apex:outputLabel value="Telephone Type Code"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="addType">
+                                                    <apex:selectList size="1" value="{!addressTypeCD}">
+                                                        <apex:selectOptions value="{!addressTypeCDList}"/>
+                                                    </apex:selectList>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="nameLabel">
+                                                    <apex:outputLabel value="Full Name"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="name">
+                                                    <apex:input type="text" value="{!firstNM}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="dobLabel">
+                                                    <apex:outputLabel value="Date of Birth"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="dob">
+                                                <apex:input type="date" value="{!birthDT}"/>
+                                            </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="genderCDLabel">
+                                                    <apex:outputLabel value="Gender"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="genderCD">
+                                                    <apex:selectList size="1" value="{!genderCD}"> 
+                                                        <apex:selectOptions value="{!genderCDList}"/>
+                                                    </apex:selectList>
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                            <td>
+                                                <apex:outputPanel id="customerRKLabel">
+                                                    <apex:outputLabel value="Party Type CD"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputPanel id="customerRK">
+                                                    <apex:input type="text" value="{!customerRK}"/>
+                                                </apex:outputPanel>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <apex:commandButton value="Show" action="{!getData}" reRender="detailNsbId,errorMsgId,getMDMData,buttonPortofolio, processTime" status="pageStatus" styleClass="slds-button slds-button_brand"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+								-->
+                                <apex:pageBlockSection columns="1">
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputLabel value="Entity"></apex:outputLabel>
+                                        <apex:selectList size="1" value="{!entity}" required="true" label="Entity"> 
+                                            <apex:selectOptions value="{!entityList}"/>
+                                        </apex:selectList>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputLabel value="MDM Prefered Format"/>
+                                        <apex:selectList size="1" value="{!relatedPolicy}" required="true" label="MDM Prefered Format"> 
+                                            <apex:selectOptions value="{!relatedPolicyList}"/>  
+                                        </apex:selectList>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputLabel value="Search Filter"/>
+                                        <apex:selectList size="1" value="{!sourceCInd}" id="test2" required="true" label="Search Filter"> 
+                                            <apex:selectOptions value="{!sourceCIndList}"/>
+                                            <apex:actionSupport reRender="MDMdata,getMDMData,errorMsgId" event="onchange" status="stSearch"/>
+                                        </apex:selectList>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'MDM_ID','','none')}" labelStyle="display:{!IF(sourceCInd == 'MDM_ID','','none')}">
+                                        <apex:outputPanel id="mdmIdLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="MDM ID"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="mdmId">
+                                            <apex:inputText value="{!customerID}" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'POLICY_NO','','none')}" labelStyle="display:{!IF(sourceCInd == 'POLICY_NO','','none')}">
+                                        <apex:outputPanel id="polisNoLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="Policy No"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="polisNo">
+                                            <apex:input type="text" value="{!polisNo}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'ID_DOC','','none')}" labelStyle="display:{!IF(sourceCInd == 'ID_DOC','','none')}">
+                                        <apex:outputPanel id="idDocLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="Identity No"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="idDoc">
+                                            <apex:input type="text" value="{!socialSecurityNO}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'ACC_NO','','none')}" labelStyle="display:{!IF(sourceCInd == 'ACC_NO','','none')}">
+                                        <apex:outputPanel id="accNoLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="Account No"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="accNo">
+                                            <apex:input type="text" value="{!accountNO}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'PHONE_NO','','none')}" labelStyle="display:{!IF(sourceCInd == 'PHONE_NO','','none')}">
+                                        <apex:outputPanel id="phoneLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="Mobile / Telephone No"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="phone">
+                                            <apex:input type="text" value="{!telephoneNo}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'EMAIL','','none')}" labelStyle="display:{!IF(sourceCInd == 'EMAIL','','none')}">
+                                        <apex:outputPanel id="emailLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="Email Address"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="email">
+                                            <apex:input type="text" value="{!emailAddress}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'PHONE_NO','','none')}" labelStyle="display:{!IF(sourceCInd == 'PHONE_NO','','none')}">
+                                        <apex:outputPanel id="addTypeLabel" layout="block" styleClass="pbSubsection">
+                                            <apex:outputLabel value="Telephone Type Code"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="addType">
+                                            <apex:selectList size="1" value="{!addressTypeCD}">
+                                                <apex:selectOptions value="{!addressTypeCDList}"/>
+                                            </apex:selectList>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}" labelStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                        <apex:outputPanel id="nameLabel">
+                                            <apex:outputLabel value="Full Name"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="name">
+                                            <apex:input type="text" value="{!firstNM}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}" labelStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                        <apex:outputPanel id="dobLabel">
+                                            <apex:outputLabel value="Date of Birth"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="dob">
+                                            <apex:input type="date" value="{!birthDT}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}" labelStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                        <apex:outputPanel id="genderCDLabel">
+                                            <apex:outputLabel value="Gender"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="genderCD">
+                                            <apex:selectList size="1" value="{!genderCD}"> 
+                                                <apex:selectOptions value="{!genderCDList}"/>
+                                            </apex:selectList>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}" labelStyle="display:{!IF(sourceCInd == 'NAME_DOB_GENDER','','none')}">
+                                        <apex:outputPanel id="customerRKLabel">
+                                            <apex:outputLabel value="Party Type CD"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="customerRK">
+                                            <apex:input type="text" value="{!customerRK}"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <apex:commandButton value="Show" action="{!getData}" reRender="detailNsbId,errorMsgId,getMDMData,buttonPortofolio, processTime,pgblocktb1" status="stSearch" styleClass="slds-button slds-button_brand"/>
+                                    </apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>
+                                <apex:actionStatus id="pageStatus">
+                                    <apex:facet name="start">
+                                        <apex:outputPanel >
+                                            <img src="/img/loading32.gif" width="25" height="25" />
+                                            <apex:outputLabel value="Loading..."/>
+                                        </apex:outputPanel>            
+                                    </apex:facet>
+                                </apex:actionStatus>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                        <!--
+                        <apex:outputPanel id="detailNsbId">
+                            <apex:outputPanel rendered="{!isRender}">
+                                <div class="slds-form" role="list">
+                                    <div class="slds-form__row">
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked">
+                                                <span class="slds-form-element__label">MDM ID</span>
+                                                <div class="slds-form-element__control">
+                                                    <apex:commandLink action="{!direct}" value="{!mdmDetail.mdmId}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                                                <span class="slds-form-element__label">Full Name</span>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-form-element__static">{!mdmDetail.accountName}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                                                <span class="slds-form-element__label">DOB</span>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-form-element__static">{!mdmDetail.dob}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                                                <span class="slds-form-element__label">Gender</span>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-form-element__static">{!mdmDetail.gender}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                                                <span class="slds-form-element__label">Identity Number</span>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-form-element__static">{!mdmDetail.socialSecurityNO}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                                                <span class="slds-form-element__label">Phone Number</span>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-form-element__static">{!mdmDetail.phoneNO}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form__row">
+                                        <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                                            <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                                                <span class="slds-form-element__label" >Customer Portofolio</span>
+                                                <div class="slds-form-element__control">
+                                                    <apex:commandButton value="Open" action="{!getCustomerPortofolio}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+						-->
+                        <apex:outputPanel id="detailNsbId">
+                            <apex:outputPanel rendered="{!isRender}">
+                                <apex:pageBlock >
+                                    <apex:pageBlockSection columns="1" >
+                                        <apex:pageBlockSection columns="2" >
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="MDM ID"></apex:outputLabel>
+                                                <apex:commandLink action="{!direct}" value="{!mdmDetail.mdmId}"/>
+                                            </apex:pageBlockSectionItem>
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="Gender"></apex:outputLabel>
+                                                <apex:outputText value="{!mdmDetail.gender}" id="gender"/>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection columns="2" >
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="Full Name"></apex:outputLabel>
+                                                <apex:outputText value="{!mdmDetail.accountName}" id="holdername"/>
+                                            </apex:pageBlockSectionItem>
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="Identity Number"></apex:outputLabel>
+                                                <apex:outputText value="{!mdmDetail.socialSecurityNO}" id="insuredDob"/>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection columns="2" >
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="DOB"></apex:outputLabel>
+                                                <apex:outputText value="{!mdmDetail.dob}" id="holderDob"/>
+                                            </apex:pageBlockSectionItem>
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="Email"></apex:outputLabel>
+                                                <apex:outputText value="{!mdmDetail.email}" id="email"/>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection columns="2">
+                                            <apex:pageBlockSectionItem >
+                                            </apex:pageBlockSectionItem>
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="Mobile Phone"></apex:outputLabel>
+                                                <apex:outputText value="{!mdmDetail.phoneNO}" id="mobile"/>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection columns="1" >
+                                            <apex:pageBlockSectionItem >
+                                                <apex:outputLabel value="Customer Portofolio"></apex:outputLabel>
+                                                <apex:commandButton value="Open" action="{!getCustomerPortofolio}"/>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                    </apex:pageBlockSection>
+                                </apex:pageBlock>	
+                            </apex:outputPanel>
+                            <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}"/>
+                        </apex:outputPanel>
+                    </apex:form>
+                </div>
+            </div>
+        </div>
+    </html>
+</apex:page>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_Root_Cause_Category__c</fullName>
+    <label>Reason (Root Cause) Category</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pemahaman karakteristik produk oleh Konsumen</fullName>
+                <default>false</default>
+                <label>Pemahaman karakteristik produk oleh Konsumen</label>
+            </value>
+            <value>
+                <fullName>Informasi produk kurang memadai</fullName>
+                <default>false</default>
+                <label>Informasi produk kurang memadai</label>
+            </value>
+            <value>
+                <fullName>Gangguan/kerusakan perangkat dan sistem teknologi informasi</fullName>
+                <default>false</default>
+                <label>Gangguan/kerusakan perangkat dan sistem teknologi informasi</label>
+            </value>
+            <value>
+                <fullName>Perubahan/pemutusan akad/perjanjian/kontrak</fullName>
+                <default>false</default>
+                <label>Perubahan/pemutusan akad/perjanjian/kontrak</label>
+            </value>
+            <value>
+                <fullName>Kelalaian Konsumen</fullName>
+                <default>false</default>
+                <label>Kelalaian Konsumen</label>
+            </value>
+            <value>
+                <fullName>Kelalaian Pelaku Usaha Jasa Keuangan</fullName>
+                <default>false</default>
+                <label>Kelalaian Pelaku Usaha Jasa Keuangan</label>
+            </value>
+            <value>
+                <fullName>Tindak pidana Pelaku Usaha Jasa Keuangan</fullName>
+                <default>false</default>
+                <label>Tindak pidana Pelaku Usaha Jasa Keuangan</label>
+            </value>
+            <value>
+                <fullName>Pemahaman karakteristik produk/ prosedur oleh Tenaga Pemasar/staff Kantor Pemasaran</fullName>
+                <default>false</default>
+                <label>Pemahaman karakteristik produk/ prosedur oleh Tenaga Pemasar/staff Kantor Pemasaran</label>
+            </value>
+            <value>
+                <fullName>Kesalahan / keterlambatan proses</fullName>
+                <default>false</default>
+                <label>Kesalahan / keterlambatan proses</label>
+            </value>
+            <value>
+                <fullName>Pencarian informasi riwayat Medis</fullName>
+                <default>false</default>
+                <label>Pencarian informasi riwayat Medis</label>
+            </value>
+            <value>
+                <fullName>Tindakan fraud dari Tenaga Pemasar</fullName>
+                <default>false</default>
+                <label>Tindakan fraud dari Tenaga Pemasar</label>
+            </value>
+            <value>
+                <fullName>Perubahan prosedur</fullName>
+                <default>false</default>
+                <label>Perubahan prosedur</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,26 @@
+<apex:page standardController="Contact">
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <head>
+      <!-- Import the Design System style sheet -->
+      <apex:slds />
+    </head>  
+    <body>
+      <!-- REQUIRED SLDS WRAPPER -->
+      <div class="slds-scope">
+              <div class="slds-box slds-theme_shade slds-theme_alert-texture">
+                <p>
+                    If you want to reset all customer segmentation in your contact, you need to click "Reset Customer Segmentation" button. <br/><br/>
+                    When the reset customer segmentation success and done, you will receive email notification.
+                </p>
+              </div>
+          	  <div>
+                  <apex:form >
+                      <apex:commandButton value="Reset Cust Segmentation" action="/apex/resetCustSegmentationPage" styleClass="slds-button slds-button_brand"/>
+                  </apex:form>
+          	  </div>
+        </div>
+    </body>
+    </html>
+</apex:page>

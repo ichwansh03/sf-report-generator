@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Change_Owner_Bulk</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Change Owner Bulk</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>{!REQUIRESCRIPT(&apos;/soap/ajax/10.0/connection.js&apos;)}
+{!REQUIRESCRIPT(&apos;/soap/ajax/10.0/apex.js&apos;)}
+{!REQUIRESCRIPT(&apos;/support/console/26.0/integration.js&apos;)}
+
+
+console.log(&quot;=== BUTTON CLICKED ===&quot;);
+
+// Lock to prevent multiple executions
+    console.log(&quot;First time click, proceeding...&quot;);
+
+    var selectedRecords = {!GETRECORDIDS($ObjectType.Case)};
+    
+    if (selectedRecords.length === 0) {
+        alert(&quot;Please select at least one record.&quot;);
+
+    } else {
+        var recordIds = selectedRecords.join(&apos;,&apos;);
+        var flowUrl = &apos;/apex/VF_Select_Owner?ids=&apos; + encodeURIComponent(recordIds);
+
+      sforce.console.getEnclosingPrimaryTabId(function(){
+sforce.console.openPrimaryTab(null, flowUrl, true, &apos;Change Owner&apos;, null);
+});
+          //  window.top.location.href = flowUrl;
+      
+    }</url>
+</WebLink>

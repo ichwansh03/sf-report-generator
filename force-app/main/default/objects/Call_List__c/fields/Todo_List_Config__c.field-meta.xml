@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Todo_List_Config__c</fullName>
+    <label>Todo List Config</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Case_Type__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Verifikasi</fullName>
+                <default>false</default>
+                <label>Verifikasi</label>
+            </value>
+            <value>
+                <fullName>Tanggal pendebetan jatuh tempo</fullName>
+                <default>false</default>
+                <label>Tanggal pendebetan jatuh tempo</label>
+            </value>
+            <value>
+                <fullName>Masa pendebetan</fullName>
+                <default>false</default>
+                <label>Masa pendebetan</label>
+            </value>
+            <value>
+                <fullName>Hold debet (jika not approved)</fullName>
+                <default>false</default>
+                <label>Hold debet (jika not approved)</label>
+            </value>
+            <value>
+                <fullName>Retention jika tidak berkenan</fullName>
+                <default>false</default>
+                <label>Retention jika tidak berkenan</label>
+            </value>
+            <value>
+                <fullName>Status polis</fullName>
+                <default>false</default>
+                <label>Status polis</label>
+            </value>
+            <value>
+                <fullName>Doc pemulihan</fullName>
+                <default>false</default>
+                <label>Doc pemulihan</label>
+            </value>
+            <value>
+                <fullName>Waiting periode</fullName>
+                <default>false</default>
+                <label>Waiting periode</label>
+            </value>
+            <value>
+                <fullName>Monthly charge</fullName>
+                <default>false</default>
+                <label>Monthly charge</label>
+            </value>
+            <value>
+                <fullName>Loyalty bonus hilang (sesuai produk)</fullName>
+                <default>false</default>
+                <label>Loyalty bonus hilang (sesuai produk)</label>
+            </value>
+            <value>
+                <fullName>Penalty jika ada</fullName>
+                <default>false</default>
+                <label>Penalty jika ada</label>
+            </value>
+            <value>
+                <fullName>Polis akan tidak aktif sementara jika NAB tidak mencukupi (PH Release)</fullName>
+                <default>false</default>
+                <label>Polis akan tidak aktif sementara jika NAB tidak mencukupi (PH Release)</label>
+            </value>
+            <value>
+                <fullName>Pendingan POS</fullName>
+                <default>false</default>
+                <label>Pendingan POS</label>
+            </value>
+            <value>
+                <fullName>Informasi NAB/Nilai Tunai Sementara</fullName>
+                <default>false</default>
+                <label>Informasi NAB/Nilai Tunai Sementara</label>
+            </value>
+            <value>
+                <fullName>Penalty</fullName>
+                <default>false</default>
+                <label>Penalty</label>
+            </value>
+            <value>
+                <fullName>Loyalty bonus</fullName>
+                <default>false</default>
+                <label>Loyalty bonus</label>
+            </value>
+            <value>
+                <fullName>Retention</fullName>
+                <default>false</default>
+                <label>Retention</label>
+            </value>
+            <value>
+                <fullName>Alasan penutupan polis</fullName>
+                <default>false</default>
+                <label>Alasan penutupan polis</label>
+            </value>
+            <value>
+                <fullName>Info manfaat produk</fullName>
+                <default>false</default>
+                <label>Info manfaat produk</label>
+            </value>
+            <value>
+                <fullName>Pastikan Due NCB</fullName>
+                <default>false</default>
+                <label>Pastikan Due NCB</label>
+            </value>
+            <value>
+                <fullName>Legal info pendebetan (inforce)</fullName>
+                <default>false</default>
+                <label>Legal info pendebetan (inforce)</label>
+            </value>
+            <value>
+                <fullName>Pengkinian data</fullName>
+                <default>false</default>
+                <label>Pengkinian data</label>
+            </value>
+            <value>
+                <fullName>Alasan polis lapse</fullName>
+                <default>false</default>
+                <label>Alasan polis lapse</label>
+            </value>
+            <value>
+                <fullName>Legal info pendebetan (ok debet)</fullName>
+                <default>false</default>
+                <label>Legal info pendebetan (ok debet)</label>
+            </value>
+            <value>
+                <fullName>Konfirmasi tgl jatuh tempo</fullName>
+                <default>false</default>
+                <label>Konfirmasi tgl jatuh tempo</label>
+            </value>
+            <value>
+                <fullName>Konsekuensi jika tidak ada pembayaran premi</fullName>
+                <default>false</default>
+                <label>Konsekuensi jika tidak ada pembayaran premi</label>
+            </value>
+            <value>
+                <fullName>Campaign Emma</fullName>
+                <default>false</default>
+                <label>Campaign Emma</label>
+            </value>
+            <value>
+                <fullName>Legal statement</fullName>
+                <default>false</default>
+                <label>Legal statement</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Verifikasi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <valueName>Info manfaat produk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <valueName>Pastikan Due NCB</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <valueName>Pengkinian data</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <valueName>Alasan polis lapse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <valueName>Legal info pendebetan (ok debet)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Campaign Emma</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse TM</controllingFieldValue>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Legal statement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <valueName>Alasan penutupan polis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Redemption TM</controllingFieldValue>
+            <valueName>Legal info pendebetan (inforce)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <valueName>Masa pendebetan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <valueName>Hold debet (jika not approved)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Retention</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <valueName>Konfirmasi tgl jatuh tempo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Others - Gagal Debet</controllingFieldValue>
+            <controllingFieldValue>Renewal Reminder</controllingFieldValue>
+            <valueName>Konsekuensi jika tidak ada pembayaran premi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Pendingan POS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Informasi NAB/Nilai Tunai Sementara</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Penalty</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Withdrawal</controllingFieldValue>
+            <controllingFieldValue>Redemption Konven</controllingFieldValue>
+            <valueName>Loyalty bonus</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <valueName>Retention jika tidak berkenan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <valueName>Status polis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <valueName>Doc pemulihan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lapse Konven</controllingFieldValue>
+            <valueName>Waiting periode</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MKP</controllingFieldValue>
+            <valueName>Tanggal pendebetan jatuh tempo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <valueName>Monthly charge</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <valueName>Loyalty bonus hilang (sesuai produk)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <valueName>Penalty jika ada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cuti Premi</controllingFieldValue>
+            <valueName>Polis akan tidak aktif sementara jika NAB tidak mencukupi (PH Release)</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

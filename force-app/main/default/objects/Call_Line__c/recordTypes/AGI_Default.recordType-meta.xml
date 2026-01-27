@@ -1,0 +1,2634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AGI_Default</fullName>
+    <active>true</active>
+    <description>Default AGI</description>
+    <label>AGI Default</label>
+    <picklistValues>
+        <picklist>A1__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>A2__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>A3__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>A4__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>A5__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Activity_Config__c</picklist>
+        <values>
+            <fullName>Callback</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renewal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey Feedback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Activity_Result__c</picklist>
+        <values>
+            <fullName>Contacted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rescheduled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uncontacted</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Activity__c</picklist>
+        <values>
+            <fullName>Callback</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renewal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey Feedback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Call_Line_Status_TelUW__c</picklist>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Open</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Progress</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Call_Result__c</picklist>
+        <values>
+            <fullName>Answered by other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Callback</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contacted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconnected</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Invalid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Picked Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Reachable</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Reachable 3x</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Started</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Refuse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uncontacted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Voice Mail</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Call_Status_Config__c</picklist>
+        <values>
+            <fullName>Contacted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Invalid Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rescheduled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uncontacted</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Case_Type_Config__c</picklist>
+        <values>
+            <fullName>Big RTU Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Birthday greeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Claim Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint Follow Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Debt Failure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Grace Period</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Claim Bonus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Document POS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Elapse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Holiday Passive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Reminder</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renewal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request ERA%2FTowing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request Quick Response</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Redemption</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Tahapan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Withdrawal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SMS Pull Confirmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey - I Ask</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey - I Buy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey - I Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey of Claim Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey of ERA%2FTowing Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teleclaim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Update Data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Welcome Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Welcome Call %28NBUW%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Withdrawal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Case_Type__c</picklist>
+        <values>
+            <fullName>Big RTU Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Birthday greeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Claim Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint Follow Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Debt Failure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Grace Period</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Claim Bonus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Document POS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Elapse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium FU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Holiday Passive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Reminder</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renewal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request ERA%2FTowing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request Quick Response</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Redemption</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Tahapan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Withdrawal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SMS Pull Confirmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey - I Ask</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey - I Buy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey - I Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey of Claim Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey of ERA%2FTowing Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teleclaim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Update Data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Welcome Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Welcome Call %28NBUW%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Withdrawal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Change_of_Email__c</picklist>
+        <values>
+            <fullName>Add New Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Revisi Email</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Change_of_Financial__c</picklist>
+        <values>
+            <fullName>Perubahan pendebetan dari CC BM to CC BM lain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari CC BM to CC non BM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari CC BM to Rek BM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari CC non BM to CC BM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari CC non BM to CC non BM lain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari CC non BM to Rek BM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari Rek BM to CC BM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari Rek BM to CC non BM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perubahan pendebetan dari Rek BM to Rek BM lain</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Changes__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Entity__c</picklist>
+        <values>
+            <fullName>AFI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AGI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ALI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AMFS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAGI</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_Agent_Validation__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_Alamat__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_DOB__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_Email__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_Nama_PP_TT__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_Telepon__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_Understand_Product__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Error_ePolicy_Buku_Polis__c</picklist>
+        <values>
+            <fullName>Eksternal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Info_Pendingan__c</picklist>
+        <values>
+            <fullName>Clean</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Clean</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_Agent_Validation__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_Alamat__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_DOB__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_Email__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_Nama_PP_TT__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_Telepon__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_Understand_Product__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jawaban_ePolicy_Buku_Polis__c</picklist>
+        <values>
+            <fullName>Tidak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ya</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Jenis_Agent__c</picklist>
+        <values>
+            <fullName>EXTERNAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INTERNAL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Offering_Retain__c</picklist>
+        <values>
+            <fullName>Change Freq Payment Payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change to AFI%27s other product</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Delete %2F Add Rider</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Delete %2F Change RTU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Downgrade UP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pengurangan Withdrawal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain with withdrawal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Switch %2F Change Fund</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>POLIS__c</picklist>
+        <values>
+            <fullName>CANCEL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PORTAL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Progress__c</picklist>
+        <values>
+            <fullName>Not Presented</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presented</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason_Status_Config__c</picklist>
+        <values>
+            <fullName>Agree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree Top Up Lumpsum</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree switch to Credit Card</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to Cancel Redemption</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to Pay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to pay via Autodebet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to reinstate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Bersedia Melengkapi Kekurangan Dokumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Bersedia Menunggu Proses Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Koreksi Data Rekening</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Koreksi data polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Menerima Penjelasan dari Agen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Mengisi dan Menandatangani SPAJ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Quisioner By Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Sudah terima Buku polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Address</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Data All</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Expd Card</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Name</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Name%2FDOB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Ph%2ENumber</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Phone Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Verifikasi Data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree Surat Keluhan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree with Complaint settlement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Busy Line</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Busy Person</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Call Back</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancel Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Clear Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Did Not Receive Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Dissapointed with AXA service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Email tidak aktif</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Financial Problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Lupa user%2Fpassword</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Memiliki email namun belum mau didaftarkan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Miss info oleh Agent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Not receive premium reminder letter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP akan batalkan polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP akan konfirmasi ke CCC%2FAgen untuk informasi lebih lanjut</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP akan konfirmasi ke CCC%2FAgen untuk pendaftaran</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP busy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP have no plan to pay premium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP keberatan dengan nominal Claim yang disetujui</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP not interest to pay premium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP tidak bersedia melengkapi Kekurangan dokumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP tidak bersedia menunggu dan req diproses Urgent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP tidak menerima penjelasan dari Agen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP want all insurance charge taken from his insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP will ask agent first</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP will call CS for other information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP will close policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Policy was take care by other person</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Premium Holiday</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Premium too expensive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Single Premi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Thinking and%2For see the investment progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Tidak memiliki email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - disapointment or rejected claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - disapointment with MAGI service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - product features or product complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disgaree Surat Keluhan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Done</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Done CHS %26 Surat Keluhan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Follow Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hard Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hard Contact</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inactive Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Information Received</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mailbox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Answer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Follow Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Interest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Phone Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Pickup%2F Mailbox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Agree with complaint settlement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not willing to confirmed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partially Successful</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending - Customer Did Not Receive Renewal Notice</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending - Document submission</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending - Request Discount</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Promise To Pay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Received Complaint updates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redebet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request Cancel - Data not verified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request Cancel by customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request confirm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reschedule</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Successful</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unwilling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verified %3A Close Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verified %3A New Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wrong Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wrong Person</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Retention_Alasan_Pembatalan__c</picklist>
+        <values>
+            <fullName>Agent Personal Closing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client Did Not Received Renewal Notice</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client Was Forced to Buy Policy in the Beginning</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client is not Willing to Disclose Surrender Reason</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Credit Card %2F Account Cancellation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Death Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disapoitment Of Axa Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disapoitment and Rejected Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ex Agent To Other Influence %28FA%2FAgent Change%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Family Reason</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financial Difficulty</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Have Many Insurances</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Moved to Competitor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Confidence to AXA Indonesia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Phone Number Available %28Weong Phone%2C Fax%2C Sound%2C Move%2C Resign%2CEct%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other Reason %28 emmigration%2C bankrupt%2C etc %29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Delivering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Poor Agent Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product Features or Product Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product Replacement %28Switch to Other Product%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Swicth To Other Her Instrument Investment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Switch To Other Bank Mandiri Product</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UNCONTACTED %28BUSY ON THE LINE%2C No Pick Up%2C ETC%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unit Price Fluctuation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Walk In Customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Without Consent</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Retention_FC__c</picklist>
+        <values>
+            <fullName>Final concerved%3A CO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Final concerved%3A SU</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Retention_Program__c</picklist>
+        <values>
+            <fullName>Cancer %26 Save</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extra Cancer Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extra Health Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extra Life Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Health %26 Save</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Heart %26 Save</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hospital %26 Save</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hospital Plus Life</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klik Proteksi Cancer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klik Proteksi Diri</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klik Proteksi Diri Plus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klik Proteksi Jantung %26 Stroke</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klik Proteksi Jiwa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klik Proteksi Sehat</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life %26 Save</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Retention_Remark__c</picklist>
+        <values>
+            <fullName>Blm FC-Gagal Debet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Create Polis Baru</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold Billing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tdk FC-Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tetap Aktif</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tetap Aktif Downgrade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tetap Aktif Removed TT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tetap Aktif Upgrade</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Retention_Result_Status__c</picklist>
+        <values>
+            <fullName>CA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SU</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Retention_Result__c</picklist>
+        <values>
+            <fullName>Cancelled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cooling Off</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce Downgrade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce Remove</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce Remove Downgrade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce Upgrade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lapse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Surrender</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Source_Collection__c</picklist>
+        <values>
+            <fullName>Automatic by System</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manual by Upload</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Paid_Not_Paid__c</picklist>
+        <values>
+            <fullName>N</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Paid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Y</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Retry__c</picklist>
+        <values>
+            <fullName>Callback from CCC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rescheduled</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_has_call__c</picklist>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Takeout</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Time_Reschedule__c</picklist>
+        <values>
+            <fullName>00%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>00%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>00%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>00%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22%3A45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23%3A00</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23%3A15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23%3A30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23%3A45</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Update_Email__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Update_KTP__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Verification__c</picklist>
+        <values>
+            <fullName>Agree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree Top Up Lumpsum</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree switch to Credit Card</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to Cancel Redemption</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to Pay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to pay via Autodebet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Agree to reinstate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Bersedia Melengkapi Kekurangan Dokumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Bersedia Menunggu Proses Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Koreksi Data Rekening</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Koreksi data polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Menerima Penjelasan dari Agen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Mengisi dan Menandatangani SPAJ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Quisioner By Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Sudah terima Buku polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Address</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Data All</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Expd Card</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Name</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Name%2FDOB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Ph%2ENumber</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Update Phone Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree - Verifikasi Data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree Surat Keluhan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agree with Complaint settlement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Busy Line</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Call Back</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancel Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancel the Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Clear Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Did Not Receive Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Dissapointed with AXA service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Email tidak aktif</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Financial Problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Lupa user%2Fpassword</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Memiliki email namun belum mau didaftarkan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Miss info oleh Agent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Not receive premium reminder letter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP akan batalkan polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP akan konfirmasi ke CCC%2FAgen untuk informasi lebih lanjut</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP akan konfirmasi ke CCC%2FAgen untuk pendaftaran</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP busy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP have no plan to pay premium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP keberatan dengan nominal Claim yang disetujui</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP not interest to pay premium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP tidak bersedia melengkapi Kekurangan dokumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP tidak bersedia menunggu dan req diproses Urgent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP tidak menerima penjelasan dari Agen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP want all insurance charge taken from his insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP will ask agent first</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP will call CS  for other information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - PP will close policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Policy was take care by other person</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Premium Holiday</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Premium too expensive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Single Premi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Thinking and%2For see the investment progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - Tidak memiliki email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - disapointment or rejected claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - disapointment with MAGI service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disagree - product features or product complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disgaree Surat Keluhan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Done</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Done CHS %26 Surat Keluhan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Follow Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hard Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hard Contact</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inactive Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inactive policy %2F in process Cooling off</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Information Received</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mailbox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Answer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Follow Up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Interest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Phone Number</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Pickup%2FMailbox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Agree with complaint settlement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not willing to confirmed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partially Successful</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending - Customer Did Not Receive Renewal Notice</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending - Document submission</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending - Request Discount</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Promise To Pay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Received Complaint updates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redebet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reject %2F Blocked</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request Cancel - Data not verified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request Cancel by customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request confirm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reschedule</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success but Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success but Suspicious</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success with Note</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success with data changes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Successful</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Un success%2Fneed meet FA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Un-Verified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Un-willing to be confirmed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unwilling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verified %3A Close Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verified %3A New Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wrong Number</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>WelcomeCall_Call_Line_Status__c</picklist>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Open</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Progress</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>WelcomeCall_Criteria__c</picklist>
+        <values>
+            <fullName>HVC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RETAIL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>WelcomeCall_Detail_Status__c</picklist>
+        <values>
+            <fullName>Correspondence Address</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer wants to meet FA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FA Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah Sibuk</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah Takut Penipuan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah Tidak Mau Dikonfirmasi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah Tidak Mau Direkam</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah butuh dana</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah merasa tidak pernah diinformasikan akan dihubungi oleh AXA Mandiri</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Polis tidak sesuai</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Produk Tidak Sesuai</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sedang proses pembatalan polis di POS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suspicious - tidak merasa membeli polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verification is not succeed</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>WelcomeCall_Reason_Detail_Status__c</picklist>
+        <values>
+            <fullName>Ahli waris tidak sesuai keinginan nasabah</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Data polis tidak sesuai keinginan nasabah</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Informasi tentang investasi yang fluktuatif dan tidak dijamin</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Klausal kegagalan pendebitan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Konfirmasi mengenai penalty %28MEP%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Memastikan nasabah membaca kembali aplikasi sebelum di tandatangani</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah hanya ingin sekali bayar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah ingin deposito %2F tabungan %2F hanya investasi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nasabah ingin produk lain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nominal premi dan cara bayar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tidak dijelaskan biaya asuransi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tidak dijelaskan fluktuasi nilai investasi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tidak dijelaskan masa pembayaran premi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tidak dijelaskan tentang biaya penalty</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

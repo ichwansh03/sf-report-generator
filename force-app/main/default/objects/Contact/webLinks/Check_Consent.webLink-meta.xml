@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Consent</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Check Consent</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>if(&quot;{!Contact.Entity__c}&quot; == &quot;AMFS&quot;) {
+	window.open(&quot;{!$Label.PDP_Landing_Page_Url}&quot;, &quot;_blank&quot;);
+}</url>
+</WebLink>

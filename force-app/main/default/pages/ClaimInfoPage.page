@@ -1,0 +1,811 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" extensions="PolicyInfoController,RemoteDataController"  action="{!initClaimInfo}">
+    <!-- HEAD -->   
+    <title>Claim Info</title>
+    
+    <!-- Java Script -->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <!--  <apex:includeScript value="/support/console/22.0/integration.js"/>-->
+
+       <apex:includeScript value="/soap/ajax/30.0/connection.js"/>      
+        <apex:includeScript value="/support/console/37.0/integration.js"/>  
+
+    <script type="text/javascript"> 
+    
+        function displayLoading(objName){
+            //document.getElementById('loadingimg').style.display='block';
+            document.getElementById(objName).style.display='block';
+        }
+        function hideLoading(objName){ 
+            //document.getElementById('loadingimg').style.display='none';
+            document.getElementById(objName).style.display='none';
+        }
+    </script>
+
+    <script type="text/javascript"> 
+        var Imtech = {};
+        Imtech.Pager = function() {
+            this.datasetname='';
+            this.pagername='';
+            this.paragraphsPerPage = 100;
+            this.currentPage = 1;
+            this.pagingControlsContainer = '';
+            //this.pagingContainerPath = '#content';
+            this.pagingInfoContainer = '';
+            this.numberOfRecords= 0;
+            
+            this.firstPage = 1;
+            this.previousPage = 1;
+            this.nextPage = 2;
+            
+            this.numPages = 5;
+            this.lastDataPage=0;
+            this.showControl=true;
+            /*
+            this.numPages = function() {
+                var numPages = 0;
+                
+                numPages = 3;
+                /*
+                if (this.paragraphs != null && this.paragraphsPerPage != null) {
+                    numPages = Math.ceil(this.paragraphs.length / this.paragraphsPerPage);
+                }
+                */
+              /*  
+                return numPages;
+            };
+            */
+            
+            this.lastPage = this.numPages;
+            this.showPage = function(page) {
+                //this.currentPage = page;
+                //alert('a');
+                var startOfRecords = 0;
+                
+                // Set start time
+                var start_time = new Date().getTime();
+                
+                //var numberOfRecords= 0;
+                switch (this.datasetname) {
+                    case "ClaimDetailLife": 
+                        //alert('r');
+                        startOfRecords = (numberOfRecords * (page-1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingClaimDetailLife(policyNo, entity, policyApp, '', '', 0, startOfRecords, numberOfRecords, this.currentPage, page, 1, 1) ; break;
+                        
+                    case "ClaimDetailGI": 
+                        //alert('s');
+                        startOfRecords = (numberOfRecords * (page-1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingClaimDetailGI(policyNo, entity, policyApp, '', '', 0, startOfRecords, numberOfRecords,  page) ; break;
+                                        
+                    case "AssNotesCLM": 
+                        //alert('g');
+                        startOfRecords = (numberOfRecords * (page-1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingAssNotesCLM(policyNo, entity, policyApp, 'Assessment Notes Summary', 'CRM', '', '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords,  page, 1, 0) ; break;
+            
+                }
+
+                
+                
+                /*var html = '';
+        
+                this.paragraphs.slice((page-1) * this.paragraphsPerPage,
+                    ((page-1)*this.paragraphsPerPage) + this.paragraphsPerPage).each(function() {
+                    html += '<div>' + $(this).html() + '</div>';
+                });
+                
+                
+                $(this.pagingContainerPath).html(html);
+                */
+                var request_time = new Date().getTime() - start_time;
+                var request_times = new Date().getTime() + ' - ' + start_time + ' : ' +request_time;
+                
+                //renderControls(this.pagingControlsContainer, this.currentPage, this.numPages, this.pagername, this.showControl);
+                this.currentPage = page;
+            }
+
+            this.reRenderControls = function () {
+                console.log('lastDataPage : ' + this.lastDataPage);
+                renderControls(this.pagingControlsContainer, this.currentPage, this.numPages, this.pagername, '', this.lastDataPage);
+                //this.currentPage = page;
+            }
+            
+            var renderControls = function(container, currentPage, numPages, pagername, requestTime, lastDataPage ) {
+                /*
+                var firstPage = 1;
+                var previousPage = currentPage==1 ? 1 : currentPage - 1 ;
+                var nextPage = currentPage + 1;
+                var lastPage = numPages;
+                */
+                console.log (' ** in renderControls **');
+                var firstPage = 1;
+                var previousPage = currentPage==1 ? 1 : currentPage - 1 ;
+                //var nextPage = currentPage==numPages ? numPages : currentPage + 1;
+                var nextPage = currentPage + 1;
+                var lastPage = numPages;
+                
+                var pagingControls = '';
+                
+                //pagingControls += '<img id="loadingimg' + pagername +  '" style="display:none" src="/img/loading.gif" /> ' ;
+                pagingControls += '<ul class="pagination">' ;
+
+                if (currentPage ==1) {htmlBtnStatus=' class="disabled" ';} else {htmlBtnStatus=' href="#" ';}
+                pagingControls += '<li> <a ' + htmlBtnStatus + ' onclick="' + pagername  +'.showPage(' + firstPage  + '); return false;"> First </a> </li> ';
+                pagingControls += '<li> <a ' + htmlBtnStatus + ' onclick="' + pagername  +'.showPage(' + previousPage  + '); return false;"> Previous </a> </li>';
+                                
+                var j=0;
+                var penambah = currentPage - 2;
+                if (currentPage ==1) {penambah = 0;}
+                
+                for (var i = 1; i <= numPages; i++) {
+                    //console.log('<li><a href="#" onclick="pager.showPage(' + j  + '); return false;">' + j + '</a></li>');
+                    j = i + penambah;
+                    if (j != currentPage) {
+                        if (j>lastDataPage && lastDataPage != 0) {
+                            //pagingControls += '<li>' + j  + '</li>';
+                            pagingControls += '<li><a class="disabled" >' + j  + '</a></li>';
+                            
+                            
+                        }
+                        else {
+                        pagingControls += '<li><a href="#" onclick="' + pagername  +'.showPage(' + j  + '); return false;">' + j + '</a></li>';
+                        }
+                    } else {
+                        pagingControls += '<li><a class="active" >' + j  + '</a></li>';
+                    }
+                }
+        
+                //pagingControls += '<li>Next</li> <li>Last</li>';
+                
+                if ( currentPage >=lastDataPage && lastDataPage!=0){
+                    pagingControls += '<li><a class="disabled" > Next </a> </li>';
+                }
+                else {
+                    pagingControls += '<li> <a href="#" onclick="' + pagername  +'.showPage(' + nextPage  + '); return false;"> Next </a> </li>';
+                }
+                //pagingControls += '<li> <a href="#" onclick="pager.showPage(' + lastPage  + '); return false;"> Last </a> </li>';
+                
+                pagingControls += '</ul>';
+        
+                $(container).html(pagingControls);
+            }
+            
+            
+            this.renderInfo = function(info) {
+                //alert (this.pagingInfoContainer + '-' +  info);
+                info = '<small><i>' + info + '</i></small>';
+                $( this.pagingInfoContainer).html(info);
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        
+        /*
+        #pagingControlClaimDetailLife ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlClaimDetailLife li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlClaimDetailGI ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlClaimDetailGI li{display:inline;padding-right:0 0.5em}
+        ul.pagination { display: inline-block; padding: 0; margin: 0; }
+        */
+        
+        ul.pagination { display: inline-block; padding: 0; margin: 0; }
+        ul.pagination li {display: inline;}
+        ul.pagination li a {display: inline; color: black; float: left; padding: 8px 16px; text-decoration: none; transition: background-color .3s; border: 1px solid #ddd; }
+        .pagination li:first-child a { border-top-left-radius: 5px; border-bottom-left-radius: 5px; }
+        .pagination li:last-child a { border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
+        ul.pagination li a.active { background-color: #338ddb; color: white; border: 1px solid #338ddb; }
+        ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+
+        ul.pagination li a.disabled { background-color: #ddd; color: grey; border: 1px solid #ddd;}
+        
+    </style>
+    
+    <script type="text/javascript">
+        var claimDetailLifePaging = {};
+        var claimDetailGIPaging = {};
+        var assNotesCLMPaging  = {};
+        
+        var pagerClaimDetailLife = new Imtech.Pager();
+        var pagerClaimDetailGI = new Imtech.Pager();
+        var pagerANCLM = new Imtech.Pager();
+        
+        var numberOfRecords = 100;
+        
+        $(document).ready(function() {
+            
+            initPage();
+            claimDetailLifePaging[1] = '{!claimDetailLifeJSON}';
+            
+            pagerClaimDetailLife.datasetname = 'ClaimDetailLife';
+            pagerClaimDetailLife.pagername='pagerClaimDetailLife';
+            pagerClaimDetailLife.pagingControlsContainer = $('#pagingControlClaimDetailLife');
+            //pagerClaimDetailLife.paragraphsPerPage = 5; // set amount elements per page
+            pagerClaimDetailLife.pagingContainer = $('#content'); // set of main container
+            pagerClaimDetailLife.paragraphs = $('div.z', pagerClaimDetailLife.pagingContainer); // set of required containers
+            pagerClaimDetailLife.showControl=true;
+            pagerClaimDetailLife.numberOfRecords= 0{!claimDetailLifeRowPerPage};//100;
+            if ({!isDisplayAFI_AMFS}) {pagerClaimDetailLife.showPage(1);}
+            
+            pagerClaimDetailGI.datasetname = 'ClaimDetailGI';
+            pagerClaimDetailGI.pagername='pagerClaimDetailGI';
+            pagerClaimDetailGI.pagingControlsContainer = $('#pagingControlClaimDetailGI');
+            //pagerClaimDetailGI.paragraphsPerPage = 5; // set amount elements per page
+            pagerClaimDetailGI.pagingContainer = $('#content'); // set of main container
+            pagerClaimDetailGI.paragraphs = $('div.z', pagerClaimDetailGI.pagingContainer); // set of required containers
+            pagerClaimDetailGI.showControl=false;
+            //if ({!isDisplayMAGI}) {pagerClaimDetailGI.showPage(1);}
+
+            pagerANCLM.datasetname = 'AssNotesCLM';
+            pagerANCLM.pagername='pagerANCLM';
+            pagerANCLM.pagingControlsContainer = $('#pagingControlAssNotesCLM');
+            pagerANCLM.pagingInfoContainer = $('#loadInfoAssNotesCLM');
+            pagerANCLM.numberOfRecords=10;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerANCLM.pagingContainer = $('#content'); // set of main container
+            pagerANCLM.paragraphs = $('div.z', pagerANCLM.pagingContainer); // set of required containers
+            pagerANCLM.showControl=true;
+            //if ({!isDisplayAFI_AMFS}) { pagerANCLM.showPage(1);}          
+            
+        });
+        
+        $(document).ready(function() {
+            //initPage();
+        });
+    </script>
+    
+      <script type='text/javascript'>
+
+       function getUrlVars()
+
+       {
+
+           var vars = [], hash;
+
+           var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+           for(var i = 0; i < hashes.length; i++)
+
+           {
+
+               hash = hashes[i].split('=');
+
+               vars.push(hash[0]);
+
+               vars[hash[0]] = hash[1];
+
+           }
+
+           return vars;
+
+       }
+
+       var childId = Math.floor((Math.random() * 500) + 1);
+
+       var listener = function (result)
+
+       {
+
+           var jsonstr = result.message;
+            // alert(jsonstr);
+           //childjsonfunction(jsonstr);
+
+       };
+
+       // tutup dulu sforce.console.addEventListenerX('ParentDataResponse_'.concat(childId), listener);
+
+       var parentId = getUrlVars()["parentId"];
+       
+       
+       //alert ('parentID : ' + parentId);
+
+       sforce.console.fireEvent('RequestParentData_'.concat(parentId), childId);
+
+       </script>
+
+    <script type="text/javascript">
+
+       function openNewSubTabX(tabName) {
+           sforce.console.getEnclosingPrimaryTabId(openSubtab);
+       }
+       function openNewTabXX(tabName) {
+           alert("go");
+       }
+
+    </script>
+
+    
+    
+    <script type="text/javascript">
+
+        function getAssNotesDetail(pageNo){
+        
+        }
+        
+        var openSubtabXX = function openSubtabXX(result) {
+                            var primaryTabId = result.id;
+                            //urlRequest = '/apex/PolicyInfoPage?parentId='+parentId";
+                            urlRequest = "/apex/AssessmentNotesDetailPage2?pno=1234567890&sc=pos&rn=1&p=1&r=100";
+                            sforce.console.openSubtab(primaryTabId , urlRequest , true,
+                                     'POS : ASSESSMENT NOTES DETAIL', null, null);
+                            };
+                            
+        var urlRequestSubTab ='';
+        var titleSubTab ='';
+        var openSubTab = function openSubTab(result) {
+           var primaryTabId = result.id;
+           //urlRequest = "/apex/PaymentInfoPage?";
+            sforce.console.openSubtab(primaryTabId , urlRequestSubTab , true, titleSubTab, null, null);
+        };
+        
+        
+        function openNewTab(tabName, arg2, arg3, arg4) {
+            switch (tabName){
+                case 'ASSNOTESDETAILINFO' :                 
+                    urlRequestSubTab ='/apex/AssessmentNotesDetailPage?parentId='+ parentId 
+                                + '&contactID=' + contactID + '&policyNo=' + policyNo + '&entity=' + entity + '&policyApp=' + policyApp 
+                                + '&operation=' + arg2 + '&classType=' + arg3 + '&refNo=' + arg4 ;
+                    
+                    var classType = null;
+                    if (arg3=='CRM' ) {classType='CLAIM'; }
+                    titleSubTab = 'ASS.NOTES DETAIL '+classType ;
+                    console.log(urlRequestSubTab +'-'+arg2+'-'+arg3+'-'+arg4);
+                    sforce.console.getEnclosingPrimaryTabId(openSubTab);break;      
+            }                       
+        }
+        
+    </script>
+    
+
+    <script type="text/javascript">
+        var policyNo ='';
+        var entity =''; 
+        var policyApp ='';
+        var contactID ='';
+        
+
+        function initPage () {
+            var sessionId = getUrlVars()["sessionId"];
+            
+            var queryStr = window.location.search; 
+            console.log('queryStr : ' + queryStr);
+            var paramPairs = queryStr.substr(1).split('&');
+            
+            var params = {};
+            for (var i = 0; i < paramPairs.length; i++) {
+                var parts = paramPairs[i].split('=');
+                params[parts[0]] = parts[1];
+                //alert(parts[0] +' - '+ parts[1]);
+            }
+            
+            //assNotes[0]=null;
+            //getAssNotesDetail(params['pno'], params['sc'], params['entity'], params['p'], params['r']);
+            
+            
+            policyNo = params['policyNo'];
+            entity = params['entity'];
+            policyApp = params['policyApp'];
+            contactID = params['contactID'];
+            
+            //loadDataPagingBeneficiaryDetail(policyNo, entity, policyApp, '', '', 0, 1, 100, 1);
+            //loadDataPagingPremiumBreakdown(policyNo, entity, policyApp, '', '', 0, 1, 100, 1)
+            
+            console.log ('policyNo :' + policyNo);
+            console.log ('entity :' + entity);
+            console.log ('policyApp :' + policyApp);
+            console.log ('contactID :' + contactID);
+            
+        }
+        
+    
+        var dataUsed=null;
+        
+        function loadDataPagingClaimDetailLifeOLD(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, currentPage, pageNumber, show, extra ){              
+                    
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' +  pageNumber);
+                    var claimDetailLifeHolderObj = document.getElementById('{!$Component.blockid.formid.claimDetailLifeHolder}');
+                    
+                    var start_time =null;
+                    var end_time =null;
+                    var duration =null;
+                    
+                    if (claimDetailLifePaging[pageNumber] !=null || claimDetailLifePaging[pageNumber] != undefined) {
+                        if (show == 1 && currentPage==pageNumber) {
+                            pagerClaimDetailLife.reRenderControls();
+                        }
+                        
+                        
+                        
+                        claimDetailLifeHolderObj.value = claimDetailLifePaging[pageNumber];
+                        console.log('jadi:' + claimDetailLifePaging[pageNumber]); 
+                        refreshClaimDetailLife();       
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity,  String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords,  Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataClaimDetailLife}',
+                                policyNo, entity,  policyApp, 'Claim', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords,  pageNumber,
+                            function (result, event){
+                                if (event.status) {
+                                    //alert(result);
+                                    claimDetailLifePaging[pageNumber] = result;
+                                    console.log('loadDataPagingClaimDetailLife :' + claimDetailLifePaging[pageNumber]); 
+                                    claimDetailLifeHolderObj.value = result;
+                                    refreshClaimDetailLife();
+                                }
+                            }, {escape: true}
+                        );    
+                    
+                   }              
+               }
+                        
+        function loadDataPagingClaimDetailLife(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, currentPage, pageNumber, show, extra ){                    
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' +  pageNumber);
+                    var claimDetailLifeHolderObj = document.getElementById('{!$Component.formid.blockid.claimDetailLifeHolder}');
+                    //var claimDetailLifeLastPageNoHolderObj = 0;
+                    
+                    
+                    //var claimDetailLifeHolderObj = document.getElementById('{!$Component.formidX.claimDetailLifeHolder}');
+                    
+                    
+                    var start_time =null;
+                    var end_time =null;
+                    var duration =null;
+                    
+                    if (claimDetailLifePaging[pageNumber] !=null || claimDetailLifePaging[pageNumber] != undefined) {
+                        
+                        if (show == 1 && currentPage==pageNumber) {
+                            pagerClaimDetailLife.lastDataPage = 0{!claimDetailLifeLastPageNo};
+                            pagerClaimDetailLife.reRenderControls();
+                        }
+                        else if (show == 1 && currentPage!=pageNumber) {
+                            start_time = performance.now();//new Date().getTime(); 
+                            displayLoading('loadingimgClaimDetailLife');
+                            
+                            console.log('set var on sfdc');
+                            claimDetailLifeHolderObj.value = claimDetailLifePaging[pageNumber];
+                            //console.log('jadi:' + claimDetailLifePaging[pageNumber]); 
+                            refreshClaimDetailLifeXX(); refreshPageMessages();                                      
+                            hideLoading('loadingimgClaimDetailLife');
+                            
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerClaimDetailLife.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration   : ' + duration);
+                            
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber= pageNumber +1;
+                        console.log('extra   : ' + extra);
+                        if (extra >0 && (claimDetailLifePaging[nextPageNumber] ==null || claimDetailLifePaging[nextPageNumber] == undefined)) {
+                            extra=extra-1;
+                            console.log('masuk   : ' + nextPageNumber); 
+                            startOfRecords = (numberOfRecords * (nextPageNumber-1)) + 1;                                        
+                            loadDataPagingClaimDetailLife(policyNo, entity, policyApp, '', '', 0, startOfRecords, numberOfRecords,  currentPage, nextPageNumber, 0, extra) ;
+                        }
+                               
+                    } else {
+                        //alert ('getRemoteDataClaimDetailLife, extra: ' + extra + ', show : ' + show);
+                        if (show == 1) {displayLoading('loadingimgClaimDetailLife');}
+                        start_time = performance.now(); //new Date().getTime(); 
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity,  String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords,  Integer pageNumber
+                            //  public static string getRemoteDataClaimDetailLife (String policyNo, String entity,  String policyApp, string operation,
+                            //  String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords,  Integer pageNumber) {
+                            
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataClaimDetailLife}',
+                                policyNo, entity,  policyApp, 'Claim', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords,  pageNumber,
+                            function (result, event){
+                                if (event.status) {                     
+                                    claimDetailLifePaging[pageNumber] = result;
+                                    console.log ('SET Value of claimDetailLifePaging['+pageNumber+'] : '+claimDetailLifePaging[pageNumber]); 
+                                    console.log('set var on sfdc');
+                                    claimDetailLifeHolderObj.value = result;
+                                    
+                                    if (show == 1) { 
+                                        refreshClaimDetailLife(); refreshPageMessages();
+                                        hideLoading('loadingimgClaimDetailLife'); 
+                                        
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerClaimDetailLife.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration   : ' + duration);    
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber= pageNumber +1;
+                                    if (extra >0 && (claimDetailLifePaging[nextPageNumber] ==null || claimDetailLifePaging[nextPageNumber] == undefined)) {
+                                        extra=extra-1;
+                                        startOfRecords = (numberOfRecords * (nextPageNumber-1)) + 1;                                        
+                                        loadDataPagingClaimDetailLife(policyNo, entity, policyApp, '', '', 0, startOfRecords, numberOfRecords,  currentPage, nextPageNumber, 0, extra) ;
+                                    } 
+                                }
+                            }, {escape: true}
+                        );    
+                   }              
+               }
+               
+
+        function loadDataPagingClaimDetailGI(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords,  pageNumber ){                 
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' +  pageNumber);
+                    var claimDetailGIHolderObj = document.getElementById('{!$Component.blockid.formid.claimDetailGIHolder}');
+                    
+                    if (claimDetailGIPaging[pageNumber] !=null || claimDetailGIPaging[pageNumber] != undefined) {
+                        claimDetailGIHolderObj.value = claimDetailGIPaging[pageNumber];
+                        console.log('jadi:' + claimDetailGIPaging[pageNumber]); 
+                        refreshClaimDetailGI();       
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity,  String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords,  Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataClaimDetailGI}',
+                                policyNo, entity,  policyApp, 'Claim', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords,  pageNumber,
+                            function (result, event){
+                                if (event.status) {
+                                    //alert(result);
+                                    claimDetailGIPaging[pageNumber] = result;
+                                    console.log('loadDataPagingClaimDetailGI :' + claimDetailGIPaging[pageNumber]); 
+                                    claimDetailGIHolderObj.value = result;
+                                    refreshClaimDetailGI();
+                                }
+                            }, {escape: true}
+                        );    
+                    
+                   }              
+               }
+
+            function loadDataPagingAssNotesCLM(policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords,  pageNumber, show, extra ){                    
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' +  pageNumber);
+                    //alert('hi loadDataPagingAssNotesCLM ');
+                    var assNotesCLMHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesHolder}');
+                    
+                    var start_time =null;
+                    var end_time =null;
+                    var duration =null;
+                    
+                    if (assNotesCLMPaging[pageNumber] !=null || assNotesCLMPaging[pageNumber] != undefined) {
+                        if (show == 1) {
+                            start_time = performance.now();//new Date().getTime(); 
+                            displayLoading('loadingimgAssNotesCLM');
+                                
+                            assNotesCLMHolderObj.value = assNotesCLMPaging[pageNumber];
+                            console.log('jadi:' + assNotesCLMPaging[pageNumber]); 
+                            refreshAssNotesCLM();       refreshPageMessages();
+                            hideLoading('loadingimgAssNotesCLM');
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerANCLM.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration   : ' + duration);
+                        
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber= pageNumber +1;
+                        if (extra >0 && (assNotesCLMPaging[nextPageNumber] ==null || assNotesCLMPaging[nextPageNumber] == undefined)) {
+                            extra=extra-1;
+                            startOfRecords = (numberOfRecords * nextPageNumber) + 1;                                        
+                            loadDataPagingAssNotesCLM(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords,  nextPageNumber, 0, extra) ;
+                        }
+                            
+                    } else {
+                        if (show == 1) {displayLoading('loadingimgAssNotesCLM');}
+                        start_time = performance.now(); //new Date().getTime(); 
+                        
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity,  String policyApp, 
+                            // string classType, string refNo
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords,  Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataAssessmentNotes}', 
+                                policyNo, entity,  policyApp, operation, classType, refNo, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords,  pageNumber,
+                            function (result, event){
+                                if (event.status) {
+                                    assNotesCLMPaging[pageNumber] = result;
+                                    console.log ('SET Value of assNotesCLMPaging['+pageNumber+'] : '+assNotesCLMPaging[pageNumber]); 
+                                    assNotesCLMHolderObj.value = result;
+                                    
+                                    if (show == 1) { 
+                                        refreshAssNotesCLM(); refreshPageMessages();
+                                        hideLoading('loadingimgAssNotesCLM'); 
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerANCLM.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration   : ' + duration);    
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber= pageNumber +1;
+                                    if (extra >0 && (assNotesCLMPaging[nextPageNumber] ==null || assNotesCLMPaging[nextPageNumber] == undefined)) {
+                                        extra=extra-1;
+                                        startOfRecords = (numberOfRecords * nextPageNumber) + 1;                                        
+                                        loadDataPagingAssNotesCLM(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords,  nextPageNumber, 0, extra) ;
+                                    }
+                                }
+                            }, {escape: true}
+                        );    
+                    
+                   }              
+               }
+               
+    </script>
+    
+
+    <!-- .End of Java Script -->
+    
+    <body> 
+    <apex:form id="formid">
+    
+    
+    <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+
+        
+        <!--    
+        TEST
+        <br/>
+        isDisplayAMFS: {!isDisplayAMFS}<br/>
+        isDisplayAFI : {!isDisplayAFI} <br/>
+        isDisplayMAGI : {!isDisplayMAGI} <br/>
+        isDisplayAFI_AMFS : {!isDisplayAFI_AMFS} <br/>
+        isDisplayAMFS_MAGI : {!isDisplayAMFS_MAGI} <br/>
+        isDisplayAFI_MAGI : {!isDisplayAFI_MAGI} <br/>
+        isDisplayAFI_AMFS_MAGI : {!isDisplayAFI_AMFS_MAGI} <br/>
+        -->
+        <apex:pageBlock mode="maindetail" tabStyle="Document" id="blockid" >
+            <apex:outputPanel id="panelFundInfo" rendered="true">
+            
+            <apex:sectionHeader title="Claim Info" subtitle="{!policyNo} : {!contactName} " />
+            <apex:outputPanel id="panelPageMessages" rendered="true"><apex:pageMessages /></apex:outputPanel>
+            
+            
+            
+            
+
+            <!-- *** CLAIM -->
+            
+            <!--    <apex:form id="cllformid">  -->
+                
+                
+                
+                <apex:pageBlockSection title="Claim History" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}">
+                    <apex:pageBlockSection columns="1" >
+                            <table><tr><td id="pagingControlClaimDetailLife"> </td> <td> <img id="loadingimgClaimDetailLife" style="display:none" src="/img/loading.gif" /></td></tr></table>
+                    </apex:pageBlockSection>
+                        
+                    <apex:outputPanel id="panelClaimDetailLife" rendered="true">        
+                            
+                    <apex:pageBlockTable id="idtrxcla" value="{!claimDetailLifeList}" var="claim" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Product Type">{!claim.ProductType}</apex:column>
+                        <apex:column headerValue="Claim No">{!claim.ClaimNo}</apex:column>
+                        <apex:column headerValue="Claim Type">{!claim.ClaimType}</apex:column>
+                        <apex:column headerValue="Claim Plan">{!claim.ClaimPlan}</apex:column>
+                        <apex:column headerValue="Claim Submission Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.ClaimSubmissionDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Claim Approval Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.ClaimApprovalDate}" /></apex:outputText></apex:column>
+                        <!--  <apex:column headerValue="Claim Currency">{!claim.ClaimCurrency}</apex:column>  -->         
+                        <apex:column headerValue="Claim Amount" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!claim.ClaimAmount}"/> </apex:outputText></apex:column>
+                        <apex:column headerValue="Claim Status 1">
+                            <apex:outputText value="{!claim.ClaimStatus1 + ' ' + IF(TRIM(claim.ClaimStatus1) == 'P', '(Claim Approved)', IF(TRIM(claim.ClaimStatus1) == 'S', '(Claim Pending)', IF(TRIM(claim.ClaimStatus1) == 'R' || TRIM(claim.ClaimStatus1) == 'C', '(Claim Reject)', '')))}"></apex:outputText>
+                        </apex:column>
+                        <apex:column headerValue="Claim Status 2">{!claim.ClaimStatus2}</apex:column>
+                        <apex:column headerValue="Claim Status">{!claim.ClaimStatus}</apex:column>
+                        
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                    <apex:pageBlockSectionItem ><div id="loadInfoClaimDetailLife"> </div></apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+            <!--    </apex:form>    
+            
+        
+            <!--    <apex:form id="ClaimDetailGIFormId">    -->
+                <apex:pageBlockSection title="Claim History" collapsible="true" columns="1" rendered="{!isDisplayMAGI}">
+                    <div id="pagingControlClaimDetailGI"></div> 
+                    <apex:outputPanel id="panelClaimDetailGI" rendered="true">          
+                    <apex:pageBlockTable id="idtrxcla" value="{!claimDetailGIList}" var="claim" style="overflow:auto;width:1300px;table-layout:fixed;" align="left" border="1">
+                        <apex:column > <apex:facet name="header">Claim <br/>Registration No</apex:facet> {!claim.ClaimRegistrationNo} </apex:column>
+                        <apex:column headerValue="Claim Status">{!claim.ClaimStatus}</apex:column>
+                        <apex:column headerValue="Branch Code">{!claim.BranchCode}</apex:column>
+                        <apex:column headerValue="Client Name">{!claim.ClientName}</apex:column>
+                        <apex:column > <apex:facet name="header">Notification <br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.NotificationDate}" /></apex:outputText> </apex:column>
+                        <apex:column > <apex:facet name="header">Registration <br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.RegistrationDate}" /></apex:outputText> </apex:column>
+                        
+                        <apex:column headerValue="Date of Loss"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.DateofLoss}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Description">{!claim.Description}</apex:column>
+                        <apex:column headerValue="Accident Place">{!claim.AccidentPlace}</apex:column>
+                        <apex:column headerValue="Repair Shop">{!claim.RepairShop}</apex:column>
+                        <apex:column > <apex:facet name="header">Approval <br/>Payment Date</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.ApprovalPaymentDate}" /></apex:outputText> </apex:column>
+                        
+                        <apex:column headerValue="Payment Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.PaymentDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="DriverName">{!claim.DriverName}</apex:column>
+                       <!--  <apex:column headerValue="Status Description">{!claim.StatusDesc}</apex:column> -->
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            <!--    </apex:form>    -->
+
+
+            <!-- *** CLAIM -->
+            <apex:pageBlockSection title="Assessment Notes (Life) Claim - Summary List" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}" id="SecAN">
+                <!--    <script> twistSection(document.getElementById('img_{!$Component.SecAN}')); </script> -->
+                
+                <apex:outputPanel id="panelSecCLM" rendered="true">
+                <table><tr><td id="pagingControlAssNotesCLM"> </td> <td> <img id="loadingimgAssNotesCLM" style="display:none" src="/img/loading.gif" /></td></tr></table>
+                
+                <apex:outputPanel id="panelAssNotesCLM" rendered="true">
+                <apex:pageBlockSectionItem >
+                
+                <!-- <apex:form id="CLMFormid"> -->
+                    <apex:pageBlockTable id="idAssNotesCLM" value="{!assessmentNotesSummaryCLMList}" var="dt" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                        <apex:column ><input type="radio" name="selectRadio" id="radio" onclick="openNewTab('ASSNOTESDETAILINFO', 'Assessment Notes Detail', '{!dt.assessmentClassType}', '{!dt.RefNo}');"/></apex:column>
+                        <apex:column headerValue="Last Input Date and Time"><apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss}"><apex:param value="{!dt.LastInputDateTime+offset}" /></apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Tran Type/Claim Type</apex:facet> {!dt.TranTypeClaimType} </apex:column>
+                        <apex:column > <apex:facet name="header">Ref No. </apex:facet> {!dt.RefNo}.</apex:column>
+                        <apex:column > <apex:facet name="header">Status</apex:facet> {!dt.Status} </apex:column>
+                        <apex:column > <apex:facet name="header">Remark</apex:facet> {!dt.Remark} </apex:column>
+                    </apex:pageBlockTable>
+                <!-- </apex:form>       -->
+                
+                </apex:pageBlockSectionItem>
+                </apex:outputPanel>    
+                </apex:outputPanel>
+                <apex:pageBlockSectionItem ><div id="loadInfoAssNotesCLM"> </div></apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>            
+            <!-- *** .END OF CLAIM -->   
+            
+ 
+            
+                
+                <apex:inputHidden value="{!claimDetailLifeJSON}" id="claimDetailLifeHolder" />
+                <apex:actionFunction name="refreshClaimDetailLifeXX" reRender="panelClaimDetailLife" oncomplete="pagerClaimDetailLife.lastDataPage = {!claimDetailLifeLastPageNo}; console.log('pagerClaimDetailLife.lastDataPage : ' + pagerClaimDetailLife.lastDataPage);  pagerClaimDetailLife.reRenderControls(); " />      
+            
+            
+                <apex:inputHidden value="{!claimDetailGIJSON}" id="claimDetailGIHolder" />
+                <apex:actionFunction name="refreshClaimDetailGI" reRender="panelClaimDetailGI"/>
+                
+                <apex:inputHidden value="{!assNotesJSON}" id="assNotesHolder" />
+                <apex:actionFunction name="refreshAssNotesCLM" reRender="panelAssNotesCLM"/>
+                
+                <apex:actionFunction name="refreshPageMessages" reRender="panelPageMessages"/>
+    
+                <apex:actionFunction name="callMethodSyncDataOfPolicyInfo" action="{!loadDataSeq2and3}" onComplete="afterLoad();" />
+                
+            
+                        
+            </apex:outputPanel>       
+            
+            
+
+                                                
+        </apex:pageBlock> <!-- .END OF <apex:pageBlock mode="maindetail" tabStyle="Contact" > -->
+    
+
+            
+    </div> <!-- .END OF <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;"> --> 
+    
+        
+        
+    </apex:form> 
+    </body>                     
+    
+    
+    
+</apex:page>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Balance_ALI__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( TEXT(Status) == &apos;Closed&apos;, 0,
+Count_All_Incoming_Email_ALI__c - Count_All_Email_Pick_Up_SPV_ALI__c
+- Count_Email_Respond_Agent_ALI__c +  Count_Email_Escalation_Agent_ALI__c 
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Balance ALI</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

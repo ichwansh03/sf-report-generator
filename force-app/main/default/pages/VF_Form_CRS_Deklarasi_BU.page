@@ -1,0 +1,931 @@
+<!--
+  @description       : 
+  @author            : Ahmad Yazid Munif
+  @group             : 
+  @last modified on  : 24-07-2025
+  @last modified by  : Mario Carlos Eyo
+-->
+<apex:page renderAs="PDF" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardController="E_Form_Master_Data__c" extensions="AMFS_CRS_Controller">
+    <html>
+        <head>
+            <style type="text/css">
+                @page {
+                    margin-top: 0.1%;
+                    margin-bottom: 30px;
+                    margin-left: 0;
+                    margin-right: 0;
+                    size: A4 portrait;
+                    page-break-inside:avoid;
+                    letter-spacing: 5px;
+                    @top-left {
+                        content: element(header);                
+                    }
+                    @bottom-left {
+                        content: element(footer);
+                    }
+                }
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    padding-bottom: 70px !important; /* Tambah jarak bawah */
+                    position: relative;
+                }
+            
+                
+                div.header {
+                padding: 0px;
+                position: running(header);
+                font-family:sans-serif !important;
+                }
+                
+                div.footer {
+                 position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 5px 10px;
+                background-color: white;
+                }
+                
+                .pagefooter:before{
+                content: "Page : " counter(page) "/" counter(pages);
+                margin-right: 10px;
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.content{
+                width:100%;
+                font-family:Arial, sans-serif;
+                margin-bottom: 100px;
+                }
+                .grid, .grid th, .grid td{
+                border: 1px solid;
+                border-collapse: collapse;
+                padding:3px;
+                }
+                .grid th{
+                background-color:#E8E8E8;
+                }
+                .center{
+                text-align: center;
+                }
+                .right{
+                text-align: right;
+                }
+                .left{
+                    text-align: left;
+                    display: flex;
+                    
+                }
+                .top{
+                vertical-align:top;
+                }
+                .uppercase{
+                text-transform: uppercase;
+                }
+                .justify{
+                text-align: justify;
+                }
+                .tdHeader{
+                width: 70%; 
+                height: 15px;
+                font-size:12px;
+                text-align: justify;
+                
+                }
+                .table-wrapper {
+                    border: 2px solid black;
+                    display: inline-block; /* Ensures the border wraps the table */
+                    padding: 0px; /* Prevents extra spacing */
+                }
+
+                /* Standard table styling */
+                table.custom-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    font-size: 11px;
+                }
+                table.standard-table{
+                    width: 95%;
+                    border-collapse: collapse;
+                    font-family:Arial, sans-serif;
+                    font-size: 12px;
+                }
+                .table { 
+                    width: 100%; 
+                    border-collapse: collapse; }
+                .table td { 
+                    padding: 5px; 
+                }
+                .checkbox-symbol { 
+                    width: 14px; 
+                    height: 14px; 
+                    border: 1px solid #000; 
+                    display: inline-block; 
+                    text-align: center; 
+                    line-height: 12px; 
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+                .checked::before {
+                    content: "✔"; /* Menampilkan tanda centang */
+                    color: black;
+                }
+                .italic {
+                    font-style: italic; 
+                    }
+                .boxpersyaratan{
+                    width: 100%;
+                    height: 5%;
+                    border: 1px solid black;
+                }
+                .contain {
+                    border: 1px solid black;
+                    padding: 10px;
+                    width: 62%;
+                    height: 470px;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .head {
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+
+                .side-box {
+                    display: inline-block;
+                    width: 120px;
+                    border: 1px solid black;
+                    padding: 5px;
+                    font-size: 12px;
+                    vertical-align: top;
+                }
+                .side-box .tabl1 {
+                    width: 100%;
+                }
+                .checkbox-label {
+                    display: inline-block;
+                    border: 1px solid black;
+                    width: 10px;
+                    height: 10px;
+                    margin-right: 5px;
+                }
+
+                .checked::before {
+                    content: "V"; /* Menampilkan tanda centang */
+                    color: black;
+                }
+
+                .tbl2{
+                    width: 100%
+                }
+                .box2{
+                    border: 1px solid black;
+                    display: inline-block;
+                    width: 35%;
+                    height: 80px;
+                }
+                .box3{
+                    border: 1px solid black;
+                    display: inline-block;
+                    width:35%;
+                    height: 80px;
+                }
+                .tbl{
+                    width: 60%;
+                    border: 1px solid black;
+                    font-size: 12px;
+                }
+                .tda, .thc{
+                    border: 1px solid black;
+                    padding: 5px;
+                    text-align: left;
+                }
+                .box6{
+                    border: 1px solid black;
+                    width:100%; 
+                    height:320px;
+                }
+
+                .signature-container {
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                .tables {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                .boxs {
+                    width: 50%;
+                    height: 30px;
+                    border: 1px solid black;
+                    font-weight: bold;
+                    font-size: 12px;
+                }
+
+                .info-header {
+                    background-color: #005aa7;
+                    color: white;
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+
+                }
+                
+                .penarikan {
+                    background-color: #8091a0;
+                    color: rgb(49, 47, 47);
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+                .dana{
+                    background-color: #eef2f5;
+                    color: rgb(173, 168, 168);
+                    padding: 8px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .info-container {
+                    width: 98%;
+                    padding: 5px;
+                    border-radius: 6px;
+                    font-family: Arial, sans-serif;
+                    
+                }
+                
+                td.label {
+                    font-weight: normal;
+                    color: #444;
+                    width: 50%;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                }
+                td.value {
+                    text-align: left;
+                    font-weight: bold;
+                    color: #000;
+                    width: 65%;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    text-align: right;
+                }
+                td.value2 {
+                    text-align: left;
+                    font-weight: bold;
+                    color: #000;
+                    width: 5%;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                }
+                p {
+                    margin-top: 0;
+                    margin-bottom: 1px;
+                }
+                ul {
+                    margin-top: 0;
+                    margin-bottom: 1px;
+                }
+
+                .italic {
+                    font-style: italic;
+                }
+            
+            </style>
+        </head>
+        
+
+        <!-- FOOTER -->
+        <div class="footer">
+             <div style="height:5px;"></div>
+            <div class="right" style="font-size:11px; margin-right: 20px;">
+                <div class="pagefooter"></div>
+            </div>
+            <div class="left" style="margin-left:10px;">
+                <apex:image value="{!$Resource.ojk_logo_bot}" width="200px"></apex:image>
+            </div>
+           
+        </div>
+
+        <!--Head-->
+    <div class="content">
+        <div>
+            <div>
+                <table class="standard-table">
+                    
+                    <tr>
+                        <td style="width: 50%; height: 30px;" align="Left" ><apex:image value="{!$Resource.emma_axa }" width="200px"></apex:image></td>
+                         <td style="width: 30%; height: 40px; font-family: Arial, sans-serif; margin-left:50px;">
+                            <p style="font-family: Arial, sans-serif; text-align:right;">Form <span style="color:#075eab; font-weight:bold;">Pernyataan Persetujuan</span></p>
+                            <p style="font-size:10px; color:#7c94a9; text-align:right;">Tanggal Terbit: {!inputDt}</p>
+                        </td>
+                    </tr>
+                    
+                </table>        
+            </div>
+        </div>
+
+        <div>
+            <h2 style="text-align:center; font-size:16px; font-family: Arial, sans-serif;">PERNYATAAN PERSETUJUAN ATAS PENGUNGKAPAN INFORMASI
+                PERPAJAKAN ASING BADAN USAHA</h2>
+            <table class="tables">
+                <tr>
+                    <td class="boxs" style="background-color:rgb(8, 8, 130); color:white; padding: 10px 14px; vertical-align: top; text-align:center; font-family: Arial, sans-serif;">NOMOR POLIS : {!polisNo}</td>
+                    <td class="boxs" style="padding: 10px 14px; vertical-align: top; text-align:center; font-family: Arial, sans-serif;">NOMOR TRANSAKSI : {!transNo}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="info-container">
+            <h2 style="text-align:center; font-size:16px;">Detail Informasi</h2>
+            <div class="info-header">Data Calon Pemegang Polis</div>
+            <table class="tables" style="border: 1px solid black;">
+                <tr>
+                    <td class="label" style=" padding: 5px 14px; vertical-align: top;">Nama Perusahaan Sesuai Anggaran Dasar :</td>
+                    <td class="value" style=" padding: 5px 14px; vertical-align: top;">{!namaPerusahaanAnggaran}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Nomor Anggaran Dasar Perusahaan :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!nomorAnggaranDasar}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Tanggal Anggaran Dasar Perusahaan :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!tanggalAnggaranDasar}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Nomor TDP atau SDP * :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!noTdpSdp}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Alamat Domisili :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!alamatDomisili}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Kota / Provinsi :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!kota}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Kode Pos :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!kodepos}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Negara Domisili :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!negaraDomisili}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;"> Nama Pihak Berwenang dari / yang ditunjuk oleh (Calon) Pemegang Polis :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!namaPihakPemegangPolis}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Jabatan :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!jabatan}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Nama Controlling Person Perusahaan :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!namaCPPerusahaan}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Jenis Identitas Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!jenisIdentitasCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Nomor Identitas Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!nomorIdentitasCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Tempat Lahir Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!tempLahirCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Tanggal Lahir Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!tanggalLahirCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Alamat Domisili Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!alamatDomisiliCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Kota / Provinsi Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!kotaCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Kode Pos Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!kodeposCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Negara Domisili Controlling Person :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!negaraDomisiliCP}</td>
+                </tr>
+                <tr>
+                    <td class="label"  style=" padding: 5px 14px; vertical-align: top;">Jenis Badan Usaha :</td>
+                    <td class="value"  style=" padding: 5px 14px; vertical-align: top;">{!jenisBadanUsaha}</td>
+                </tr>
+            </table>
+            
+            <br/>
+            <h2 style="text-align:center; font-size:16px;">Informasi Perpajakan</h2>
+            <div class="info-header">Data Pelaporan Pajak</div>
+            <table style="border: 1px solid black; font-size:12px;" width="775">
+                <tr>
+                    <td style=" padding: 5px 14px; vertical-align: top;">Apakah Anda melakukan pelaporan pajak di luar Negara Indonesia?</td>
+                    <td style=" padding: 5px 14px; vertical-align: top; text-align:right">{!laporPajakBU}</td>
+                </tr>
+                
+            </table>
+            <div class="info-header">Data Calon Pemegang Polis</div>
+            <apex:outputPanel rendered="{!laporPajakBU = 'YA'}">
+                <table style="border: 1px solid black; font-size:13px; text-align:center; width:100%">
+                    <tr>
+                        <th>No</th>
+                        <th>Negara Dimana Terdaftar Sebagai Wajib Pajak</th>
+                        <th>Nomor Wajib Pajak/TIN</th>
+                        <th>Alasan jika tidak ada Nomor Wajib Pajak/TIN</th>
+                    </tr>
+                    <apex:repeat value="{!negaraPajakList}" var="item" rendered="{!laporPajakBU = 'YA'}">
+                        <tr>
+                            <td>{!item.index}</td>
+                            <td>{!item.negara}</td>
+                            <td>{!item.nomorTIN}</td>
+                            <td>{!item.alasan}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+                <apex:outputPanel rendered="{!countNegaraPajak = 1}">
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!countNegaraPajak = 2}">
+                </apex:outputPanel>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!laporPajakBU != 'YA'}">
+                <table style="border: 1px solid black; font-size:13px; text-align:center; width:100%">
+                    <tr>
+                        <th>No</th>
+                        <th>Negara Dimana Terdaftar Sebagai Wajib Pajak</th>
+                        <th>Nomor Wajib Pajak/TIN</th>
+                        <th>Alasan jika tidak ada Nomor Wajib Pajak/TIN</th>
+                    </tr>
+                    <tr>
+                        <td  style=""></td>
+                        <td  style="">-</td>
+                        <td  style=""></td>
+                        <td  style=""></td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+               <div class="info-header" style="page-break-before: always; margin-top: 25px">Data Controlling Person</div>
+                <apex:outputPanel rendered="{!laporPajakCP = 'YA'}">
+                <table style="border: 1px solid black; font-size:13px; text-align:center; width:100%">
+                    <tr>
+                        <th>No</th>
+                        <th>Negara Dimana Terdaftar Sebagai Wajib Pajak</th>
+                        <th>Nomor Wajib Pajak/TIN</th>
+                        <th>Alasan jika tidak ada Nomor Wajib Pajak/TIN</th>
+                    </tr>
+                    <apex:repeat value="{!negaraPajakCPList}" var="item" rendered="{!laporPajakCP = 'YA'}">
+                        <tr>
+                            <td>{!item.index}</td>
+                            <td>{!item.negara}</td>
+                            <td>{!item.nomorTIN}</td>
+                            <td>{!item.alasan}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+                <apex:outputPanel rendered="{!countNegaraPajakCP = 1}">
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!countNegaraPajakCP = 2}">
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!laporPajakCP != 'YA'}">
+                <table style="border: 1px solid black; font-size:13px; text-align:center; width:100%">
+                    <tr>
+                        <th>No</th>
+                        <th>Negara Dimana Terdaftar Sebagai Wajib Pajak</th>
+                        <th>Nomor Wajib Pajak/TIN</th>
+                        <th>Alasan jika tidak ada Nomor Wajib Pajak/TIN</th>
+                    </tr>
+                    <tr>
+                        <td  style=""></td>
+                        <td  style="">-</td>
+                        <td  style=""></td>
+                        <td  style=""></td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </div>
+
+
+        <div>
+            <table class="standard-table" style="margin-left: 20px; text-align: justify">
+                <tr>
+                    <td colspan="2">Untuk keterangan lebih jauh mengenai residensi pajak, dapat ditemukan di situs web OECD (http://www.oecd.org/)</td>
+                </tr>
+                <tr>
+                    <td colspan="2">catatan penjelasan</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center; vertical-align: top">1.</td>
+                    <td>
+                        <table class="standard-table>">
+                            <tr>
+                                <td colspan="2">
+                                    Istilah Perusahaan Investasi termasuk dalam 2 tipe entitas yaitu:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%; text-align: center; vertical-align: top">
+                                    (i)
+                                </td>
+                                <td style="width: 95%">
+                                    Tipe pertama Perusahaan Investasi adalah setiap entitas yang pada dasamya melakukan sebagai bisnis, satu atau lebih dari kegiatan atau operasi sebaga berikut untuk atau atas nama nasabah:
+                                </td>
+                            </tr>
+                            <tr>
+                                <Td colspan="2">
+                                    <ul>
+                                        <li>perdagangan instrumen pasar uang, valuta asing, mata uang, suku bunga, instrumen indeks, efek yang dapat dipindahtangankan, atau perdagangan
+                                            komoditas berjangka; atau</li>
+                                        <li>pengelolaan portofolio secara individu clan kolektif atau</li>
+                                        <li>investasi, administrasi, atau pengelolaan aset keuangan atau uang atas nama pihak lain.</li>
+                                    </ul>
+                                </Td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%; text-align: center; vertical-align: top">
+                                    (ii)
+                                </td>
+                                <td style="width: 95%">
+                                    Tipe kedua Perusahaan Investasi ("Perusahaan Investasi dikelola oleh Lembaga Keuangan lain") adalah setiap Entitas yang berpenghasilan bruto yang mana pada pokoknya berasal dari 
+                                    investasi, investasi kembali, atau perdagangan Aset Keuangan di mana Entitas tersebut dikelola oleh Entitas lain yang merupakan Lembaga Simpanan, Lembaga Kustodian, Perusahaan 
+                                    Asuransi tertentu, atau tipe pertama Perusahaan Investasi.
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center; vertical-align: top">2.</td>
+                    <td>
+                        Yurisdiksi Mitra adalah negara atau yurisdiksi yang terikat dengan negara Indonesia dalam konvensi tentang bantuan administratif bersama dibidang perpajakan,
+                        persetujuan antar pemerintah (Intergovernmental Agreement/IGA) dibidang perpajakan, atau perjanjian bilateral maupun multilateral lainnya di bidang perpajakan.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center; vertical-align: top">3.</td>
+                    <td>
+                        Yang dimaksud dengan Lembaga Keuangan adalah semua organisasi yang mempunyai izin usaha perbankan, sekuritas dan/atau asuransi jiwa. Contoh lembaga
+                        keuangan mencakup bank, asuransi jiwa, kustodian, manajemen aset, atau dana investasi.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center; vertical-align: top">4.</td>
+                    <td>
+                        Active NFE singkatan dari Active Non-Financial Entity yang berarti Lembaga Non-Keuangan Aktif. Sebuah entitas dikategorikan sebagai Active NFE dengan ketentuan:
+                        <ul>
+                            <li>Tingkat pendapatan dan asetnya*</li>
+                            <li>Perusahaan Terbuka yang sahamnya aktif diperdagangkan atau saham dari entitas afiliasinya aktif diperdagangkan</li>
+                            <li>Institusi Pemerintahan Organisasi Internasional, Bank Indonesia atau entitas-entitas yang dimiliki sepenuhnya</li>
+                            <li>NFE-NFE holding yang merupakan anggota dari non-financial groups</li>
+                            <li>Perusahaan rintisan NFE-NFE</li>
+                            <li>NFE-NFE yang sedang dilikuidasi atau sedang dalam proses pailit</li>
+                            <li>NFE-NFE bersifat non-profit</li>
+                            <li>Melakukan transaksi pembiayaan dan transaksi lindung nilai (hedging)</li>
+                        </ul>
+                        * Sebuah entitas dikatakan Active NFE apabila kurang dari 50% pendapatan brutonya dalam suatu tahun atau suatu periode laporan tertentu berasal dari pendapatan
+                        pasif (seperti bunga, dividen, royalty) dan kurang dari 50% asetnya dalam suatu tahun atau suatu periode laporan tertentu berasal dari aset yang menghasilkan
+                        pendapatan pasif
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center; vertical-align: top">5.</td>
+                    <td>
+                        Passive NFE singkatan dari Passive Non-Financial Entity yang berarti Lembaga Non-Keuangan Pasif. Passive NFE adalah entitas yang bukan Active NFE dan entitas
+                        investasi yang termasuk tipe kedua Perusahaan Investasi yang negara domisilinya bukan merupakan Yurisdiksi Mitra.
+                    </td>
+                </tr>
+            </table>
+            <div style="border-bottom:3px solid black; padding:5px; margin: 0px 15px 0px 15px"></div>
+            <table class="standard-table" style="margin-left: 20px; text-align: justify">
+                <tr>
+                    <td colspan="2">
+                        <span style="font-size: 14px; font-weight: bold">Pernyataan</span>
+                        <i>(Harap dibaca dengan teliti sebelum menandatangani Surat Pernyataan ini)</i>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        (Calon) Pemegang Polis (selanjutnya disebut "Saya") menyatakan telah memahami dan menyetujui bahwa:
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">
+                        1.
+                    </td>
+                    <td style="width: 95%">
+                         Saya menandatangani Surat Pernyataan ini setelah saya mengisi Surat Pernyataan ini dengan lengkap dan benar.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">
+                        2.
+                    </td>
+                    <td style="width: 95%">
+                        Semua keterangan yang diberikan di dalam Surat Pernyataan ini adalah benar dan tidak ada keterangan maupun hal-hal lain yang
+                        Saya sembunyikan. Segala risiko yang timbul termasuk diakibatkan karena Surat Pernyataan ini ditandatangani dalam keadaan
+                        kosong/belum terisi lengkap menjadi tanggung jawab Saya.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">
+                        3.
+                    </td>
+                    <td style="width: 95%">
+                        AXA Mandiri dari waktu ke waktu dapat menggunakan informasi pribadi (termasuk namun tidak terbatas pada nama, tanggal lahir dan
+                        informasi lainnya) yang Saya berikan dalam Surat Pemnyataan ini dan Surat Permintaan Asuransi Jiwa, termasuk memberikannya pada
+                        OJK dan/atau badan regulasi lain sepanjang dianggap perlu oleh AXA Mandiri dalam rangka memberikan pelayanan atas Polis atau
+                        untuk tujuan lain sehubungan dengan pertanggungan Saya berdasarkan Polis dengan tunduk pada peraturan perundang- undangan yang
+                        berlaku.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">
+                        4.
+                    </td>
+                    <td style="width: 95%">
+                         Saya menandatangani Surat Pernyataan ini setelah saya mengisi Surat Pernyataan ini dengan lengkap dan benar.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">
+                        5.
+                    </td>
+                    <td style="width: 95%">
+                        Apabila di kemudian hari diketahui bahwa keterangan dan/atau pemyataan dan/atau pemberitahuan yang disampaikan temyata keliru,
+                        atau ditemukan adanya dokumen lain yang sah secara hukum dan membatalkan dokumen yang telah diberikan, maka Saya mengerti
+                        bahwa informasi yang Saya berikan ini akan batal demi hukum.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">
+                        6.
+                    </td>
+                    <td style="width: 95%">
+                        Sehubungan dengan Peraturan Otoritas Jasa Keuangan nomor 25/POJK.03/2015 tentang Penyampaian Informasi Nasabah Asing
+                        Terkait Perpajakan kepada Negara Mitra atau Yurisdiksi Mitra, Undang-undang, Pedoman, Perintah, dan Syarat-syarat, yang ditetapkan
+                        berdasarkan hukum lokal yang berlaku di Indonesia ataupun hukum asing, serta peraturan pelaksanaan dan perubahannya dari waktu ke
+                        waktu Saya sepenuhnya mengerti dan setuju dalam hal-hal sebagai berikut:
+                    </td>
+                </tr>
+            </table>
+
+            <table class="standard-table" style="margin: 20px 15px 0px 20px; text-align: justify; page-break-before: always">
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%; text-align: center; vertical-align: top">a.</td>
+                    <td style="width: 90%">
+                        AXA Mandiri diwajibkan untuk mempelajari dan mematuhi atau memenuhi persyaratan dari hukum, peraturan, perintah, dan
+                        persyaratan-persyaratan termasuk Persyaratan yang Relevan sebagaimana dijelaskan dibawah berdasarkan CRS, FATCA dan
+                        permintaan dari setiap badan yudisial, pajak, pemerintah dan/atau badan pengatur, termasuk namun tidak terbatas pada Organization
+                        for Economic Co-operation and Development (OECD), Undang-Undang Kepatuhan Pajak Rekening Luar Negeri Amerika Serikat
+                        Foreign Account Tax Compliance Act of United States of Amerika (FATCA) atau perjanjian-perjanjian atas publik, peradilan, perpajakan,
+                        Pemerintahan dan/atau pihak berwenang lainnya, termasuk Direktorat Jendral Pajak dan Internal Revenue Service (IRS) Amerika
+                        Serikat disebut "Otoritas-otoritas" dan secara sendiri disebut "Otoritas") yang berlaku dalam berbagai yurisdiksi sebagaimana diterbitkan
+                        dan diubah dari waktu ke waktu (selanjutnya disebut "Persyaratan yang Relevan"). Dalam hal ini, Saya setuju bahwa seluruh langkah
+                        yang secara wajar dianggap perlu untuk diambil oleh AXA Mandiri untuk memastikan kepatuhan atau ketaatan AXA Mandiri dengan
+                        Persyaratan yang Relevan, secara khusus pengungkapan atas keadaan khusus Saya terhadap otoritas bahwa AXA Mandiri dapat
+                        mengungkap keadaan khusus Saya atau informasi apapun mengenai diri Saya kepada Otoritas sehubungan dengan ketaatan terhadap
+                        Persyaratan yang Relevan. Pengungkapan tersebut dapat diberlakukan secara langsung atau dikirimkan melalui salah satu dari Kantor
+                        Pusat AXA Mandiri atau afiliasi lainnya dari AXA Mandiri. Untuk tujuan tersebut dan tanpa mengabaikan ketentuan manapun lainnya
+                        dalam Surat Pemyataan atau Polis Saya. AXA Mandiri dapat meminta Saya untuk memberikan informasi lebih lanjut sebagaimana
+                        dipersyaratkan untuk pengungkapan kepada Otoritas manapun dan Saya wajib memberikan informasi tersebut kepada AXA Mandiri
+                        dalam jangka waktu tertentu sebagaimana dapat dipersyaratkan secara wajar
+                        </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%; text-align: center; vertical-align: top">b.</td>
+                    <td style="width: 90%">
+                        Tanpa mengesampingkan ketentuan manapun dari Surat Pemyataan atau Polis Saya, Saya dengan ini setuju untuk menyediakan
+                        dukungan yang mungkin secara wajar dibutuhkan untuk memungkinkan AXA Mandiri mematuhi setiap kewajiban AXA Mandiri
+                        berdasarkan seluruh Persyaratan yang Relevan mengenai Saya atau Polis Saya di AXA Mandiri.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%; text-align: center; vertical-align: top">c.</td>
+                    <td style="width: 90%">
+                        Saya dengan ini setuju untuk memberikan informasi kepada AXA Mandiri secara tepat waktu atau paling lama 90 (Sembilan puluh)
+                        hari kalender atas setiap perubahan apapun dari keterangan yang sebelumnya telah disampaikan kepada AXA Mandiri, baik pada saat
+                        pengisian Surat Pernyataan ini atau di waktu manapun lainnya. Secara khusus, merupakan hal yang sangat penting bagi Saya untuk
+                        memberikan informasi kepada AXA Mandiri secara langsung apabila terdapat perubahan atas kewarganegaraan Saya, status pajak
+                        atau wajib pajak atau jika Saya menjadi wajib pajak di lebih dari satu negara. Jika salah satu dari perubahan ini terjadi atau jika
+                        informasi manapun lainnya mengindikasikan adanya perubahan dimaksud, AXA Mandiri dengan ini dapat meminta Saya untuk
+                        memberikan dokumen-dokumen tertentu atau informasi terkait, dan Saya setuju untuk memberikan informasi tersebut. Dokumen dan
+                        informasi tersebut adalah termasuk namun tidak terbatas pada pemyataan atau formulir pajak (dan dilegalisasi oleh notaris, apabila
+                        diperlukan) yang telah dilengkapi dan/atau ditandatangani oleh Saya.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%; text-align: center; vertical-align: top">d.</td>
+                    <td style="width: 90%">
+                        Dalam hal Saya tidak menyediakan informasi dan dokumen-dokumen sebagaimana yang dipersyaratkan oleh AXA Mandiri dalam
+                        jangka waktu sebagaimana disebutkan pada poin c di atas atau jika salah satu dari informasi atau dokumen-dokumen yang disediakan
+                        tersebut tidak tersedia secara tepat waktu, tidak akurat atau tidak lengkap, maka dengan ini Saya setuju bahwa AXA Mandiri dapat,
+                        untuk memastikan kepatuhan dan ketaatan yang berkelanjutan terhadap Persyaratan yang Relevan, mengambil setiap dan seluruh
+                        langkah yang AXA Mandiri anggap sesuai untuk memastikan kepatuhan atau ketaatan AXA Mandiri terhadap Persyaratan yang
+                        Relevan, atau mengambil langkah lainnya untuk melindungi kepentingan hukum dan/atau komersial AXA Mandiri.
+                    </td>
+                </tr>
+            </table>
+            <div style="border-bottom:3px solid black; padding:5px; margin: 0px 15px 0px 15px"></div>
+            <table class="standard-table" style="margin-left: 20px; text-align: justify">
+                <tr>
+                    <td colspan="3">
+                        Keterangan Data Calon Pemegang Polis dan Controling Person:
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%">*)</td>
+                    <td style="width: 5%">a.</td>
+                    <td style="width: 90%">TDP adalah Tanda Daftar Perusahaan sesuai dengan Anggaran Dasar.</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%">b.</td>
+                    <td style="width: 90%">SDP adalah Surat Domisili Perusahaan sesuai dengan Anggaran Dasar.</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%">c.</td>
+                    <td style="width: 90%">
+                        Definisi Controlling Person adalah seseorang yang memiliki kontrol berupa kepemilikan terhadap suatu entitas. “Kontrol melalui
+                        kepemilikan” tergantung kepada struktur kepemilikan suatu badan hukum dan biasanya diidentifikasi berdasarkan pendekatan risiko.
+                        Sebagai contoh:
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%"></td>
+                    <td style="width: 90%">
+                        <ul>
+                            <li>Pihak yang memiliki suatu kepemilikan di atas persentase tertentu dari suatu badan hukum, misalnya 25%.</li>
+                            <li>Apabila tidak ada pihak yang memiliki kontrol terhadap suatu entitas melalui kepemilikan saham, maka Pihak yang Memiliki Kontrol terhadap suatu entitas adalah pihak yang memiliki kontrol dalam bentuk apapun.</li>
+                            <li>Apabila tidak ada pihak yang teridentifikasi memiliki kontrol terhadap suatu entitas, maka Pihak yang Memiliki Kontrol adalah pihak yang memiliki posisi sebagai manajemen senior di entitas.</li>
+                        </ul>
+                    </td>
+                </tr>
+                
+            </table>
+            <div style="border-bottom:3px solid black; padding:5px; margin: 0px 15px 0px 15px"></div>
+            <div style="margin: 0px 15px 0px 15px; font-size: 12px">
+                <span>Demikian Peryataan Saya/Kami ini saya buat sebagai syarat dalam permohonan asuransi dan merupakan satu bagian yang tidak terpisahkan dari Polis Saya/Kami.</span>  
+            
+                <table>
+                    <br/>
+                    <tr>      
+                        <td style="font-size:12px;color:rgb(13, 13, 14);" align="left">Ditandatangani di:</td>
+                        <td style="font-size:12px;border:1px solid black; width:35%; height:20px;">{!touchPoint}</td>
+                        <td style="font-size:12px;color:rgb(13, 13, 14);">Tgl-Bln-Thn</td>
+                        <td style="font-size:12px;border:1px solid black; width:35%; height:20px;">{!inputDate}</td>
+                    </tr>   
+                </table>
+                <br/>
+                <table class="standard-table" style="width:50%;" border="1 px solid" >  
+                    <tr>
+                        <td align="center; vertical-align:center; height: 100px;" >
+                            <img src="{!imgUrl}" width="150px" style="padding:5px 5px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nama Jelas : {!namaLengkapBU}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--
+        <div style=" font-family: Arial, sans-serif;margin-left:30px; margin-right: 30px;">
+           <div style="text-align:justify;font-size:12px;">
+                <p>Untuk keterangan lebih jauh mengenai residensi pajak, dapat ditemukan di situs web OECD (http://www.oecd.org/)</p>
+                <p>Catatan penjelasan</p>
+                <p>1. Istilah Perusahaan Investasi termasuk dalam 2 tipe entitas yaitu:</p>
+                <p>(i) Tipe pertama Perusahaan Investasi adalah setiap entitas yang pada dasamya melakukan sebagai bisnis, satu atau lebih dari kegiatan atau operasi sebagai
+                    berikut untuk atau atas nama nasabah:
+                    <ul>
+                        <li>perdagangan instrumen pasar uang, valuta asing, mata uang, suku bunga, instrumen indeks, efek yang dapat dipindahtangankan, atau perdagangan
+                            komoditas berjangka; atau</li>
+                        <li>pengelolaan portofolio secara individu clan kolektif; atau</li>
+                        <li>investasi, administrasi, atau pengelolaan aset keuangan atau uang atas nama pihak lain.</li>
+                    </ul>
+                </p>
+                <p>(ii) Tipe kedua Perusahaan Investasi ("Perusahaan Investasi dikelola oleh Lembaga Keuangan lain") adalah setiap Entitas yang berpenghasilan bruto yang mana
+                    pada pokoknya berasal dari investasi, investasi kembali, atau perdagangan Aset Keuangan di mana Entitas tersebut dikelola oleh Entitas lain yang merupakan
+                    Lembaga Simpanan, Lembaga Kustodian, Perusahaan Asuransi tertentu, atau tipe pertama Perusahaan Investasi.</p>
+                <p>2. Yurisdiksi Mitra adalah negara atau yurisdiksi yang terikat dengan negara Indonesia dalam konvensi tentang bantuan administratif bersama dibidang perpajakan,
+                    persetujuan antar pemerintah (Intergovernmental Agreement/IGA) dibidang perpajakan, atau perjanjian bilateral maupun multilateral lainnya di bidang perpajakan.</p>
+                <p>3. Yang dimaksud dengan Lembaga Keuangan adalah semua organisasi yang mempunyai izin usaha perbankan, sekuritas dan/atau asuransi jiwa. Contoh lembaga
+                    keuangan mencakup bank, asuransi jiwa, kustodian, manajemen aset, atau dana investasi.</p>
+                <p>4. Active NFE singkatan dari Active Non-Financial Entity yang berarti Lembaga Non-Keuangan Aktif. Sebuah entitas dikategorikan sebagai Active NFE dengan ketentuan:
+                    <ul>
+                        <li>Tingkat pendapatan dan asetnya*</li>
+                        <li>Perusahaan Terbuka yang sahamnya aktif diperdagangkan atau saham dari entitas afiliasinya aktif diperdagangkan</li>
+                        <li>Institusi Pemerintahan Organisasi Internasional, Bank Indonesia atau entitas-entitas yang dimiliki sepenuhnya</li>
+                        <li>NFE-NFE holding yang merupakan anggota dari non-financial groups</li>
+                        <li>Perusahaan rintisan NFE-NFE</li>
+                        <li>NFE-NFE yang sedang dilikuidasi atau sedang dalam proses pailit</li>
+                        <li>NFE-NFE bersifat non-profit</li>
+                        <li>Melakukan transaksi pembiayaan dan transaksi lindung nilai (hedging)</li>
+                    </ul>
+                    <p>* Sebuah entitas dikatakan Active NFE apabila kurang dari 50% pendapatan brutonya dalam suatu tahun atau suatu periode laporan tertentu berasal dari pendapatan
+                        pasif (seperti bunga, dividen, royalty) dan kurang dari 50% asetnya dalam suatu tahun atau suatu periode laporan tertentu berasal dari aset yang menghasilkan
+                        pendapatan pasif</p>
+                </p>
+                <p>5. Passive NFE singkatan dari Passive Non-Financial Entity yang berarti Lembaga Non-Keuangan Pasif. Passive NFE adalah entitas yang bukan Active NFE dan entitas
+                    investasi yang termasuk tipe kedua Perusahaan Investasi yang negara domisilinya bukan merupakan Yurisdiksi Mitra.
+                </p>
+                <div style="border-bottom:3px solid black; padding:5px;"></div>
+                <p> <span style="font-weight:bold">Pernyataan</span> <span style="font-style:italic;">(Harap dibaca dengan teliti sebelum menandatangani Surat Pernyataan ini)</span></p>
+                <p>(Calon) Pemegang Polis (selanjutnya disebut "Saya") menyatakan telah memahami dan menyetujui bahwa:</p>
+                <p>1. Saya menandatangani Surat Pernyataan ini setelah saya mengisi Surat Pernyataan ini dengan lengkap dan benar.</p>
+                <p>2. Semua keterangan yang diberikan di dalam Surat Pernyataan ini adalah benar dan tidak ada keterangan maupun hal-hal lain yang Saya sembunyikan. Segala risiko
+                    yang timbul termasuk diakibatkan karena Surat Pernyataan ini ditandatangani dalam keadaan kosong/belum terisi lengkap menjadi tanggung jawab Saya.</p>
+                <p>3. AXA Mandiri dari waktu ke waktu dapat menggunakan informasi pribadi (termasuk namun tidak terbatas pada nama, tanggal lahir dan informasi lainnya) yang Saya
+                    berikan dalam Surat Pemnyataan ini dan Surat Permintaan Asuransi Jiwa, termasuk memberikannya pada OJK dan/atau badan regulasi lain sepanjang dianggap perlu
+                    oleh AXA Mandiri dalam rangka memberikan pelayanan atas Polis atau untuk tujuan lain sehubungan dengan pertanggungan Saya berdasarkan Polis dengan tunduk
+                    pada peraturan perundang- undangan yang berlaku.
+                </p>
+                <p>4. Apabila di kemudian hari diketahui bahwa keterangan dan/atau pemyataan dan/atau pemberitahuan yang disampaikan temyata keliru, atau ditemukan adanya dokumen
+                    lain yang sah secara hukum dan membatalkan dokumen yang telah diberikan, maka Saya mengerti bahwa informasi yang Saya berikan ini akan batal demi hukum.</p>
+                <p>5. Apabila data Saya pada polis AXA Mandiri berbeda dengan data yang tertulis pada Surat Pernyataan ini, maka dengan ini Saya setuju bahwa AXA Mandiri dapat
+                    mengganti data polis AXA Mandiri, dengan data yang tertera pada Surat Pernyataan ini (sebagaimana relevan).</p>
+                <p>6. Sehubungan dengan Peraturan Otoritas Jasa Keuangan nomor 25/POJK.03/2015 tentang Penyampaian Informasi Nasabah Asing Terkait Perpajakan kepada Negara
+                    Mitra atau Yurisdiksi Mitra, Undang-undang, Pedoman, Perintah, dan Syarat-syarat, yang ditetapkan berdasarkan hukum lokal yang berlaku di Indonesia ataupun hukum
+                    asing, serta peraturan pelaksanaan dan perubahannya dari waktu ke waktu Saya sepenuhnya mengerti dan setuju dalam hal-hal sebagai berikut:
+                    <p style="margin-left: 10px; page-break-before: always; margin-top: 20px">a. AXA Mandiri diwajibkan untuk mempelajari dan mematuhi atau memenuhi persyaratan dari hukum, peraturan, perintah, dan persyaratan-persyaratan termasuk
+                        Persyaratan yang Relevan sebagaimana dijelaskan dibawah berdasarkan CRS, FATCA dan permintaan dari setiap badan yudisial, pajak, pemerintah dan/atau
+                        badan pengatur, termasuk namun tidak terbatas pada Organization for Economic Co-operation and Development (OECD), Undang-Undang Kepatuhan Pajak
+                        Rekening Luar Negeri Amerika Serikat Foreign Account Tax Compliance Act of United States of Amerika (FATCA) atau perjanjian-perjanjian atas publik, peradilan,
+                        perpajakan, Pemerintahan dan/atau pihak berwenang lainnya, termasuk Direktorat Jendral Pajak dan Internal Revenue Service (IRS) Amerika Serikat 
+                        disebut "Otoritas-otoritas" dan secara sendiri disebut "Otoritas") yang berlaku dalam berbagai yurisdiksi sebagaimana diterbitkan dan diubah dari waktu ke waktu
+                        (selanjutnya disebut "Persyaratan yang Relevan"). Dalam hal ini, Saya setuju bahwa seluruh langkah yang secara wajar dianggap perlu untuk diambil oleh AXA
+                        Mandiri untuk memastikan kepatuhan atau ketaatan AXA Mandiri dengan Persyaratan yang Relevan, secara khusus pengungkapan atas keadaan khusus Saya
+                        terhadap otoritas bahwa AXA Mandiri dapat mengungkap keadaan khusus Saya atau informasi apapun mengenai diri Saya kepada Otoritas sehubungan dengan
+                        ketaatan terhadap Persyaratan yang Relevan. Pengungkapan tersebut dapat diberlakukan secara langsung atau dikirimkan melalui salah satu dari Kantor Pusat
+                        AXA Mandiri atau afiliasi lainnya dari AXA Mandiri. Untuk tujuan tersebut dan tanpa mengabaikan ketentuan manapun lainnya dalam Surat Pemyataan atau
+                        Polis Saya. AXA Mandiri dapat meminta Saya untuk memberikan informasi lebih lanjut sebagaimana dipersyaratkan untuk pengungkapan kepada Otoritas
+                        manapun dan Saya wajib memberikan informasi tersebut kepada AXA Mandiri dalam jangka waktu tertentu sebagaimana dapat dipersyaratkan secara wajar.
+                    </p>
+                    <p style="margin-left:10px;">
+                        b. Tanpa mengesampingkan ketentuan manapun dari Surat Pemyataan atau Polis Saya, Saya dengan ini setuju untuk menyediakan dukungan yang mungkin
+                        secara wajar dibutuhkan untuk memungkinkan AXA Mandiri mematuhi setiap kewajiban AXA Mandiri berdasarkan seluruh Persyaratan yang Relevan mengenai
+                        Saya atau Polis Saya di AXA Mandiri.
+                    </p>
+                    <p style="margin-left:10px;">
+                        c. Saya dengan ini setuju untuk memberikan informasi kepada AXA Mandiri secara tepat waktu atau paling lama 90 (Sembilan puluh) hari kalender atas setiap
+                        perubahan apapun dari keterangan yang sebelumnya telah disampaikan kepada AXA Mandiri, baik pada saat pengisian Surat Pernyataan ini atau di waktu
+                        manapun lainnya. Secara khusus, merupakan hal yang sangat penting bagi Saya untuk memberikan informasi kepada AXA Mandiri secara langsung apabila
+                        terdapat perubahan atas kewarganegaraan Saya, status pajak atau wajib pajak atau jika Saya menjadi wajib pajak di lebih dari satu negara. Jika salah satu
+                        dari perubahan ini terjadi atau jika informasi manapun lainnya mengindikasikan adanya perubahan dimaksud, AXA Mandiri dengan ini dapat meminta Saya
+                        untuk memberikan dokumen-dokumen tertentu atau informasi terkait, dan Saya setuju untuk memberikan informasi tersebut. Dokumen dan informasi tersebut
+                        adalah termasuk namun tidak terbatas pada pemyataan atau formulir pajak (dan dilegalisasi oleh notaris, apabila diperlukan) yang telah dilengkapi dan/atau
+                        ditandatangani oleh Saya.
+                    </p>
+                    <p style="margin-left:10px;">
+                        d. Dalam hal Saya tidak menyediakan informasi dan dokumen-dokumen sebagaimana yang dipersyaratkan oleh AXA Mandiri dalam jangka waktu sebagaimana
+                        disebutkan pada poin c di atas atau jika salah satu dari informasi atau dokumen-dokumen yang disediakan tersebut tidak tersedia secara tepat waktu, tidak akurat
+                        atau tidak lengkap, maka dengan ini Saya setuju bahwa AXA Mandiri dapat, untuk memastikan kepatuhan dan ketaatan yang berkelanjutan terhadap Persyaratan
+                        yang Relevan, mengambil setiap dan seluruh langkah yang AXA Mandiri anggap sesuai untuk memastikan kepatuhan atau ketaatan AXA Mandiri terhadap
+                        Persyaratan yang Relevan, atau mengambil langkah lainnya untuk melindungi kepentingan hukum dan/atau komersial AXA Mandiri.
+                    </p>
+                </p>
+                <div style="border-bottom:3px solid black; padding:5px;"></div>
+                <p>
+                    Keterangan Data Calon Pemegang Polis dan Controling Person:
+                </p>
+                <p>*) a. TDP adalah Tanda Daftar Perusahaan sesuai dengan Anggaran Dasar.</p>
+                <p style="margin-left:11px;">b. SDP adalah Surat Domisili Perusahaan sesuai dengan Anggaran Dasar.</p>
+                <p style="margin-left:11px;">c. Definisi <span class="italic">Controlling Person</span> adalah seseorang yang memiliki kontrol berupa kepemilikan terhadap suatu entitas. 
+                    “Kontrol melalui kepemilikan” tergantung kepada struktur kepemilikan suatu badan hukum dan biasanya diidentifikasi berdasarkan pendekatan risiko. 
+                    Sebagai contoh:
+                </p>
+                    <ul>
+                        <li>Pihak yang memiliki suatu kepemilikan di atas persentase tertentu dari suatu badan hukum, misalnya 25%.</li>
+                        <li>Apabila tidak ada pihak yang memiliki kontrol terhadap suatu entitas melalui kepemilikan saham, maka Pihak yang Memiliki Kontrol terhadap suatu entitas adalah pihak yang memiliki kontrol dalam bentuk apapun.</li>
+                        <li>Apabila tidak ada pihak yang teridentifikasi memiliki kontrol terhadap suatu entitas, maka Pihak yang Memiliki Kontrol adalah pihak yang memiliki posisi sebagai manajemen senior di entitas.</li>
+                    </ul>
+               
+        </div> -->
+     </div> 
+    </html>
+</apex:page>

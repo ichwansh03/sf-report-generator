@@ -1,0 +1,5 @@
+<apex:page standardController="Email_SMS_Template__c" sidebar="false">
+  <apex:outputText value="{!Email_SMS_Template__c.Email_Header__c}" escape="false" />
+  <apex:outputText value="{!Email_SMS_Template__c.Email_Body__c}" escape="false" />
+  <apex:outputText value="{!Email_SMS_Template__c.Email_Footer__c}" escape="false" /> 
+</apex:page>

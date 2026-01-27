@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AMFS_CR_TRO_Project</fullName>
+    <columns>NAME</columns>
+    <columns>Call_List__c</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Owner__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Call_Line__c.Collection_AMFS_1</value>
+    </filters>
+    <filters>
+        <field>Agent__c</field>
+        <operation>equals</operation>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>11/25/2022 12:00 AM</value>
+    </filters>
+    <filters>
+        <field>Call_List__c</field>
+        <operation>equals</operation>
+        <value>Gen#221031-031800</value>
+    </filters>
+    <label>AMFS CR - TRO Project</label>
+    <language>en_US</language>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,344 @@
+<apex:page controller="Softphone_Custom" docType="html-5.0" showChat="false" showHeader="false" id="pageid">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/support/api/33.0/interaction.js"></script>
+    <apex:includeScript value="/soap/ajax/33.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/33.0/apex.js"/>
+    <apex:includeScript value="/support/console/40.0/integration.js"/>
+    <script type="text/javascript">
+    // $(document).ready(function(){
+    //  enableClickToDial();
+    //});
+        function func(a , b, c)
+        {
+            var urlfire = a;
+            var idupdate = b;   
+            var sip_v = c;
+            if(urlfire!='') {
+                if (sforce.console.isInConsole()) {
+                    sforce.connection.sessionId = "{!$Api.Session_ID}";
+                    var logsoql = sforce.connection.query("select Id, sip__c, Ownerid from Log_CTI_Valdo__c where owner.name Like '%"+sip_v+"%' limit 1");
+                    var recordssoql = logsoql.getArray("records"); 
+                    var logupdate = new sforce.SObject("Log_CTI_Valdo__c");
+                    logupdate.id = recordssoql[0].Id;
+                    logupdate.ownerid = idupdate;
+                    var resultupdate = sforce.connection.update([logupdate]);
+                   
+                    if(resultupdate[0].getBoolean("success"))
+                    {
+                        //alert('Success Update');
+                        sforce.console.openPrimaryTab(null, a, true)
+                    }
+                    else{
+                        alert('Error : '+resultupdate);
+                    }
+                }
+            }
+        }
+        var callback = function (response) {
+            if (response.result) {
+                //alert('Click to dial was enabled.');
+            } else {
+                //alert('Click to dial was not enabled.');
+            }
+        };
+    
+    var callback2 = function (response) {
+        if (response.result) {
+            //alert('Click to dial was disabled.');
+        } else {
+            //alert('Click to dial was not disabled.');
+        }
+    };
+    function enableClickToDial() {
+        //Invokes API method
+        sforce.interaction.cti.enableClickToDial(callback);
+    }
+    function disableClickToDial() {
+        //Invokes API method
+        sforce.interaction.cti.disableClickToDial(callback2);
+    }
+    //var nomor = '';
+    var listener = function (response) {
+        if (response.result) {
+            //alert('JSON phone number.' + response.result );
+            var obj = JSON.parse(response.result);
+            //alert('phone number :' + obj.number );
+            //nomor = obj.number;
+            //document.getElementById("pageid:formid:txtPhone").val = obj.number;
+            //alert('phone number 2 :' + document.getElementById("pageid:formid:txtPhone").val );
+            rerendernomortelepon();
+            var sip = "{!sip}"; 
+            //alert('USERID : {!iduser}');
+            //alert('SIP : {!sip}');
+            var validasi = "false" ;
+            var reason = "" ;
+            var callingcon = "{!cancall}";
+            var n = obj.number.includes("+");
+            //var phone_number = "";
+            var phone_number = obj.number.replace("+62","0");
+            phone_number = phone_number.replace("+","");
+            phone_number = phone_number.replace("(62","0");
+            phone_number = phone_number.replace("(","");
+            phone_number = phone_number.replace(")","");
+            phone_number = phone_number.replace(" ","");
+            phone_number = phone_number.replace(" ","");
+            phone_number = phone_number.replace(" ","");
+            phone_number = phone_number.replace(" ","");
+            phone_number = phone_number.replace(" ","");
+            phone_number = phone_number.replace("-","");
+            phone_number = phone_number.replace("-","");
+            phone_number = phone_number.replace("-","");
+            phone_number = phone_number.replace("-","");
+            phone_number = phone_number.replace("/","");
+            phone_number = phone_number.replace(";","");
+            
+            /*
+            phone_number = phone_number.replace(/+/g,"");
+            phone_number = phone_number.replace(/(62/g,"0");
+            phone_number = phone_number.replace(/(/g,"");
+            phone_number = phone_number.replace(/)/g,"");
+            phone_number = phone_number.replace(/ /g,"");
+            phone_number = phone_number.replace(/-/g,"");
+            */
+            /*
+            if(n==true){
+                phone_number = obj.number.replace("+","");
+            }
+            else{
+                phone_number = obj.number;
+            }
+            */
+            //alert(phone_number);
+            //alert("callingcon : "+callingcon);
+            sforce.connection.sessionId = "{!$Api.Session_ID}";
+            var log = new sforce.SObject("Log_CTI_Valdo__c");
+            log.sip__c = sip;
+            //log.to__c = obj.number;
+            log.to__c = phone_number;
+            log.Mode__c = 'API Call Out';
+            log.Status__c = 'Outbound';
+            log.agent__c = '{!iduser}';
+            if(obj.object=='Contact'){
+                if(callingcon == "true"){
+                    log.Contact__c = obj.objectId;
+                }
+                else{
+                  validasi = "true" ;
+                  reason = "your user cannot call from contact" ;
+                }
+            }
+            else if(obj.object=='Case'){
+                log.Case__c = obj.objectId;
+                //query js
+                var cs = sforce.connection.query("SELECT contactid from case where id ='"+obj.objectId+"' limit 1");
+                var records = cs.getArray("records"); 
+                var con = records[0].ContactId;
+                log.Contact__c = con;
+                //alert('query : '+con);
+            }
+            else if(obj.object=='Call_Line__c'){
+                log.call_line__c = obj.objectId;
+                //query js
+                var cl = sforce.connection.query("SELECT  Reason_Status_Config__c, contact__c from call_line__c where id ='"+obj.objectId+"' limit 1");
+                var recorder = cl.getArray("records"); 
+                var con2 = recorder[0].Contact__c;
+                var reason_status = recorder[0].Reason_Status_Config__c;
+                var cll = obj.objectId;
+                log.Contact__c = con2;
+                log.call_line__c = cll;
+                var val_split = "{!$Label.Validation_Reason_Status}";
+                if(reason_status!=null && reason_status!=''){
+                    var temp = val_split.split(",");
+                    var i;
+                    for(i = 0; i<temp.length; i++){
+                        if(temp[i] == reason_status){
+                            validasi = "true";
+                            reason = "you can not call,  because reason status is " +reason_status;
+                            break;
+                        }
+                    }
+                }
+                //alert('query : '+validasi );
+            }
+            try{
+                if(validasi == "true"){
+                    alert(reason) ;
+                }
+                else{
+                    var result1 = sforce.connection.create([log]);
+                    if(result1[0].getBoolean("success"))
+                    {
+                        //alert('Success');
+                        //setTimeout(function(){ alert("Success"); },10000);
+                        //var ul = document.getElementById('el_loading');
+                        //ul.style.display = 'block';
+                        disableClickToDial();
+                        setTimeout(function(){ resultAPI(result1[0].id); enableClickToDial(); },30000);
+                        //setTimeout(function(){ resultAPI(result1[0].id); enableClickToDial(); },15000);
+                        //setTimeout(function(){ resultAPI(result1[0].id); ul.style.display = "none";  } , 15000);
+                    }
+                    else{
+                        alert('Error : '+result1);
+                    }
+                }
+            }catch(err){
+                alert(err);
+            }
+            
+        }
+    };
+    //Invokes API method
+    sforce.interaction.cti.onClickToDial(listener);
+    
+    function resultAPI(id_sf){
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        var log = sforce.connection.query("SELECT ID_Valdo__c, Response_API__c, Error_API__c from Log_CTI_Valdo__c where id ='"+id_sf+"' limit 1"); 
+        var records = log.getArray("records"); 
+        var str = records[0].ID_Valdo__c;
+        var errorstr = records[0].Error_API__c;
+        if(str!="" && str!=null){
+            alert("Success");
+        }
+        else if(errorstr!="" && errorstr!=null){
+            alert(errorstr);
+        }
+        else{
+            alert("Please Retry");
+        }
+    }
+    
+    function completefunction(){
+        document.getElementById("pageid:formid:txtPhone").val = nomor;
+        alert('phone number 2 :' + document.getElementById("pageid:formid:txtPhone").val );
+    }
+    
+    
+    </script>
+    <meta charset="utf-8"/>
+    <title>Bootstrap Soft Phone UI</title>
+    <style>
+        .soft-phone {
+        //width: 300px;
+        width : 100%;
+        //max-width: 300px;
+        //margin: 15px auto;
+        margin: auto;
+        }
+        
+        .col-xs-4,.col-xs-12{
+        padding-right: 5px !important;
+        padding-left: 5px !important;
+        }
+        
+        .btn{
+            height : 40px !important;
+            
+        }
+        
+        .soft-phone span {
+        display: block;
+        color: #f0f0f0;
+        font-size: 0.75em;
+        font-family: monospace;
+        }
+        
+        .soft-phone .row {
+            margin: auto !important;
+        }
+        
+        input.btn {
+        width: 100%;
+        //min-width: 60px;
+        //max-width: 80px;
+        //height: 70px;
+        height:100%;
+        //min-height: 70px;
+        //max-height: 70px;
+        }
+        
+        #pageid:formid:txtPhone {
+        height: 46px;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.3333333;
+        border-radius: 6px;
+        //display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+        
+        .soft-phone .form-group input {
+        margin-bottom: 15px;
+        }
+        
+        .btn-number {
+        width: 100%;
+        min-width: 60px;
+        max-width: 80px;
+        height: 70px;
+        min-height: 70px;
+        max-height: 70px;
+        }
+        
+        #el_loading
+        {
+           display: none;
+        }
+    </style>
+   
+    
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default soft-phone">
+                    <apex:form id="formid2">
+                        <!-- auto push -->
+                       <!--<apex:actionPoller action="{!checkfire}" interval="5" reRender="formid2" oncomplete="var a = '{!urlFire}'; var b = '{!iduser}'; var c = '{!sip}'; func(a,b,c); return false;" />-->
+                        <!-- auto push -->
+                    </apex:form>
+                    <apex:form id="formid" >
+                        <apex:actionFunction reRender="formid,txtPhone" name="rerendernomortelepon" />
+                        <div class="row">
+                            <apex:iframe src="{!$Label.API_Valdo}asterisk" height="350px;"/>    
+                        </div>
+                        <div class="row" >
+                            
+                        </div>
+                        
+                        <div class="row" style="padding-bottom: 10px;">
+                            <div class="col-xs-12">
+                                <apex:commandButton value="Reload" reRender="formid" />
+                            </div>
+                            <div class="col-xs-12">
+                                <apex:commandButton onclick="enableClickToDial();return false;" value="Enable Click To Dial"/>
+                            </div>
+                        </div>
+                    </apex:form>
+                </div><!-- /.soft-phone -->
+            </div><!-- /.col-xs-6 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+    <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.75;width:100%;">
+        <div class="waitingHolder" style="top: 100px; width: 91px;">
+            <img class="waitingImage" src="{!$Resource.ajaxLoadGif}" title="Please Wait..."  style="width: 40;height:40;"/>
+            <span class="waitingDescription">Please Wait .  .  .  .  .</span>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    
+</apex:page>

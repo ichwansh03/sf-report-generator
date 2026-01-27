@@ -1,0 +1,392 @@
+Global class Purecloud_InsertCallService {
+    @future (callout=true)
+    Public static void getTest (String startInterval, String endInterval){
+       
+        String url = Label.API_Purecloud+'api/v2/analytics/conversations/aggregates/query';
+        String clientid = Label.Purecloud_ClientId;
+        String clientSecret = Label.Purecloud_ClientSecret;
+        String token = [SELECT Access_token__c FROM Purecloud_Connector__c WHERE Name ='Purecloud Token' LIMIT 1].Access_token__c;
+        String ownerAdmin = [SELECT Id FROM User Where Username = 'taufik.susanto@mii.co.id.ccc' AND Profile.Name = 'System Administrator'].id;
+        system.debug(LoggingLevel.DEBUG,'*url*'+url);
+        system.debug('TOKEN ==>'+token);
+    	
+        Integer year = Integer.Valueof(Date.valueof(endInterval).year());
+        Integer month = Integer.Valueof(Date.valueof(endInterval).month());
+        Integer day = Integer.Valueof(Date.valueof(endInterval).day());
+        
+        List<PureCloud_Call_Service__c> Voicecalltoinsert = new list<PureCloud_Call_Service__c>(); //Voice Count
+        List<PureCloud_Call_Service__c> VoicecalltoinsertSum = new list<PureCloud_Call_Service__c>(); //Voice Sum
+        List<PureCloud_Call_Service__c> VoicecalltoinsertView = new list<PureCloud_Call_Service__c>(); //Voice View
+        List<Purecloud_Call_Service__c> CallbacktoInsert = new List<Purecloud_Call_Service__c>(); //Callback Offered
+        List<PureCloud_Call_Service__c> upsertcallservicewithoutduplicate = new list<PureCloud_Call_Service__c>(); //Remove Duplicate Count
+        List<PureCloud_Call_Service__c> upsertcallservicewithoutduplicateSum = new list<PureCloud_Call_Service__c>(); //Remove Duplicate Sum
+        List<PureCloud_Call_Service__c> upsertcallservicewithoutduplicateView = new list<PureCloud_Call_Service__c>(); //Remove Duplicate View
+        List<PureCloud_Call_Service__c> CallbackWithoutDuplicates = new list<PureCloud_Call_Service__c>(); //Callback
+        List<Purecloud_Master_Queue__c> listQueueVoice = [Select ID, Name, Queue_Id__c, Entity__c, Skill__c, Languange__c, Type__c FROM Purecloud_Master_Queue__c Where Queue_Id__c != null and Type__c != 'Callback']; //List queueu di SF
+        //List<Purecloud_Master_Queue__c> listQueueCallback = [Select ID, Name, Queue_Id__c, Entity__c, Skill__c, Languange__c, Type__c FROM Purecloud_Master_Queue__c Where Type__c = 'Callback']; //List queueu Callback di SF
+        
+        
+        //METRICS
+        String queueid = '0';
+        String nOffered = '0';
+        String tAnsweredSum = '0';
+        String tAbandonSum = '0';
+        String tTalkSum = '0';
+        String tAcwSum = '0';
+        String tHeldSum = '0';
+        String tHandleSum = '0'; 
+        String tHandleCount = '0';
+        String tAcwCount = '0'; 
+        String nTransferredCount = '0';
+        String tTalkCount = '0';
+        String tAbandonCount = '0';
+        String tHeldCount = '0';
+        //VAR
+        Date tglTrue;
+        String tgl = '0';
+        //VIEW ANSWER
+        String answerLT30s = '0';
+        String answerLT20s = '0';
+        String answerLT10s = '0';
+        String answerLT5s = '0';
+        String answerGT20s = '0';
+        //VIEW ABANDON
+        String abandonLTEqual5s = '0';
+        String abandonGT5s = '0';
+        String abandonLTEqual20s = '0';
+        
+        List<PureCloud_Call_Service__c> listCallService = new List<PureCloud_Call_Service__c>();
+        List<Schema.PicklistEntry> listcs = PureCloud_Call_Service__c.interval__c.getDescribe().getPicklistValues();
+        for (Purecloud_Master_Queue__c que : listQueueVoice){
+            for(Schema.PicklistEntry val:listcs){
+                PureCloud_Call_Service__c cs = new PureCloud_Call_Service__c();
+                cs.OwnerId = ownerAdmin;
+                cs.Interval__c = val.getValue();
+                cs.Date__c = Date.valueof(endInterval);
+                cs.queueId__c = que.Queue_Id__c;
+                cs.Queue_Name__c = que.Name;
+                cs.Entity__c = que.Entity__c;
+                cs.External_ID__c = que.Queue_ID__c + '_' + val.getValue() + '_' + year + '-' + month + '-' + day + '_Voice';
+                cs.Call_Offered__c = 0;
+                cs.ACD_Count__c = 0;
+                cs.ACD_Count_5_Secs__c = 0;
+                cs.ACD_Count_10_Secs__c = 0;
+                cs.ACD_Count_20_Sec__c = 0;
+                cs.ACD_Count_30_Sec__c = 0;
+                cs.ACD_Count_20_Secs__c = 0;
+                cs.Abandon_Sum__c = 0;
+                cs.Abandon_Count__c = 0;
+                cs.Abandon_Count_5_Sec__c = 0;
+                cs.Abandon_Count_5_Sec_High__c = 0;
+                cs.Abandon_Count_20_Sec__c = 0;
+                cs.Callback_Count__c = 0;
+                cs.Hold_Count__c = 0;
+                cs.Extn_Out_Calls__c = 0;
+                cs.Transferred_Out__c = 0;
+                cs.Calls_Answered_Sum__c = 0;
+                cs.Talk_Sum__c = 0;
+                cs.Talk_Count__c = 0;
+                cs.ACW_Sum__c = 0;
+                cs.ACW_Count__c = 0;
+                cs.ACD_Sum__c = 0;    
+                cs.Hold_Sum__c = 0;
+                cs.Handle_Sum__c = 0;
+                cs.Handle_Count__c = 0;   
+                listCallService.add(cs);
+            }
+        }
+            
+        //-----------------------------------------------MEDIA TYPE VOICE---------------------------------------------------------
+        String JSONstringConAggregate = '{  "interval": "'+startInterval+'/'+endInterval+'",  "timeZone": "Asia/Jakarta",  "granularity": "PT30M",  "groupBy": [   "queueId",   "mediaType"  ],  "filter": {   "type": "and",   "clauses": [    {     "type": "or",     "predicates": [';
+        String bodypart1ConAggregate = '{"type":"dimension","dimension":"queueId","operator":"matches","value":"';
+        String bodypart2ConAggregate = '"}';
+        String endStringConAggregate = ']    }   ],   "predicates": [    {     "type": "dimension",     "dimension": "mediaType",     "operator": "matches",     "value": "voice"    }   ]  }, "views": [   {    "name": "Answerlt5s",    "target": "tAnswered",    "function": "rangeBound",    "range": {     "gte": "0",     "lt": "4999"    }   },   {    "name": "Answerlt10s",    "target": "tAnswered",    "function": "rangeBound",    "range": {     "gte": "0",     "lt": "9999"    }   },   {    "name": "Answerlt20s",    "target": "tAnswered",    "function": "rangeBound",    "range": {     "gte": 0,     "lt": "19999"    }   },   {    "name": "Answerlt30",    "target": "tAnswered",    "function": "rangeBound",    "range": {     "gte": 0,     "lt": "29999"    }   },   {    "name": "Answergt20s",    "target": "tAnswered",    "function": "rangeBound",    "range": {     "gte": "20000",     "lt": "99999999"    }   },   {    "name": "Abandonltequal5s",    "target": "tAbandon",    "function": "rangeBound",    "range": {     "gte": 0,     "lt": "5000"    }   },   {    "name": "Abandonltequal20s",    "target": "tAbandon",    "function": "rangeBound",    "range": {     "gte": 0,     "lt": "20000"    }   },   {    "name": "Abandongt5s",    "target": "tAbandon",    "function": "rangeBound",    "range": {     "gte": "5000",     "lt": "999999"    }   }  ],  "metrics": [   "nOffered",  "nOutbound", "nTransferred",   "tAbandon",   "tAcw",   "tAnswered",   "tHandle",   "tHeld",   "tTalk" ,"tFlowOut" ] }';
+        String comma = ',';
+        Integer sizeQueue = listQueueVoice.size();
+        
+        for (integer i = 0; i < sizeQueue; i++){
+            JSONstringConAggregate += bodypart1ConAggregate + listQueueVoice[i].Queue_ID__c + bodypart2ConAggregate;
+            if(i + 1 < sizeQueue){
+                JSONstringConAggregate += comma;
+            }
+        }
+        JSONstringConAggregate += endStringConAggregate;
+        System.debug('JSONstringConAggregate = ' + JSONstringConAggregate);
+        
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(url);
+        req.setMethod('POST');
+        req.setTimeout(120000);
+        req.setHeader('content-type', 'application/json');
+        req.setHeader('Authorization', 'Bearer '+ token);
+        req.setBody(JSONstringConAggregate);
+        blob exResAgg = [SELECT Body FROM StaticResource WHERE Name='ResBody_ConAggregate_QueueIdPT30M'].Body;   
+		String conAggregateResponseDummy = exResAgg.toString();
+            
+        try{
+            HttpResponse res = new HttpResponse();
+            res = h.send(req);
+                String parser;
+				if(test.isRunningTest()) parser = conAggregateResponseDummy;
+				else parser = res.getBody(); //JSON.createParser(res.getBody());
+            
+                system.debug('*body ==>*'+parser);
+				if (parser != '{}') {
+            
+            	String tempMetric;
+            	String trueMetric;
+            	String timeInterval;
+            	String picklistStartInterval;
+            	String picklistEndInterval;
+            	String picklistInterval;
+            	String[] arrayConAggregateServiceVoice = new String[] {};
+                for (JSON2Apex_ConAggQueueId_30M.Results conr : JSON2Apex_ConAggQueueId_30M.parse(parser).results) {
+                    JSON2Apex_ConAggQueueId_30M.Group_Z conQueueID = conr.group_Z;
+                    
+                    if (conQueueId.queueId != null){
+                    	for (JSON2Apex_ConAggQueueId_30M.Data cond : conr.data) {
+                            if (cond.Metrics == null){
+                            //do nothing   
+                            }
+                            else {
+                            // Each d represent an interval
+                                for (JSON2Apex_ConAggQueueId_30M.Metrics conm : cond.Metrics) {
+                                    //Each m represent a metric
+                                    tempMetric = conm.metric;
+                                    trueMetric = conm.metric.substring(1,conm.metric.length());
+                                    
+                                    timeInterval = cond.interval;
+                                    String jamStart = String.Valueof(timeInterval.substring(11,13));
+                                    String menitStart = String.Valueof(timeInterval.substring(14,16));
+                                    picklistStartInterval = jamStart + ':' + menitStart;
+                                    
+                                    String jamEnd = String.Valueof(timeInterval.substring(41,43));
+                                    String menitEnd = String.Valueof(timeInterval.substring(44,46));
+                                    picklistEndInterval = jamEnd + ':' + menitEnd;
+                                    picklistInterval = picklistStartInterval + '-' + picklistEndInterval;
+                                    
+                                    
+                                    if (trueMetric == 'Offered') trueMetric = 'Call_Offered__c';
+                                    if (trueMetric == 'Outbound') trueMetric = 'Outbound_Call__c';
+                                    if (trueMetric == 'Transferred') trueMetric = 'Transferred_Out__c';
+                                    if (trueMetric == 'Acw') trueMetric = 'Acw_Count__c';
+                                    if (trueMetric == 'Answered') trueMetric = 'Acd_Count__c';
+                                    if (trueMetric == 'Handle') trueMetric = 'Handle_Count__c';
+                                    if (trueMetric == 'Talk') trueMetric = 'Talk_Count__c';
+                                    if (trueMetric == 'Abandon') trueMetric = 'Abandon_Count__c';
+                                    if (trueMetric == 'Held') trueMetric = 'Hold_Count__c';
+                                    if (trueMetric == 'FlowOut') trueMetric = 'FlowOut_Count__c';
+        
+                                    arrayConAggregateServiceVoice.add(conQueueID.queueId + '_' + picklistInterval + '_' +year+'-'+month+'-'+day+ '_Voice' + ';' + trueMetric + ';' + conm.stats.count + ';' + conm.stats.sum + ';' + picklistInterval + ';' + conQueueID.queueid);
+                                }
+                            }
+                        }    
+                    }
+                }
+            
+            Map<string, PureCloud_Call_Service__c> conAggregateByExternalIdCount = new Map<string, PureCloud_Call_Service__c>();
+            for(string record: arrayConAggregateServiceVoice)
+            {
+                PureCloud_Call_Service__c customObject;
+                List<string> data = record.split(';');
+                    if (conAggregateByExternalIdCount.containsKey(data[0])){
+                    	customObject = conAggregateByExternalIdCount.get(data[0]);   
+                        customObject.put(data[1], decimal.valueof(data[2]));
+                    }
+                    else{
+                    	customObject = new PureCloud_Call_Service__c();
+                        customObject.External_Id__c = data[0];
+                        customObject.Interval__c = data[4];
+                        customObject.queueId__c = data[5];
+                        customObject.put(data[1], decimal.valueof(data[2]));
+                        conAggregateByExternalIdCount.put(data[0], customObject);
+                    }
+                Voicecalltoinsert.add(customObject);
+            }	
+            
+            //Remove duplicate
+            
+            Set<PureCloud_Call_Service__c> mysetCon = new Set<PureCloud_Call_Service__c>();
+            mysetCon.addAll(Voicecalltoinsert);
+            upsertcallservicewithoutduplicate.addAll(mysetCon);
+            
+                    
+            //--------------------------CONVERSATION AGGREGATE SUM -------------------------------------------------
+            	String[] arrayConAggregateServiceVoiceSum = new String[] {};
+                for (JSON2Apex_ConAggQueueId_30M.Results conr : JSON2Apex_ConAggQueueId_30M.parse(parser).results) {
+                    JSON2Apex_ConAggQueueId_30M.Group_Z conQueueID = conr.group_Z;
+                    // Each d represent a queueid
+                    if (conQueueId.queueId != null){
+                    	for (JSON2Apex_ConAggQueueId_30M.Data cond : conr.data) {
+                            if (cond.Metrics == null){
+                            //do nothing   
+                            }
+                            else {
+                            // Each d represent an interval
+                                for (JSON2Apex_ConAggQueueId_30M.Metrics conm : cond.Metrics) {
+                                    //Each m represent a metric
+                                    tempMetric = conm.metric;
+                                    trueMetric = conm.metric.substring(1,conm.metric.length());
+                                    
+                                    timeInterval = cond.interval;
+                                    String jamStart = String.Valueof(timeInterval.substring(11,13));
+                                    String menitStart = String.Valueof(timeInterval.substring(14,16));
+                                    picklistStartInterval = jamStart + ':' + menitStart;
+                                    
+                                    String jamEnd = String.Valueof(timeInterval.substring(41,43));
+                                    String menitEnd = String.Valueof(timeInterval.substring(44,46));
+                                    picklistEndInterval = jamEnd + ':' + menitEnd;
+                                    picklistInterval = picklistStartInterval + '-' + picklistEndInterval;
+                                    
+                                    
+                                    if (trueMetric == 'Offered') trueMetric = 'temp_aux__c';
+                                    if (trueMetric == 'Outbound') trueMetric = 'temp_aux__c';
+                                    if (trueMetric == 'Transferred') trueMetric = 'temp_aux__c';
+                                    if (trueMetric == 'Acd') trueMetric = 'Acd_Sum__c';
+                                    if (trueMetric == 'Acw') trueMetric = 'Acw_Sum__c';
+                                    if (trueMetric == 'Answered') trueMetric = 'Calls_Answered_Sum__c';
+                                    if (trueMetric == 'Handle') trueMetric = 'Handle_Sum__c';
+                                    if (trueMetric == 'Talk') trueMetric = 'Talk_Sum__c';
+                                    if (trueMetric == 'Abandon') trueMetric = 'Abandon_Sum__c';
+                                    if (trueMetric == 'Held') trueMetric = 'Hold_Sum__c';
+                                    if (trueMetric == 'FlowOut') trueMetric = 'temp_aux__c';
+                                    if (conm.stats.sum == null) conm.stats.sum = '0';
+        
+                                    arrayConAggregateServiceVoiceSum.add(conQueueID.queueId + '_' + picklistInterval + '_' +year+'-'+month+'-'+day+ '_Voice' + ';' + trueMetric + ';' + conm.stats.count + ';' + conm.stats.sum + ';' + picklistInterval);
+                                }
+                            }
+                        }    
+                    }
+                    
+                }
+            
+            Map<string, PureCloud_Call_Service__c> conAggregateByExternalIdSum = new Map<string, PureCloud_Call_Service__c>();
+            for(string record2: arrayConAggregateServiceVoiceSum)
+            {
+                PureCloud_Call_Service__c customObject2;
+                List<string> data2 = record2.split(';');
+                //system.debug('Data SUM ==>'+data2);
+                    if (conAggregateByExternalIdSum.containsKey(data2[0])){
+                    	customObject2 = conAggregateByExternalIdSum.get(data2[0]);   
+                        customObject2.put(data2[1], decimal.valueof(Long.valueof(data2[3])/1000));
+                    }
+                    else{
+                    	customObject2 = new PureCloud_Call_Service__c();
+                        customObject2.External_Id__c = data2[0];
+                        customObject2.Interval__c = data2[4];
+                        customObject2.put(data2[1], decimal.valueof(Long.valueof(data2[3])/1000));
+                        conAggregateByExternalIdSum.put(data2[0], customObject2);
+                    }
+                VoicecalltoinsertSum.add(customObject2);
+            }	 
+            //Remove duplicate
+            
+            Set<PureCloud_Call_Service__c> mysetCon2 = new Set<PureCloud_Call_Service__c>();
+            mysetCon2.addAll(VoicecalltoinsertSum);
+            upsertcallservicewithoutduplicateSum.addAll(mysetCon2);
+             
+            //--------------------------CONVERSATION AGGREGATE VIEW -------------------------------------------------
+            	String tempView;
+            	String[] arrayConAggregateServiceVoiceView = new String[] {};
+                for (JSON2Apex_ConAggQueueId_30M.Results conrView : JSON2Apex_ConAggQueueId_30M.parse(parser).results) {
+                    JSON2Apex_ConAggQueueId_30M.Group_Z conQueueID = conrView.group_Z;
+                    // Each d represent a queueid
+                    if (conQueueId.queueid != null){
+                    	for (JSON2Apex_ConAggQueueId_30M.Data condView : conrView.data) {
+                            if (condView.views == null){
+                            //do nothing   
+                            }
+                            else {
+                            // Each d represent an view
+                                for (JSON2Apex_ConAggQueueId_30M.Views conv : condView.views) {
+                                    //Each m represent a view
+                                    tempView = conv.name;
+                                    //system.debug('tempView ==>'+ conv.name);
+                                    timeInterval = condView.interval;
+                                    //system.debug('timeInterval ==>'+ timeInterval);
+                                    String jamStart = String.Valueof(timeInterval.substring(11,13));
+                                    String menitStart = String.Valueof(timeInterval.substring(14,16));
+                                    picklistStartInterval = jamStart + ':' + menitStart;
+                                    
+                                    String jamEnd = String.Valueof(timeInterval.substring(41,43));
+                                    String menitEnd = String.Valueof(timeInterval.substring(44,46));
+                                    picklistEndInterval = jamEnd + ':' + menitEnd;
+                                    picklistInterval = picklistStartInterval + '-' + picklistEndInterval;
+                                    
+                                    if (tempView == 'Answerlt5s') tempView = 'ACD_Count_5_Secs__c';
+                                    if (tempView == 'Answerlt10s') tempView = 'ACD_Count_10_Secs__c';
+                                    if (tempView == 'Answerlt20s') tempView = 'ACD_Count_20_Sec__c';
+                                    if (tempView == 'Answerlt30') tempView = 'ACD_Count_30_Sec__c';
+                                    if (tempView == 'Answergt20s') tempView = 'ACD_Count_20_Secs__c';
+                                    if (tempView == 'Abandonltequal5s') tempView = 'Abandon_Count_5_Sec__c';
+                                    if (tempView == 'Abandonltequal20s') tempView = 'Abandon_Count_20_Sec__c';
+                                    if (tempView == 'Abandongt5s') tempView = 'Abandon_Count_5_sec_high__c';
+                                    arrayConAggregateServiceVoiceView.add(conQueueID.queueId + '_' + picklistInterval + '_' +year+'-'+month+'-'+day+ '_Voice' + ';' + tempView + ';' + conv.stats.count + ';' + picklistInterval + ';' + conQueueID.queueid);
+                                }                                                        
+                            }
+                        }    
+                    } 
+                }
+            
+            
+            Map<string, PureCloud_Call_Service__c> conAggregateByExternalIdView = new Map<string, PureCloud_Call_Service__c>();
+            for(string record3: arrayConAggregateServiceVoiceView)
+            {
+                PureCloud_Call_Service__c customObject3;
+                List<string> data3 = record3.split(';');
+                    if (conAggregateByExternalIdView.containsKey(data3[0])){
+                    	customObject3 = conAggregateByExternalIdView.get(data3[0]);   
+                        customObject3.put(data3[1], decimal.valueof(data3[2]));
+                    }
+                    else{
+                    	customObject3 = new PureCloud_Call_Service__c();
+                        customObject3.External_Id__c = data3[0];
+                        customObject3.Interval__c = data3[3];
+                        //customObject3.queueId__c = data3[4];
+                        //system.debug('Taufik - Data3 : '+data3);
+
+                        customObject3.put(data3[1], decimal.valueof(data3[2]));
+                        conAggregateByExternalIdView.put(data3[0], customObject3);
+                    }
+                VoicecalltoinsertView.add(customObject3);
+            }	
+            
+            //Remove duplicate
+            Set<PureCloud_Call_Service__c> mysetCon3 = new Set<PureCloud_Call_Service__c>();
+            mysetCon3.addAll(VoicecalltoinsertView);
+            upsertcallservicewithoutduplicateView.addAll(mysetCon3);
+
+            } 	
+        	} // Taufik, 6 Nov 2018, jika Body == {}, tidak perlu dijalankan.
+        	catch(exception e){
+                system.debug('*error*'+e);
+            } 
+        
+       
+        if (listCallService.size() > 0) upsert listCallService External_ID__c; //Record semua queue voice yang ada
+		if (upsertcallservicewithoutduplicate.size() > 0) upsert upsertcallservicewithoutduplicate External_ID__c; //upsert count
+        if (upsertcallservicewithoutduplicateSum.size() > 0) upsert upsertcallservicewithoutduplicateSum External_ID__c; //upsert sum
+        if (upsertcallservicewithoutduplicateView.size() > 0) upsert upsertcallservicewithoutduplicateView External_ID__c; //upsert view
+        //if (CallbackWithoutDuplicates.size() > 0) upsert CallbackWithoutDuplicates External_ID__c; //upsert callback offered  
+        
+        //Debug
+        /*
+        			string sss1 = '';
+                    for (Object rrr1 : listCallService) sss1 += '\n' + rrr1;
+                    system.debug('Record Awal ==>'+sss1);
+            
+                	string sss2 = '';
+                    for (Object rrr2 : upsertcallservicewithoutduplicate) sss2 += '\n' + rrr2;
+                    system.debug('Upsert Count ==>'+sss2);
+         
+        			string sss3 = '';
+                    for (Object rrr3 : upsertcallservicewithoutduplicateSum) sss3 += '\n' + rrr3;
+                    system.debug('Upsert SUM ==>'+sss3);
+       */    
+                	string sss4 = '';
+                    for (Object rrr4 : upsertcallservicewithoutduplicateView) sss4 += '\n' + rrr4;
+                    system.debug('Upsert View ==>'+sss4);
+		
+    }
+}

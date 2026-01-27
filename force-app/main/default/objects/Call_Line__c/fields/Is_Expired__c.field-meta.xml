@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Expired__c</fullName>
+    <formula>IF(TEXT(Entity__c) == &apos;ALI&apos;,IF(Expired_Date__c &lt; today(), true, false),
+IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;,IF(Expired_Date__c &lt; today() || Call_List__r.IsExpired__c==true,true,false),IF(Expired_Date__c &lt;= today(), true, false)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Expired</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

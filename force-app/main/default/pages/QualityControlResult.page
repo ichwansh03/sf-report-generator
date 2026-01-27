@@ -1,0 +1,6 @@
+<apex:page id="pageId" standardController="Quality_Control__c" sidebar="false" showChat="false" showHeader="false">
+    <table>
+        <tr><td><b>Final Score </b></td><td>:</td><td><font size="6">{!Quality_Control__c.Final_Score__c}</font></td></tr>
+        <tr><td><b>Perform </b></td><td>:</td><td><font size="6">{!Quality_Control__c.Perform__c}</font></td></tr>
+    </table>
+</apex:page>

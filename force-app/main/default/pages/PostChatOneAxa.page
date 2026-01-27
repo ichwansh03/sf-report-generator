@@ -1,0 +1,195 @@
+<apex:page showHeader="false">
+    <head>
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1" id="viewport" name="viewport"/>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>-->
+    </head>
+    <style type="text/css">
+        body {
+            font-family: sans-serif;
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0;
+            color: #434343;
+        }
+        .wrapper {
+            background: #e6eaed;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px 24px 56px;
+            box-sizing: border-box;
+        }
+        .postchattitle{
+            width:100%;
+            background-color: #0e5274;
+            padding: 12px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+        }
+        .illustration {
+            width: 100px;
+            max-width: 100%;
+            display: block;
+            margin: 56px auto 24px;
+        }
+        .center {
+            text-align: center;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex.justify {
+            justify-content: space-between;
+        }
+        .c50 {
+            width: 50%;
+        }
+
+        a.button {
+            display: inline-block;
+        }
+        .button {
+            border-width: 0;
+            background: #F6F6F6;
+            color: #0770cd;
+            padding: 8px 16px;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .1s ease-out;
+            text-decoration: none;
+        }
+        .button:hover {
+            text-decoration: none;
+        }
+        .button:active {
+            outline: 0;
+            background: #F6F6F6;
+            color: rgba(7, 112, 205, .5);
+        }
+        .button:not(:active):not(.btn-link):focus {
+            outline: 0;
+        }
+        .button.lg {
+            font-size: 16px;
+            line-height: 24px;
+        }
+    </style>
+
+    <!-- Code to decide if we show the abandoned block or the full data -->
+    <script type='text/javascript'>
+        function destroyClickedElement(event)
+        {
+            document.body.removeChild(event.target);
+        }
+        function saveTextAsFile()
+        {
+            var textToWrite = document.getElementById("chat-transcript").value;
+            var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+            var fileNameToSaveAs = "transcript.txt";
+
+            var downloadLink = document.createElement("a");
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = "Download File";
+            if (window.webkitURL != null)
+            {
+                // Chrome allows the link to be clicked
+                // without actually adding it to the DOM.
+                downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+            }
+            else
+            {
+                // Firefox requires the link to be added to the DOM
+                // before it can be clicked.
+                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+                downloadLink.onclick = destroyClickedElement;
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+            }
+
+            downloadLink.click();
+        }
+        function gotoHelpCenter() {
+            window.top.location.href = "http://axaindonesia.force.com/survey/TakeSurveyLiveChat?id=a0P2s000000cA95";
+            
+        }
+        function gotoChatAgain() {
+            // window.parent.location = window.parent.document.referrer;
+            window.top.location.href = "https://portal.axa.co.id/direct";
+        }
+    </script>
+
+    <div class="wrapper">
+        <div class="postchattitle">SESI OBROLAN TELAH BERAKHIR</div>
+
+      <div class="container">
+        <!--<div>
+            <img id="postchat-intentional-img" src="{! URLFOR($Resource.AFIBrandLogo) }" class="illustration" style="display: none" width="50"/>
+            <img id="postchat-unintentional-img" src="{! URLFOR($Resource.AFIBrandLogo) }" class="illustration" style="display: none" width="50"/>
+        </div>-->
+        <div id="postchat-intentional-text" class="center">
+            <h1>Terima Kasih Telah Menggunakan</h1><br/>
+            <h1>Layanan Live Chat</h1>
+            <!--<p>Anda dapat menutup halaman ini sekarang.</p>
+            <p>Untuk meningkatkan kualitas layanan kami, mohon dibantu saran dan masukannya</p>
+            <p>dengan klik tombol <b>Survey</b>. Jika Anda ingin membaca riwayat obrolan,</p>
+            <p>silakan klik tombol <b>Unduh Riwayat Obrolan</b></p>-->
+          	<!--<p>Thank you for reaching AXA Financial Indonesia Customer Support. You may close this page now.</p>
+          	<p>However, If you would like to read the chat transcript, click the <b>Download Chat Transcript</b> button below. please click the <b>Survey</b> button to give me feedback.</p>-->
+          	<br/><br/><br/><img id="chat-brand-image" src="https://c.ap4.content.force.com/servlet/servlet.ImageServer?id=0156F00000HPeZF&oid=00D90000000zAlz&lastMod=1551859137000" width="170"/>
+        </div>
+        <div id="postchat-unintentional-text" class="center" style="display: none">
+          <p>We are very sorry, but the chat got disconnected.</p>
+          <p>You can read the chat transcript by clicking the <strong>Download Chat Transcript</strong> button below to see if there is still an issue we haven&rsquo;t solved. If you would like to speak with us again, click the <strong>Start Chat</strong> button below</p>
+        </div>
+        
+        <div class="flex justify">
+           <!-- <div class="center c50">
+           <a href="javascript:saveTextAsFile();" class="button lg">Unduh Transkrip Obrolan</a>
+          </div>
+          <div id="postchat-intentional-right" class="center c50">
+            <a href="javascript:gotoHelpCenter();" class="button lg">Survei</a>
+          </div> --> 
+          <div id="postchat-unintentional-right" class="center c50" style="display: none">
+            <a href="javascript:gotoChatAgain();" class="button lg">Start Chat</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display: none;">
+        <textarea id="chat-transcript">{!$CurrentPage.parameters.transcript}</textarea>
+    </div>
+
+
+    <script type='text/javascript'>
+        var requestTime = '{!$CurrentPage.parameters.requestTime}';
+        var startTime = '{!$CurrentPage.parameters.startTime}';
+        var disconnectedBy = '{!$CurrentPage.parameters.disconnectedBy}';
+
+        if (disconnectedBy == "client" || disconnectedBy == "agent") {
+            document.getElementById('postchat-intentional-img').style.display = 'block';
+            document.getElementById('postchat-unintentional-img').style.display = 'none';
+            document.getElementById('postchat-intentional-text').style.display = 'block';
+            document.getElementById('postchat-unintentional-text').style.display = 'none';
+            document.getElementById('postchat-intentional-right').style.display = 'block';
+            document.getElementById('postchat-unintentional-right').style.display = 'none';
+        } else {
+            document.getElementById('postchat-intentional-img').style.display = 'none';
+            document.getElementById('postchat-unintentional-img').style.display = 'block';
+            document.getElementById('postchat-intentional-text').style.display = 'none';
+            document.getElementById('postchat-unintentional-text').style.display = 'block';
+            document.getElementById('postchat-intentional-right').style.display = 'none';
+            document.getElementById('postchat-unintentional-right').style.display = 'block';
+        }
+    </script>
+
+</apex:page>

@@ -1,0 +1,463 @@
+<!--
+  @description       : 
+  @author            : Mario Carlos Eyo
+  @group             : 
+  @last modified on  : 18-07-2025
+  @last modified by  : Muh Syafiq Hidayatullah
+-->
+<apex:page renderAs="PDF" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardController="E_Form_Master_Data__c" extensions="AMFS_SingleTopUp_Controller">
+    <html>
+        <head>
+            <style type="text/css">
+                @page {
+                margin-top: 0.1%;
+                margin-bottom: 0;
+                margin-left: 0;
+                margin-right: 0;
+                size: A4 portrait;
+                page-break:always; 
+                page-break-inside:avoid;
+                letter-spacing: 5px;
+                
+                @top-left {
+                content: element(header);                
+                }
+                
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                
+                div.header {
+                padding: 0px;
+                position: running(header);
+                font-family:sans-serif !important;
+                }
+                
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                }
+                
+                .pagefooter:before{
+                content: "Page : " counter(page) "/" counter(pages);
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                }
+                
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.content{
+                width:100%;
+                font-family:sans-serif !important;
+                }
+                .grid, .grid th, .grid td{
+                border: 1px solid;
+                border-collapse: collapse;
+                padding:3px;
+                }
+                .grid th{
+                background-color:#E8E8E8;
+                }
+                .center{
+                text-align: center;
+                }
+                .right{
+                text-align: right;
+                }
+                .left{
+                text-align: left;
+                }
+                .top{
+                vertical-align:top;
+                }
+                .uppercase{
+                text-transform: uppercase;
+                }
+                .justify{
+                text-align: justify;
+                }
+                .tdHeader{
+                width: 70%; 
+                height: 15px;
+                font-size:8px;
+                text-align: justify;
+                
+                }
+                .table-wrapper {
+                    border: 2px solid black;
+                    display: inline-block; /* Ensures the border wraps the table */
+                    padding: 0px; /* Prevents extra spacing */
+                }
+
+                /* Standard table styling */
+                table.custom-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    font-size: 11px;
+                }
+                .standard-table{
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    padding: 1px;
+                    vertical-align: middle;
+                }
+                
+                .label-col {
+                    width: 30%;
+                    text-align: left;
+                }
+
+
+                .separator-col {
+                    text-align: center;
+                    padding-left: 0; /* jarak 3px ke kolom berikutnya */
+                }
+
+                .value-col {
+                    text-align: left;
+                }
+
+                .subject{
+                    width: 30%;
+                    height: 30px;
+                }
+                .value{
+                    width: 70%;
+                    height: 30px;
+                }
+
+                .header{
+                    height: 25px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                }
+
+
+                p {
+                    margin-top: 0;
+                    margin-bottom: 10px;
+                }
+
+                
+
+
+            </style>
+        </head>
+
+        <!-- FOOTER-->
+        <div style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 12px;">
+            <div class="left" style="margin-left:20px;" >
+                <apex:image value="{!$Resource.ojk_logo_bot}" width="700px"></apex:image>
+            </div>
+        </div>
+
+        <div>
+            <table class="standard-table">
+                <tr>
+                    <td style="width: 70%; height: 40px;" align="Left" ><apex:image value="{!$Resource.emma_axa }" width="300px"></apex:image></td>
+                </tr>
+            </table>
+            <table class="standard-table">
+                <tr>
+                    <td style="text-align: center">FORMULIR PENGAJUAN TOP UP TUNGGAL</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">AXA Mandiri Financial Services</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">Nomor Polis : {!polisNo}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">Nomor Transaksi : {!subject}</td>
+                </tr>
+            </table>
+        </div>
+        <br/>
+
+        <div>
+            <table class="standard-table" border="1px solid">
+                <tr class="header">
+                    <td style="background-color: #739bd2; text-align: center; color:white">
+                        Data Pemegang Polis
+                    </td>
+                </tr>
+            </table>
+            <table class="standard-table">
+                <tr>
+                    <td class="subject">Nama Pemegang Polis</td>
+                    <td class="value">: {!phName}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">No. Ponsel</td>
+                    <td class="value">: {!phone}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Alamat</td>
+                    <td class="value">: {!addr}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Email</td>
+                    <td class="value">: {!email}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Nama Produk</td>
+                    <td class="value">: {!prodName}</td>
+                </tr>
+            </table>
+        </div>
+
+        <br/>
+        
+        <div>
+            <table class="standard-table" border="1px solid">
+                <tr class="header">
+                    <td style="background-color: #739bd2; text-align: center; color:white">
+                        Pengajuan Top Up Tunggal
+                    </td>
+                </tr>
+            </table>
+            <table class="standard-table">
+                <tr>
+                    <td class="subject">Tanggal Submit </td>
+                    <td class="value">: {!inputdt}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Nominal Top Up </td>
+                    <td class="value">: {!curr} {!nominal}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Tujuan Top Up</td>
+                    <td class="value">: {!tujuan}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Sumber Dana</td>
+                    <td class="value">: {!sumberDana}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Pengasilan Rutin Per Bulan </td>
+                    <td class="value">: {!currencyPendapatan} {!penghasilan}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Pekerjaan</td>
+                    <td class="value">: {!pekerjaan}</td>
+                </tr>
+
+                <tr>
+                    <td class="subject">Metode Pembayaran</td>
+                    <td class="value">: {!paymentMethod}</td>
+                </tr>
+            </table>
+        </div>
+
+        <br/>
+        
+        <div>
+            <table class="standard-table" border="1px solid">
+                <tr class="header">
+                    <td style="background-color: #739bd2; text-align: center; color:white">
+                        Alokasi Top Up Tunggal
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table class="standard-table" border="4px solid #07326e">
+                <tr style="background-color: #739bd2;  color:white; height: 25px">
+                    <td style="width: 20%;">Kode Fund</td>
+                    <td style="width: 60%;">Nama Fund</td>
+                    <td style="width: 20%;">Persentase</td>
+                </tr>
+               <apex:repeat value="{!subdanaNew}" var="item">
+                    <tr style="height: 25px">
+                        <td>{!item.code}</td>
+                        <td>{!item.subdana}</td>
+                        <td style="text-align:right;">{!item.precentage}</td>
+                    </tr>
+                </apex:repeat>
+
+                <!-- <tr style="background-color: #a1bce2;  color:black">
+                    <td style="width: 20%;">{!code1}</td>
+                    <td style="width: 60%;">{!subdana1}</td>
+                    <td style="width: 20%;">{!percentage1}</td>
+                </tr>
+                <tr style="background-color: #a1bce2;  color:black">
+                    <td style="width: 20%;">{!code2}</td>
+                    <td style="width: 60%;">{!subdana2}</td>
+                    <td style="width: 20%;">{!percentage2}</td>
+                </tr>
+                <tr style="background-color: #a1bce2;  color:black">
+                    <td style="width: 20%;">{!code3}</td>
+                    <td style="width: 60%;">{!subdana3}</td>
+                    <td style="width: 20%;">{!percentage3}</td>
+                </tr>
+                <tr style="background-color: #a1bce2;  color:black">
+                    <td style="width: 20%;">{!code4}</td>
+                    <td style="width: 60%;">{!subdana4}</td>
+                    <td style="width: 20%;">{!percentage4}</td>
+                </tr> -->
+            </table>
+        </div>
+        <br/>
+        <div>
+            <table class="standard-table" border="1px solid">
+                <tr class="header">
+                    <td style="background-color: #739bd2; text-align: center; color:white">
+                        Informasi Pelaporan Pajak Luar Negeri
+                    </td>
+                </tr>
+            </table>
+            <table style="border: 1px solid black; width: 100%; font-family: Arial, sans-serif; font-size: 12px">
+                <tr>
+                    <td style="width: 55%;">Apakah Anda Melakukan Pelaporan Pajak di Luar Negara Indonesia?</td>
+                    <td style="width: 45%; text-align: right;">{!pajak}</td>
+                </tr>
+            </table>
+            
+        </div>
+
+        
+         
+        <br/>
+        <div style="page-break:always;">
+            <table class="standard-table" border="1px solid">
+                <tr class="header">
+                    <td style="background-color: #739bd2; text-align: center; color:white">
+                        Kelengkapan Dokumen
+                    </td>
+                </tr>
+            </table>
+           <table style="border: 1px solid black; width: 100%; font-family: Arial, sans-serif; font-size: 12px">
+                <apex:repeat value="{!dokumenTambahanList}" var="doc">
+                    <tr>
+                        <td style="width: 5%;"></td>
+                        <td style="width: 5%;">{!doc.nomor}</td>
+                        <td style="width: 80%;">{!doc.namaDokumen}</td>
+                        <td style="width: 10%; text-align:right;">Yes</td>
+                    </tr>
+                </apex:repeat>
+                
+            </table>
+
+         
+
+         <div style="page-break-before: always">
+                <br/>
+                <p style="font-size:12px; font-weight:bold; text-align:center;font-family: Arial, sans-serif;">Pernyataan and Kuasa</p>
+                <p style="font-size:12px;font-family: Arial, sans-serif;margin-left:15px">Dengan ini, Saya/Kami menyatakan dan menyetujui hal-hal berikut:</p>
+                <div style="font-size:12px; text-align: justify;padding-left:20px;padding-right:20px;font-family: Arial, sans-serif;">
+                    <p>1. Telah membaca, mengerti, menjawab dan mengisi semua pertanyaan pada e-form ini
+                    dengan sebenar-benarnya, jujur, lengkap dan sesuai dengan keadaan yang sebenarnya.</p>
+                    <p>2. Semua jawaban dan keterangan diatas merupakan dasar dan menjadi bagian yang tidak
+                    terpisahkan dari Polis. Saya/Kami menyetujui bahwa apabila ternyata jawaban dan
+                    keterangan yang Saya/Kami berikan itu tidak benar, maka AXA Mandiri berhak membatalkan
+                    Polis sesuai dengan ketentuan dalam Polis.</p>
+                    <p>3. Saya mengerti bahwa Penanggung berhak menolak pengajuan Pemohon berdasarkan e-
+                    form ini dengan mengerti bahwa pengajuan akan berlaku apabila telah disetujui oleh AXA
+                    Mandiri.</p>
+                    <p>4. Pengajuan ini hanya dapat diproses apabila Saya/Kami telah melengkapi persyaratan yang
+                    diperlukan oleh AXA Mandiri.</p>
+                    <p>5. Besarnya nilai Investasi tidak dijamin, dapat meningkat atau menurun sesuai dengan
+                    karakteristik dan risiko dari masing-masing jenis investasi yang telah Saya/Kami pilih.</p>
+                    <p>6. Segala resiko pemilihan dana Investasi sepenuhnya menjadi tanggung jawab Saya/Kami.</p>
+                    <p>7. Segala akibat yang timbul sehubungan dengan pengajuan pada formulir ini menjadi
+                    tanggung jawab Saya/Kami sepenuhnya termasuk atas resiko investasi atas dana investasi
+                    yang Saya/Kami pilih dan dengan ini Saya/Kami membebaskan AXA Mandiri termasuk
+                    direksi, komisaris, pemegang saham, afiliasi, kantor penjualan, agen, kuasa, karyawan, dan
+                    semua pihak yang memiliki atau dianggap memiliki hubungan dengan AXA Mandiri dari
+                    segala tuntutan, gugatan, ataupun pengaduan lainnya dikemudian hari baik dari pihak
+                    Pemegang Polis termasuk keluarganya maupun dari pihak yang berkepentingan atas Polis
+                    ini.</p>
+                    <p>8. Saya/Kami setuju dan akan memberikan dokumen pengajuan pada formulir ini yang
+                    dikirimkan secara digital/elektronik yang tidak membutuhkan tanda tangan. Namun apabila
+                    diperlukan oleh Penanggung, Saya/Kami setuju untuk memberikan dokumen asli termasuk
+                    tapi tidak terbatas pada dokumen pendukung lainnya dengan tanda-tangan basah kepada
+                    Penanggung jika diminta untuk keperluan proses pengajuan pada formulir ini. Saya/Kami
+                    setuju bahwa salinan dari Pernyataan dan Kuasa ini sama sah dan berlakunya sesuai
+                    dengan dokumen aslinya.</p>
+                    <p>9. Transaksi keuangan ini tidak berasal dari/untuk tujuan pencucian uang (money laundering)
+                    sesuai undang-undang No. 8 Tahun 2010, AXA Mandiri tidak bertanggung jawab apabila
+                    dikemudian hari transaksi ini terbukti berhubungan dengan tujuan pencucian uang.</p>
+                    <p>10. Pernyataan dan Kuasa yang telah diberikan akan tetap berlaku selama Saya/Kami masih
+                    hidup maupun sesudah Saya/Kami meninggal dunia dan Saya/Kami setuju untuk
+                    mengesampingkan ketentuan pada Pasal 1813, 1814, dan 1816 Kitab Undang-Undang
+                    Hukum Perdata.</p>
+                    <p>11. Apabila jawaban dan keterangan di atas tidak benar maka AXA Mandiri berhak untuk tidak
+                    melanjutkan permohonan Saya/Kami dalam formulir ini. Formulir Dana Investasi ini menjadi
+                    bagian yang tidak terpisahkan dari Polis.</p>
+                </div>
+            </div>
+         </div>
+
+         <!--TANDA TANGAN-->
+         <div style="bottom: 5px; left: 0; width: 100%;">
+            <table style=" width:100%; border-collapse:collapse;">
+                
+                <tr style="background-color: #c0c0c0;">
+                    <td>
+                        <span align="Left" style="font-size:15px;color:blue;font-family: Arial Unicode MS;" >
+                            TANDA TANGAN
+                        </span> 
+                        <span align="Left" style="font-size:10px;font-style: italic;font-family: Arial, sans-serif" > 
+                            Dilarang menandatangani formulis perubahan data polis ini dalam keadaan kosong    
+                        </span> 
+                    </td>
+                </tr>
+            </table>
+
+            <table style=" width:100%; font-family: Arial Unicode MS;font-size:12px;border-collapse:collapse;" border="2px solid">
+                
+                <tr style="background-color: #ddd6e5;text-align: center">
+                    <td style="width:50%">
+                        NAMA Pemegang Polis
+                    </td>
+                    <td style="width:50%">
+                        Tanda Tangan
+                    </td>
+                </tr>
+                <tr style="text-align: Center; vertical-align: center; height: 150px">
+                    <td style="width:50%; text-align: center; vertical-align: Center">
+                        <span style="font-size:12px;font-family: Arial, sans-serif;"> 
+                            {!phName}
+                        </span> 
+                    </td>
+                    <td style="width:50%">
+                        <img src="{!imgUrl}" width="150px"/> <br/>
+                        <span style="font-size:10px;font-style: italic;font-family: Arial, sans-serif; color:#c0c0c0;" > 
+                            Tanda tangan sesuai SPAJ atau Specimen terakhir, jika berbeda mohon lampirkan formulir pernyataan tanda tangan
+                        </span> 
+                    </td>
+                </tr>
+
+            </table>
+
+            <table class="standard-table">
+                <tr style="height: 30px">
+                    <td style="width:50%"></td>
+
+                    <td style="width:50%; text-align: center;vertical-align: center">Customer Service: {!csName} - {!touchPoint}</td>
+                </tr>
+
+            </table>
+         </div>
+            
+    </html>
+</apex:page>

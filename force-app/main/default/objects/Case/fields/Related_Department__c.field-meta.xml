@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Related_Department__c</fullName>
+    <label>Related Department</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>POS</fullName>
+                <default>false</default>
+                <label>POS</label>
+            </value>
+            <value>
+                <fullName>CLAIM</fullName>
+                <default>false</default>
+                <label>CLAIM</label>
+            </value>
+            <value>
+                <fullName>FIN</fullName>
+                <default>false</default>
+                <label>FIN</label>
+            </value>
+            <value>
+                <fullName>NB/UW</fullName>
+                <default>false</default>
+                <label>NB/UW</label>
+            </value>
+            <value>
+                <fullName>ADS</fullName>
+                <default>false</default>
+                <label>ADS</label>
+            </value>
+            <value>
+                <fullName>Operation</fullName>
+                <default>false</default>
+                <label>Operation</label>
+            </value>
+            <value>
+                <fullName>CO</fullName>
+                <default>false</default>
+                <label>CO</label>
+            </value>
+            <value>
+                <fullName>CCC</fullName>
+                <default>false</default>
+                <label>CCC</label>
+            </value>
+            <value>
+                <fullName>Collection</fullName>
+                <default>false</default>
+                <label>Collection</label>
+            </value>
+            <value>
+                <fullName>Agency</fullName>
+                <default>false</default>
+                <label>Agency</label>
+            </value>
+            <value>
+                <fullName>Komisi dan Benefit</fullName>
+                <default>false</default>
+                <label>Komisi dan Benefit</label>
+            </value>
+            <value>
+                <fullName>Group Benefit</fullName>
+                <default>false</default>
+                <label>Group Benefit</label>
+            </value>
+            <value>
+                <fullName>TFC</fullName>
+                <default>false</default>
+                <label>TFC</label>
+            </value>
+            <value>
+                <fullName>Customer Retention</fullName>
+                <default>false</default>
+                <label>Customer Retention</label>
+            </value>
+            <value>
+                <fullName>Orphan</fullName>
+                <default>false</default>
+                <label>Orphan</label>
+            </value>
+            <value>
+                <fullName>Legal /Compliance</fullName>
+                <default>false</default>
+                <label>Legal /Compliance</label>
+            </value>
+            <value>
+                <fullName>Marketing dan Comunication</fullName>
+                <default>false</default>
+                <label>Marketing dan Comunication</label>
+            </value>
+            <value>
+                <fullName>VDM</fullName>
+                <default>false</default>
+                <label>VDM</label>
+            </value>
+            <value>
+                <fullName>Product</fullName>
+                <default>false</default>
+                <label>Product</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>7</visibleLines>
+</CustomField>

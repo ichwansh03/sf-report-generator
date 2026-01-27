@@ -1,0 +1,24 @@
+<apex:page standardcontroller="Case" extensions="CaseCommentController" showHeader="false" > 
+    <apex:form id="form">
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:inputTextarea value="{!remark}" cols="75" rows="5" /> 
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+                <apex:outputLabel value="Current Status"/>
+                <apex:outputPanel >
+                    <apex:outputText value="{!currentStatus}" />
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >                
+                <apex:outputLabel value="Change Status"/> 
+                <apex:outputPanel >
+                    <apex:inputField value="{!cs.status}" required="true"  /> 
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+                <apex:commandButton action="{!save}" value="Save"></apex:commandButton>  
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+    </apex:form>
+</apex:page>

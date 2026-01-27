@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Paid_Approved__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos; &amp;&amp;  TEXT(Call_Status_Config__c)==&apos;Approved&apos; &amp;&amp; TEXT(Status_Paid_Not_Paid__c)==&apos;Paid&apos; &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Renewal Reminder&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Lapse Konven&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;MKP&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Lapse TM&apos;),1,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos; &amp;&amp;  TEXT(Call_Status_Config__c)==&apos;Inforced&apos; &amp;&amp; TEXT(Status_Paid_Not_Paid__c)==&apos;Paid&apos; &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption TM&apos;) ,1,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos; &amp;&amp;  TEXT(Call_Status_Config__c)==&apos;Y&apos; &amp;&amp; TEXT(Status_Paid_Not_Paid__c)==&apos;Y&apos; &amp;&amp; (TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption Konven&apos; || TEXT(Call_List__r.Case_Type_Config__c) == &apos;Withdrawal&apos;),1,0)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Paid Approved</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

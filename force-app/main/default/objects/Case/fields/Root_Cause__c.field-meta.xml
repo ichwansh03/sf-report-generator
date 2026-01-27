@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Root_Cause__c</fullName>
+    <label>Root Cause</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>DISASTER</fullName>
+                <default>false</default>
+                <label>DISASTER</label>
+            </value>
+            <value>
+                <fullName>FA</fullName>
+                <default>false</default>
+                <label>FA</label>
+            </value>
+            <value>
+                <fullName>MP CLM</fullName>
+                <default>false</default>
+                <label>MP CLM</label>
+            </value>
+            <value>
+                <fullName>MP POS</fullName>
+                <default>false</default>
+                <label>MP POS</label>
+            </value>
+            <value>
+                <fullName>SALAH SMS</fullName>
+                <default>false</default>
+                <label>SALAH SMS</label>
+            </value>
+            <value>
+                <fullName>E-DOCS ERROR</fullName>
+                <default>false</default>
+                <label>E-DOCS ERROR</label>
+            </value>
+            <value>
+                <fullName>OTHER APPS ERROR</fullName>
+                <default>false</default>
+                <label>OTHER APPS ERROR</label>
+            </value>
+            <value>
+                <fullName>OTHER CASES</fullName>
+                <default>false</default>
+                <label>OTHER CASES</label>
+            </value>
+            <value>
+                <fullName>NO ERROR</fullName>
+                <default>false</default>
+                <label>NO ERROR</label>
+            </value>
+            <value>
+                <fullName>DIRECT GIFT</fullName>
+                <default>false</default>
+                <label>DIRECT GIFT</label>
+            </value>
+            <value>
+                <fullName>AXA MANDIRI TELEKONSULTASI</fullName>
+                <default>false</default>
+                <label>AXA MANDIRI TELEKONSULTASI</label>
+            </value>
+            <value>
+                <fullName>HALODOC</fullName>
+                <default>false</default>
+                <label>HALODOC</label>
+            </value>
+            <value>
+                <fullName>PERFECT PARTNER [Customer Portal]</fullName>
+                <default>false</default>
+                <label>PERFECT PARTNER [Customer Portal]</label>
+            </value>
+            <value>
+                <fullName>PERFECT REWARD [Loyalty Point]</fullName>
+                <default>false</default>
+                <label>PERFECT REWARD [Loyalty Point]</label>
+            </value>
+            <value>
+                <fullName>MP QCTM</fullName>
+                <default>false</default>
+                <label>MP QCTM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,264 @@
+<apex:page controller="DMU_MANIFEST_KOMPLAIN_Controller" contentType="txt/xml#{!filename}.xls" cache="true">
+    <apex:outputText value="{!xlsHeader}"/>
+    <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel"
+    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:html="http://www.w3.org/TR/REC-html40">
+        <Styles>
+            <Style ss:ID="s1">
+                <Alignment/>
+                <Borders/>
+                <Font ss:Bold="1"/>
+                <Interior/>
+                <NumberFormat/>
+                <Protection/>
+            </Style>
+        </Styles>
+        <Worksheet ss:Name="INVEST">
+            <Table x:FullColumns="1" x:FullRows="1">
+                <Column ss:Width="170"/>
+                <Column ss:Width="280"/>
+                <Column ss:Width="330"/>
+                <Row>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >NUM</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >POLIS</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >CONSIGNEE</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >NO_INVESTIGASI</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >KOTA</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >SLA</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >CASE</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_AXA</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >TELP</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >DATE_REQUEST</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >TGLHASILINVESTIGASI</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >HASIL_INVESTIGASI</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >AGING_PINALTY</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >PINALTY</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >KESIMPULAN_HASIL_INVESTIGASI</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >SLA_OVERDUE-OK</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >COMPLAIN</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Kurir</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Category</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >No_request</Data></Cell>
+                </Row>
+                <apex:repeat value="{!investList}" var="invest">
+                    <Row>
+                        <Cell><Data ss:Type="String">{!invest.NUM}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.POLIS}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.CONSIGNEE}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.NO_INVESTIGASI}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.KOTA}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.SLA}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.DATA_CASE}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.REMARK_AXA}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.TELP}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.DATE_REQUEST}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.TGLHASILINVESTIGASI}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.HASIL_INVESTIGASI}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.AGING_PINALTY}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.PINALTY}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.REMARK}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.KESIMPULAN_HASIL_INVESTIGASI}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.SLA_OVERDUE_OK}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.COMPLAIN}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.Kurir}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.Category}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!invest.No_request}</Data></Cell>
+                    </Row>
+                </apex:repeat>
+            </Table>
+        </Worksheet>
+        <Worksheet ss:Name="INQUIRY">
+        <Table x:FullColumns="1" x:FullRows="1">
+        <Column ss:Width="170"/>
+        <Row>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >ID</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUEST_NO</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >CUSTOMER_NAME</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUEST_STATUS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >RECEIVED_DATE</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >CATEGORY</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUESTOR</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >POLIS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >COMPLAIN</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >DESCRIPTION</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >OTHERINFORMATION</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >TELP</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >KOTA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_FROM_AXA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >SENDDATE</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >STATUS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >PENERIMA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >HUBUNGAN</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >TGLTERIMA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_FROM_NCS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >DATECLOSED</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >STATUSCHS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >KURIR</Data></Cell>
+        </Row>
+        <apex:repeat value="{!inquiryList}" var="inquiry">
+            <Row>
+                <Cell><Data ss:Type="String">{!inquiry.DATA_ID}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.REQUEST_NO}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.CUSTOMER_NAME}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.REQUEST_STATUS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.RECEIVED_DATE}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.CATEGORY}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.REQUESTOR}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.POLIS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.COMPLAIN}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.DESCRIPTION}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.OTHERINFORMATION}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.TELP}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.KOTA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.REMARK_FROM_AXA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.SENDDATE}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.STATUS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.PENERIMA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.HUBUNGAN}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.TGLTERIMA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.REMARK_FROM_NCS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.DATECLOSED}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.STATUSCHS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!inquiry.KURIR}</Data></Cell>
+            </Row>
+        </apex:repeat>
+        </Table>
+        </Worksheet>
+        <Worksheet ss:Name="COA">
+        <Table x:FullColumns="1" x:FullRows="1">
+        <Column ss:Width="170"/>
+        <Row>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >ID</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUEST_NO</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >CUSTOMER_NAME</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUEST_STATUS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >RECEIVED_DATE</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >CATEGORY</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUESTOR</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >POLIS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >COMPLAIN</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >DESCRIPTION</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >OTHERINFORMATION</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >TELP</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >KOTA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_FROM_AXA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >SENDDATE</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >STATUS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >PENERIMA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >HUBUNGAN</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >TGLTERIMA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_FROM_NCS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >DATECLOSED</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >STATUSCHS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >KURIR</Data></Cell>
+        </Row>
+        <apex:repeat value="{!coaList}" var="coa">
+            <Row>
+                <Cell><Data ss:Type="String">{!coa.DATA_ID}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.REQUEST_NO}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.CUSTOMER_NAME}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.REQUEST_STATUS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.RECEIVED_DATE}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.CATEGORY}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.REQUESTOR}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.POLIS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.COMPLAIN}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.DESCRIPTION}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.OTHERINFORMATION}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.TELP}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.KOTA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.REMARK_FROM_AXA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.SENDDATE}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.STATUS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.PENERIMA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.HUBUNGAN}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.TGLTERIMA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.REMARK_FROM_NCS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.DATECLOSED}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.STATUSCHS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!coa.KURIR}</Data></Cell>
+            </Row>
+        </apex:repeat>
+        </Table>
+        </Worksheet>
+        <Worksheet ss:Name="POLIS_BTO">
+        <Table x:FullColumns="1" x:FullRows="1">
+        <Column ss:Width="170"/>
+        <Row>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >Policy_Number</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >Tujuan_Keluar</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >Lokasi_Custody</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >Tgl_Upload</Data></Cell>
+        </Row>
+        <apex:repeat value="{!btoList}" var="bto">
+            <Row>
+                <Cell><Data ss:Type="String">{!bto.Policy_Number}</Data></Cell>
+                <Cell><Data ss:Type="String">{!bto.Tujuan_Keluar}</Data></Cell>
+                <Cell><Data ss:Type="String">{!bto.Lokasi_Custody}</Data></Cell>
+                <Cell><Data ss:Type="String">{!bto.Tgl_Upload}</Data></Cell>
+            </Row>
+        </apex:repeat>
+        </Table>
+        </Worksheet>
+        <Worksheet ss:Name="REDEL">
+        <Table x:FullColumns="1" x:FullRows="1">
+        <Column ss:Width="170"/>
+        <Row>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >ID</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUEST_NO</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >CUSTOMER_NAME</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUEST_STATUS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >RECEIVED_DATE</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >CATEGORY</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REQUESTOR</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >POLIS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >COMPLAIN</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >DESCRIPTION</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >OTHERINFORMATION</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >TELP</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >KOTA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_FROM_AXA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >SENDDATE</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >STATUS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >PENERIMA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >HUBUNGAN</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >TGLTERIMA</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >REMARK_FROM_NCS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >DATECLOSED</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >STATUSCHS</Data></Cell>
+            <Cell ss:StyleID="s1"><Data ss:Type="String" >KURIR</Data></Cell>
+        </Row>
+        <apex:repeat value="{!redelList}" var="redel">
+            <Row>
+                <Cell><Data ss:Type="String">{!redel.DATA_ID}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.REQUEST_NO}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.CUSTOMER_NAME}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.REQUEST_STATUS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.RECEIVED_DATE}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.CATEGORY}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.REQUESTOR}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.POLIS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.COMPLAIN}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.DESCRIPTION}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.OTHERINFORMATION}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.TELP}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.KOTA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.REMARK_FROM_AXA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.SENDDATE}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.STATUS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.PENERIMA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.HUBUNGAN}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.TGLTERIMA}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.REMARK_FROM_NCS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.DATECLOSED}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.STATUSCHS}</Data></Cell>
+                <Cell><Data ss:Type="String">{!redel.KURIR}</Data></Cell>
+            </Row>
+        </apex:repeat>
+        </Table>
+        </Worksheet>
+    </Workbook>
+</apex:page>

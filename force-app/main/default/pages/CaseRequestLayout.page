@@ -1,0 +1,276 @@
+<apex:page standardController="Case" extensions="CaseRequestLayoutController" tabStyle="Case">
+ <apex:includeScript value="/soap/ajax/10.0/connection.js"/>
+ <apex:includeScript value="/soap/ajax/10.0/apex.js"/>
+ <apex:includeScript value="/support/console/26.0/integration.js"/>
+ <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+ 
+ <apex:sectionHeader title="Case Edit" subtitle="New Case"/>
+  <apex:form id="frm">
+  <apex:Messages style="color:red; font-weight: bold; font-size: 13pxl"/>
+    <apex:pageBlock id="pbc" title="Case Edit" mode="edit">
+    <apex:pageBlockButtons >
+        <apex:commandButton action="{!save}" value="Save" />
+        <apex:commandButton value="Save & New" action="{!SaveAndNew}" />
+        <apex:commandButton value="Cancel" action="{!Cancel}"/>     <!--  <apex:commandButton onclick="doCancel();return false" value="Cancel" />   -->
+    </apex:pageBlockButtons>
+    
+     <apex:pageBlockSection title="Case Information" collapsible="false" showHeader="true" columns="2" id="block1">
+        <apex:pageBlockSectionItem >
+           <apex:outputLabel value="Contact Name" for="contact"/>
+           <apex:inputField value="{!cs.ContactId}" id="contact" required="true"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >  
+            <apex:outputLabel value="Status" /> 
+            <apex:inputField value="{!cs.Status}" id="cstatus" required="true"/> 
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem id="pbItemType">
+            <apex:outputLabel value="Type" />
+            <apex:inputField value="{!cs.Type}" id="ctype" label="Type"/> 
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Priority" />
+            <apex:inputField value="{!cs.Priority}" id="cpriority" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem id="pbst"> 
+            <apex:outputLabel id="cservicetypelabel" value="Service Type" for="cservicetype"/>
+            <apex:inputField value="{!cs.Service_Type__c}" id="cservicetype"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Case Origin" />
+            <apex:inputField value="{!cs.Origin}" id="corigin" required="true"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem />
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Case Type" />
+            <apex:inputField value="{!cs.Case_Type_Config__c}" id="casetype" label="" required="true" />
+        </apex:pageBlockSectionItem>
+        <apex:inputHidden id="firstLoad" value="{!firstLoad}"/>
+        <apex:inputHidden id="availableCaseTypeKeeper" value="{!availableCaseTypeKeeper}"/>
+        <apex:inputHidden id="selectedCaseTypeKeeper" value="{!selectedCaseTypeKeeper}"/>
+        <apex:inputHidden id="entity" value="{!entity}"/>
+    </apex:pageBlockSection>
+    <!-----------------
+    <apex:pageBlockSection showHeader="false" columns="1" id="block2x">
+        <apex:pageBlockSectionItem id="pbs">
+         <apex:outputLabel value="Case Type" for="cstypex"/>
+          <select multiple="multiple" id="caseTypes" class="multiselect" style="width: 200px" name="caseTypes[]">
+              <option value='elem_1'>elem 1</option>
+              <option value='elem_2'>elem 2</option>
+              <option value='elem_10'>elem 10</option>
+          </select>
+          <textarea rows="10" cols="70" name="selectedCT" id="selectedCT"></textarea>
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+      ------------->
+    <apex:pageBlockSection title="Request" collapsible="false" showHeader="true" columns="2" id="block3" rendered="{!IsAFIAndAMFS}">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Subject" />
+            <apex:inputField value="{!cs.Subject}" id="csSubject"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem />
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Description" />
+            <apex:inputTextarea value="{!cs.Description}" id="csDesc" rows="5" cols="50"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Internal Comments" />
+            <apex:inputTextarea value="{!cs.Internal_Comment__c}" label="Internal Comments" id="csComment" rows="5" cols="50"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="PIC Department" />
+            <apex:inputField value="{!cs.PIC_Department_LU__c}" id="picDept" required="true" />
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Web Information" collapsible="false" showHeader="true" columns="2" id="block4" rendered="{!IsAFIAndAMFS}">
+        <apex:pageBlockSectionItem id="pbs">
+          <apex:outputLabel value="Account Name" for="csAccount"/>
+          <apex:inputField value="{!cs.AccountId}" id="csAccount"/>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+
+    <apex:pageBlockSection title="Request" collapsible="false" showHeader="true" columns="2" id="block5" rendered="{!IsMAGI}">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Subject" />
+            <apex:inputField value="{!cs.Subject}" id="csSubject"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Time of Incident" />
+            <apex:inputField value="{!cs.Waktu_Kejadian__c}" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Description" />
+            <apex:inputTextarea value="{!cs.Description}" id="csDesc" rows="3" cols="50"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Accident Place" />
+            <apex:inputTextarea value="{!cs.Accident_Place_Claim__c}" rows="3" cols="50"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="PIC Department" />
+            <apex:inputField value="{!cs.PIC_Department_LU__c}" id="picDept" required="true" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Survey Location" />
+            <apex:inputField value="{!cs.Lokasi_Survey__c}" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Coverage (MV)" />
+            <apex:inputField value="{!cs.Coverage__c}" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Detail of Claim Damage" />
+            <apex:inputTextarea value="{!cs.Detail_of_Claim_Damage__c}" rows="3" cols="50"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Driver" />
+            <apex:inputField value="{!cs.Driver_of_claim__c}" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Repair Shop" />
+            <apex:inputField value="{!cs.Bengkel__c}" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Vehicle Registration Number" />
+            <apex:inputField value="{!cs.Vehicle_Registration_Number__c}" />
+        </apex:pageBlockSectionItem>    
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Internal Comments" />
+            <apex:inputTextarea value="{!cs.Internal_Comment__c}" label="Internal Comments" id="csComment" rows="3" cols="50"/>
+        </apex:pageBlockSectionItem>
+        
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Web Information" collapsible="false" showHeader="true" columns="2" id="block6" rendered="{!IsMAGI}">
+    </apex:pageBlockSection>
+   </apex:pageBlock> 
+
+   <script>
+     function doCancel(){
+        if (sforce.console.isInConsole()) { 
+            closeTab(); 
+        }else { 
+            window.location.href = "https://cs6.salesforce.com{!retURL}"; 
+        }     
+     }
+     function addSelectedValue(selval){
+         var selectedKeeperObj = document.getElementById('{!$Component.frm.pbc.block1.selectedCaseTypeKeeper}');
+         var selectedKeeperVal = selectedKeeperObj.value+selval+"<br />";
+         selectedKeeperObj.value = selectedKeeperVal;
+     }
+     function deleteSelectedValue(remval){
+         var selectedKeeperObj = document.getElementById('{!$Component.frm.pbc.block1.selectedCaseTypeKeeper}');
+         var selectedKeeperVal = selectedKeeperObj.value;
+         selectedKeeperObj.value = selectedKeeperVal.replace(remval+"<br />", "");
+     }
+     function closeTab() {
+        //First find the ID of the current tab to close it
+        sforce.console.getEnclosingTabId(closeSubtab);
+     }
+     var closeSubtab = function closeSubtab(result) {
+        var tabId = result.id;
+        sforce.console.closeTab(tabId);
+     };
+     function decodeHTMLEntities(text) {
+        var entities = [
+            ['apos', '\''],
+            ['amp', '&'],
+            ['lt', '<'],
+            ['gt', '>']
+        ];
+    
+        for (var i = 0, max = entities.length; i < max; ++i) 
+            text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+    
+        return text;
+      }
+      function setCaseTypeHidden(){
+          var ctype = document.getElementById('{!$Component.frm.pbc.block1.ctype}');
+          var casetypeObj = document.getElementById('{!$Component.frm.pbc.block1.casetype}');
+          var key = "window.pl.vals_{!caseTypeFieldId}_{!cs.recordTypeId}";
+          key = key.length > 46 ? key.substr(0,46):key;
+          var casetype = eval(key);
+          var caseTypesObj = document.getElementById('caseTypes');
+          var selectedCTObj = document.getElementById('selectedCT');
+          caseTypesObj.options.length=0;
+          var val = "";
+          
+          alert('casetype : ' + eval('window.pl.vals_00Np0000000lX6n_01290000000mOgZ'));
+          alert('nature : ' +   eval('window.pl.vals_00Np0000000lqpc_01290000000mOgY'));
+         
+          for(var j=0; j<casetype.length; j++){
+              if(j%2==0){
+                  val = decodeHTMLEntities(casetype[j]);
+                  caseTypesObj.options[caseTypesObj.options.length]=new Option(val, val, false, false);
+              }
+          }
+          //casetypeObj.style.display = "none";
+          if('{!firstLoad}'=='new'){
+              document.getElementById('{!$Component.frm.pbc.block1.firstLoad}').value = 'edit';
+              document.getElementById('{!$Component.frm.pbc.block1.selectedCaseTypeKeeper}').value = "";
+              caseTypesObj.style.display = "block"; 
+              selectedCTObj.style.display = "none";
+              /*
+              $('#caseTypes').multiSelect({
+                  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
+                  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+                  afterInit: function(ms){
+                    var that = this,
+                        $selectableSearch = that.$selectableUl.prev(),
+                        $selectionSearch = that.$selectionUl.prev(),
+                        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+                        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+                
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function(e){
+                      if (e.which === 40){
+                        that.$selectableUl.focus();
+                        return false;
+                      }
+                    });
+                
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function(e){
+                      if (e.which == 40){
+                        that.$selectionUl.focus();
+                        return false;
+                      }
+                    });
+                  },
+                  afterSelect: function(values){
+                    this.qs1.cache();
+                    this.qs2.cache();
+                    addSelectedValue(values);
+                  },
+                  afterDeselect: function(values){
+                    this.qs1.cache();
+                    this.qs2.cache();
+                    deleteSelectedValue(values);
+                  }
+              });
+              */
+          }else if('{!firstLoad}'=='save'){
+              caseTypesObj.style.display = "none"; 
+              selectedCTObj.style.display = "block"; 
+              var csk = "{!selectedCaseTypeKeeper}".split('<br />');
+              //csk.join('\n');
+              var vl = "";
+              for(var ii=0; ii<csk.length; ii++){
+                  vl = vl+csk[ii]+'\n';
+              }
+              selectedCTObj.innerHTML = vl ;
+              selectedCTObj.disabled = 'disabled';
+          }
+      }
+      window.onload=setCaseTypeHidden;
+      document.getElementById('{!$Component.frm.pbc.block1.pbItemType.ctype}').disabled = 'disabled';      
+      var serviceTypeObj = document.getElementById('{!$Component.frm.pbc.block1.pbst.cservicetype}');
+      var labelServiceTypeObj = document.getElementById('{!$Component.frm.pbc.block1.pbst.cservicetypelabel}');
+      if("AFI"!="{!entity}"){
+          labelServiceTypeObj.style.display = "none"; 
+          serviceTypeObj.style.display = "none"; 
+      }
+  </script>
+
+  </apex:form>
+</apex:page>

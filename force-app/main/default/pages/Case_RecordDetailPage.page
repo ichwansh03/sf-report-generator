@@ -1,0 +1,831 @@
+<apex:page controller="Case_CustomPage_ctrl" showHeader="{!isConsole}" sidebar="{!isConsole}" action="{!redirect}">
+    <apex:form id="CaseDetail" rendered="{!cs.data.id}">
+    
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/cases32.png"/></td>
+                        <td><div><STRONG>Case</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!cs.data.subject}</div></td>
+                    </tr>
+                </table>
+                <div class="efhpRow ">
+                    <div class="efhpValue efhpDescription"> 
+                        <apex:outputText value="{!cs.data.Titledescription}" />
+                    </div>
+                </div>
+            </td>
+            <td><div class="vl"/></td>
+            <td style="padding:10px" width="50%">
+                <div><STRONG>Customer</STRONG></div>
+                <div class="efhpValue"><a href="/{!cs.data.contactId}">{!cs.data.contact_Name}</a></div>
+                {!cs.data.contact_phone}<img src="/img/btn_nodial_inline.gif" width="16" height="10"/>
+            </td>
+        </tr>
+    </table> 
+    
+    
+    <!-- Visuaforce Components Fikri, untuk AMFS di ganti dengan record type yang ada di excel -->     
+        
+        	<!--Inquiry AFI-->    
+            <c:Case_RecordDetailPage_AFI rendered="{!isInquiryAFICase}" />  
+        
+        	<!--Inquiry AMFS--> 
+            <c:Case_RecordDetailPage_AMFS rendered="{!isInquiryAMFSCase}" /> 
+        
+        	<!--Inquiry ALI--> 
+            <c:Case_RecordDetailPage_ALI rendered="{!isInquiryALICase}" /> 
+        
+        	<!--Complaint ALI --> 
+            <c:Case_RecordDetailPage_ALIComplaintCase rendered="{!isALIComplaintCase}" /> 
+        	
+        	<!--Complaint AMFS --> 
+            <c:Case_RecordDetailPage_AMFSComplaintCase rendered="{!isAMFSComplaintCase}" /> 
+        	
+        	<!--Complaint AFI --> 
+            <c:Case_RecordDetailPage_AFIComplaintCase rendered="{!isAFIComplaintCase}" /> 
+        	
+        	<!--SocialPost AFI --> 
+             <c:Case_RecordDetailPage_SocialPostAFI rendered="{!isSocialPostAFI}" /> 
+        
+        	<!--SocialPost AMFS --> 
+            <c:Case_RecordDetailPage_SocialPostAMFS rendered="{!isSocialPostAMFS}" />
+        
+        	<!-- Request AFI -->
+        	<c:Case_RecordDetailPage_RequestAFICase rendered="{!isRequestAFICase}"/>
+        
+        	<!-- Request ALI -->
+        	<c:Case_RecordDetailPage_RequestALICase rendered="{!isRequestALICase}"/>
+        
+        	<!-- Request AMFS -->
+        	<c:Case_RecordDetailPage_RequestAMFSCase rendered="{!isRequestAMFSCase}"/> 
+
+        
+        	<!-- Related List -->
+        
+        	<!-- <c:SocialPost_RelatedList parentId="{!id}" rendered="{!isSocialPost_RelatedList}" />  --> 
+        	<apex:pageblock id="SocialPost" title="Social Post" tabStyle="Case" rendered="{!isSocialPost_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadSocialPost}" rerender="SocialPost" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!listDataSP}" var="po" rendered="{!listDataSP.size != 0}">                 
+                    <!--apex:column HeaderValue="Action" width="60"> 
+                        <apex:commandLink value="Edit" style="color:#015ba7;" action="{!editContact}" target="_parent" ><apex:param value="{!cont.id}" name="contactId"/> 
+                        </apex:commandLink> 
+                        &nbsp;|&nbsp; 
+                        <apex:commandLink value="Del" onclick="return confirm('Are you sure?')" style="color:#015ba7;" action="{!deleteContact}" target="_parent"><apex:param value="{!cont.id}" name="contactId"/> 
+                        </apex:commandLink>
+                    </apex:column>-->
+                    <apex:column headerValue="Name"><apex:outputLink value="/apex/SocialPost_RecordDetailPage?id={!po.id}">{!po.name}</apex:outputLink> </apex:column>
+                    <apex:column headerValue="Social Persona"><apex:outputLink value="{!po.personaId}">{!po.handle}</apex:outputLink> </apex:column>
+                    <apex:column headerValue="Headline" value="{!po.Headline}"/>
+                    <apex:column headerValue="Who"><apex:outputLink value="{!po.whoId}">{!po.whoName}</apex:outputLink> </apex:column>
+                    <apex:column headerValue="Message"> <apex:outputText escape="false" value="{!po.content}"/> </apex:column>
+                    <apex:column headerValue="Post Tags" value="{!po.postTags}"/>
+                    <apex:column headerValue="Posted Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!po.posted}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="Created Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!po.createdDate}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="Notes" value="{!po.Notes}"/>
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!listDataSP.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="SocialPostAction" action="{!setLoadSocialPost}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="SocialPost">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="SocialPost">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="SocialPost">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="SocialPost">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="SocialPost">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+                
+            </apex:pageblock>
+         
+            <!-- <c:Case_RelatedList_c parentId="{!id}" rendered="{!isCase_RelatedList_c}" /> --> 
+            <apex:pageblock id="RelatedCases" title="Related Cases" tabStyle="Case" rendered="{!isCase_RelatedList_c}"  >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadCases_c}" rerender="RelatedCases" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus>
+                <br/>
+                <!--AMFS-->
+                <apex:pageBlockTable value="{!cases}" var="c" rendered="{!cases.size != 0}">
+                    <apex:column headerValue="Case"><apex:outputLink value="/apex/Case_RecordDetailPage?id={!c.id}">{!c.caseNumber}</apex:outputLink> </apex:column>
+                    <!-- <apex:column headerValue="Parent Case"><apex:outputLink value="/apex/Case_RecordDetailPage?id={!c.parentId}">{!c.Parent_Case_Number}</apex:outputLink> </apex:column> -->
+                    <apex:column headerValue="Subject"><apex:outputLink value="/apex/Case_RecordDetailPage?id={!c.id}">{!c.subject}</apex:outputLink> </apex:column>
+                    <apex:column headerValue="Priority" value="{!c.priority}"/>
+                    
+                    <!--apex:column headerValue="Case Type" value="{!c.case_Type_Config}"/>-->
+                    <!--apex:column headerValue="Subject"><apex:outputLink value="/apex/Case_RecordDetailPage?id={!c.id}">{!c.subject}</apex:outputLink> </apex:column>-->
+                    <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0,date,M/d/yyyy HH:mm a}"> <apex:param value="{!c.createdDate}" /> </apex:outputText></apex:column>
+                    <!-- <apex:column headerValue="Date/Time Closed"><apex:outputText value="{0,date,M/d/yyyy HH:mm a}"> <apex:param value="{!c.ClosedDate}" /> </apex:outputText></apex:column> -->
+                    <apex:column headerValue="Status" value="{!c.status}"/>
+                   	<apex:column headerValue="Owner"><apex:outputLink value="/{!c.ownerId}">{!c.case_owner}</apex:outputLink> </apex:column>
+                    
+                     <!-- <apex:column headerValue="Case Origin" value="{!c.origin}"/>
+                    <apex:column headerValue="Case Source" value="{!c.Source}"/> -->
+                </apex:pageBlockTable>
+                <!--AFI--> 
+                <apex:outputLabel value="No records to display" rendered="{!cases.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                 
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="RelatedCasesAction" action="{!setLoadCases_c}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="RelatedCases">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="RelatedCases">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="RelatedCases">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="RelatedCases">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="RelatedCases">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+                
+            </apex:pageblock>
+        
+        	<!-- <c:CaseMilestone_RelatedList parentId="{!id}" rendered="{!isCaseMilestone_RelatedList}" />  -->
+        	<apex:pageblock id="Milestones" title="Case Milestones" tabStyle="Case" rendered="{!isCaseMilestone_RelatedList}" >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadMilestones}" rerender="Milestones" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!list_cs_milestone}" var="lcsm" rendered="{!list_cs_milestone.size != 0}">
+                    <apex:column headerValue="Name"><apex:outputLink value="/apex/CaseMilestone_RecordDetailPage?id={!lcsm.Id}">{!lcsm.milestone_name}</apex:outputLink></apex:column>
+                    <apex:column headerValue="Target Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!lcsm.targetDate}" /> </apex:outputText></apex:column> 
+                    <apex:column headerValue="Completion Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!lcsm.completionDate}" /> </apex:outputText></apex:column> 
+                    <apex:column headerValue="Time Remaining (Min:Sec)" value="{!lcsm.timeRemainingInMins}"/>
+                    <apex:column headerValue="Violation"><apex:outputPanel rendered="{!lcsm.isViolated}"><img src="/img/entitlement/casemilestone_isviolated.png"/></apex:outputPanel></apex:column>
+                    <apex:column headerValue="Completed"><apex:outputPanel rendered="{!lcsm.isCompleted}"><img src="/img/entitlement/casemilestone_iscompleted.gif"/></apex:outputPanel></apex:column>
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_cs_milestone.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                 
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="MilestonesAction" action="{!setLoadMilestones}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="Milestones">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="Milestones">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="Milestones">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="Milestones">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="Milestones">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+                    
+            </apex:pageblock>
+        
+        	<!-- <c:Email_RelatedList_Case_Custom parentId="{!id}" rendered="{!isEmail_RelatedList_Case_Custom}" />  -->
+        	 <apex:pageblock id="Emails" title="Emails" tabStyle="Case" rendered="{!isEmail_RelatedList_Case_Custom}" >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadEmails_vf_case}" rerender="Emails" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!emails}" var="em" rendered="{!emails.size != 0}">
+                    <apex:column headerValue="Status">{!if(em.Status == '0','New',if(em.Status == '1','Read',if(em.Status == '2','Replied','Sent')))}</apex:column>
+                    <apex:column headerValue=""><img src="/img/email{!IF(!em.incoming, 'Out', 'In')}bound.gif"/></apex:column>
+                    <apex:column headerValue="Subject"><apex:outputLink value="/apex/Email_RecordDetailPage?id={!em.id}">{!em.subject}</apex:outputLink><br/><!--{!em.Body_Short}--> </apex:column>
+                    <apex:column headerValue="Email Address" value="{!em.fromAddress}"/>
+                    <apex:column headerValue="Message Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!em.messageDate}" /> </apex:outputText></apex:column> 
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!emails.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                                 <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="EmailsAction" action="{!setLoadEmails_vf_case}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="Emails">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="Emails">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="Emails">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="Emails">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="Emails">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+        	<!-- <c:CaseEscalation_RelatedList parentId="{!id}" rendered="{!isCaseEscalation_RelatedList}" />  --> 
+            <apex:pageblock id="CaseEscalation" title="Case Escalation" tabStyle="Case" rendered="{!isCaseEscalation_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadCaseEscalation}" rerender="CaseEscalation" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!list_case_esc}" var="act" rendered="{!list_case_esc.size != 0}">         
+                    <apex:column headerValue="No"><apex:outputLink value="/apex/CaseEscalation_RecordDetailPage?id={!act.id}&lastId={!act.lastId}">{!act.name}</apex:outputLink> </apex:column>               
+                    <apex:column headerValue="Owner" value="{!act.Owner_name}"/>
+                    <apex:column headerValue="Division" value="{!act.division_c}"/>
+                    <apex:column headerValue="Start Datetime"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!act.start_Datetime_c}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="End Datetime"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!act.end_Datetime_c}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="Lead Time" value="{!act.lead_Time_c}"/>
+                    <apex:column headerValue="End By" value="{!act.end_By_c}"/>
+                    <apex:column headerValue="Status" value="{!act.status_c}"/>
+                    <apex:column headerValue="Target Datetime"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!act.target_Datetime_c}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="Target Status" value="{!act.target_Status_c}"/>
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_case_esc.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="CaseEscalationAction" action="{!setLoadCaseEscalation}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="CaseEscalation">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="CaseEscalation">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="CaseEscalation">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="CaseEscalation">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="CaseEscalation">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+            <!-- <c:Task_RelatedList_OpenActivity parentId="{!id}" rendered="{!isTask_RelatedList_OpenActivity}" /> --> 
+            <apex:pageblock id="OpenActivity" title="Open Activity" tabStyle="Case" rendered="{!isTask_RelatedList_OpenActivity}">
+                <apex:actionStatus id="status" > 
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadOpenActivity_case}" rerender="OpenActivity" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!list_open_res}" var="ts" rendered="{!list_open_res.size != 0}">   
+                    <apex:column headerValue="Subject"><apex:outputLink value="/apex/Task_recorddetailpage?id={!ts.id}">{!ts.subject}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!AND(!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase, !isInquiryALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Related To" value="{!ts.what_name}"/>
+                    <apex:column rendered="{!OR(isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isInquiryALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Name" value="{!ts.who_name}"/>
+                    <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!ts.isClosed, 'un', '')}checked.gif"/></apex:column>
+                    <apex:column headerValue="Due Date" value="{!ts.ActivityDate}"/>
+                    <apex:column rendered="{!OR(isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isInquiryALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Status" value="{!ts.status}"/>
+                    <apex:column rendered="{!OR(isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isInquiryALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Priority" value="{!ts.priority}"/>
+                    <apex:column headerValue="Assigned To" value="{!ts.owner_name}"/>
+                    <apex:column rendered="{!AND(!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase, !isInquiryALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Last Modified Date/Time" value="{!ts.lastModifiedDate}"/> 
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_open_res.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="OpenActivityAction" action="{!setLoadOpenActivity_case}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="OpenActivity">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="OpenActivity">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="OpenActivity">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="OpenActivity">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="OpenActivity">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        	
+        	<!-- <c:Task_RelatedList_ActivityHistory parentId="{!id}" rendered="{!isTask_RelatedList_ActivityHistory}" />  --> 
+            <apex:pageblock id="ActivityHistory" title="Activity History" tabStyle="Case" rendered="{!isTask_RelatedList_ActivityHistory}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadActivityHistory_case}" rerender="ActivityHistory" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                 <apex:pageBlockTable value="{!list_history_res}" var="ts" rendered="{!list_history_res.size != 0}">  
+                   <apex:column headerValue="Subject"><apex:outputLink value="/apex/Task_recorddetailpage?id={!ts.id}">{!ts.subject}</apex:outputLink> </apex:column>
+                   <apex:column headerValue="Name" value="{!ts.who_name}"/> 
+                   <apex:column rendered="{!AND(!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase, !isInquiryALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Related To" value="{!ts.what_name}"/>
+                   <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!ts.isClosed, 'un', '')}checked.gif"/></apex:column>>
+                   <apex:column headerValue="Due Date" value="{!ts.ActivityDate}"/>
+                   <apex:column headerValue="Assigned To" value="{!ts.owner_name}"/>
+                   <apex:column headerValue="Last Modified Date/Time" value="{!ts.lastModifiedDate}"/>
+               </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_history_res.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="ActivityHistoryAction" action="{!setLoadActivityHistory_case}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="ActivityHistory">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="ActivityHistory">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="ActivityHistory">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="ActivityHistory">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="ActivityHistory">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        	
+        	<!-- <c:CaseComment_RelatedList parentId="{!id}" rendered="{!isCaseComment_RelatedList}" />  --> 
+            <apex:pageblock id="CaseComment" title="Case Comment" tabStyle="Case" rendered="{!isCaseComment_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadCaseComments}" rerender="CaseComment" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!list_case_com}" var="cm" rendered="{!list_case_com.size != 0}">                 
+                    <!-- <apex:column headerValue="User"><apex:outputLink value="/{!act.createdById}">{!act.createdById_name}</apex:outputLink> </apex:column> -->
+                    <apex:column headerValue="Public" style="text-align:center"><img src="/img/checkbox_{!IF(!cm.isPublished, 'un', '')}checked.gif"/></apex:column>
+                    <!-- <apex:column headerValue="Created Date" value="{!act.createdDate}"/> -->
+                    <apex:column headerValue="Comment"> 
+                            <apex:outputPanel > 
+                                <apex:outputText >
+                                    <apex:outputLabel style="font-weight:bold"   >Created By: </apex:outputLabel> 
+                                    <apex:outputLink style="font-weight:bold" value="/{!cm.createdById}">{!cm.createdById_name}</apex:outputLink>
+                                    (<apex:outputText style="font-weight:bold" value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!cm.createdDate}" /></apex:outputText>)
+                                </apex:outputText>
+                                <apex:outputText rendered="{!IF(cm.lastModifiedDate != cm.createdDate, true,false)}">
+                                    <apex:outputLabel style="font-weight:bold"   > | Last Modified By:</apex:outputLabel>
+                                    <apex:outputLink style="font-weight:bold"   value="/{!cm.lastModifiedById}">{!cm.lastModifiedById_name}</apex:outputLink> 
+                                        (<apex:outputText style="font-weight:bold"   value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!cm.lastModifiedDate}" /></apex:outputText>)
+                                </apex:outputText>
+                                <br/>
+                                <apex:outputText escape="false" value="{!cm.commentBody}"/>
+                            </apex:outputPanel> 
+                    </apex:column>   
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_case_com.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="CaseCommentAction" action="{!setLoadCaseComments}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="CaseComment">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="CaseComment">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="CaseComment">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="CaseComment">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="CaseComment">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+            <!--  <c:Attachment_RelatedList parentId="{!id}" rendered="{!isAttachment_RelatedList}" />  --> 
+            <apex:pageblock id="Attachments" title="Attachments" tabStyle="Attachment" rendered="{!isAttachment_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadAttachments}" rerender="Attachments" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!list_attachment}" var="a" rendered="{!list_attachment.size != 0}">
+                    <!-- <apex:column headerValue="Type" value="{!a.ContentType}"/> -->
+                    <apex:column headerValue="File Name"><apex:outputLink value="/{!a.new_id}">{!a.name}</apex:outputLink> </apex:column> 
+                    <apex:column headerValue="Size" value="{!a.Size}"/> 
+                    <apex:column headerValue="Last Modified"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!a.LastModifiedDate}" /> </apex:outputText></apex:column> 
+                    <apex:column headerValue="Created By"><apex:outputLink value="/{!a.CreatedById}">{!a.CreatedBy_Name}</apex:outputLink></apex:column>
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_attachment.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="AttachmentsAction" action="{!setLoadAttachments}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="Attachments">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="Attachments">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="Attachments">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="Attachments">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="Attachments">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+        	<!-- <c:EmailSMSLog_RelatedList parentId="{!id}" rendered="{!isEmailSMSLog_RelatedList}" /> --> 
+            <apex:pageblock id="Logs" title="Email & SMS Log" tabStyle="Case" rendered="{!isEmailSMSLog_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadLogs}" rerender="Logs" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!logs}" var="l" rendered="{!logs.size != 0}">
+                    <apex:column headerValue="Email & SMS Log No"><apex:outputLink value="/apex/EmailSMSLog_RecordDetailPage?id={!l.Id}">{!l.Name}</apex:outputLink></apex:column>
+                    <apex:column headerValue="Contact" value="{!l.contact_Name_c}"/>
+                    <apex:column headerValue="Category" value="{!l.category_c}"/>
+                    <apex:column headerValue="Entity" value="{!l.entity_c}"/>
+                    <apex:column headerValue="Method" value="{!l.method_c}"/>
+                    <apex:column headerValue="Request Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!l.request_Date_c}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="End Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!l.end_Date_c}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="Status" value="{!l.Status_c}"/>
+                    <apex:column rendered="{!OR(isAFIComplaintCase,isRequestAFICase,isRequestALICase,isRequestAMFSCase,isAMFSComplaintCase)}"  headerValue="Survey Taken" value="{!l.surveyTakenName}"/> 
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!logs.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="LogsAction" action="{!setLoadLogs}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="Logs">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="Logs">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="Logs">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="Logs">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="Logs">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+
+            <!-- <c:NegativeFeedback_RelatedList parentId="{!id}" rendered="{!isNegativeFeedback_RelatedList}" />  -->    
+            <apex:pageblock id="negatives" title="Negative Feedbacks" tabStyle="Case" rendered="{!isNegativeFeedback_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start"> 
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel > 
+                            <apex:commandButton value="Reload" action="{!loadNegatives}" rerender="negatives" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!listNegative}" var="em" rendered="{!listNegative.size != 0}">
+                    <apex:column rendered="{!OR(isInquiryAMFSCase,isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isSocialPostAFI, isInquiryALICase, isRequestALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Negative Feedback No"><apex:outputLink value="/apex/NegativeFeedback_RecordDetailPage?id={!em.id}">{!em.name}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!AND(!isInquiryAMFSCase,!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase,!isSocialPostAFI,!isInquiryALICase, !isRequestALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Name"><apex:outputLink value="/apex/NegativeFeedback_RecordDetailPage?id={!em.id}">{!em.name}</apex:outputLink> </apex:column> 
+                    <apex:column headerValue="New Case" value="{!em.new_Case_c}"/>
+                    <apex:column rendered="{!OR(isInquiryAMFSCase,isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isSocialPostAFI, isInquiryALICase, isRequestALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Contact"><apex:outputLink value="/{!em.contact_c}">{!em.contact_name}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!OR(isInquiryAMFSCase,isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isSocialPostAFI, isInquiryALICase, isRequestALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Send Survey"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!em.send_Survey_c}" /> </apex:outputText></apex:column>  
+                    <apex:column rendered="{!OR(isInquiryAMFSCase,isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isSocialPostAFI, isInquiryALICase, isRequestALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Survey Form"><apex:outputLink value="/{!em.survey_Form_c}">{!em.survey_Form_name}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!OR(isInquiryAMFSCase,isInquiryAFICase,isAFIComplaintCase,isRequestAFICase,isSocialPostAFI, isInquiryALICase, isRequestALICase,isALIComplaintCase,isRequestAMFSCase,isSocialPostAMFS,isAMFSComplaintCase)}" headerValue="Survey Response"><apex:outputLink value="/{!em.survey_Response_c}">{!em.survey_Response_name}</apex:outputLink> </apex:column> 
+                    <apex:column rendered="{!AND(!isInquiryAMFSCase,!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase,!isSocialPostAFI,!isInquiryALICase, !isRequestALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Entity" value="{!em.entity_c}"/>
+                    <apex:column headerValue="Description" value="{!em.description_c}"/>
+                    <apex:column rendered="{!AND(!isInquiryAMFSCase,!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase,!isSocialPostAFI,!isInquiryALICase, !isRequestALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Case Owner" value="{!em.case_Owner_c}"/> 
+                    <apex:column rendered="{!AND(!isInquiryAMFSCase,!isInquiryAFICase,!isAFIComplaintCase,!isRequestAFICase,!isSocialPostAFI,!isInquiryALICase, !isRequestALICase,!isALIComplaintCase,!isRequestAMFSCase,!isSocialPostAMFS,!isAMFSComplaintCase)}" headerValue="Created Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!em.createdDate}" /> </apex:outputText></apex:column>  
+                </apex:pageBlockTable> 
+                <apex:outputLabel value="No records to display" rendered="{!listNegative.size == 0}" styleClass="noRowsHeader"></apex:outputLabel> 
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="negativesAction" action="{!setLoadNegatives}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="negatives">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="negatives">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="negatives">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="negatives">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="negatives">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>         
+        
+            <!--   <c:SurveyTaken_RelatedList parentId="{!id}" rendered="{!isSurveyTaken_RelatedList}" />  --> 
+            <apex:pageblock id="survey" title="Surveys Taken" tabStyle="Case" rendered="{!isSurveyTaken_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start"> 
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel > 
+                            <apex:commandButton value="Reload" action="{!loadSurvey}" rerender="survey" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/> 
+                <apex:pageBlockTable value="{!listSurveyTaken}" var="em" rendered="{!listSurveyTaken.size != 0}">
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'InquiryAFICase',cs.data.RecordType_Name == 'InquiryALICase',cs.data.RecordType_Name == 'InquiryAMFSCase',cs.data.RecordType_Name == 'SocialPost-AFI',cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="ID"><apex:outputLink value="/apex/SurveyTaken_RecordDetailPage?id={!em.id}">{!em.name}</apex:outputLink> </apex:column>
+                    <!-- <apex:column rendered="{!OR(cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Name"><apex:outputLink value="/apex/SurveyTaken_RecordDetailPage?id={!em.id}">{!em.name}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Entity" value="{!em.entity_c}"/>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Status Response" value="{!em.status_Response_c}"/>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Count Response" value="{!em.count_Response_c}"/> 
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Negative Feedback" value="{!em.negative_Feedback_c}"/>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Positif Feedback" value="{!em.positive_Feedback_c}"/> -->
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'InquiryAMFSCase',cs.data.RecordType_Name == 'SocialPost-AFI',cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Survey"><apex:outputLink value="/{!em.survey_c}">{!em.surveyName}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'InquiryAMFSCase',cs.data.RecordType_Name == 'SocialPost-AFI',cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Survey Taken By Contact"><apex:outputLink value="/{!em.contact_c}">{!em.contactName}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'InquiryAMFSCase',cs.data.RecordType_Name == 'SocialPost-AFI',cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Survey Taken By User"><apex:outputLink value="/{!em.createdById}">{!em.createdByName}</apex:outputLink> </apex:column>
+                    <apex:column rendered="{!OR(cs.data.RecordType_Name == 'InquiryAMFSCase',cs.data.RecordType_Name == 'SocialPost-AFI',cs.data.RecordType_Name == 'SocialPost-AMFS')}" headerValue="Taken" value="{!em.taken_c}"/> 
+                </apex:pageBlockTable> 
+                <apex:outputLabel value="No records to display" rendered="{!listSurveyTaken.size == 0}" styleClass="noRowsHeader"></apex:outputLabel> 
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="surveyAction" action="{!setLoadSurvey}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="survey">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="survey">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="survey">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="survey">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="survey">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock> 
+        
+        
+        	<!-- <c:ApprovalHistory_RelatedList parentId="{!id}" rendered="{!isApprovalHistory_RelatedList}" />  --> 
+            <apex:pageblock id="ApprovalHistory" title="Approval History" tabStyle="Case" rendered="{!isApprovalHistory_RelatedList}">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadApprovalHistory}" rerender="ApprovalHistory" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                <apex:pageBlockTable value="{!listApprovalCase}" var="app" rendered="{!listApprovalCase.size != 0}">  
+                    <apex:column headerValue="Date" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}">
+                        <apex:outputText value="Approval Request Submitted" Rendered="{!app.isProcessInstance}"></apex:outputText>
+                        <apex:outputText value="{0,date,dd/MM/yyyy hh:mm a}" Rendered="{!app.isProcessInstanceStep}"> <apex:param value="{!app.createdDate}" /> </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Status" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}"> 
+                        <apex:outputText value="{!app.status}" Rendered="{!app.isProcessInstanceStep}"></apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Assigned To" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}"> 
+                        <apex:outputLink Rendered="{!app.isProcessInstanceStep}" value="/{!app.assignId}">{!app.assignName}</apex:outputLink> 
+                    </apex:column>
+                    <apex:column headerValue="Actual Approver" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}"> 
+                        <apex:outputLink Rendered="{!app.isProcessInstanceStep}" value="/{!app.actualApproveId}">{!app.actualApproveName}</apex:outputLink> 
+                    </apex:column>
+                    <apex:column headerValue="Comments" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}"> 
+                        <apex:outputText value="{!app.comments}" Rendered="{!app.isProcessInstanceStep}"></apex:outputText>
+                    </apex:column>
+                    <!-- <apex:column rendered="{!AND(!isInquiryAFICase,!isAFIComplaintCase,!isInquiryALICase, !isRequestALICase,!isALIComplaintCase,!isRequestAMFSCase)}"  headerValue="Overall Status" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}"> -->
+                    <apex:column headerValue="Overall Status" style="{!IF(app.isProcessInstance == true,'background-color:#c0be72;border-color:#c0be72;','')}"> 
+                        <apex:outputText style="background-color:{!app.colorStatus}; " value="{!app.approvalStatus}" Rendered="{!app.isProcessInstance}"> </apex:outputText>
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!listApprovalCase.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            </apex:pageblock>
+    </apex:form>
+</apex:page>

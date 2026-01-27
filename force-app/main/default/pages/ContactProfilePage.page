@@ -1,0 +1,946 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" extensions="PolicyInfoController" action="{!initContactProfile}" > 
+
+ 
+    <!-- HEAD -->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>  
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>     
+    <apex:includeScript value="/support/console/37.0/integration.js"/>      
+    <!--  <script src="../../resource/1445396331000/EpisodeJS" type="text/javascript"></script>      -->  
+    <!--  <script src="../../soap/ajax/32.0/connection.js" type="text/javascript"></script> -->
+    <!--  <apex:includeScript value="/support/console/22.0/integration.js"/> --> 
+    
+    <head>
+        <script type="text/javascript">
+            var timerStart = Date.now();
+        </script>
+        <!-- do all the stuff you need to do -->
+    </head>
+    <!-- .END OF HEAD -->
+    
+    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // call 
+            console.log("Time until DOMready: ", Date.now()-timerStart);
+            //callMethodLoadDataSeq2and3();
+            callMethodloadDataBySequenceNo2();
+        });
+        
+        $(window).load(function() {
+            console.log("Time until everything loaded: ", Date.now()-timerStart);
+        });
+
+        var urlRequestNewTab ='';
+        var titleNewTab ='';
+        var i = 0;
+        var menuList = ['POLICYINFO','CLAIMINFO','RHSINFO','CHSINFO','INQUIRYINFO'];
+
+        if ('{!policyApp}' == 'RLS' || '{!policyApp}' == 'CLIPPER') {
+            menuList = ['POLICYINFO','CLAIMINFO','RHSINFO','CHSINFO','INQUIRYINFO','FUNDINFO'];
+        }
+
+        if ('{!entity}' == 'AMFS') {
+            menuList = ['POLICYINFO','CLAIMINFO','RHSINFO','CHSINFO','INQUIRYINFO','FUNDINFO','DMUINFO'];
+        }
+
+        function afterLoad(){
+            //alert('After apex method') ;
+            console.log ('load Data Sequence 2 & 3 is done ..');
+
+            // load tab after load data sequence done
+            console.log('policy app = '+'{!policyApp}');
+            if (sforce.console.isInConsole()) {
+                // only open in console
+                // initial open with array 0
+                console.log('opening sub tab...');
+                openNewTab(menuList[i],null,null,null);
+            }
+            console.log('sub tab has opened');
+            // var openSubTab = function openSubTab(result) {
+            //     var primaryTabId = result.id;
+            //     console.log('primary tab id for '+titleNewTab+': '+primaryTabId);
+            //     i++;
+            //     sforce.console.openSubtab(primaryTabId , urlRequestNewTab , false, titleNewTab, null, openSuccess, titleNewTab);
+            // };
+
+            // var openSuccess = function openSuccess(result) {
+            //     //Report whether we succeeded in opening the subtab
+            //     if (result.success == true) {
+            //         if (i < menuList.length) {
+            //             console.log('array of i :' + i + ' for menu '+menuList[i]);
+            //             openNewTab(menuList[i],null,null,null);
+            //         }
+            //     } else {
+            //         console.log('failed open subtab :'+result);
+            //     }
+            // };
+        }
+
+        function openNewTab(tabName, arg2, arg3, arg4) {
+            switch (tabName){
+                case 'POLICYINFO' :
+                    urlRequestNewTab ='/apex/PolicyInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}'  + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' + '&agentServicingCode=' + '{!customerInfoData.agentServicingCode}' + '&agentProducingCode=' + '{!customerInfoData.agentProducingCode}' ;
+                    titleNewTab ='POLICY INFO';
+                    break;
+                
+                case 'CLAIMINFO' :
+                    urlRequestNewTab ='/apex/ClaimInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' + '&agentServicingCode=' + '{!customerInfoData.agentServicingCode}' + '&agentProducingCode=' + '{!customerInfoData.agentProducingCode}' ;
+                    titleNewTab ='CLAIM INFO';
+                    break;
+                    
+                case 'RHSINFO' :
+                    urlRequestNewTab ='/apex/RHSInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' + '&agentServicingCode=' + '{!customerInfoData.agentServicingCode}' + '&agentProducingCode=' + '{!customerInfoData.agentProducingCode}' ;
+                    titleNewTab ='RHS INFO';
+                    break;                  
+
+                case 'CHSINFO' :
+                    urlRequestNewTab ='/apex/CHSInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' + '&agentServicingCode=' + '{!customerInfoData.agentServicingCode}' + '&agentProducingCode=' + '{!customerInfoData.agentProducingCode}' ;
+                    titleNewTab ='CHS INFO';
+                    break;                  
+
+                case 'INQUIRYINFO' :
+                    urlRequestNewTab ='/apex/InquiryInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' + '&agentServicingCode=' + '{!customerInfoData.agentServicingCode}' + '&agentProducingCode=' + '{!customerInfoData.agentProducingCode}' ;
+                    titleNewTab ='INQUIRY INFO';
+                    break;
+
+                case 'FUNDINFO' :
+                    urlRequestNewTab ='/apex/FundInfoPage?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&sessionID=' + '{!sessionID}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' ;
+                    titleNewTab ='FUND INFO';
+                    break;
+                    // Add Customer Detail MDM by Faizir (20200603)
+                case 'CUSTOMERDETAIL' :
+                    urlRequestNewTab ='/apex/MDM_VFP?contactID=' + '{!contactID}' +'&mdmId='+'{!mdmId}' + '&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' ;
+                    titleNewTab ='CUSTOMER DETAIL';
+                    break;
+
+                    // Add DMU
+                case 'DMUINFO' :                    
+                    urlRequestNewTab ='/apex/DMU_Custom_Data_View?parentId='+ parentId 
+                                + '&contactID=' + '{!contactID}' + '&DataType=Detail&&policyNo=' + '{!policyNo}' + '&entity=' + '{!entity}' + '&policyApp=' + '{!policyApp}' ;
+
+                    titleNewTab ='DELIVERY INFO';
+                    break;
+
+            }
+            
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTab);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTab,'_blank');
+            }
+        }
+
+        function openSubTab(result) {
+            var primaryTabId = result.id;
+            console.log('primary tab id for '+titleNewTab+': '+primaryTabId);
+            i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTab , false, titleNewTab, null, openSuccess, titleNewTab);
+        }
+
+        function openSuccess(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                if (i < menuList.length) {
+                    console.log('array of i :' + i + ' for menu '+menuList[i]);
+                    openNewTab(menuList[i],null,null,null);
+                }
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    </script>     
+    <!--  .END OF JAVASCRIPT ABOVE -->
+
+    <body>
+    <apex:form >
+    
+       <script type='text/javascript'>
+           var jsonstr = 'kang ... ';
+           var listener = function (result){
+               var childId = result.message;
+               sforce.console.fireEvent('ParentDataResponse_'.concat(childId), jsonstr);
+           };
+
+           var parentId = Math.floor((Math.random() * 1000) + 500);
+           //  tutup dulu sforce.console.addEventListenerXX('RequestParentData_'.concat(parentId), listener);
+       </script>
+
+       <script type="text/javascript">
+            function initiateChildVFPage() {
+                sforce.console.getEnclosingPrimaryTabId(openSubtab);
+            }
+
+       </script>
+
+    <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+        <apex:pageMessages />
+            
+        <apex:pageBlock mode="maindetail" tabStyle="Contact" id="agent" rendered="{!isAgentProfile}" >
+                <!-- *** Agent Info  -->
+                <apex:pageBlockSection columns="1" title="Agent Info" collapsible="true">
+                    
+                    
+                    <apex:outputPanel id="panelAgentInfo" rendered="true">
+                    <apex:pageBlockSection columns="2">              
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Agent Name"></apex:outputLabel>
+                                <apex:outputText value="Ucok Bayu{!agentInfoData.AgentName}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 1"></apex:outputLabel>
+                                <apex:outputText value="Jl. Wawar No.1{!agentInfoData.DistributionCode}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Agent No"></apex:outputLabel>
+                                <apex:outputText value="123456{!agentInfoData.AgentID}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 2"></apex:outputLabel>
+                                <apex:outputText value="Jl. Wawar No.2{!agentInfoData.DistributionType}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Entity"></apex:outputLabel>
+                                <apex:outputText value="AFI{!agentInfoData.AgentNo}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 3"></apex:outputLabel>
+                                <apex:outputText value="Jl. Wawar No.3{!agentInfoData.Mobile}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Email"></apex:outputLabel>
+                                <apex:outputText value="ucokbasri@gmail.com{!agentInfoData.Entity}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 4"></apex:outputLabel>
+                                <apex:outputText value="Jl. Wawar No.4{!agentInfoData.Mobile}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Mobile"></apex:outputLabel>
+                                <apex:outputText value="08456783348{!agentInfoData.Email}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Termination Date"></apex:outputLabel>
+                                <apex:outputText value="12-Jan-2017{!agentInfoData.HomePhone1}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Join Date"></apex:outputLabel>
+                                <apex:outputText value="12-Jan-2010"></apex:outputText>
+                                <!--  <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="12-jan-2010{!agentInfoData.JoinDate}" /></apex:outputText> -->
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+                <!-- *** .end of Agent Info  -->
+                
+                <!-- *** Agent Hierachy -->
+                <apex:pageBlockSection title="Reporting Structure Hierarchy" collapsible="true" rendered="{!isDisplayAFI}" columns="1">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="AGENT CODE"></apex:outputLabel>
+                            <apex:outputText value="">1234567890</apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="AGENT Name"></apex:outputLabel>
+                            <apex:outputText value="">Budi Raharjo</apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="POS CODE"></apex:outputLabel>
+                            <apex:outputText value="">17510</apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="LEADER EFF DATE"></apex:outputLabel>
+                            <apex:outputText value="">12-Jan-2015</apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="TERM"></apex:outputLabel>
+                            <apex:outputText value="">Term ... </apex:outputText>
+                    </apex:pageBlockSectionItem>
+                   </apex:pageBlockSection>
+        
+        </apex:pageBlock>
+        
+            
+        <apex:pageBlock mode="maindetail" tabStyle="Contact" id="customer" rendered="{!isCustomerProfile}">
+
+        <!--  <center> <apex:CommandButton value="Pass Data to the New console Tab" onclick="initiateChildVFPage();return false" /> </center> -->
+
+        
+        <!--  
+        entity : {!entity} _::_
+        isDisplayAFI_AMFS : {!isDisplayAFI_AMFS} _::_
+        isDisplayMAGI : {!isDisplayMAGI}
+        
+                <br/>
+        isDisplayAMFS: {!isDisplayAMFS}<br/>
+        isDisplayAFI : {!isDisplayAFI} <br/>
+        isDisplayMAGI : {!isDisplayMAGI} <br/>
+        isDisplayAFI_AMFS : {!isDisplayAFI_AMFS} <br/>
+        isDisplayAMFS_MAGI : {!isDisplayAMFS_MAGI} <br/>
+        isDisplayAFI_MAGI : {!isDisplayAFI_MAGI} <br/>
+        isDisplayAFI_AMFS_MAGI : {!isDisplayAFI_AMFS_MAGI} <br/>
+        
+        pelanggan.PolicyOwnerID : {!pelanggan.PolicyOwnerID} <br/>
+        pelanggan.PolicyOwnerID2 : {!pelanggan.PolicyOwnerID}
+        -->    
+            <!-- ::: A. CUSTOMER PROFILE   -->
+            <!-- *** Detail Information (LIFE) only for AMFS & AFI -->
+            
+            <apex:pageBlockSection title="Detail Information" columns="1" collapsible="true" rendered="{!AND(isDisplayAFI_AMFS, Not(AND(isDisplayAFI, policyApp == 'RLS')))}">
+                <apex:pageBlockSection title="TEST INFO" columns="1" collapsible="true"     id="jsonOwnRisk" rendered="{!isDisplayJSON}">
+                    <B>Request :</B><BR/>
+                    <apex:outputText value="{!customerInfoDataReqPayloadJSON}" ></apex:outputText> 
+                    <BR/><B>Respond :</B><BR/>
+                    <apex:outputText value="{!customerInfoDataResPayloadJSON}" ></apex:outputText>
+                </apex:pageBlockSection> 
+                
+                         
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Policy Owner ID"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.policyOwnerID }" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Gender"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.gender}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Date of Birth"></apex:outputLabel>
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!customerInfoData.dateOfBirth }" /></apex:outputText> 
+                            <!--  <apex:outputText value="{!customerInfoData.dateOfBirth     }"></apex:outputText> -->
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Place of Birth"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.placeOfBirth }"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2" rendered="{!AND(isDisplayAFI_AMFS, Not(AND(isDisplayAFI, policyApp == 'RLS')))}">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Age"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.Age}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 1"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.address1}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection> 
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 2"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.address2}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 3"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.address3}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection> 
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 4"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.address4}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Agent Servicing Code"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.agentServicingCode}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>   
+                
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Agent Producing Code"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.agentProducingCode}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+                
+            </apex:pageBlockSection>
+            
+            <!-- Added by Ranti at 17 august 22. Add address -->
+            <apex:pageBlockSection title="Policy Owner Detail" columns="1" collapsible="true" rendered="{!AND(isDisplayAFI, policyApp == 'RLS')}">   
+                
+                <apex:pageBlockSection title="TEST INFO" columns="1" collapsible="true"     id="jsonOwnRisk" rendered="{!isDisplayJSON}">
+                    <B>Request :</B><BR/>
+                    <apex:outputText value="{!customerInfoDataReqPayloadJSON}" ></apex:outputText> 
+                    <BR/><B>Respond :</B><BR/>
+                    <apex:outputText value="{!customerInfoDataResPayloadJSON}" ></apex:outputText>
+                </apex:pageBlockSection> 
+                
+                         
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Policy Owner ID"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.policyOwnerID }" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Gender"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.gender}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Date of Birth"></apex:outputLabel>
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!customerInfoData.dateOfBirth }" /></apex:outputText> 
+                            <!--  <apex:outputText value="{!customerInfoData.dateOfBirth     }"></apex:outputText> -->
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Place of Birth"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.placeOfBirth }"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Age"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.ageDetail} Years"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection> 
+                
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 1"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailLifeData.addressLine1}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 2"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailLifeData.addressLine2}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection> 
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 3"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailLifeData.addressLine3}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 4"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailLifeData.addressLine4}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Agent Servicing Code"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.agentServicingCode}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Agent Producing Code"></apex:outputLabel>
+                            <apex:outputText value="{!customerInfoData.agentProducingCode}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <!-- End of Part -->
+                    
+            </apex:pageBlockSection> 
+            
+            <!-- *** .END OF Detail Information (LIFE) -->
+             
+    
+             
+            <!-- *** ACCOUNT INFO (GI) only for MAGI -->
+            <apex:pageBlockSection title="Account Info" columns="1" collapsible="true" rendered="{!isDisplayMAGI}" >
+                <apex:pageBlockSection title="TEST INFO" columns="1" collapsible="true"     id="jsonOwnRisk" rendered="{!isDisplayJSON}">
+                    
+                    <BR/><B>Respond :</B><BR/>
+                    <apex:outputText value="{!policyDetailGIJSON}" ></apex:outputText>
+                </apex:pageBlockSection>             
+            
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem > 
+                            <apex:outputLabel value="Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Name}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="First Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.FirstName}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Middle Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MiddleName}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Last Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.LastName}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>            
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Salutation"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Salutation}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Title"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Title}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+                            
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Insured Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.InsuredName}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Customer ID"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.CustomerID}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Customer Policy No"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.CustomerPolicyNo}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Phone 1"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Phone1}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Phone 2"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Phone2}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Mobile 1"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Mobile1}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Mobile 2"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Mobile2}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Email 1"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Email1}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>            
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Email 2"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Email2}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Fax 1"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Fax1}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Fax 2"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Fax2}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Zip Code"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.ZipCode}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>            
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="City"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.City}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Inputer ID"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.InputerID}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>                                        
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 1"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Address1}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 2"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Address2}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address 3"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Address3}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Contact"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Contact}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>                
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Contact Address"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.ContactAddress}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Contact Phone"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.ContactPhone}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Currency"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.ContactPhone}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Marketing Officer Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MarketingOfficerName}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Marketing Officer Code"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MarketingOfficerCode}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Marketing Officer Dept"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MarketingOfficerDept}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Transaction Type Description"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.TransactionTypeDescription}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Intermediary Type Description"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.IntermediaryTypeDescription}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                            
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Customer Type Description"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.CustomerTypeDescription}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Related Policy"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.RelatedPolicy}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Description"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Description}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Gender"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Gender}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Married"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Married}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Country"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Country}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                                                                            
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="ID/Passport Number"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.IDPassportNumber}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Nationality"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Nationality}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>                                                                        
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Occupation"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Occupation}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Language"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Language}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Birthdate"></apex:outputLabel>
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!policyDetailGIData.Birthdate}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Age"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Age}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Birthplace"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Birthplace}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>            
+    
+                <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="VIP"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.VIP}" ></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Alternate Address"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.AlternateAddress}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>    
+                                                    
+            </apex:pageBlockSection>
+            <!-- *** .END OF ACCOUNT INFO (GI) -->
+    
+            
+            <!-- *** INSURED INFO (LIFE) only for AMFS & AFI -->
+            <!-- Added by Ranti at 17 august 22. Add address -->
+            <apex:pageBlockSection title="Insured Detail" columns="1" collapsible="true" rendered="{!AND(isDisplayAFI, policyApp == 'RLS')}">    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Name"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.NameInsured}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="ID"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.IDNoInsured}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Date of Birth"></apex:outputLabel>
+                                <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!customerInfoData.DateofBirthInsured }" /></apex:outputText>  
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Gender"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.GenderInsured }"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Age"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.ageInsured} Years"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Place Of Birth"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.PlaceofBirthInsured}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                     
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 1"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.address1}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 2"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.address2}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 3"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.address3}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Address 4"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.address4}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Email"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.EmailInsured}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Mobile"></apex:outputLabel>
+                                <apex:outputText value="{!customerInfoData.MobileInsured}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>              
+            </apex:pageBlockSection> 
+            
+            <!-- end of part -->
+            
+            <apex:pageBlockSection title="Insured Detail" collapsible="true" columns="10" rendered="{!AND(isDisplayAFI_AMFS, Not(AND(isDisplayAFI, policyApp == 'RLS')))}">
+
+                <apex:pageBlockTable id="idinsrd" value="{!insuredDetailLifeList}" var="insured" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID No">{!insured.IDNo}</apex:column>
+                    <apex:column headerValue="Name">{!insured.Name}</apex:column>
+                    <apex:column headerValue="Place of Birth">{!insured.PlaceofBirth}</apex:column>
+                    <apex:column headerValue="Date of Birth"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!insured.DateofBirth}" /></apex:outputText></apex:column>
+                    <apex:column headerValue="Gender">{!insured.Gender}</apex:column>
+                    <apex:column headerValue="Email">{!insured.Email}</apex:column>
+                    <apex:column headerValue="Mobile">{!insured.Mobile}</apex:column>
+                    <apex:column headerValue="Dependent No">{!insured.Depno}</apex:column> 
+                </apex:pageBlockTable>
+
+            </apex:pageBlockSection>  
+            <!-- *** .END OF INSURED INFO (LIFE) only for AMFS & AFI -->         
+         
+
+                <!-- ::: B. POLICY INFO (link)   -->
+                <apex:pageBlockSection title="Policy Info" collapsible="false" columns="1">
+                    <input type="button" value="Open" id="policyInfoOpen" onClick="openNewTab('POLICYINFO', null, null, null);" />
+                </apex:pageBlockSection> 
+                
+            
+            <apex:pageBlockSection title="Customer MDM Detail" collapsible="false" columns="1">
+                <input type="button" value="Open" id="customerMDMDetail" onClick="openNewTab('CUSTOMERDETAIL', null, null, null);" />
+            </apex:pageBlockSection> 
+            
+                <!-- ::: C. RHS (link)   -->
+                <apex:pageBlockSection title="Request Handling System" collapsible="false" columns="1" >
+                    <input type="button" value="Open History" id="policyInfoOpen" onClick="openNewTab('RHSINFO', null, null, null);" />
+                    <BR/><BR/><B>Open/Last RHS</B>
+                    <apex:pageBlockTable id="idinsrd" value="{!insuredList}" var="tertanggung" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Case Number">00932957</apex:column>
+                        <apex:column headerValue="Type">Request</apex:column>
+                        <apex:column headerValue="Subject">Form Klaim MEC</apex:column>
+                        <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Status">New</apex:column>
+                        <apex:column headerValue="Owner">Herdiyansyah</apex:column>
+                    </apex:pageBlockTable>
+                
+                </apex:pageBlockSection> 
+
+                <!-- ::: D. CHS (link)   -->
+                <apex:pageBlockSection title="Complaint Handling System" collapsible="false" columns="1" >
+                    <input type="button" value="Open History" id="policyInfoOpen" onClick="openNewTab('CHSINFO', null, null, null);" />
+                    <BR/><BR/><B>Open/Last CHS</B>
+                    <apex:pageBlockTable id="idinsrd" value="{!insuredList}" var="tertanggung" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Case Number">00932957</apex:column>
+                        <apex:column headerValue="Type">Request</apex:column>
+                        <apex:column headerValue="Subject">Form Klaim MEC</apex:column>
+                        <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Status">New</apex:column>
+                        <apex:column headerValue="Owner">Herdiyansyah</apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                
+                <!-- ::: E. Inquiry/Call Notes/Emails (link)   -->
+                <apex:pageBlockSection title="Inquiry/Call Notes/Emails" collapsible="false" columns="1" >
+                    <input type="button" value="Open History" id="policyInfoOpen" onClick="openNewTab('INQUIRYINFO', null, null, null);" />
+                    <BR/><BR/><B>Open/Last Inquiry/Call Notes/Emails</B>
+                    <apex:pageBlockTable id="idinsrd" value="{!insuredList}" var="tertanggung" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Case Number">00932957</apex:column>
+                        <apex:column headerValue="Type">Request</apex:column>
+                        <apex:column headerValue="Subject">Form Klaim MEC</apex:column>
+                        <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0, date, dd-MM-yyyy}"><apex:param value="" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Status">New</apex:column>
+                        <apex:column headerValue="Owner">Herdiyansyah</apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection> 
+    
+                <!-- ::: F. CLAIM (link)   -->
+                <apex:pageBlockSection title="Claims" collapsible="false" columns="1" >
+                    <input type="button" value="Open History" id="claimInfoOpen" onClick="openNewTab('CLAIMINFO', null, null, null);" />
+                    
+                    <!--  tutup dulu
+                    <BR/><BR/><B>Open/Last Claim</B>
+                    
+                    
+                    <apex:pageBlockTable id="idtrxcla" value="{!claimDetailGIList}" var="claim" style="overflow:auto;width:1300px;table-layout:fixed;" align="left" border="1">
+                        <apex:column > <apex:facet name="header">Claim <br/>Registration No</apex:facet> {!claim.ClaimRegistrationNo} </apex:column>
+                        <apex:column headerValue="Claim Status">{!claim.ClaimStatus}</apex:column>
+                        <apex:column headerValue="Branch Code">{!claim.BranchCode}</apex:column>
+                        <apex:column headerValue="Client Name">{!claim.ClientName}</apex:column>
+                        <apex:column > <apex:facet name="header">Notification <br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.NotificationDate}" /></apex:outputText> </apex:column>
+                        <apex:column > <apex:facet name="header">Registration <br/>Date</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.RegistrationDate}" /></apex:outputText> </apex:column>
+                        
+                        <apex:column headerValue="Date of Loss"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.DateofLoss}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Description">{!claim.Description}</apex:column>
+                        <apex:column headerValue="Accident Place">{!claim.AccidentPlace}</apex:column>
+                        <apex:column headerValue="Repair Shop">{!claim.RepairShop}</apex:column>
+                        <apex:column > <apex:facet name="header">Approval <br/>Payment Date</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.ApprovalPaymentDate}" /></apex:outputText> </apex:column>
+                        
+                        <apex:column headerValue="Payment Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!claim.PaymentDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="DriverName">{!claim.DriverName}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    -->
+                </apex:pageBlockSection> 
+                
+                <!-- ::: G. SOCIAL MEDIA (link)   
+                <apex:pageBlockSection title="Social Media" collapsible="false" columns="1" >
+                    <input type="button" value="Open" id="policyInfoOpen" onClick="openNewTab('SOCIAL', null, null, null);" />
+                </apex:pageBlockSection>    -->                          
+
+                <!-- ::: G. DMU Info   -->
+                <apex:pageBlockSection title="Delivery Info" collapsible="false" columns="1" rendered="{!IF(entity =='AMFS',TRUE,FALSE)}">
+                    <input type="button" value="Open" id="DMUInfoOpen" onClick="openNewTab('DMUINFO', null, null, null);" />
+                </apex:pageBlockSection> 
+
+                                  
+            <!--  
+            <apex:form >
+                <apex:pageblock >
+                    <apex:commandLink action="{!openPolicyInfo}" value="Open Policy Info" target="_blank" id="theCommandLink"/>
+                </apex:pageblock>
+            </apex:form>
+            -->
+            
+        </apex:pageBlock> <!-- .END OF <apex:pageBlock mode="maindetail" tabStyle="Contact" > -->
+    
+    </div> <!-- .END OF <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;"> --> 
+    
+    
+        <apex:actionFunction name="callMethodLoadDataSeq2and3" action="{!loadDataSeq2and3}" onComplete="afterLoad();" />
+        
+        <apex:actionFunction name="callMethodloadDataBySequenceNo2" action="{!loadDataSeq2}" onComplete="callMethodloadDataBySequenceNo3();" />
+        <apex:actionFunction name="callMethodloadDataBySequenceNo3" action="{!loadDataSeq3}" onComplete="afterLoad();" />
+        
+        
+    </apex:form>     
+    </body>
+    
+    <script type='text/javascript'>
+
+    </script>
+
+</apex:page>

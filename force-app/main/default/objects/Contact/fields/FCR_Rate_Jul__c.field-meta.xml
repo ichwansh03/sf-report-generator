@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FCR_Rate_Jul__c</fullName>
+    <formula>IF( (FCR_Jul__c + Repeat_Case_Jul__c) == 0, 0, FCR_Jul__c / (FCR_Jul__c + Repeat_Case_Jul__c) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>FCR Rate Jul</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Percent</type>
+</CustomField>

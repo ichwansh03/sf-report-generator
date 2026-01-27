@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CHS_Cases_Closed_AMFS_Courier</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CHS_Status__c</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>Pending_Status__c</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>Financial_Lost__c</columns>
+    <columns>PIC__c</columns>
+    <columns>OWNER_NAME</columns>
+    <columns>Policy_Numbers__c</columns>
+    <columns>Due_Date_Time__c</columns>
+    <columns>Flagging_SLA__c</columns>
+    <columns>Back_Office_PIC__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.TYPE</field>
+        <operation>equals</operation>
+        <value>Complaint</value>
+    </filters>
+    <filters>
+        <field>Entity__c</field>
+        <operation>equals</operation>
+        <value>AMFS</value>
+    </filters>
+    <filters>
+        <field>CHS_Status__c</field>
+        <operation>equals</operation>
+        <value>Closed - Invalid,Closed - Valid</value>
+    </filters>
+    <filters>
+        <field>Nature_Config__c</field>
+        <operation>equals</operation>
+        <value>Courier Delivery,Courier Investigation,Policy Duplicate,Policy Retur</value>
+    </filters>
+    <label>CHS Cases Closed AMFS (Courier)</label>
+    <language>en_US</language>
+    <sharedTo>
+        <group>GroupAMFS</group>
+    </sharedTo>
+</ListView>

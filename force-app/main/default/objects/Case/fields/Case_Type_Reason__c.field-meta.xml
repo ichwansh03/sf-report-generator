@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case_Type_Reason__c</fullName>
+    <description>Reason picklist based on Case Type</description>
+    <label>Case Type Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Request_Type__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Family Matter</fullName>
+                <default>false</default>
+                <label>Family Matter</label>
+            </value>
+            <value>
+                <fullName>Financial Problem</fullName>
+                <default>false</default>
+                <label>Financial Problem</label>
+            </value>
+            <value>
+                <fullName>Have Many Insurance</fullName>
+                <default>false</default>
+                <label>Have Many Insurance</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Sosmed Cases</fullName>
+                <default>false</default>
+                <label>Sosmed Cases</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Request_POS_Redemption</controllingFieldValue>
+            <valueName>Family Matter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Request_POS_Redemption</controllingFieldValue>
+            <valueName>Financial Problem</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Request_POS_Redemption</controllingFieldValue>
+            <valueName>Have Many Insurance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Request_POS_Redemption</controllingFieldValue>
+            <valueName>Other</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Request_POS_Redemption</controllingFieldValue>
+            <valueName>Sosmed Cases</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

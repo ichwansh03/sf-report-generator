@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Inquiry_Case</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New Inquiry</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)} 
+
+/* 
+var urlInquiry = &quot;/500/e?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Inquiry_RecordTypeId_Keeper__c}&amp;cas5=Inquiry&amp;ent=Case&quot;; 
+*/ 
+
+var urlInquiry = &quot;/apex/CaseInquiryContact?retURL=/{!Case.Id}&amp;def_contact_id={!Case.ContactId}&amp;def_account_id={!Case.AccountId}&amp;RecordType={!Case.Inquiry_RecordTypeId__c}&amp;cas5=Inquiry&amp;firstLoad=new&amp;entity={!Contact.Entity__c}&amp;idcase={!Case.Id}&quot;; 
+
+var parent = &quot;{!Case.ParentId}&quot;;
+
+if(parent!= &quot;&quot;){
+alert(&quot;Cannot create case from child&quot;);
+}
+else{
+if (sforce.console.isInConsole()) { 
+sforce.console.getEnclosingTabId(function(enclosingResult){ 
+sforce.console.getEnclosingPrimaryTabId(function(){ 
+sforce.console.openPrimaryTab(null, urlInquiry, true, &apos;Create New Inquiry&apos;, null); 
+}); 
+}); 
+
+}else { 
+window.location.href = urlInquiry; 
+}
+}</url>
+</WebLink>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hari__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(
+MOD(DATEVALUE(CreatedDate) - DATE(1900, 1, 7), 7),
+0, &quot;Minggu&quot;,
+1, &quot;Senin&quot;,
+2, &quot;Selasa&quot;,
+3, &quot;Rabu&quot;,
+4, &quot;Kamis&quot;,
+5, &quot;Jumat&quot;,
+6, &quot;Sabtu&quot;, &quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Hari</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ActivityALI</fullName>
+    <active>true</active>
+    <label>ActivityALI</label>
+    <picklistValues>
+        <picklist>Activity_Config__c</picklist>
+        <values>
+            <fullName>Complaint Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey Feedback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Activity__c</picklist>
+        <values>
+            <fullName>Complaint Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Survey Feedback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Case_Type_Config__c</picklist>
+        <values>
+            <fullName>Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Collection Task</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NCB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium FU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reinstate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Redemption</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Update Data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Welcome Call</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Case_Type__c</picklist>
+        <values>
+            <fullName>Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Collection Task</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NCB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium FU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reinstate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retain Redemption</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Update Data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Welcome Call</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Entity__c</picklist>
+        <values>
+            <fullName>ALI</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Todo_List_Config__c</picklist>
+        <values>
+            <fullName>Alasan penutupan polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alasan polis lapse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campaign Emma</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Doc pemulihan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold debet %28jika not approved%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Info manfaat produk</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Informasi NAB%2FNilai Tunai Sementara</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Konfirmasi tgl jatuh tempo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Konsekuensi jika tidak ada pembayaran premi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Legal info pendebetan %28inforce%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Legal info pendebetan %28ok debet%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Legal statement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Loyalty bonus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Loyalty bonus hilang %28sesuai produk%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Masa pendebetan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Monthly charge</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pastikan Due NCB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Penalty</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Penalty jika ada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendingan POS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pengkinian data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Polis akan tidak aktif sementara jika NAB tidak mencukupi %28PH Release%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retention jika tidak berkenan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Status polis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tanggal pendebetan jatuh tempo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verifikasi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting periode</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

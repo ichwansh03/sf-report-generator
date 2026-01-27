@@ -1,0 +1,302 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page controller="TrainingPlanFeedbackController" docType="html-5.0" sidebar="false" showHeader="{!showSFHeader}" standardStylesheets="false" >
+
+
+    <apex:outputPanel layout="none" rendered="{!isAllowedToView}">
+
+        <apex:composition template="LMS_HeroTemplate">
+
+                <apex:define name="head">
+                    <title>{!tPlan.trainingPlan.Name}</title>
+                </apex:define>
+
+                <apex:define name="hero-banner">
+                    <div id="hb-wrap">
+                        <div class="slds-text-heading--large slds-m-top--small">{!tPlan.trainingPlan.Name}</div>
+                        <p><apex:outputField value="{!tPlan.trainingPlan.Description__c}"/></p>
+
+                        <apex:outputPanel layout="none" rendered="{!!tPlan.trainingPlan.Hide_Chatter_Photos__c}">
+                            <div class="user-carousel">
+                                <apex:repeat value="{!lUsersWithAchievement}" var="u">
+                                    <a href="javascript:almond.redirectHandlerWithStatus('{!$Page.MyProfile}?id={!u.Id}',true)" class="user-carousel-img">
+                                        <apex:image value="{!u.SmallPhotoUrl}" />
+                                    </a>
+                                </apex:repeat>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </apex:define>
+
+                <apex:define name="hero-banner-footer">
+                    <span style="padding:0 1rem;"><b>{!$Label.ALMS_Overall_Rating}</b> : {!tPlan.trainingPlan.Training_Plan_Rating__c}</span>
+                </apex:define>
+
+                <apex:define name="hero-banner-badge">
+                    <div id="hb-right" class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--4-of-12 slds-large-size--3-of-12">
+                        <div class="badge-container">
+                            <apex:outputfield value="{!tPlan.mainAchievement.Acquired_Image__c}" rendered="{!tPlan.mainAchievement.Work_Badge_Image_URL__c == null}"/>
+                            <apex:image url="{!tPlan.mainAchievement.Work_Badge_Image_URL__c}" rendered="{!tPlan.mainAchievement.Work_Badge_Image_URL__c != null}"/>
+                        </div>
+                    </div>
+                </apex:define>
+
+                <apex:define name="body">
+
+                    <style>
+                      .almond .rating_bar{
+                          background: url({!URLFOR($Resource.almond_uilib, '/img/stars.png')});
+                          background-position: 0 0;
+                      }
+                      .almond .rating{
+                          background: url({!URLFOR($Resource.almond_uilib, '/img/stars.png')});
+                          background-position: 0 -16px;
+                      }
+                    </style>
+
+                    <div class="slds-tabs--scoped">
+                        <ul class="slds-tabs--scoped__nav" role="tablist">
+                            <li class="slds-tabs--scoped__item slds-text-title--caps" title="{!$Label.ALMS_Detail}" role="presentation">
+                                <a class="slds-tabs--scoped__link" href="javascript:almond.redirectHandlerWithStatus('{!IF(isPreview,$Page.TrainingPlanPreview,$Page.TrainingPlanDetail)}?id={!tplan.trainingPlan.Id}')" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                                    {!$Label.ALMS_Detail}
+                                </a>
+                            </li>
+                            <apex:outputPanel layout="none" rendered="{!tPlan.trainingPlan.Intro_Video_URL__c != null}">
+                                <li class="slds-tabs--scoped__item slds-text-title--caps" title="{!$Label.ALMS_Intro_Video}" role="presentation">
+                                    <a class="slds-tabs--scoped__link" href="javascript:launchLearning('{!tPlan.trainingPlan.Intro_Video_URL__c}','iframe')" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                                        {!$Label.ALMS_Intro_Video}
+                                    </a>
+                                </li>
+                            </apex:outputPanel>
+                            <li class="slds-tabs--scoped__item slds-text-title--caps slds-active" title="{!$Label.ALMS_Feedback}" role="presentation">
+                                <a class="slds-tabs--scoped__link" href="javascript:void(0)" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                                    {!$Label.ALMS_Feedback}
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item">
+                            <apex:form id="feedbackForm">
+
+                                <apex:outputPanel layout="none" rendered="{!isAssignedToTrainingPlan}">
+                                    <div class="slds-grid slds-wrap slds-grid--pull-padded slds-grid--vertical-align-center slds-grid--align-center">
+                                        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--6-of-12">
+                                            <article class="slds-card slds-m-top--large slds-m-bottom--large">
+                                                <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                                    <div class="slds-form-element">
+                                                        <div id="feedback-rating" class="rateit bigstars" data-rateit-step="1" data-rateit-starwidth="32" data-rateit-starheight="32"></div>
+                                                        <apex:inputHidden id="feedbackRating" value="{!feedback.Rating__c}" />
+                                                    </div>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label">{!$Label.ALMS_Feedback_Comments} : </label>
+                                                        <apex:inputField value="{!feedback.Comments__c}" styleClass="slds-textarea" />
+                                                    </div>
+                                                    <apex:commandButton value="{!$Label.ALMS_Feedback_Submit}" action="{!submitFeedback}" styleClass="slds-button slds-button--brand btn-plan-feedback" status="status" rerender="feedbackContent" />
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel id="feedbackContent" layout="block">
+
+                                    <div class="slds-grid slds-wrap slds-grid--pull-padded slds-grid--vertical-align-center slds-grid--align-center">
+                                        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--6-of-12">
+                                    
+                                            <apex:outputPanel layout="none" id="pageMessages">
+                                                <apex:outputPanel layout="block" styleClass="slds-notify slds-notify--toast slds-theme--{!IF(feedbackSuccess,'success','error')}" rendered="{!hasMessages}">
+                                                    <div class="slds-notify__content slds-grid">
+                                                        <div class="slds-col slds-align-middle">
+                                                          <apex:pageMessages />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+
+                                            <apex:outputPanel layout="none" rendered="{!comments != null && comments.size > 0}">
+                                                <apex:repeat value="{!comments}" var="c">
+                                                
+                                                  <article class="slds-card slds-m-top--large slds-m-bottom--large">
+                                                      <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                                        
+                                                        <div class="slds-grid slds-wrap slds-grid--pull-padded slds-grid--vertical-align-center slds-grid--align-center" >
+                                                            <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--3-of-12" style="text-align:center;">
+                                                                <a href="javascript:almond.redirectHandlerWithStatus('{!$Page.MyProfile}?id={!c.User__c}',true)">
+                                                                  <img src="{!c.User__r.SmallPhotoUrl}" class="profilePic-header-45"/>
+                                                                </a>
+                                                                <div><span class="feedback-username">{!c.User__r.Name}</span></div>
+                                                                <apex:outputPanel layout="none" rendered="{!c.Rating__c != null && c.Rating__c > 0 }">
+                                                                    <div><span class="feedback-rating">{!$Label.ALMS_Feedback_Rating} : {!c.Rating__c}</span></div>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                            <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--9-of-12">
+                                                                  <apex:outputPanel layout="none" rendered="{!c.Rating__c != null && c.Rating__c > 0}">
+                                                                      <div class="rating_bar">
+                                                                        <div  class="rating" style="width:{!c.Rating__c*20}%;"></div>
+                                                                      </div>
+                                                                    </apex:outputPanel>
+                                                                  <apex:outputField value="{!c.Comments__c}"/>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                  </article>
+                                                
+                                                </apex:repeat>
+
+                                                <apex:outputPanel layout="none" rendered="{!comments.size > 0 && totalPages > 1}">
+                                                    <div class="slds-grid slds-grid--align-center">
+                                                        <div class="slds-button-group" role="group">
+                                                            <apex:outputPanel layout="none" rendered="{!hasPrevious}">
+                                                              <apex:commandLink styleClass="slds-button slds-button--neutral" action="{!doPrevious}" value="<<" rerender="feedbackContent" status="status"/>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel layout="none" rendered="{!!hasPrevious}">
+                                                              <span class="slds-button slds-button--neutral">&lt;&lt;</span>
+                                                            </apex:outputPanel>
+                                                            <div class="slds-align--absolute-center">
+                                                                <span class="slds-badge slds-badge-default" style="margin: 0px 15px;">{!$Label.ALMS_Search_Page} {!pageNumber} {!$Label.ALMS_Search_Page_Separator} {!totalPages}</span>
+                                                            </div>
+                                                            <apex:outputPanel layout="none" rendered="{!hasNext}">
+                                                              <apex:commandLink styleClass="slds-button slds-button--neutral" action="{!doNext}" rendered="{!hasNext}" value=">>" rerender="feedbackContent" status="status"/>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel layout="none" rendered="{!!hasNext}">
+                                                              <span class="slds-button slds-button--neutral">&gt;&gt;</span>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                            
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!!isAssignedToTrainingPlan && (comments == null || comments.size == 0)}">
+                                                <div style="width:100%;text-align:center;padding:20px;0;">
+                                                    <div class="slds-text-heading--medium">{!$Label.ALMS_Nothing_to_see}</div>
+                                                </div>
+                                            </apex:outputPanel>
+                                      </div>
+                                    </div>
+
+                                </apex:outputPanel>
+
+
+                                <apex:actionStatus id="status">
+                                    <apex:facet name="start">
+                                        <apex:outputPanel >
+                                            <c:LMSStatus statusComponentId="{!$Component.status}"/>
+                                        </apex:outputPanel>
+                                    </apex:facet>
+                                </apex:actionStatus>
+
+                            </apex:form>
+                        </div>
+                    </div>
+
+                    <!-- Modal Content Preview -->
+                    <apex:outputPanel id="contentModalPanel">
+                        <div id="myContentModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal">
+                          <div class="slds-modal__container">
+                            <div class="slds-modal__header" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              <button class="slds-button slds-modal__close slds-button--icon-inverse" onclick="return hideContentModal();">
+                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+                                  <use xlink:href="{!URLFOR($Resource.almond_uilib, '/slds/icons/utility-sprite/svg/symbols.svg')}#close"></use>
+                                </svg>
+                              </button>
+                            </div>
+                            <div class="slds-modal__content slds-p-around--medium">
+                                <a id="contentLink" href="javascript:void(0)">{!$Label.ALMS_Open_New_Window}</a>
+                                <div id="contentIframeWrapper" style="padding:10px 0;">
+                                    <iframe id="contentIframe" style="width:100%;"/>
+                                </div>
+                            </div>
+                            <div class="slds-modal__footer">
+                              <button class="slds-button slds-button--neutral" onclick="return hideContentModal();">{!$Label.ALMS_Close}</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="myContentModalBackdrop" class="slds-backdrop"></div>
+                    </apex:outputPanel>
+
+                    <script>
+                        var $jk = jQuery.noConflict();
+
+                        $jk(document).ready(function(){
+                          //color change on banner
+                          var bkcolor = "{!JSENCODE(tPlan.trainingPlan.Background_Color__c)}";
+                          var txtcolor = "{!JSENCODE(tPlan.trainingPlan.Text_Color__c)}";
+                          var bkimage = "url('{!JSENCODE(tPlan.trainingPlan.Background_Image_URL__c)}')";
+                          $jk('#hero-banner').css('background-color',bkcolor);
+                          $jk('#hero-banner').css('color',txtcolor);
+                          $jk('#hero-banner').css('background-image', bkimage);
+                          $jk('#feedback-rating').bind('rated', function() {
+                              var ratingValue = $jk(this).rateit('value');
+                              document.getElementById('{!$Component.feedbackForm.feedbackRating}').value = ratingValue;
+                          });
+                          $jk('#feedback-rating').bind('reset', function() {
+                              document.getElementById('{!$Component.feedbackForm.feedbackRating}').value = "";
+                          });
+                        });
+
+                        function launchLearning(learningURL,target){
+                            if(target == 'iframe'){
+                                $jk('#contentLink').unbind('click');
+                                $jk('#contentLink').click(function() {
+                                    almond.redirectHandlerWithTarget(learningURL,'_blank');
+                                });
+                                $jk('#contentIframe').prop('src',learningURL);
+                                showContentModal();
+                            }else{
+                                almond.redirectHandler(learningURL);
+                            }
+                        }
+
+                        function showContentModal(){
+                            $jk("#myContentModalBackdrop").addClass('slds-backdrop--open');
+                            $jk('#myContentModal').addClass('slds-fade-in-open');
+                        }
+                        function hideContentModal(){
+                            $jk('#contentIframe').prop('src','');
+                            $jk('#myContentModal').removeClass('slds-fade-in-open');
+                            $jk("#myContentModalBackdrop").removeClass('slds-backdrop--open');
+                            return false;
+                        }
+                    </script>
+
+
+              </apex:define>
+
+              <apex:define name="additional-scripts">
+                    <apex:includeScript value="{!URLFOR($Resource.almond_uilib, '/js/jquery.rateit.min.js')}"/>
+              </apex:define>
+
+        </apex:composition>
+    </apex:outputPanel>
+    <apex:outputPanel layout="none" rendered="{!!isAllowedToView}">
+        <apex:pageMessages />
+    </apex:outputPanel>
+
+
+</apex:page>

@@ -1,0 +1,146 @@
+<apex:page standardController="Case" extensions="QroQuickResponseController" tabStyle="Case">
+  <apex:includeScript value="/soap/ajax/53.0/connection.js"/>
+  <apex:includeScript value="/soap/ajax/53.0/apex.js"/>
+  <apex:includeScript value="/support/console/26.0/integration.js"/>
+  <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <apex:sectionHeader title="Quick Response" subtitle="Edit"/>
+    <apex:form id="frm">
+    	<apex:Messages style="color:red; font-weight: bold; font-size: 13pxl"/>
+        <apex:pageBlock id="notOutputQro" mode="view" tabStyle="Case" rendered="{!isQR==false}">
+        	Not Quick Response Request
+            <apex:pageBlockButtons >
+                <div align="Left">
+        			<apex:commandButton value="Back" action="{!Cancel}"/>
+                </div>
+    		</apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageBlock id="outputQro" mode="edit" tabStyle="Case" rendered="{!isQR==true}">
+            <apex:pageBlockButtons >
+                <div align="Left">
+					<apex:commandButton action="{!save}" value="Save" />
+        			<apex:commandButton value="Cancel" action="{!Cancel}"/>
+                </div>
+    		</apex:pageBlockButtons>
+            <apex:actionRegion id="qroRequest">
+            	<apex:pageBlockSection title="Quick Response" collapsible="false" showHeader="true" columns="2" id="block1"> 
+                    
+                    <!--<apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Related Department" for="RelatedDepartmentOutput"/>
+                        <apex:inputField value="{!qc.Related_Departments__c}" id="RelatedDepartmentOutput" >
+                           <apex:actionSupport event="onchange" action="{!onChangeRelatedDepartment}" reRender="frm"/>
+                        </apex:inputField>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value=""/>
+                    </apex:pageBlockSectionItem> -->
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Date Of Submit" for="DateOfSubmitOutput"/>
+                 		<apex:outputField value="{!qc.Date_of_Submit__c}" id="DateOfSubmitOutput"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Request Status" for="RequestStatusOutput"/>
+                 		<apex:InputField value="{!qc.QR_Status__c}" id="RequestStatusOutput"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Date Of Service" for="DateOfServiceOutput"/>
+                 		<apex:inputField value="{!qc.Date_of_Service__c}" id="DateOfServiceOutput" required="true">
+                           <apex:actionSupport event="onchange" action="{!onChangeDateOfService}" reRender="frm"/> 
+                        </apex:inputField>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Result Call" for="ResultCallOutput"/>
+                 		<apex:InputField value="{!qc.Result_Call__c}" id="ResultCallOutput"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Time Of Service" for="TimeOfServiceOutput"/>
+                 		<apex:InputField value="{!qc.Time_of_Service__c}" id="TimeOfServiceOutput" required="true">
+                            <!--apex:param value="{!qc.Time_of_Service__c}"/-->
+                        </apex:InputField>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Reason Call" for="ReasonCallOutput"/>
+                 		<apex:InputField value="{!qc.Reason_Call__c}" id="ReasonCallOutput"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Unit of Request" for="UnitOfRequestOutput"/>
+                 		<apex:outputField value="{!qc.Unit_of_Request__c}" id="UnitOfRequestOutput"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Date Off Call" for="DateOffCallOutput"/>
+                 		<apex:InputField value="{!qc.Date_Off_Call__c}" id="DateOffCallOutput"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Type of Request" for="TypeOfRequestOutput"/>
+                 		<apex:outputField value="{!qc.Type_of_Request__c}" id="TypeOfRequestOutput"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Receiver" for="ReceiverOutput"/>
+                 		<apex:InputField value="{!qc.Receiver__c}" id="ReceiverOutput">
+                            <apex:actionSupport event="onchange" action="{!onChangeReceiver}" reRender="frm"/> 
+                        </apex:InputField>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem id="ServiceOfAreaOutput" >
+            			<apex:outputLabel value="Service of Area" for="ServiceOfAreaOutput"/>
+                 		<apex:InputField value="{!qc.Service_of_Area__c}" required="true"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem id="NameOfReceiverOutput">
+            			<apex:outputLabel value="Name of Receiver" for="NameOfReceiverOutput"/>
+                 		<apex:InputField value="{!qc.Name_of_Receiver__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Address of Service" for="AddressOfServiceOutput"/>
+                 		<apex:InputField value="{!qc.address_of_service__c}" id="AddressOfServiceOutput" required="true"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem id="TypeofOwnerPolicyOutput">
+            			<apex:outputLabel value="Type of Owner Policy" for="TypeofOwnerPolicyOutput"/>
+                 		<apex:InputField value="{!qc.Type_of_Owner_Policy__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                    	<apex:outputLabel value="Phone" for="PhoneOutput"/>
+                 		<apex:InputField value="{!qc.Case_Phone__c}" id="PhoneOutput"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+            			<apex:outputLabel value="Materai" for="MateraiOutput"/>
+                 		<apex:InputField value="{!qc.Materai__c}" id="MateraiOutput"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem />
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Questionare / Feedback" for="QuestionareFeedbackOutput"/>
+                 		<apex:InputField value="{!qc.Questionare_Feedback__c}" id="QuestionareFeedbackOutput"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem />
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Souvenir" for="SouvenirOutput"/>
+                 		<apex:InputField value="{!qc.Souvenir__c}" id="SouvenirOutput"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection collapsible="false" showHeader="true" columns="2" id="block2">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Description" for="Description"/>
+                 		<apex:InputField value="{!qc.Description}" id="Description"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Status" for="Status"/>
+                 		<apex:InputField value="{!qc.Status}" id="Status" required="true"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+        	</apex:actionRegion>   
+        </apex:pageBlock>
+        
+        
+       
+        <script>
+        
+        </script>
+    </apex:form>
+</apex:page>

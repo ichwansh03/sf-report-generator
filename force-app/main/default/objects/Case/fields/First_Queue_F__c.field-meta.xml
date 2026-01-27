@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Queue_F__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(First_Queue_ID__c = &apos;00G0K000004ggVBUAY&apos;, &apos;AFI - Email Agent VIP Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggW4UAI&apos;, &apos;AFI - Email Standart Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggUwUAI&apos;, &apos;AFI - Email Customer VIP Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggVuUAI&apos;, &apos;AFI - Email Priority Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggVkUAI&apos;, &apos;AFI - Email Regular Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggVQUAY&apos;, &apos;AFI - Email Other Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggVaUAI&apos;, &apos;AFI - Email Combine Queue&apos;,
+IF(First_Queue_ID__c = &apos;00G0K000004ggW9UAI&apos;, &apos;AFI - Email Blacklist Queue&apos;, &apos;Have not First Queue&apos;) ) ) ) ) ) ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>First Queue F</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

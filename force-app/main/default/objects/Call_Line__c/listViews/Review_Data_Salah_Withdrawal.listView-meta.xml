@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Review_Data_Salah_Withdrawal</fullName>
+    <columns>NAME</columns>
+    <columns>Call_List__c</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Agent__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Call_Line__c.Collection_AMFS_6</value>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>TODAY</value>
+    </filters>
+    <filters>
+        <field>Agent__c</field>
+        <operation>equals</operation>
+    </filters>
+    <label>Review Data Salah-Withdrawal</label>
+    <language>en_US</language>
+    <sharedTo>
+        <role>AMFS_PIC_Collection</role>
+    </sharedTo>
+</ListView>

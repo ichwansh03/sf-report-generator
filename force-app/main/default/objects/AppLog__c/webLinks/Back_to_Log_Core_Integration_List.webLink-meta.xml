@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Back_to_Log_Core_Integration_List</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Back to Log Core Integration List</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>/apex/LogCoreIntegrationControllerLayout?sfdc.tabName=01rF8000000GMiU</url>
+</WebLink>

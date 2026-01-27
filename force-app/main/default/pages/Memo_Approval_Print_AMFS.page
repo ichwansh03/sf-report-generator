@@ -1,0 +1,263 @@
+<apex:page standardController="case" extensions="MemoApprovalController" contentType="application/msword#Memo_Approval_AMFS.doc" 
+cache="true" action="{!dmlOperation}">
+<html xmlns:w="urn:schemas-microsoft-com:office:word">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<head>
+    <style type="text/css">
+        body {
+        	font-size: 10pt;
+            font-family:calibri;
+            text-align:left;
+            line-height: 80%;
+        }
+        table.outerBorder{
+            display: block;
+            padding: 15px;
+            width: 100%;
+            border: 1px solid;
+            overflow:hidden;
+        }
+        table.innerBorder{
+            display: block;
+            border: 1px solid;
+            width: 100%;
+        }
+        .textStyle{
+            padding-top:1px;
+            padding-bottom:1px;
+            padding-left:8px;
+        }
+    </style>
+    <apex:outputText value="{!PrintView}" escape="false"/>
+</head>
+    
+<body>
+    <div>
+        <table class="outerBorder">
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%">No Memo</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!numberCounter}/CMU/{!entitas}/{!month}/{!year}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Lampiran</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Lampiran__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Perihal</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Subject}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+            </table>
+           <br/>
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" colspan="3"><u><b>DATA POLIS</b></u></td>
+                </tr>
+                <tr>
+                    <td class="textStyle" width="27%">Nama Pemegang Polis</td>
+                    <td width="2%">:</td> 
+                    <td><apex:outputText value="{!chsCase.contact.Name}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Nama Tertanggung</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Insured_Name__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Nomor Polis</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Policy_Numbers__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Tanggal Efektif Polis</td>
+                    <td>:</td> 
+                    <td>
+                    <apex:outputText value="{0,date,dd MMM yyyy}">
+                        <apex:param value="{!chsCase.Policy_Effective_Date__c}" /> 
+                    </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Status Polis</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Policy_Status__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Premi</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!chsCase.Premium__c}"/> </apex:outputText></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Produk</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Product__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="textStyle" colspan="3"><u><b>DATA FA PRODUKSI</b></u></td>
+                </tr>
+                <tr>
+                    <td class="textStyle" width="27%">Nama FA</td>
+                    <td width="2%">:</td> 
+                    <td><apex:outputText value="{!chsCase.Agent_Name__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Kode FA</td>
+                    <td width="2%">:</td> 
+                    <td><apex:outputText value="{!chsCase.Agent_Code__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Status</td>
+                    <td width="2%">:</td> 
+                     <td><apex:outputText value="{!chsCase.Agent_Status__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Region</td>
+                    <td width="2%">:</td> 
+                    <td><apex:outputText value="{!chsCase.Region__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Branch</td>
+                    <td width="2%">:</td> 
+                    <td><apex:outputText value="{!chsCase.Branch_Name__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+            </table>
+           <br/>
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%" style="vertical-align:top;"><b>Complaint</b></td>
+                    <td style="vertical-align: top;">:</td> 
+                    <td style="vertical-align: top;"><apex:outputField value="{!chsCase.Description__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="textStyle"><b>Demands</b></td>
+                    <td>:</td> 
+                    <td><apex:outputField value="{!chsCase.Demand__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+             </table>
+            <br/> 
+             <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%" style="vertical-align:top;"><b>Chronological</b></td>
+                    <td style="vertical-align: top;">:</td> 
+                    <td style="vertical-align: top;" height="120"><apex:outputField value="{!chsCase.Chronological__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="textStyle"><b>Estimated Loss</b></td>
+                    <td>:</td> 
+                    <!--  <td><apex:outputText value="{!estimatedLoss}" /></td> -->
+                    <td><apex:outputText value="{!chsCase.Financial_Lost_Currency__c}{0, number, ###,###,###,###.00}"> <apex:param value="{!chsCase.Financial_Lost__c}"/> </apex:outputText></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+           </table>   
+          <br/>
+           <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%" style="vertical-align: top;" colspan="3"><b>Recommendation</b></td>
+                </tr>
+                <tr>
+                	<td class="textStyle" colspan="3" height="60" style="vertical-align: top;"><apex:outputField value="{!chsCase.Recommendation__c}"/></td>
+                </tr>
+           </table>
+          <br/>
+       <!-- the lowermost 3 tables -->
+           <table width="100%">
+               <tr>
+                   <td>
+                       <table align="left" style="display: block; border: 1px solid; width:95%;">
+                           <tr>
+                                <td colspan="3"><b>Manager Customer Care</b></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">&nbsp;</td> 
+                           </tr>
+                           <tr>
+                                <td width="22%"><b>Recommendation</b></td>
+                                <td>:</td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td><b>Remarks</b></td>
+                                <td>:</td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">&nbsp;</td> 
+                           </tr>
+                        </table>
+                   </td>
+                   <td>
+                       <table align="center" style="display: block; border: 1px solid; width:95%;">
+                           <tr>
+                                <td colspan="3"><b>Senior Care Manager</b></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">&nbsp;</td> 
+                           </tr>
+                           <tr>
+                                <td width="22%"><b>Recommendation</b></td>
+                                <td>:</td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td><b>Remarks</b></td>
+                                <td>:</td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">&nbsp;</td> 
+                           </tr>
+                        </table>
+                   </td>
+                   <td>
+                       <table align="right" style="display: block; border: 1px solid; width:95%;">
+                           <tr>
+                                <td colspan="3"><b>Head of Services &amp; Operation </b></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">&nbsp;</td> 
+                           </tr>
+                           <tr>
+                                <td width="22%"><b>Recommendation</b></td>
+                                <td>:</td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td><b>Remarks</b></td>
+                                <td>:</td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">&nbsp;</td> 
+                           </tr>
+                        </table>
+                   </td>
+               </tr> 
+           </table>              
+         </table>
+    </div>                
+</body>
+</html>
+</apex:page>

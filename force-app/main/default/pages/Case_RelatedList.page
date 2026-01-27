@@ -1,0 +1,212 @@
+<apex:page standardController="Contact" extensions="Case_CustomPage_ctrl" sidebar="false" showHeader="false">
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>   
+    <apex:includeScript value="/support/console/37.0/integration.js"/>    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">  
+
+        var urlRequestNewTabRelatedContactCase ='';
+        var titleNewTabRelatedContactCase ='';
+  
+        function openNewTabRelatedContactCase(el) {
+            console.log(el);	
+            let CaseId = el.getAttribute('data-id');
+            let uniqueId = el.getAttribute('data-lastId');
+            console.log(CaseId);
+            titleNewTabRelatedContactCase = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactCase ='/apex/Case_RecordDetailPage?id='+ CaseId+'&lastId='+uniqueId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactCase);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactCase,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactCase(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactCase+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactCase , false, titleNewTabRelatedContactCase, null, null, titleNewTabRelatedContactCase);
+        }
+
+        function openSuccessRelatedContactCase(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    </script>  
+    
+    <style>
+        
+        .slds-text-title_caps {
+        border-left: 0.5px solid grey; 
+        border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+        text-align:center;
+        width: 100%;
+        word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        
+        /* Dimensions */
+        width: 100%;
+        height: 300%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+        /* Background color */
+        border: solid 2px #ffba1a;
+        background-color: white;
+        
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 75px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+        }
+    </style>    
+    <!--c:StatusLoading />-->
+    <apex:actionStatus id="stSearch" stopText="">
+        <apex:facet name="start">
+            <div>
+                <div class="popupBackground" />
+                <div class="PopupPanel">
+                    <table  border="0" bordercolor="red"  width="100%" height="100%">
+                        <tr>
+                            <td align="center"><b>Please Wait</b></td>
+                        </tr>
+                        <tr>
+                            <td valign="center" align="center"><img height="16" width="16" title="Processing..." alt="Processing..." 
+                                                                    src="/img/loading.gif" style="margin-top :17px;"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <apex:form id="formId">
+        <apex:pageblock id="Cases" title="Cases" tabStyle="Case">
+            <apex:actionStatus id="status" >
+                <apex:facet name="start">
+                    <apex:outputPanel >
+                        Loading...<br/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:outputPanel >
+                        <apex:commandButton value="Reload" action="{!loadCases}" rerender="Cases" status="status" /><br/>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus>
+            <br/>
+            <!--AMFS-->
+            <apex:pageBlockTable value="{!cases}" var="c" rendered="{!cases.size != 0 && Contact.Entity__c == 'AMFS'}">
+                <!-- <apex:column headerValue="Case"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.id}" >{!c.caseNumber}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Case"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!c.lastId}" data-id="{!c.id}" data-title="{!c.caseNumber}" onclick="openNewTabRelatedContactCase(this);"> {!c.caseNumber}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Parent Case"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.parentid}" >{!c.Parent_Case_Number}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Parent Case Number"><apex:outputText ><a href="javascript:void(0);" data-id="{!c.parentid}" data-title="{!c.Parent_Case_Number}" onclick="openNewTabRelatedContactCase(this);"> {!c.Parent_Case_Number}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Type" value="{!c.type}"/>
+                <apex:column headerValue="Case Type" value="{!c.case_Type_c}"/>
+                <!-- <apex:column headerValue="Subject"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.id}" >{!c.subject}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Subject"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!c.lastId}" data-id="{!c.id}" data-title="{!c.subject}" onclick="openNewTabRelatedContactCase(this);"> {!c.subject}</a></apex:outputText></apex:column>
+                <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!c.createdDate}" /> </apex:outputText></apex:column>
+                <apex:column headerValue="Date/Time Closed"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!c.ClosedDate}" /> </apex:outputText></apex:column>
+                <!-- <apex:column headerValue="Owner"><apex:outputLink target="_blank" value="/{!c.ownerId}" >{!c.case_owner}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Owner"><apex:outputText ><a href="javascript:void(0);" data-id="{!c.ownerId}" data-title="{!c.case_owner}" onclick="openNewTabRelatedContactCase(this);"> {!c.case_owner}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Status" value="{!c.status}"/>
+                <apex:column headerValue="Case Origin" value="{!c.origin}"/>
+                <!--apex:column headerValue="Case Source" value="{!c.Source}"/-->
+            </apex:pageBlockTable>
+            <!--AFI-->
+            <apex:pageBlockTable value="{!cases}" var="c" rendered="{!cases.size != 0 && Contact.Entity__c == 'AFI'}">
+                <!-- <apex:column headerValue="Case"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.id}" >{!c.caseNumber}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Case"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!c.lastId}" data-id="{!c.id}" data-title="{!c.caseNumber}" onclick="openNewTabRelatedContactCase(this);"> {!c.caseNumber}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Parent Case"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.parentid}" >{!c.Parent_Case_Number}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Parent Case Number"><apex:outputText ><a href="javascript:void(0);" data-id="{!c.parentid}" data-title="{!c.Parent_Case_Number}" onclick="openNewTabRelatedContactCase(this);"> {!c.Parent_Case_Number}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Type" value="{!c.type}"/>
+                <apex:column headerValue="Case Type" value="{!c.case_Type_Config}"/>
+                <!-- <apex:column headerValue="Subject"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.id}" >{!c.subject}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Subject"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!c.lastId}" data-id="{!c.id}" data-title="{!c.subject}" onclick="openNewTabRelatedContactCase(this);"> {!c.subject}</a></apex:outputText></apex:column>
+                <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!c.createdDate}" /> </apex:outputText></apex:column>
+                <apex:column headerValue="Date/Time Closed"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!c.ClosedDate}" /> </apex:outputText></apex:column>
+                <!-- <apex:column headerValue="Owner"><apex:outputLink target="_blank" value="/{!c.ownerId}" >{!c.case_owner}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Owner"><apex:outputText ><a href="javascript:void(0);" data-id="{!c.ownerId}" data-title="{!c.case_owner}" onclick="openNewTabRelatedContactCase(this);"> {!c.case_owner}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Status" value="{!c.status}"/>
+                <apex:column headerValue="Case Origin" value="{!c.origin}"/>
+            </apex:pageBlockTable>
+            <apex:pageBlockTable value="{!cases}" var="c" rendered="{!cases.size != 0 && Contact.Entity__c == 'ALI'}">
+                <!-- <apex:column headerValue="Case"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.id}" >{!c.caseNumber}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Case"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!c.lastId}" data-id="{!c.id}" data-title="{!c.caseNumber}" onclick="openNewTabRelatedContactCase(this);"> {!c.caseNumber}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Parent Case"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.parentid}" >{!c.Parent_Case_Number}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Parent Case Number"><apex:outputText ><a href="javascript:void(0);" data-id="{!c.parentid}" data-title="{!c.Parent_Case_Number}" onclick="openNewTabRelatedContactCase(this);"> {!c.Parent_Case_Number}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Type" value="{!c.type}"/>
+                <apex:column headerValue="Case Type" value="{!c.case_Type_Config}"/>
+                <!-- <apex:column headerValue="Subject"><apex:outputLink target="_blank" value="/apex/Case_RecordDetailPage?id={!c.id}" >{!c.subject}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Subject"><apex:outputText ><a href="javascript:void(0);" data-lastId="{!c.lastId}" data-id="{!c.id}" data-title="{!c.subject}" onclick="openNewTabRelatedContactCase(this);"> {!c.subject}</a></apex:outputText></apex:column>
+                <apex:column headerValue="Date/Time Opened"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!c.createdDate}" /> </apex:outputText></apex:column>
+                <apex:column headerValue="Date/Time Closed"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"> <apex:param value="{!c.ClosedDate}" /> </apex:outputText></apex:column>
+                <!-- <apex:column headerValue="Owner"><apex:outputLink target="_blank" value="/{!c.ownerId}" >{!c.case_owner}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Owner"><apex:outputText ><a href="javascript:void(0);" data-id="{!c.ownerId}" data-title="{!c.case_owner}" onclick="openNewTabRelatedContactCase(this);"> {!c.case_owner}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Status" value="{!c.status}"/>
+                <apex:column headerValue="Case Origin" value="{!c.origin}"/>
+            </apex:pageBlockTable>
+            <apex:outputLabel value="No records to display" rendered="{!cases.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+              
+            <apex:outputPanel id="pagination">
+                <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="Cases">First</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="Cases">Previous&nbsp;</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                        <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="Cases">
+                            <apex:param name="nickName"
+                                        value="{!i}"
+                                        assignTo="{!to_page}"/>
+                        </apex:commandLink>
+                        <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                        &nbsp;|&nbsp;
+                    </apex:repeat>
+                    
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="Cases">Next</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="Cases">Last</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

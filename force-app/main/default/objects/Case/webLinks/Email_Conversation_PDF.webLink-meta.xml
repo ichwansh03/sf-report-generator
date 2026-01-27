@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Email_Conversation_PDF</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Email Conversation (PDF)</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)}
+
+var urlCHS = &quot;/apex/EmailMessageHistory?id={!Case.Id}&quot;;
+
+
+if (sforce.console.isInConsole()) {
+sforce.console.getEnclosingTabId(function(enclosingResult){
+sforce.console.getEnclosingPrimaryTabId(function(){
+sforce.console.openPrimaryTab(null, urlCHS, true, &apos;Email Conversation (PDF)&apos;, null);
+});
+});
+}else {
+window.open(urlCHS,&apos;_blank&apos;);
+}</url>
+</WebLink>

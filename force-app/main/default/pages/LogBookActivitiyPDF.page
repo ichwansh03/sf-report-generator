@@ -1,0 +1,302 @@
+<apex:page renderAs="pdf"  controller="LogBookActivitiyController" action="{!previewPDF}" language="in" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    <html>
+        <head>
+            
+            <apex:stylesheet value="{!URLFOR($Resource.PDFStyle)}"/>
+            <style>
+                @page {
+                margin:40px;
+                margin-bottom:50px;
+                margin-top: 40px;
+                
+                @top-left {
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                content: element(header_left);
+                }
+                
+                @top-right {
+                font-size:10px;
+                font-style:italic;
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                content:  "Page " counter(page) " of " counter(pages);
+                }
+                }
+                
+                .footer_left {
+                text-align: left;
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                font-size: 10px;
+                position:absolute;
+                left:0px;
+                color:#023b77;
+                }
+                .footer_left_green {
+                text-align: left;
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                font-size: 10px;
+                position:absolute;
+                left:0px;
+                color:#10653a;
+                }
+                .wordWrap {
+                white-space: pre-wrap; /* css-3 */
+                white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                white-space: -pre-wrap; /* Opera 4-6 */
+                white-space: -o-pre-wrap; /* Opera 7 */
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
+                }
+                .header_left {
+                text-align: left;
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                font-size: 10px;
+                color:#023b77;
+                position: running(header_left);
+                border-bottom:1px solid;
+                padding:3px;
+                }
+                
+                .header_right {
+                text-align: right;
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                font-size: 10px;
+                color:#023b77;
+                position: running(header_right);
+                border-bottom:1px solid;
+                padding:3px;
+                }
+                
+                .pageNumbering {
+                color:#023b77;
+                position:absolute;
+                right:0px;
+                }
+                
+                .agree_justify {
+                text-align: left;
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                font-size: 4px;
+                position:absolute;
+                left:0px;
+                color:#023b77;
+                }
+                .lower_alpha { 
+                list-style-type: lower-alpha; 
+                }
+                a:link {
+                color: black;
+                background-color: transparent;
+                text-decoration: none;
+                }
+                .tableSec4PartHNMP{
+                text-align:left;
+                border-left:solid 1px;
+                border-right:solid 1px;
+                table-layout:fixed;
+                }
+                
+                .footer_center{
+                text-align:center;
+                font-size:13px;
+                }
+                
+                body {
+                font-family: 'Verdana', 'Geneva', sans-serif;
+                }
+                
+                .floatRightClear{
+                margin-left:20px;
+                top:10px;
+                }
+            </style>
+        </head>
+        <body>
+            <apex:variable var="cnt" value="{!0}" />
+            <apex:variable var="numbering" value="{!0}" /> 
+            <apex:repeat value="{!logBookDetailList}" var="detailList">
+                <apex:variable var="cnt" value="{!cnt+1}"/>
+                <div style="page-break-after:{!IF(cnt != logBookDetailList.size,'always','avoid')};font-size:13px">
+                    <div style="left:500px; right: 0px; position: absolute;">
+                        <apex:image url="{!URLFOR($Resource.email_1_header_logoaxamandiri)}"/>
+                    </div> 
+                    <div style="font-size:20px;position:relative;top:10px;">
+                        <table>
+                            <!--
+                            <tr>
+                                <td>Transaction Date</td>
+                                <td>:<apex:outputText value=" {0,date,dd/MM/yyyy}" >  
+                                    <apex:param value="{!detailList.Log_Book_Activitiy__r.Log_Book_Date__c}"/>  
+                                    </apex:outputText> 
+                                </td>
+                            </tr>
+							-->
+                        </table>
+                    </div>
+                    <div style="font-size:13px;position:relative;right:0px;top:70px;">
+                        <table>
+                            <tr>
+                                <td>No Antrian</td>
+                                <td>: {!detailList.Log_Book_Activitiy__r.Queue_No__c}</td>
+                            </tr>
+                            <tr>
+                                <td>Telah diterima dari Bapak / Ibu</td>
+                                <td>: {!detailList.Customer_Name__c}</td>
+                            </tr>
+                            <tr>
+                                <td>No Polis / Nama Pemegang Polis</td>
+                                <td>: {!detailList.Policy_Number__c} / {!detailList.Policy_Name_Holder__c}</td>
+                            </tr>
+                            <tr>
+                                <td>Hubungan Utusan dengan Pemegang Polis</td>
+                                <td>: {!detailList.Customer_Relation__c}</td>
+                            </tr>
+                            <tr>
+                                <td>Untuk Keperluan</td>
+                                <td>: {!detailList.Kind_Of_Transaction__c}</td>
+                            </tr>
+                            <apex:panelGroup rendered="{!detailList.Kind_Of_Transaction__c == 'Complaint'}">
+                            <tr>
+                                <td>No. Registrasi Keluhan</td>
+                                <td>: {!detailList.Log_Case__r.CaseNumber}</td>
+                            </tr>
+                            </apex:panelGroup>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div style="top:70px;font-size:13px">
+                        <apex:variable value="{!detailList.ID}" var="id"/>
+                        <apex:variable value="{!0}" var="counter"/>
+                        <apex:repeat value="{!mapDocInsertedDoc}" var="key">
+                            <apex:repeat value="{!IF(id == LEFT(key,18),mapDocInsertedDoc[key],'')}" var="document">
+                                <apex:variable value="{!counter+1}" var="counter"/>
+                                <tr>
+                                    <td>
+                                        <apex:outputText value="&nbsp;{!counter}. {!document}" escape="false"/>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </apex:repeat>
+                        <apex:repeat value="{!mapDocOtherDoc}" var="key">
+                            <apex:repeat value="{!IF(id == LEFT(key,18),mapDocOtherDoc[key],'')}" var="document">
+                                <apex:variable value="{!counter+1}" var="counter"/>
+                                <tr>
+                                    <td>
+                                        <apex:outputText value="&nbsp;{!counter}. {!document}" escape="false"/>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </apex:repeat>
+                    </div>
+                    <div style="position:relative;">
+                        <div style="width:1150px;">
+                            <div style="width:100%;left:80px;font-size:13px;">
+                                <table style="width:100%;text-align:center;">
+                                    <tr>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                    <tr>
+                                        <td>{!detailList.Log_Book_Activitiy__r.Touch_Point_City__c},&nbsp;
+                                            <apex:outputText value=" {0,date,dd MMMM yyyy}">
+                                               <apex:param value="{!detailList.createdDate}"/></apex:outputText>
+                                            <!-- <apex:outputText value="{!dateNow}"/>  -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diterima Oleh,</td>
+                                    </tr>
+                                    <tr>
+                                        <td><br/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><br/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {!detailList.Log_Book_Activitiy__r.CSO_Name__c}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="footer_center">
+                            Customer Care Center AXA Mandiri Financial Services
+                        </div>
+                        <br/>
+                        <div>
+                            <table style="right:0px;font-size:13px;">
+                                
+                                <tr>
+                                    <td>Whatsapp</td>
+                                    <td> : <a href="https://wa.me/6281586086801">0815-8608-6801</a></td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td align ='Center' rowspan="2" >Informasi Layanan Lainnya:<br/> (Emma dan Alamat Kantor Layanan)</td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>Livechat</td>
+                                    <td>: www.axa-mandiri.co.id</td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>Email </td>
+                                    <td>: customer@axa-mandiri.co.id</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td rowspan="8" colspan="2" align = 'Center'> <a href="https://www.axa-mandri.co.id/customer-case-centre"> <apex:image url="{!URLFOR($Resource.EMMA_Barcode)}"/> </a></td>
+                                </tr>
+                                <tr>
+                                    
+                                <tr>
+                                    <td></td>
+                                    <td>&nbsp;&nbsp;priority@axa-mandiri.co.id (Untuk Nasabah Prioritas)</td>
+                                </tr>
+                                <tr>
+                                    <td>Phone </td>
+                                    <td>: 021 - 1500 803</td>
+                                    </tr>
+                                <tr>
+                                    <td colspan="2" style="right:0px;font-size:9px;"><b><i>Jam operasional semua layanan Senin – Jumat (kecuali hari libur) Pkl. 08.00 – 17.00 WIB</i></b></td>
+                                    <td></td>
+                                    </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    </tr>
+                                    </tr>
+                                
+                                <!--
+                                <tr>
+                                    <td>FB Messenger </td>
+                                    <td>: AXA Mandiri</td>
+                                </tr>
+								-->
+                            </table>
+                        </div>
+                        <br/>
+                        <div class="fontDataMed2 italic">
+                            <span>
+                                Disclaimer:<br/>
+                                1. Tanda terima ini merupakan bukti serah terima dokumen dari Customer ke pihak AXA Mandiri<br/>
+                                2. Tanda terima ini dicetak secara komputerisasi sehingga tidak dibubuhi tanda tangan<br/>
+                                3. Kelengkapan dokumen untuk pengajuan Klaim ditunggu paling lambat dalam waktu 60 hari sejak penerimaan dokumen ini agar pengajuan dapat diproses<br/>
+                                4. Kelengkapan dokumen untuk keperluan selain Klaim ditunggu paling lambat dalam waktu 30 hari sejak penerimaan dokumen ini agar pengajuan dapat diproses<br/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </apex:repeat>
+        </body>
+    </html>
+</apex:page>

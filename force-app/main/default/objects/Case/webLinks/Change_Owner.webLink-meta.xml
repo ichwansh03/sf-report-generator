@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Change_Owner</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Change Owner</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/32.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+{!REQUIRESCRIPT(&quot;https://code.jquery.com/jquery-1.9.1.min.js&quot;)}
+//{!REQUIRESCRIPT(&quot;/apex/PageJS&quot;)}
+var url = &quot;/{!Case.Id}/a?retURL=%2F{!Case.Id}&quot;;
+ var focusedPrimaryTabId, allPrimaryTabIds;    	
+          	
+        
+//alert(&apos;url=&apos;+url);
+testGetFocusedPrimaryTabId();
+
+function testGetFocusedPrimaryTabId() {
+if (sforce.console.isInConsole()) {
+            sforce.console.getFocusedPrimaryTabId(showTabId);
+consolelink(url, &apos;_top&apos;);
+}
+else{
+consolelink(url, &apos;_top&apos;);
+}
+        }
+function showTabId(result) {
+  //Display the tab ID
+  //alert(&apos;Tab ID: &apos; + result.id);
+  focusedPrimaryTabId = result.id;
+};
+
+function consolelink(url, target){
+if (sforce.console.isInConsole()) {
+  sforce.console.openSubtab(focusedPrimaryTabId , url, true);
+  //sforce.console.getFocusedPrimaryTabId(focusedPrimaryTabId );
+  
+}
+else{
+window.open(url, target);
+}
+}</url>
+</WebLink>

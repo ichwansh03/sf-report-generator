@@ -1,0 +1,56 @@
+<apex:page controller="DMU_Custom_Data_View_Controller" contentType="txt/xml#{!filename}.xls" cache="true">
+    <apex:outputText value="{!xlsHeader}"/>
+    <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel"
+    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:html="http://www.w3.org/TR/REC-html40">
+        <Styles>
+            <Style ss:ID="s1">
+                <Alignment/>
+                <Borders/>
+                <Font ss:Bold="1"/>
+                <Interior/>
+                <NumberFormat/>
+                <Protection/>
+            </Style>
+        </Styles>
+        <Worksheet ss:Name="Kartu Kesehatan">
+            <Table x:FullColumns="1" x:FullRows="1">
+                <Column ss:Width="170"/>
+                <Column ss:Width="280"/>
+                <Column ss:Width="330"/>
+                <Row>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >No Polis</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Polis Holder Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Tgl Pickup</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Status</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Nama Penerima/hubungan</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Tgl Terima</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Tgl Retur</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Keterangan Retur</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Kurir</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >No. Resi</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Alamat</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Note</Data></Cell>
+                </Row>
+                <apex:repeat value="{!kkList}" var="ph">
+                    <Row>
+                        <Cell><Data ss:Type="String">{!ph.policy_no}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Consignee}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.TglPickUp}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Status}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.NamaPenerima}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.TglTerima}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.TglRetur}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.KeteranganRetur}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Kurir}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Resi}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Alamat}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Note}</Data></Cell>
+                    </Row>
+                </apex:repeat>
+            </Table>
+        </Worksheet>
+    </Workbook>
+</apex:page>

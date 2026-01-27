@@ -1,0 +1,231 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page docType="html-5.0" controller="TaskViewerController" sidebar="false" showHeader="{!showSFHeader}" standardStylesheets="false" cache="false">
+
+    <apex:composition template="LMS_Template">
+
+        <apex:define name="head">
+            <title>{!task.Name}</title>
+        </apex:define>
+
+        <apex:define name="body">
+
+            <apex:form id="taskViewerForm">
+
+                <apex:actionStatus id="status">
+                    <apex:facet name="start">
+                        <c:LMSStatus statusComponentId="{!$Component.status}"/>
+                    </apex:facet>
+                </apex:actionStatus>
+
+                <apex:outputPanel layout="none" id="resultsPanel">
+                    <apex:inputHidden id="redirectURL" value="{!redirectURL}"/>
+                </apex:outputPanel>
+
+                <apex:outputPanel id="pmessages" layout="none">
+                    <apex:outputPanel layout="block" styleClass="alert alert-danger" rendered="{!hasMessages}">
+                        <script>
+                            forceHideStatus();
+                        </script>
+                        <apex:pageMessages />
+                    </apex:outputPanel>
+                </apex:outputPanel>
+
+                <div style="padding:0 1rem;">
+                    <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                        <div class="slds-p-horizontal--small slds-size--1-of-1">
+                            <div class="slds-text-heading--large slds-m-bottom--large">{!task.Name}</div>
+                        </div>
+                        <div class="slds-p-horizontal--small slds-size--1-of-1">
+                            <div class="slds-text-longform slds-m-bottom--medium">
+                                <p>{!task.Description__c}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <apex:outputPanel layout="block" rendered="{!task.Description_RTA__c != null}" style="padding:10px 0;">
+                        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                                <div class="slds-text-longform slds-m-bottom--medium">
+                                    <apex:outputField value="{!task.Description_RTA__c}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!externalResourceURL != null}">
+                        <article class="slds-card slds-m-bottom--large">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__body slds-truncate">
+                                        <h2><span class="slds-text-heading--small">{!$Label.ALMS_Additional_Information}</span></h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                <div class="slds-text-heading--small">
+                                    <a href="javascript:almond.redirectHandlerWithTarget('{!JSENCODE(externalResourceURL)}','_{!JSENCODE(task.External_Resource_Target__c)}',true)">{!IF(task.External_Resource_Name__c!=null,task.External_Resource_Name__c,externalResourceURL)}</a>
+                                </div>
+                            </div>
+                        </article>
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!!taskCompleted}">
+
+                        <apex:outputPanel layout="none" rendered="{!task.Enable_Image_Upload__c}">
+                            <article class="slds-card">
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                        <div class="slds-media__body slds-truncate">
+                                            <h2><span class="slds-text-heading--small">{!$Label.ALMS_Upload_Image}</span></h2>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}" id="file" styleClass="image-upload-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!!task.Disable_Comments__c}">
+                            <article class="slds-card slds-m-bottom--large">
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                        <div class="slds-media__body slds-truncate">
+                                            <h2><span class="slds-text-heading--small">{!$Label.ALMS_Task_Comments}</span></h2>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <apex:inputTextArea value="{!assignmentComments}" rows="6" styleClass="slds-textarea" html-placeholder="{!$Label.ALMS_Task_Comments}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!task.Enable_Image_Upload__c}">
+                            <apex:commandButton value="{!$Label.ALMS_Task_Done_Button}" action="{!markCompletedAndRedirect}" styleClass="slds-button slds-button--brand large-btn" onclick="forceShowStatus();"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!!task.Enable_Image_Upload__c}">
+                            <apex:commandButton value="{!$Label.ALMS_Task_Done_Button}" action="{!markCompleted}" styleClass="slds-button slds-button--brand large-btn" onclick="forceShowStatus();" rerender="resultsPanel,pmessages" oncomplete="doRedirection()"/>
+                        </apex:outputPanel>
+
+                        <a href="javascript:doCancel()" class="slds-button slds-button--neutral large-btn" style="margin-top:15px;">{!$Label.ALMS_Task_Working_Button}</a>
+
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!taskInReview}">
+                        <div class="slds-m-top--large slds-m-bottom--large" style="position:relative;">
+                            <div class="slds-notify_container" style="position: relative;">
+                              <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                <span class="slds-assistive-text">{!$Label.ALMS_Task_In_Review_Message}</span>
+                                <h2>{!$Label.ALMS_Task_In_Review_Message}</h2>
+                              </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!assignment.Approver_Notes__c != null}">
+                        <article class="slds-card slds-m-top--large slds-m-bottom--large">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__body slds-truncate">
+                                        <h2><span class="slds-text-heading--small">{!$Label.ALMS_Note_From_Approver}</span></h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                <p>{!assignment.Approver_Notes__c}</p>
+                            </div>
+                        </article>
+                    </apex:outputPanel>
+
+                    <apex:outputPanel layout="none" rendered="{!taskCompleted}">
+
+                        <apex:outputPanel rendered="{!latestImageAttachment != null}">
+                            <article class="slds-card slds-m-top--large slds-m-bottom--large">
+                                <div class="slds-card__header slds-grid">
+                                </div>
+                                <div class="slds-card__body slds-text-align--center slds-p-around--large">
+                                    <apex:image url="{!URLFOR($Action.Attachment.Download,latestImageAttachment)}" styleClass="taskviewer-thumbnail"/>
+                                </div>
+                            </article>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" rendered="{!assignment.User_Notes__c != null}">
+                            <article class="slds-card slds-m-top--large slds-m-bottom--large">
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                        <div class="slds-media__body slds-truncate">
+                                            <h2><span class="slds-text-heading--small">{!$Label.ALMS_Task_Comments}</span></h2>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body slds-text-align--left slds-p-around--large">
+                                    <apex:outputField value="{!assignment.User_Notes__c}"/>
+                                </div>
+                            </article>
+                        </apex:outputPanel>
+
+                        <apex:commandButton value="{!$Label.ALMS_Task_Undo_Button}" action="{!resetTask}" styleClass="slds-button slds-button--neutral large-btn" style="margin-bottom:15px;" onclick="if(!confirm('{!JSINHTMLENCODE($Label.ALMS_Confirm_Alert)}')){return false}else{forceShowStatus()};" rerender="resultsPanel" oncomplete="doRedirection()" rendered="{!isTaskValidForReset}"/>
+
+                        <apex:commandButton value="{!$Label.ALMS_Task_Back_Button}" action="{!cancelTask}" styleClass="slds-button slds-button--brand large-btn" onclick="forceShowStatus();" rerender="resultsPanel" oncomplete="doRedirection()"/>
+
+                    </apex:outputPanel>
+                </div>
+
+                <script>
+                    function doRedirection(){
+                        var retUrl = document.getElementById('{!$Component.redirectURL}').value;
+                        if(retUrl && retUrl.length > 0){
+                            almond.redirectHandlerWithStatus(retUrl,false);
+                        }
+                    }
+                    function doCancel(){
+                        forceShowStatus();
+                        var retUrl = '{!JSENCODE(cancelURL)}';
+                        if(retUrl && retUrl.length > 0){
+                            almond.redirectHandlerWithStatus(retUrl,false);
+                        }
+                    }
+                </script>
+
+            </apex:form>
+
+        </apex:define>
+
+      </apex:composition>
+
+</apex:page>

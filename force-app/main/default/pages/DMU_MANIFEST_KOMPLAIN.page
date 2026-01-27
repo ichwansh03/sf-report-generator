@@ -1,0 +1,326 @@
+<apex:page controller="DMU_MANIFEST_KOMPLAIN_Controller">
+    <style>
+        .requiredLoaderBG {
+        background-color: rgb(71,71,71);
+        opacity:0.7;
+        filter:alpha(opacity=70);
+        background-image:url('{!$Resource.ajaxLoadGif}');
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+        }
+        
+        #el_loading
+        {
+        display: none;
+        }
+    </style>
+
+    <apex:form >
+        <apex:actionstatus startStyleClass="requiredLoaderBG" id="ajaxStatus" />
+		<apex:pageBlock title="DMU Manifest Komplain" id="theTable">
+            <!-- apex:sectionHeader title="DMU Manifest Komplain" subtitle="{!policyNo} : {!contactName} " printUrl="DMUInfoPage" / -->
+
+            <apex:pageBlockButtons >
+				<apex:commandButton value="Get Data" styleClass="btnGeneral" action="{!getdata}" reRender="theTable" status="ajaxStatus"/>
+				<apex:commandbutton value="Export" action="{!exportAll}" rendered="{!IF(HideField = FALSE,TRUE,FALSE)}"/>
+			</apex:pageBlockButtons>
+            <apex:pageBlockSection title="Parameter Filter" columns="3">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Courier" for="Courier" />
+                    <apex:inputField value="{!filterdata.Courier__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText > 
+                        Count COA : {!CountCOA} <br/>
+                        Count Inquiry : {!countInquiry} <br/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Date From : " for="DateFrom" />
+                    <apex:panelGroup >
+	                    <apex:inputField value="{!filterdata.Due_Date__c}"/>
+						<apex:outputLabel value=" To " for="DateTo" />
+    	                <apex:inputField value="{!filterdata.Closed_Date__c}"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputText > 
+                        Count Invest : {!countInvest} <br/>
+                        Count BTO : {!countBTO}
+                    </apex:outputText>
+
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="" />
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Policy No" />
+                    <apex:panelGroup >
+                        <apex:inputField value="{!filterdata.ContactId}"/>
+                        <apex:outputLabel value="Status" for="Status" />
+                        <apex:inputField value="{!filterdata.Status}"/>                    
+                    </apex:panelGroup>
+                    
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText > 
+                        Count Redel : {!countRedel}
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:inputHidden value="{!filterdata.RecordTypeId}"/>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+
+            <!-- COA --> 
+            <apex:pageBlockSection title="coa" collapsible="true" columns="23" rendered="{!IF(HideField = FALSE,TRUE,FALSE)}">
+                <apex:pageBlockTable id="idcoa" value="{!coaList}" var="coa" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!coa.DATA_ID}</apex:column>
+                    <apex:column headerValue="REQUEST_NO">{!coa.REQUEST_NO}</apex:column>
+                    <apex:column headerValue="CUSTOMER_NAME">{!coa.CUSTOMER_NAME}</apex:column>
+                    <apex:column headerValue="REQUEST_STATUS">{!coa.REQUEST_STATUS}</apex:column>
+                    <apex:column headerValue="RECEIVED_DATE">{!coa.RECEIVED_DATE}</apex:column>
+                    <apex:column headerValue="CATEGORY">{!coa.CATEGORY}</apex:column>
+                    <apex:column headerValue="REQUESTOR">{!coa.REQUESTOR}</apex:column>
+                    <apex:column headerValue="POLIS">{!coa.POLIS}</apex:column>
+                    <apex:column headerValue="COMPLAIN">{!coa.COMPLAIN}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{!coa.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="OTHERINFORMATION">{!coa.OTHERINFORMATION}</apex:column>
+                    <apex:column headerValue="TELP">{!coa.TELP}</apex:column>
+                    <apex:column headerValue="KOTA">{!coa.KOTA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_AXA">{!coa.REMARK_FROM_AXA}</apex:column>
+                    <apex:column headerValue="SENDDATE">{!coa.SENDDATE}</apex:column>
+                    <apex:column headerValue="STATUS">{!coa.STATUS}</apex:column>
+                    <apex:column headerValue="PENERIMA">{!coa.PENERIMA}</apex:column>
+                    <apex:column headerValue="HUBUNGAN">{!coa.HUBUNGAN}</apex:column>
+                    <apex:column headerValue="TGLTERIMA">{!coa.TGLTERIMA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_NCS">{!coa.REMARK_FROM_NCS}</apex:column>
+                    <apex:column headerValue="DATECLOSED">{!coa.DATECLOSED}</apex:column>
+                    <apex:column headerValue="STATUSCHS">{!coa.STATUSCHS}</apex:column>
+                    <apex:column headerValue="KURIR">{!coa.KURIR}</apex:column>
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- COA for CCC --> 
+            <apex:pageBlockSection title="coa" collapsible="true" columns="10" rendered="{!IF(HideField = FALSE,FALSE,TRUE)}">
+                <apex:pageBlockTable id="idcoaccc" value="{!coaList}" var="coa" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!coa.DATA_ID}</apex:column>
+                    <apex:column headerValue="RECEIVED_DATE">{!coa.RECEIVED_DATE}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{!coa.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_AXA">{!coa.REMARK_FROM_AXA}</apex:column>
+                    <apex:column headerValue="STATUS">{!coa.STATUS}</apex:column>
+                    <apex:column headerValue="PENERIMA">{!coa.PENERIMA}</apex:column>
+                    <apex:column headerValue="HUBUNGAN">{!coa.HUBUNGAN}</apex:column>
+                    <apex:column headerValue="TGLTERIMA">{!coa.TGLTERIMA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_KURIR">{!coa.REMARK_FROM_NCS}</apex:column>
+                    <apex:column headerValue="KURIR">{!coa.KURIR}</apex:column>
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- Inquiry --> 
+            <apex:pageBlockSection title="inquiry" collapsible="true" columns="23" rendered="{!IF(HideField = FALSE,TRUE,FALSE)}">
+                <apex:pageBlockTable id="idinquiry" value="{!inquiryList}" var="inquiry" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!inquiry.DATA_ID}</apex:column>
+                    <apex:column headerValue="REQUEST_NO">{!inquiry.REQUEST_NO}</apex:column>
+                    <apex:column headerValue="CUSTOMER_NAME">{!inquiry.CUSTOMER_NAME}</apex:column>
+                    <apex:column headerValue="REQUEST_STATUS">{!inquiry.REQUEST_STATUS}</apex:column>
+                    <apex:column headerValue="RECEIVED_DATE">{!inquiry.RECEIVED_DATE}</apex:column>
+                    <apex:column headerValue="CATEGORY">{!inquiry.CATEGORY}</apex:column>
+                    <apex:column headerValue="REQUESTOR">{!inquiry.REQUESTOR}</apex:column>
+                    <apex:column headerValue="POLIS">{!inquiry.POLIS}</apex:column>
+                    <apex:column headerValue="COMPLAIN">{!inquiry.COMPLAIN}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{!inquiry.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="OTHERINFORMATION">{!inquiry.OTHERINFORMATION}</apex:column>
+                    <apex:column headerValue="TELP">{!inquiry.TELP}</apex:column>
+                    <apex:column headerValue="KOTA">{!inquiry.KOTA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_AXA">{!inquiry.REMARK_FROM_AXA}</apex:column>
+                    <apex:column headerValue="SENDDATE">{!inquiry.SENDDATE}</apex:column>
+                    <apex:column headerValue="STATUS">{!inquiry.STATUS}</apex:column>
+                    <apex:column headerValue="PENERIMA">{!inquiry.PENERIMA}</apex:column>
+                    <apex:column headerValue="HUBUNGAN">{!inquiry.HUBUNGAN}</apex:column>
+                    <apex:column headerValue="TGLTERIMA">{!inquiry.TGLTERIMA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_NCS">{!inquiry.REMARK_FROM_NCS}</apex:column>
+                    <apex:column headerValue="DATECLOSED">{!inquiry.DATECLOSED}</apex:column>
+                    <apex:column headerValue="STATUSCHS">{!inquiry.STATUSCHS}</apex:column>
+                    <apex:column headerValue="KURIR">{!inquiry.KURIR}</apex:column>
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- Inquiry for CCC --> 
+            <apex:pageBlockSection title="inquiry" collapsible="true" columns="10" rendered="{!IF(HideField = FALSE,FALSE,TRUE)}">
+                <apex:pageBlockTable id="idinquiryccc" value="{!inquiryList}" var="inquiry" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!inquiry.DATA_ID}</apex:column>
+                    <apex:column headerValue="RECEIVED_DATE">{!inquiry.RECEIVED_DATE}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{!inquiry.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_AXA">{!inquiry.REMARK_FROM_AXA}</apex:column>
+                    <apex:column headerValue="STATUS">{!inquiry.STATUS}</apex:column>
+                    <apex:column headerValue="PENERIMA">{!inquiry.PENERIMA}</apex:column>
+                    <apex:column headerValue="HUBUNGAN">{!inquiry.HUBUNGAN}</apex:column>
+                    <apex:column headerValue="TGLTERIMA">{!inquiry.TGLTERIMA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_KURIR">{!inquiry.REMARK_FROM_NCS}</apex:column>
+                    <apex:column headerValue="KURIR">{!inquiry.KURIR}</apex:column>
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- Invest --> 
+            <apex:pageBlockSection title="Invest" collapsible="true" columns="21" rendered="{!IF(HideField = FALSE,TRUE,FALSE)}">
+                <apex:pageBlockTable id="idInvest" value="{!InvestList}" var="Invest" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="NUM">{!Invest.NUM}</apex:column>
+                    <apex:column headerValue="POLIS">{!Invest.POLIS}</apex:column>
+                    <apex:column headerValue="CONSIGNEE">{!Invest.CONSIGNEE}</apex:column>
+                    <apex:column headerValue="NO_INVESTIGASI">{!Invest.NO_INVESTIGASI}</apex:column>
+                    <apex:column headerValue="KOTA">{!Invest.KOTA}</apex:column>
+                    <apex:column headerValue="SLA">{!Invest.SLA}</apex:column>
+                    <apex:column headerValue="CASE">{!Invest.DATA_CASE}</apex:column>
+                    <apex:column headerValue="REMARK_AXA">{!Invest.REMARK_AXA}</apex:column>
+                    <apex:column headerValue="TELP">{!Invest.TELP}</apex:column>
+                    <apex:column headerValue="DATE_REQUEST">{!Invest.DATE_REQUEST}</apex:column>
+                    <apex:column headerValue="TGLHASILINVESTIGASI">{!Invest.TGLHASILINVESTIGASI}</apex:column>
+                    <apex:column headerValue="HASIL_INVESTIGASI">{!Invest.HASIL_INVESTIGASI}</apex:column>
+                    <apex:column headerValue="AGING_PINALTY">{!Invest.AGING_PINALTY}</apex:column>
+                    <apex:column headerValue="PINALTY">{!Invest.PINALTY}</apex:column>
+                    <apex:column headerValue="REMARK">{!Invest.REMARK}</apex:column>
+                    <apex:column headerValue="KESIMPULAN_HASIL_INVESTIGASI">{!Invest.KESIMPULAN_HASIL_INVESTIGASI}</apex:column>
+                    <apex:column headerValue="SLA_OVERDUE-OK">{!Invest.SLA_OVERDUE_OK}</apex:column>
+                    <apex:column headerValue="COMPLAIN">{!Invest.COMPLAIN}</apex:column>
+                    <apex:column headerValue="Kurir">{!Invest.Kurir}</apex:column>
+                    <apex:column headerValue="Category">{!Invest.Category}</apex:column>
+                    <apex:column headerValue="No_request">{!Invest.No_request}</apex:column>    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- Invest for CCC --> 
+            <apex:pageBlockSection title="Invest" collapsible="true" columns="10" rendered="{!IF(HideField = FALSE,FALSE,TRUE)}">
+                <apex:pageBlockTable id="idInvestccc" value="{!InvestList}" var="Invest" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!Invest.NUM}</apex:column>
+                    <apex:column headerValue="DATE_REQUEST">{!Invest.DATE_REQUEST}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{Invest.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="REMARK_AXA">{!Invest.REMARK_AXA}</apex:column>
+                    <apex:column headerValue="TGLHASILINVESTIGASI">{!Invest.TGLHASILINVESTIGASI}</apex:column>
+                    <apex:column headerValue="REMARK">{!Invest.REMARK}</apex:column>
+                    <apex:column headerValue="KESIMPULAN_HASIL_INVESTIGASI">{!Invest.KESIMPULAN_HASIL_INVESTIGASI}</apex:column>
+                    <apex:column headerValue="KURIR">{!Invest.KURIR}</apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- BTO --> 
+            <apex:pageBlockSection title="Polis_BTO" collapsible="true" columns="4" rendered="FALSE">
+                <apex:pageBlockTable id="idbto" value="{!btoList}" var="bto" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="Policy_Number">{!bto.Policy_Number}</apex:column>
+                    <apex:column headerValue="Tujuan_Keluar">{!bto.Tujuan_Keluar}</apex:column>
+                    <apex:column headerValue="Lokasi_Custody">{!bto.Lokasi_Custody}</apex:column>
+                    <apex:column headerValue="Tgl_Upload">{!bto.Tgl_Upload}</apex:column>    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- BTO  for CCC --> 
+
+            <!-- Redel --> 
+            <apex:pageBlockSection title="REDEL" collapsible="true" columns="23" rendered="{!IF(HideField = FALSE,TRUE,FALSE)}">
+                <apex:pageBlockTable id="idredel" value="{!redelList}" var="redel" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!redel.DATA_ID}</apex:column>
+                    <apex:column headerValue="REQUEST_NO">{!redel.REQUEST_NO}</apex:column>
+                    <apex:column headerValue="CUSTOMER_NAME">{!redel.CUSTOMER_NAME}</apex:column>
+                    <apex:column headerValue="REQUEST_STATUS">{!redel.REQUEST_STATUS}</apex:column>
+                    <apex:column headerValue="RECEIVED_DATE">{!redel.RECEIVED_DATE}</apex:column>
+                    <apex:column headerValue="CATEGORY">{!redel.CATEGORY}</apex:column>
+                    <apex:column headerValue="REQUESTOR">{!redel.REQUESTOR}</apex:column>
+                    <apex:column headerValue="POLIS">{!redel.POLIS}</apex:column>
+                    <apex:column headerValue="COMPLAIN">{!redel.COMPLAIN}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{!redel.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="OTHERINFORMATION">{!redel.OTHERINFORMATION}</apex:column>
+                    <apex:column headerValue="TELP">{!redel.TELP}</apex:column>
+                    <apex:column headerValue="KOTA">{!redel.KOTA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_AXA">{!redel.REMARK_FROM_AXA}</apex:column>
+                    <apex:column headerValue="SENDDATE">{!redel.SENDDATE}</apex:column>
+                    <apex:column headerValue="STATUS">{!redel.STATUS}</apex:column>
+                    <apex:column headerValue="PENERIMA">{!redel.PENERIMA}</apex:column>
+                    <apex:column headerValue="HUBUNGAN">{!redel.HUBUNGAN}</apex:column>
+                    <apex:column headerValue="TGLTERIMA">{!redel.TGLTERIMA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_NCS">{!redel.REMARK_FROM_NCS}</apex:column>
+                    <apex:column headerValue="DATECLOSED">{!redel.DATECLOSED}</apex:column>
+                    <apex:column headerValue="STATUSCHS">{!redel.STATUSCHS}</apex:column>
+                    <apex:column headerValue="KURIR">{!redel.KURIR}</apex:column>
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- Redel for CCC --> 
+            <apex:pageBlockSection title="REDEL" collapsible="true" columns="10" rendered="{!IF(HideField = FALSE,FALSE,TRUE)}">
+                <apex:pageBlockTable id="idredelccc" value="{!redelList}" var="redel" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="ID">{!redel.DATA_ID}</apex:column>
+                    <apex:column headerValue="RECEIVED_DATE">{!redel.RECEIVED_DATE}</apex:column>
+                    <apex:column headerValue="DESCRIPTION">{!redel.DESCRIPTION}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_AXA">{!redel.REMARK_FROM_AXA}</apex:column>
+                    <apex:column headerValue="STATUS">{!redel.STATUS}</apex:column>
+                    <apex:column headerValue="PENERIMA">{!redel.PENERIMA}</apex:column>
+                    <apex:column headerValue="HUBUNGAN">{!redel.HUBUNGAN}</apex:column>
+                    <apex:column headerValue="TGLTERIMA">{!redel.TGLTERIMA}</apex:column>
+                    <apex:column headerValue="REMARK_FROM_KURIR">{!redel.REMARK_FROM_NCS}</apex:column>
+                    <apex:column headerValue="KURIR">{!redel.KURIR}</apex:column>
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+            <!-- Policy BTO -->
+            <apex:pageBlockSection id="data11" title="Policy BTO (Gudang)" collapsible="true" columns="5">
+                <apex:pageBlockTable id="idcoa" value="{!BTOJList}" var="bto" style="overflow:auto;width:1000px;" align="center" border="1">
+                    <apex:column headerValue="no polis">{!bto.policy_no}</apex:column>
+                    <apex:column headerValue="Policy Holder Name">{!bto.Consignee}</apex:column>
+                    <!-- apex:column headerValue="BTO Date">
+                        <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!bto.ShipDate}" /></apex:outputText>
+                    </apex:column -->
+                    <apex:column headerValue="BTO Date">{!bto.ShipDate}</apex:column>
+                    
+                    <!-- apex:column headerValue="Status Pelacakan">{!bto.TrackingStatus}</apex:column -->
+                    <!-- apex:column headerValue="Penerima">{!bto.Recipient}</apex:column>
+                    <!-- apex:column headerValue="Tgl Pick Up">
+                        <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!bto.DatePickUp}" /></apex:outputText>
+                    </apex:column -->
+                    <apex:column headerValue="Tgl Pick Up">{!bto.DatePickUp}</apex:column>
+                    
+                    <!-- apex:column headerValue="Tgl Pengembalian">
+                        <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!bto.ReturnDate}" /></apex:outputText>
+                    </apex:column -->
+                    <apex:column headerValue="Tgl Retur">{!bto.ReturnDate}</apex:column>
+                    <apex:column headerValue="Jenis Dokument">{!bto.policyTypeCode}</apex:column>
+                    <apex:column headerValue="Channel">{!bto.warehouse_type}</apex:column>
+                    
+                    <!-- apex:column headerValue="Alasan Pengembalian">{!bto.ReturnReason}</apex:column -->
+                    <apex:column headerValue="Servicer">{!bto.ServiceBy}</apex:column>
+                    <apex:column headerValue="AWB">{!bto.AWB}</apex:column>
+                    <apex:column headerValue="Lokasi Custody">{!bto.ConsigneeAddress}</apex:column>
+                    <!-- apex:column headerValue="Tgl Keluar">
+                        <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!bto.warehouse_outbound_dt}" /></apex:outputText>
+                    </apex:column -->
+                    <apex:column headerValue="Tgl Keluar">{!bto.warehouse_outbound_dt}</apex:column>
+
+                    <apex:column headerValue="Tujuan Keluar">{!bto.warehouse_outboundDestination}</apex:column>
+                    <apex:column headerValue="Nomor BOX">{!bto.warehouse_boxFilling_no}</apex:column>
+                    <apex:column headerValue="PIC Name">{!bto.warehouse_picName}</apex:column>
+
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

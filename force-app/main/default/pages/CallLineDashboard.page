@@ -1,0 +1,88 @@
+<apex:page controller="CallLineReport_c">
+    <apex:slds />
+    <apex:pageBlock >
+        <h1>Agent Productivity</h1>
+        <br/>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" style="width:220px" border="1px">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Type">Type</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Total">Total</div>
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="slds-hint-parent">
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">Calls</div>
+                    </td>
+                    <apex:repeat value="{!calls}" var="a">
+                        
+                        <td data-label="Close Date">
+                            <div class="slds-truncate">{!a['idline']}</div>
+                        </td>
+                    </apex:repeat>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Account Name">
+                        <div class="slds-truncate">Contacted</div>
+                    </td>
+                    <apex:repeat value="{!contacted}" var="con">
+                        <td data-label="Close Date">
+                            <div class="slds-truncate">{!con['idline']}</div>
+                        </td>
+                    </apex:repeat>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">Un-contacted</div>
+                    </td>
+                    <apex:repeat value="{!unContacted}" var="con">
+                        <td data-label="Close Date">
+                            <div class="slds-truncate">{!con['idline']}</div>
+                        </td>
+                    </apex:repeat>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">Closed</div>
+                    </td>
+                    <apex:repeat value="{!closed}" var="con">
+                        <td data-label="Close Date">
+                            <div class="slds-truncate">{!con['idline']}</div>
+                        </td>
+                    </apex:repeat>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">Attempt Calls</div>
+                    </td>
+                    <!--<apex:repeat value="{!attemptCalls}" var="con">
+                        <td data-label="Close Date">
+                            <div class="slds-truncate">{!con['idline']}</div>
+                        </td>
+                    </apex:repeat>-->
+                    <td data-label="Close Date">
+                        <div class="slds-truncate">{!attemptc}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+       <!-- <apex:pageBlockTable value="{!calline}" var="con">
+            
+            <apex:column headerValue="Test" >
+                <apex:outputText >{!con.Case_Type__c}</apex:outputText>
+            </apex:column>
+            <apex:column headerValue="Test">
+                {!con.Call_Generated_Counter__c}
+            </apex:column>
+        </apex:pageBlockTable>-->
+        
+    </apex:pageBlock>
+</apex:page>

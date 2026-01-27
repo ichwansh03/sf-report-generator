@@ -1,0 +1,18 @@
+<apex:page standardController="E_Form_Master_Data__c" extensions="AMFS_GeneratePDFController">
+    <script>
+    var recordId = '{!E_Form_Master_Data__c.Id}';
+    Visualforce.remoting.Manager.invokeAction(
+        'AMFS_GeneratePDFController.generatePDF',
+        recordId,
+        function(result, event) {
+            if (event.status) {
+                alert("PDF generated: " + result);
+                window.location.href = '/' + recordId;
+            } else {
+                alert("Error: " + event.message);
+                window.location.href = '/' + recordId;
+            }
+        }
+    );
+    </script>
+</apex:page>

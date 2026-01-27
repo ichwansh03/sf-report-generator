@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AGI</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>Insured_Name__c</columns>
+    <columns>Policy_No__c</columns>
+    <columns>Customer_Type__c</columns>
+    <columns>CONTACT.PHONE1</columns>
+    <columns>CONTACT.EMAIL</columns>
+    <columns>PolicyApp__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Entity__c</field>
+        <operation>equals</operation>
+        <value>AGI</value>
+    </filters>
+    <label>AGI</label>
+    <language>en_US</language>
+    <sharedTo>
+        <roleAndSubordinatesInternal>BackOffice_AGI</roleAndSubordinatesInternal>
+        <roleAndSubordinatesInternal>CEO_AGI</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

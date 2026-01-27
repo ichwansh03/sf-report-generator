@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Delete_Call_Line</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Delete Call Line</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>var entity = &quot;{!TEXT($User.Entity__c)}&quot;; 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+
+var o = new sforce.SObject(&quot;Call_List__c&quot;); 
+o.id = &quot;{!Call_List__c.Id}&quot;; 
+//o.IsExpired__c = &quot;{!Call_List__c.is_Expired_F__c}&quot;; 
+var expF = &quot;{!Call_List__c.is_Expired_F__c}&quot;; 
+o.IsExpired__c = &quot;{!Call_List__c.IsExpired__c}&quot;; 
+
+//entity == &quot;ALI&quot;
+if(entity == &quot;ALI&quot;){ 
+if(o.IsExpired__c == &quot;1&quot; || expF == &quot;1&quot;){ 
+o.Delete_Call_Line__c = &quot;TRUE&quot;; 
+
+sforce.connection.update([o]); 
+window.location.reload();
+
+}else{ 
+alert(&quot;Delete Call Line, only Expired..&quot;+o.IsExpired__c); 
+}
+}else{ 
+if(o.IsExpired__c == &quot;0&quot; || expF == &quot;0&quot;){ 
+alert(&quot;Delete Call Line, Success.. &quot;); 
+o.Delete_Call_Line__c = &quot;TRUE&quot;; 
+
+sforce.connection.update([o]); 
+window.location.reload();
+
+}else{ 
+alert(&quot;Delete Call Line, only NOT Expired..&quot;+o.IsExpired__c); 
+}
+
+
+//alert(&quot;Button Delete Call Line only for Entity ALI &amp; AMFS. contact your administrator, if want it.&quot;); 
+}</url>
+</WebLink>

@@ -1,0 +1,272 @@
+<apex:page standardController="Contact" extensions="CallLine_CustomPage_ctrl" sidebar="false" showHeader="false">
+     
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>   
+    <apex:includeScript value="/support/console/37.0/integration.js"/>    
+    <!--  JAVASCRIPT ABOVE --> 
+    <script type="text/javascript">  
+
+        var urlRequestNewTabRelatedContactCallLine ='';
+        var titleNewTabRelatedContactCallLine ='';
+  
+        function openNewTabRelatedContactCallLine(el) {
+            console.log(el);	
+            let callLineId = el.getAttribute('data-id');
+         	let uniqueId = el.getAttribute('data-lastId');
+            
+            console.log(callLineId);
+            titleNewTabRelatedContactCallLine = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactCallLine ='/apex/CallLine_RecordDetailPage?id='+ callLineId+'&lastId='+uniqueId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactCallLine);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactCallLine,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactCallLine(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactCallLine+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactCallLine , false, titleNewTabRelatedContactCallLine, null, null, titleNewTabRelatedContactCallLine);
+        }
+
+        function openSuccessRelatedContactCallLine(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+
+        
+
+        var urlRequestNewTabRelatedContactCallList ='';
+        var titleNewTabRelatedContactCallList ='';
+  
+        function openNewTabRelatedContactCallList(el) {
+            console.log(el);	
+            let CallListId = el.getAttribute('data-id');
+            
+            console.log(CallListId);
+            titleNewTabRelatedContactCallList = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactCallList ='/apex/calllist_recorddetailpage?id='+ CallListId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactCallList);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactCallList,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactCallList(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactCallList+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactCallList , false, titleNewTabRelatedContactCallList, null, null, titleNewTabRelatedContactCallList);
+        }
+
+        function openSuccessRelatedContactCallList(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+
+        
+
+        var urlRequestNewTabRelatedContactAgent ='';
+        var titleNewTabRelatedContactAgent ='';
+  
+        function openNewTabRelatedContactAgent(el) {
+            console.log(el);	
+            let AgentId = el.getAttribute('data-id');
+         	let uniqueId = el.getAttribute('data-lastId');
+            
+            console.log(AgentId);
+            titleNewTabRelatedContactAgent = el.getAttribute('data-title');
+            urlRequestNewTabRelatedContactAgent ='/'+ AgentId; 
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTabRelatedContactAgent);
+            }
+            else {
+                javascript:var x=window.open(urlRequestNewTabRelatedContactAgent,'_blank');
+            }
+        }
+
+        function openSubTabRelatedContactAgent(result) {
+            // var primaryTabId = {!id};
+            let primaryTabId = result.id; 
+            console.log('primary tab id for '+titleNewTabRelatedContactAgent+': '+primaryTabId);
+            // i++;
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTabRelatedContactAgent , false, titleNewTabRelatedContactAgent, null, null, titleNewTabRelatedContactAgent);
+        }
+
+        function openSuccessRelatedContactAgent(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                 
+            } else {
+                console.log('failed open subtab :'+result);
+            }
+        }
+    </script>  
+    
+    <style>
+        
+        .slds-text-title_caps {
+            border-left: 0.5px solid grey; 
+            border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+            text-align:center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+            /* Background color */
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            
+            /* Dimensions */
+            width: 100%;
+            height: 300%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            position: absolute;
+            
+            /* Mouse */
+            cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+            /* Background color */
+            border: solid 2px #ffba1a;
+            background-color: white;
+            
+            /* Dimensions */
+            left: 50%;
+            width: 200px;
+            margin-left: -100px;
+            top: 50%;
+            height: 75px;
+            margin-top: -25px;
+            z-index: 999;
+            position: fixed;
+            
+            /* Mouse */
+            cursor:pointer;
+        }
+    </style>    
+    <!--c:StatusLoading />-->
+    <apex:actionStatus id="stSearch" stopText="">
+        <apex:facet name="start">
+            <div>
+                <div class="popupBackground" />
+                <div class="PopupPanel">
+                    <table  border="0" bordercolor="red"  width="100%" height="100%">
+                        <tr>
+                            <td align="center"><b>Please Wait</b></td>
+                        </tr>
+                        <tr>
+                            <td valign="center" align="center"><img height="16" width="16" title="Processing..." alt="Processing..." 
+                                                                    src="/img/loading.gif" style="margin-top :17px;"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <apex:form id="formId">
+        <apex:pageblock id="CallLines" title="Call Lines" tabStyle="Call_Line__c">
+            <apex:actionStatus id="status" >
+                <apex:facet name="start">
+                    <apex:outputPanel >
+                        Loading...<br/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:outputPanel >
+                        <apex:commandButton value="Reload" action="{!loadCallLines}" rerender="CallLines" status="status" /><br/>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus><br/>
+            <apex:pageBlockTable value="{!list_callline}" var="cl" rendered="{!list_callline.size != 0 && Contact.Entity__c == 'AMFS'}">
+                <!-- <apex:column headerValue="Call Line Name"><apex:outputLink onclick="openNewTab('{!cl.id}');" value="/apex/CallLine_RecordDetailPage?id={!cl.id}" >{!cl.Name}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Call Line Name"><apex:outputText > <a href="javascript:void(0);" data-id="{!cl.id}" data-lastId="{!cl.lastId}" data-title="{!cl.Name}" onclick="openNewTabRelatedContactCallLine(this);"> {!cl.Name}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Call Date"><apex:outputText value="{0,date,MM/dd/yyyy}"> <apex:param value="{!cl.Call_Date_c}" /> </apex:outputText></apex:column>
+                <apex:column headerValue="Mobile Phone">{!cl.Contacted_Number_c}<img src="/img/btn_nodial_inline.gif" width="16" height="10"/></apex:column>
+                <apex:column headerValue="Policy No" value="{!cl.Policy_No_c}"/>
+                <apex:column headerValue="Is Expired"><img src="/img/checkbox_{!IF(!cl.Is_Expired_c, 'un', '')}checked.gif"/></apex:column>
+                <apex:column headerValue="Survey Type" value="{!cl.Survey_Type_c}"/>
+                <apex:column headerValue="Call Status" value="{!cl.Activity_Result}"/>
+                <apex:column headerValue="Reason Status" value="{!cl.Verification}"/>
+                <!-- <apex:column headerValue="Agent" value="{!cl.agent_name}"/> -->
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockTable value="{!list_callline}" var="cl" rendered="{!list_callline.size != 0 && (Contact.Entity__c == 'ALI' || Contact.Entity__c == 'AFI')}">
+                <!-- <apex:column headerValue="Call Line Name"><apex:outputLink onclick="openNewTab('{!cl.id}');" value="/apex/CallLine_RecordDetailPage?id={!cl.id}" >{!cl.Name}</apex:outputLink> </apex:column> -->
+                <apex:column headerValue="Call Line Name"><apex:outputText > <a href="javascript:void(0);" data-id="{!cl.id}" data-lastId="{!cl.lastId}" data-title="{!cl.Name}" onclick="openNewTabRelatedContactCallLine(this);"> {!cl.Name}</a></apex:outputText> </apex:column>
+                <!-- <apex:column headerValue="Call Line Name"><apex:outputLink onclick="openNewTab('{!cl.id}');" value="/apex/CallLine_RecordDetailPage?id={!cl.id}" >{!cl.Name}</apex:outputLink> </apex:column> -->
+                <!-- <apex:column headerValue="Campaign Name"><apex:outputLink target="_blank" value="/apex/CallList_RecordDetailPage?id={!cl.Call_List_c}" >{!cl.Call_List_name}</apex:outputLink> </apex:column>  -->
+                <apex:column headerValue="Campaign Name"><apex:outputText > <a href="javascript:void(0);" data-id="{!cl.Call_List_c}" data-title="{!cl.Call_List_name}" onclick="openNewTabRelatedContactCallList(this);"> {!cl.Call_List_name}</a></apex:outputText> </apex:column>
+                <apex:column headerValue="Call Status Configuration" value="{!cl.Activity_Result}"/> 
+                 <apex:column headerValue="Reason Status" value="{!cl.Verification}"/> 
+                <apex:column headerValue="Call Date"><apex:outputText value="{0,date,MM/dd/yyyy}"> <apex:param value="{!cl.Call_Date_c}" /> </apex:outputText></apex:column>
+                <apex:column headerValue="Mobile Phone">{!cl.Contacted_Number_c}<img src="/img/btn_nodial_inline.gif" width="16" height="10"/></apex:column>
+                <apex:column headerValue="Contact"><apex:outputLink target="_blank" value="/{!cl.contact_c}" >{!cl.contact_name}</apex:outputLink></apex:column> 
+                 <apex:column headerValue="Policy No" value="{!cl.Policy_No_c}"/> 
+                <!-- <apex:column headerValue="is Expired" style="text-align:center"><img src="/img/checkbox_{!IF(!cl.is_Expired_c, 'un', '')}checked.gif"/></apex:column> -->
+                <!-- <apex:column headerValue="Case Type" value="{!cl.case_Type_c}"/> -->
+                <!-- <apex:column headerValue="Call Status Config" value="{!cl.case_Type_Config_c}"/> -->
+                <apex:column headerValue="Survey Type" value="{!cl.Survey_Type_c}"/>
+                <!-- <apex:column headerValue="Reason Status" value="{!cl.Verification}"/> -->
+                <!-- <apex:column headerValue="Remarks" value="{!cl.call_Remarks_c}"/> --> 
+                <apex:column headerValue="Agent"><apex:outputText > <a href="javascript:void(0);" data-id="{!cl.agent_c}" data-title="{!cl.agent_name}" onclick="openNewTabRelatedContactAgent(this);">{!cl.agent_name}</a></apex:outputText> </apex:column>
+            </apex:pageBlockTable> 
+            <apex:outputLabel value="No records to display" rendered="{!list_callline.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            
+            
+            <apex:outputPanel id="pagination">
+                <apex:actionFunction name="CallLineAction" action="{!setLoadCallLine}" rerender="out"/>
+                <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="CallLines">First</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="CallLines">Previous&nbsp;</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                        <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="CallLines">
+                            <apex:param name="nickName"
+                                        value="{!i}"
+                                        assignTo="{!to_page}"/>
+                        </apex:commandLink>
+                        <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                        &nbsp;|&nbsp;
+                    </apex:repeat>
+                    
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="CallLines">Next</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                    &nbsp;|&nbsp;
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="CallLines">Last</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,211 @@
+<apex:page standardController="case" extensions="MemoApprovalController" contentType="application/msword#Memo_Approval_MAGI.doc" 
+cache="true" action="{!dmlOperationMAGI}">
+<html xmlns:w="urn:schemas-microsoft-com:office:word">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<head>
+    <style type="text/css">
+        body {
+            font-size: 11pt;
+            font-family:arial;
+            text-align:left;
+        }
+        table.outerBorder{
+            display: block;
+            padding: 15px;
+            width: 100%;
+            border: 1px solid;
+        }
+        table.innerBorder{
+            display: block;
+            border: 1px solid;
+            width: 100%;
+        }
+        .textStyle{
+            padding-top:1px;
+            padding-bottom:1px;
+            padding-left:8px;
+        }
+    </style>
+    <apex:outputText value="{!PrintView}" escape="false"/>
+</head>
+    
+<body>
+    <div align="center" style="font-family: arial; font-size:16pt;" >
+        <b>MEMO APPROVAL</b>
+    </div>
+    <div>
+        <table class="outerBorder">
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle">No Memo</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!numberCounter}/MAGI/CCC/AT/{!month}/{!year}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Lampiran</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Lampiran__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Tanggal</td>
+                    <td>:</td> 
+                    <td>
+                    <apex:outputText value="{0,date,dd MMM yyyy}">
+                         <apex:param value="{!chsCase.CreatedDate}" />
+                    </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Perihal</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="<b>Penyelesaian Complaint Nasabah Atas Nama {!chsCase.Contact.Name} </b>"/></td>
+                </tr>
+            </table>
+           <br/>
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" colspan="3"><u><b>DATA POLIS</b></u></td>
+                </tr>
+                <tr>
+                    <td class="textStyle" width="32%">Nama Pemegang Polis</td>
+                    <td width="2%">:</td> 
+                    <td><apex:outputText value="{!chsCase.contact.Name}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Nama Nasabah</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Insured_Name__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Nomor Polis</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Policy_Numbers__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Tanggal Efektif Polis</td>
+                    <td>:</td> 
+                    <td>
+                    <apex:outputText value="{0,date,dd MMM yyyy}">
+                         <apex:param value="{!chsCase.Policy_Effective_Date__c}" /> 
+                    </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Nama Segment</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Segment_Name__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle">Cabang MAGI</td>
+                    <td>:</td> 
+                    <td><apex:outputText value="{!chsCase.Branch_Name__c}"/></td>
+                </tr>
+            </table>
+           <br/>
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%" style="vertical-align:top;"><b>Complaint</b></td>
+                    <td style="vertical-align: top;">:</td> 
+                    <td style="vertical-align: top;"><apex:outputField value="{!chsCase.Description__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="textStyle"><b>Tuntutan</b></td>
+                    <td>:</td> 
+                    <td><apex:outputField value="{!chsCase.Demand__c}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+             </table>
+            <br/> 
+             <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%" style="vertical-align: top;"><b>Kronologis</b></td>
+                    <td style="vertical-align: top;">:</td>
+                    <td style="vertical-align: top;"></td>
+                </tr>
+                <tr>
+                    <td class="textStyle" colspan="3" height="300" style="vertical-align: top;"><apex:outputField value="{!chsCase.Chronological__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="textStyle" width="20%"><b>Estimasi Finansial</b></td>
+                    <td>:</td> 
+                	<!-- <td style="padding-bottom:80px;"><apex:outputText value="{!estimatedLoss}"/></td> -->
+                	<td><apex:outputText value="{!chsCase.Financial_Lost_Currency__c}{0, number, ###,###,###,###.00}"> <apex:param value="{!chsCase.Financial_Lost__c}"/> </apex:outputText></td>
+                </tr>
+          </table>   
+        </table>
+    
+	<br clear="all" style="page-break-before:always;"/>
+
+    <!--  <div style="page-break-after:always;"/>  -->
+    <!-- page 2 -->
+        <table class="outerBorder">
+            <table class="innerBorder">
+                <tr>
+                    <td class="textStyle" width="20%" style="vertical-align: top;"><b>Rekomendasi</b></td>
+                    <td style="vertical-align: top;">:</td>
+                    <td style="vertical-align: top;"></td>
+                </tr>
+                <tr>
+                	<td colspan="3" class="textStyle" style="vertical-align: top;"><apex:outputField value="{!chsCase.Recommendation__c}"/></td>
+                </tr>
+                <tr>
+                	<td style="vertical-align: top;" height="525" ></td>
+                </tr>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+            </table>
+           <br/>
+            <table class="innerBorder">
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center"><b>Prepared By,</b></td>
+                    <td align="center"><b>Approved By,</b></td>
+                    <td align="center"><b>Approved By,</b></td>
+                    <td align="center"><b>Approved By,</b></td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center"><b><u><apex:outputText value="({!Manager})" /></u></b></td>
+                    <td align="center"><b><u><apex:outputText value="({!DeputyCOO})" /></u></b></td>
+                    <td align="center"><b><u><apex:outputText value="({!CFO})" /></u></b></td>
+                    <td align="center"><b><u><apex:outputText value="({!Dirut})" /></u></b></td>
+                </tr>
+                <tr>
+                    <td align="center" style="vertical-align: top;"><b>CCC Manager</b></td>
+                    <td align="center" style="vertical-align: top;"><b>Deputy COO</b></td>
+                    <td align="center" style="vertical-align: top;"><b>CFO</b></td>
+                    <td align="center" style="vertical-align: top;"><b>Direktur Utama</b></td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+            </table>
+        </table>
+       </div>
+</body>
+</html>
+</apex:page>

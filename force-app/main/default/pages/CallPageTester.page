@@ -1,0 +1,23 @@
+<apex:page standardController="Contact" extensions="CallPageTesterController">
+<head>
+<title>run_exe.com/</title>
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <!--apex:includeScript value="{!$Resource.WebserviceJS}"/-->
+    <apex:includeScript value="{!$Label.WS_IP}/Web_JavaScript/WebService_MD.js"/>
+    
+    <script type="text/javascript">
+        //window.open("{!$Label.WS_IP}/Web_JavaScript/SFDC_PopUpWindow_RLS.htm");
+        //SFDC1('{!contactRec.Policy_No__c}', '{!contactRec.PolicyApp__c}', '{!contactRec.Entity__c}', '{!token}' );
+        window.open('http://www.kompas.com');
+    </script>
+</head>
+<!--body>
+    <br/>
+    <br/>
+    Policy Number : <input id="txtPolicyNo" type="text" style="width:100px"/>&nbsp;
+    <br/>
+    <br/>
+    <input id="btnGetData" type="button" value="Get Data"/>&nbsp;&nbsp;&nbsp;
+    <input id="btnOpenNotepad" type="button" value="Open Notepad"/>
+</body-->
+</apex:page>

@@ -1,0 +1,396 @@
+<apex:page controller="CallLine_CustomPage_ctrl" showHeader="{!isConsole}" sidebar="{!isConsole}">
+    <apex:form id="formId">
+    <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+    <style>
+        
+        .slds-text-title_caps {
+            border-left: 0.5px solid grey; 
+            border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+            text-align:center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+            /* Background color */
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            
+            /* Dimensions */
+            width: 100%;
+            height: 300%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            position: absolute;
+            
+            /* Mouse */
+            cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+            /* Background color */
+            border: solid 2px #ffba1a;
+            background-color: white;
+            
+            /* Dimensions */
+            left: 50%;
+            width: 200px;
+            margin-left: -100px;
+            top: 50%;
+            height: 75px;
+            margin-top: -25px;
+            z-index: 999;
+            position: fixed;
+            
+            /* Mouse */
+            cursor:pointer;
+        }
+    </style>    
+    <!--c:StatusLoading />-->
+    <apex:actionStatus id="stSearch" stopText="">
+        <apex:facet name="start">
+            <div>
+                <div class="popupBackground" />
+                <div class="PopupPanel">
+                    <table  border="0" bordercolor="red"  width="100%" height="100%">
+                        <tr>
+                            <td align="center"><b>Please Wait</b></td>
+                        </tr>
+                        <tr>
+                            <td valign="center" align="center"><img height="16" width="16" title="Processing..." alt="Processing..." 
+                                                                    src="/img/loading.gif" style="margin-top :17px;"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+    <br/>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;" rowspan="2"><img src="/img/icon/computer32.png"/></td>
+                        <td><div><STRONG>Call Line</STRONG></div></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;"><div class="efhpTitle">{!callline.data.Name}</div></td>
+                    </tr>
+                </table>
+                <!--div class="efhpRow ">
+                    <div class="efhpValue efhpDescription">{!callline.data.Description}</div>
+                </div>-->
+            </td>
+        </tr>
+    </table>
+    
+        <apex:pageMessages />        
+        <c:CallLine_RecordDetailPage_Standar rendered="{!isStandarPage}" />
+        <c:CallLine_RecordDetailPage_CollectionOne rendered="{!isAMFSCol1}" />
+        <c:CallLine_RecordDetailPage_CollectionTwo rendered="{!isAMFSCol2}" />
+        <c:CallLine_RecordDetailPage_ALI rendered="{!isALIPage}" />
+        <c:CallLine_RecordDetailPage_WelcomeCall rendered="{!isWelcomeCall}" />
+        
+        
+        
+        <apex:pageblock id="ActivityHistories" title="Activity Histories" tabStyle="ActivityHistory" rendered="{!AND(isStandarPage,callline.data.recordType_name != 'AFI 1')}" >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadActivityHistories}" rerender="ActivityHistories" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                 <apex:pageBlockTable value="{!list_histories}" var="lsh" rendered="{!list_histories.size != 0}">  
+                   <apex:column headerValue="Activity History No"><apex:outputLink value="/apex/ActivityHistories_recordDetailPage?id={!lsh.id}&bucketName={!callline.data.Name}">{!lsh.name}</apex:outputLink> </apex:column>
+                   <apex:column headerValue="Call Date" ><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!lsh.call_Date_c}" /> </apex:outputText></apex:column> 
+                   <apex:column headerValue="Created By"><apex:outputPanel ><apex:outputLink value="{!lsh.createdById}">{!lsh.createdById_Name}</apex:outputLink>, &nbsp;<apex:outputText value="{0,date,M/d/yyyy  HH:mm a}"> <apex:param value="{!lsh.createdDate}" /> </apex:outputText></apex:outputPanel></apex:column>
+                   <apex:column headerValue="Call Duration" value="{!lsh.call_Duration_Minutes_c}"/>
+                   <apex:column headerValue="Agent" ><apex:outputLink value="{!lsh.agent_c}">{!lsh.agent_C_name}</apex:outputLink></apex:column>
+                   <apex:column headerValue="Created Date" ><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!lsh.createdDate}" /> </apex:outputText></apex:column> 
+                   <apex:column headerValue="Last Modified Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!lsh.lastModifiedDate}" /> </apex:outputText></apex:column> 
+               </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_histories.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            	
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="ActivityHistoriesAction" action="{!setLoadActivityHistories}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="ActivityHistories">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="ActivityHistories">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="ActivityHistories">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="ActivityHistories">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="ActivityHistories">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+        </apex:pageblock>
+        
+        <apex:pageblock id="ActivityHistory" title="Activity History" tabStyle="ActivityHistory">
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadActivityHistory_callLine}" rerender="ActivityHistory" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                 <apex:pageBlockTable value="{!list_history_res}" var="ts" rendered="{!list_history_res.size != 0}">  
+                   <apex:column headerValue="Subject"><apex:outputLink value="/apex/Task_recorddetailpage?id={!ts.id}">{!ts.subject}</apex:outputLink> </apex:column>
+                   <apex:column headerValue="Name" value="{!ts.who_name}"/> 
+                   <apex:column headerValue="Related To" value="{!ts.what_name}"/>
+                   <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!ts.isClosed, 'un', '')}checked.gif"/></apex:column>>
+                   <apex:column headerValue="Due Date" value="{!ts.ActivityDate}"/>
+                   <apex:column headerValue="Assigned To" value="{!ts.owner_name}"/>
+                   <apex:column headerValue="Last Modified Date/Time" value="{!ts.lastModifiedDate}"/>
+               </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_history_res.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="ActivityHistoryAction" action="{!setLoadActivityHistory}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="ActivityHistory">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="ActivityHistory">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="ActivityHistory">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="ActivityHistory">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="ActivityHistory">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+        
+        <apex:pageblock id="OpenActivity" title="Open Activity" tabStyle="OpenActivity" rendered="{!isALIPage}" >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadOpenActivity_callLine}" rerender="OpenActivity" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                 <apex:pageBlockTable value="{!list_openActivity_res}" var="ts" rendered="{!list_openActivity_res.size != 0}">  
+                   <apex:column headerValue="Subject"><apex:outputLink value="/apex/Task_recorddetailpage?id={!ts.id}">{!ts.subject}</apex:outputLink> </apex:column>
+                   <apex:column headerValue="Name" value="{!ts.who_name}"/> 
+                   <apex:column headerValue="Related To" value="{!ts.what_name}"/>
+                   <apex:column headerValue="Task" style="text-align:center"><img src="/img/checkbox_{!IF(!ts.isClosed, 'un', '')}checked.gif"/></apex:column>>
+                   <apex:column headerValue="Due Date" value="{!ts.ActivityDate}"/>
+                   <apex:column headerValue="Assigned To" value="{!ts.owner_name}"/>
+                   <apex:column headerValue="Last Modified Date/Time" value="{!ts.lastModifiedDate}"/>
+               </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_openActivity_res.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="OpenActivityAction" action="{!setLoadOpenActivity}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="OpenActivity">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="OpenActivity">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="OpenActivity">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="OpenActivity">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="OpenActivity">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+         <apex:pageblock id="CallLine" title="Call Lines" tabStyle="Call_Line__c" rendered="{!isALIPage}" >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadParentCallLine}" rerender="CallLine" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                 <apex:pageBlockTable value="{!list_callline}" var="cl" rendered="{!list_callline.size != 0}">  
+                  	<apex:column headerValue="Call Line Name"><apex:outputLink value="/apex/CallLine_recorddetailpage?id={!cl.id}">{!cl.name}</apex:outputLink> </apex:column>
+                    <apex:column headerValue="Call Date"><apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!cl.Call_Date_c}" /> </apex:outputText></apex:column>
+                    <apex:column headerValue="Mobile Phone">{!cl.Contacted_Number_c}<img src="/img/btn_nodial_inline.gif" width="16" height="10"/></apex:column>
+                    <apex:column headerValue="Contact" ><apex:outputLink value="/{!cl.contact_c}">{!cl.contact_name}</apex:outputLink> </apex:column>
+                    <apex:column headerValue="Policy No" value="{!cl.Policy_No_c}"/>
+                    <apex:column headerValue="Is Expired"><img src="/img/checkbox_{!IF(!cl.Is_Expired_c, 'un', '')}checked.gif"/></apex:column>
+                    <apex:column headerValue="Survey Type" value="{!cl.Survey_Type_c}"/>
+                    <apex:column headerValue="Result" value="{!cl.Result_c}"/>
+               </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!list_callline.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+             
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="CallLineAction" action="{!setLoadCallLineParent}" rerender="out"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="CallLine">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="CallLine">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="CallLine">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="CallLine">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="CallLine">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+        
+        <apex:pageblock id="CallLineHistory" title="Call Line History" tabStyle="ActivityHistory" rendered="{!isALI4}" >
+                <apex:actionStatus id="status" >
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            Loading...<br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:commandButton value="Reload" action="{!loadCallLineHistory}" rerender="CallLineHistory" status="status" /><br/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus><br/>
+                 <apex:pageBlockTable value="{!call_line_history}" var="msh" rendered="{!call_line_history.size != 0}">  
+                   <apex:column headerValue="Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!msh.createdDate}" /> </apex:outputText></apex:column>
+                   <apex:column headerValue="User"><apex:outputLink value="/{!msh.createdById}">{!msh.createdById_Name}</apex:outputLink></apex:column>
+                   <apex:column headerValue="Action" value="{!msh.action}"/>
+               </apex:pageBlockTable>
+                <apex:outputLabel value="No records to display" rendered="{!call_line_history.size == 0}" styleClass="noRowsHeader"></apex:outputLabel>
+            
+                <apex:outputPanel id="pagination">
+                    <apex:actionFunction name="CallLineHistoryAction" action="{!setLoadCallLineHistory}" rerender="CallLineHistory"/>
+                    <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="CallLineHistory">First</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="CallLineHistory">Previous&nbsp;</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                            <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="CallLineHistory">
+                                <apex:param name="nickName"
+                                            value="{!i}"
+                                            assignTo="{!to_page}"/>
+                            </apex:commandLink>
+                            <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                            &nbsp;|&nbsp;
+                        </apex:repeat>
+                        
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}" reRender="CallLineHistory">Next</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Next</apex:outputText>
+                        &nbsp;|&nbsp;
+                        <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataLast}" reRender="CallLineHistory">Last</apex:commandLink>
+                        <apex:outputText rendered="{!current_page == total_page}">Last</apex:outputText>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br/>
+                <apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+            </apex:pageblock>
+    </apex:form>
+</apex:page>

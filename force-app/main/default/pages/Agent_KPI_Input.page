@@ -1,0 +1,247 @@
+<apex:page id="AgentKPIVFId" standardController="Agent_KPI__c" extensions="Agent_KPI_Input_Controller" docType="html-5.0">
+    <script src="/soap/ajax/34.0/connection.js"></script>
+    <script id="clientEventHandlersJS" language="javascript">
+        window.onload = setResult;
+        
+        function setResult(){
+            if (document.getElementById('AgentKPIVFId:mainFormId:pgBId:pgOlis:tableDetail') != null) {
+                var x = document.getElementById('AgentKPIVFId:mainFormId:pgBId:pgOlis:tableDetail').rows.length;
+                if (x>0) {
+                    x = x-1;
+                }
+                for(var i=0;i<parseInt(x);i++){
+                    document.getElementById('AgentKPIVFId:mainFormId:pgBId:pgOlis:tableDetail:' + i + ':txtQty').readOnly=true;
+                }
+            }
+        }
+        
+    </script>
+    <style>
+        
+    </style>
+    
+    <apex:form id="mainFormId">
+        <apex:pageBlock id="pgBId" mode="inlineEdit">
+            <apex:pageMessages id="errors"/>
+            <apex:pageBlockButtons rendered="{!EditMode}">
+                <apex:commandButton value="Save" action="{!SaveOli}" reRender="errors,pgBId"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}" html-formnovalidate="formnovalidate"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="pgbOppInfo" columns="1" showHeader="false" rendered="{!EditMode}">
+                <apex:outputText value="{!lblOpportunity}" style="font-weight: bold;" />
+                <apex:pageBlockSection columns="2" id="pgOpportunityId" title="Opportunity" showHeader="false">
+                    <apex:outputText value="{!opp.Agent_Name__c}" />
+                    <apex:outputText value="{!opp.Periode__c}" />
+                    <apex:outputText value="{!opp.Team__c}" />
+                    <apex:outputText value="{!opp.Entity__c}" />
+                </apex:pageBlockSection>
+            </apex:pageBlockSection>
+            <hr/>
+            
+            <apex:outputPanel id="opOliId" rendered="{!EditMode}">
+                <apex:variable value="{!0}" var="rowNum"/>
+                <apex:variable value="{!0}" var="seq"/>
+                <apex:variable value="{!0}" var="seq2"/>
+                <apex:pageBlockSection columns="1" id="pgOlis" title="KPI Item" showHeader="false" collapsible="false">
+                    <apex:pageBlockTable value="{!oliWrapperList}" var="item" id="tableDetail" align="top" width="100%" columns="15">
+                        <apex:column headerValue="Action" style="width:5%">
+                            <apex:commandLink value="Remove" style="color:#0000EE;" action="{!delOli}" rendered="true" rerender="opOliId" immediate="true" oncomplete="setResult()" >
+                                <apex:param value="{!rowNum}" name="rowToRemove" assignTo="{!rowToRemove}"/>
+                            </apex:commandLink>
+                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                        </apex:column>
+                        
+                        <apex:column headerValue="Item No" style="width:30%">
+                            <apex:inputField id="hdProductBenefitId" value="{!item.oli.Id}"  style="visibility:hidden;display:none;" />
+                            <!-- apex:outputField id="txtProductOld" value="{!item.oli.Product__c }" rendered="{!IF(seq+1 <= countOldProduct, true, false)}"/ -->
+                            <apex:outputField id="txtProduct" value="{!item.oli.Name }"  />
+                            <!-- apex:inputField id="txtProduct" value="{!item.oli.Product__c }" rendered="{!IF(seq+1 > countOldProduct, true, false)}" onchange="getPrice(this, {!seq})" required="true" / -->
+                            <apex:variable var="seq" value="{!seq + 1}"/>
+                        </apex:column>
+                        <apex:column headerValue="Seq">
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:inputField value="{!item.oli.Seq__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}"><apex:outputField value="{!item.oli.Seq__c}" /></apex:outputPanel>                            
+                        </apex:column>
+
+                        <apex:column headerValue="Parameter" style="width:30%">
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:inputField value="{!item.oli.Parameter__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}"><apex:outputField value="{!item.oli.Parameter__c}" /></apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="KPI" style="width:30%">
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:inputField value="{!item.oli.KPI__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}"><apex:outputField value="{!item.oli.KPI__c}" /></apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="Weight" style="width:10%">
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:inputField value="{!item.oli.Weight__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}"><apex:outputField value="{!item.oli.Weight__c}" /></apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="Score (%)" style="width:10%">
+                            <apex:outputPanel rendered="{!MasterMode}">
+                                <table>
+                                    <tr><td>1</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Score_1__c}" /></td></tr>
+                                    <tr><td>2</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Score_2__c}" /></td></tr>
+                                    <tr><td>3</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Score_3__c}" /></td></tr>
+                                    <tr><td>4</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Score_4__c}" /></td></tr>
+                                    <tr><td>5</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Score_5__c}" /></td></tr>
+                                </table>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}">
+                                <apex:outputText value="1 : {!item.oli.Master_Score_1__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="2 : {!item.oli.Master_Score_2__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="3 : {!item.oli.Master_Score_3__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="4 : {!item.oli.Master_Score_4__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="5 : {!item.oli.Master_Score_5__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                            </apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="Actual Score" style="width:30%">
+                            <apex:inputField value="{!item.oli.Actual_Score__c}" rendered="{!item.oli.Score_Auto__c <> 'Auto'}"/>
+                            <apex:outputField value="{!item.oli.Actual_Score_F__c}" rendered="{!item.oli.Score_Auto__c <> 'Auto'}"/>
+                        </apex:column>
+                        <apex:column headerValue=".... Data ...." style="width:30%">
+                            <apex:outputPanel rendered="{!MasterMode}">
+                                <table>
+                                    <tr><td>1</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_1__c}" /></td></tr>
+                                    <tr><td>2</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_2__c}" /></td></tr>
+                                    <tr><td>3</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_3__c}" /></td></tr>
+                                    <tr><td>4</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_4__c}" /></td></tr>
+                                    <tr><td>5</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_5__c}" /></td></tr>
+                                </table>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}">
+                                <apex:outputText value="1 : {!item.oli.Master_Data_1__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="2 : {!item.oli.Master_Data_2__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="3 : {!item.oli.Master_Data_3__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="4 : {!item.oli.Master_Data_4__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="5 : {!item.oli.Master_Data_5__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                            </apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="Details KPI" style="width:30%">
+                            <apex:outputPanel rendered="{!MasterMode}">
+                                <table>
+                                    <tr><td>1</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_1_Detail__c}" /></td></tr>
+                                    <tr><td>2</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_2_Detail__c}" /></td></tr>
+                                    <tr><td>3</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_3_Detail__c}" /></td></tr>
+                                    <tr><td>4</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_4_Detail__c}" /></td></tr>
+                                    <tr><td>5</td><td>:</td><td><apex:inputField value="{!item.oli.Master_Data_5_Detail__c}" /></td></tr>
+                                </table>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}">
+                                <apex:outputText value="1 : {!item.oli.Master_Data_1_Detail__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                                <apex:outputText value="2 : {!item.oli.Master_Data_2_Detail__c}" rendered="{!item.oli.Master_Score_2__c <> NULL}"/> <br/>
+                                <apex:outputText value="3 : {!item.oli.Master_Data_3_Detail__c}" rendered="{!item.oli.Master_Score_3__c <> NULL}"/> <br/>
+                                <apex:outputText value="4 : {!item.oli.Master_Data_4_Detail__c}" rendered="{!item.oli.Master_Score_4__c <> NULL}"/> <br/>
+                                <apex:outputText value="5 : {!item.oli.Master_Data_5_Detail__c}" rendered="{!item.oli.Master_Score_5__c <> NULL}"/> <br/>
+                            </apex:outputPanel>
+
+                        </apex:column>
+                        <apex:column headerValue="Point" style="width:10%">
+                            <apex:outputField value="{!item.oli.Actual_Point__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Actual Data" style="width:20%">
+                            <apex:outputPanel rendered="{!IF(item.oli.Data_Source__c == NULL,TRUE,FALSE)}"><apex:inputField value="{!item.oli.Actual_Data__c}" required="TRUE"/></apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(item.oli.Data_Source__c == NULL,FALSE,TRUE)}"><apex:outputField value="{!item.oli.Actual_Data__c}" /></apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="Remarks" style="width:30%">
+                            <apex:outputPanel rendered="{!DataMode}"><apex:inputField value="{!item.oli.Remarks__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:outputField value="{!item.oli.Remarks__c}" /></apex:outputPanel>                            
+                            
+                        </apex:column>
+                        <apex:column headerValue="Score Auto" style="width:30%">
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:inputField value="{!item.oli.Score_Auto__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}"><apex:outputField value="{!item.oli.Score_Auto__c}" /></apex:outputPanel>
+                            
+                        </apex:column>
+                        <apex:column headerValue="Source" style="width:30%">
+                            <apex:outputPanel rendered="{!MasterMode}"><apex:inputField value="{!item.oli.Data_Source__c}" /></apex:outputPanel>
+                            <apex:outputPanel rendered="{!DataMode}"><apex:outputField value="{!item.oli.Data_Source__c}" /></apex:outputPanel>
+                            
+                        </apex:column>
+                        <apex:column headerValue="Type Score" style="width:10%">
+                            <apex:inputField value="{!item.oli.Type_Score__c}"  style="display:none;"/>
+                        </apex:column>
+
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <apex:outputPanel rendered="{!MasterMode}">
+                    <apex:commandButton value="Add" action="{!addOli}" rerender="errors,opOliId" Status="status" immediate="true" style="margin-left: 25px;" oncomplete="setResult()"/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="opOliId2" rendered="{!ViewMode}">
+                <apex:variable value="{!0}" var="rowNum"/>
+                <apex:variable value="{!0}" var="seq"/>
+                <apex:variable value="{!0}" var="seq2"/>
+                <apex:pageBlockSection columns="1" title="KPI Item" showHeader="false" collapsible="false">
+                    <apex:pageBlockTable value="{!oliWrapperList}" var="item" align="top" width="100%" columns="15">
+                        <apex:column headerValue="Action" style="width:5%">
+                        </apex:column>
+                        
+                        <apex:column headerValue="Item No" style="width:10%">
+                            <apex:outputField value="{!item.oli.Name }"  />
+                            <!-- apex:inputField id="txtProduct" value="{!item.oli.Product__c }" rendered="{!IF(seq+1 > countOldProduct, true, false)}" onchange="getPrice(this, {!seq})" required="true" / -->
+                            <apex:variable var="seq" value="{!seq + 1}"/>
+                        </apex:column>
+                        <apex:column headerValue="Seq">
+                            <apex:outputField value="{!item.oli.Seq__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Parameter" style="width:10%">
+                            <apex:outputField value="{!item.oli.Parameter__c}" />
+                        </apex:column>
+                        <apex:column headerValue="KPI" style="width:10%">
+                            <apex:outputField value="{!item.oli.KPI__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Weight" style="width:10%">
+                            <apex:outputField value="{!item.oli.Weight__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Score (%)" style="width:10%">
+                            <apex:outputText value="1 : {!item.oli.Master_Score_1__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                            <apex:outputText value="2 : {!item.oli.Master_Score_2__c}" rendered="{!item.oli.Master_Score_2__c <> NULL}"/> <br/>
+                            <apex:outputText value="3 : {!item.oli.Master_Score_3__c}" rendered="{!item.oli.Master_Score_3__c <> NULL}"/> <br/>
+                            <apex:outputText value="4 : {!item.oli.Master_Score_4__c}" rendered="{!item.oli.Master_Score_4__c <> NULL}"/> <br/>
+                            <apex:outputText value="5 : {!item.oli.Master_Score_5__c}" rendered="{!item.oli.Master_Score_5__c <> NULL}"/> <br/>
+                            
+                        </apex:column>
+                        <apex:column headerValue="Actual Score">
+                            <apex:outputField value="{!item.oli.Actual_Score__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Data" style="width:10%">
+                            <apex:outputText value="1 : {!item.oli.Master_Data_1__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                            <apex:outputText value="2 : {!item.oli.Master_Data_2__c}" rendered="{!item.oli.Master_Score_2__c <> NULL}"/> <br/>
+                            <apex:outputText value="3 : {!item.oli.Master_Data_3__c}" rendered="{!item.oli.Master_Score_3__c <> NULL}"/> <br/>
+                            <apex:outputText value="4 : {!item.oli.Master_Data_4__c}" rendered="{!item.oli.Master_Score_4__c <> NULL}"/> <br/>
+                            <apex:outputText value="5 : {!item.oli.Master_Data_5__c}" rendered="{!item.oli.Master_Score_5__c <> NULL}"/> <br/>
+                        </apex:column>
+                        <apex:column headerValue="Details KPI" style="width:30%">
+
+                            <apex:outputText value="1 : {!item.oli.Master_Data_1_Detail__c}" rendered="{!item.oli.Master_Score_1__c <> NULL}"/> <br/>
+                            <apex:outputText value="2 : {!item.oli.Master_Data_2_Detail__c}" rendered="{!item.oli.Master_Score_2__c <> NULL}"/> <br/>
+                            <apex:outputText value="3 : {!item.oli.Master_Data_3_Detail__c}" rendered="{!item.oli.Master_Score_3__c <> NULL}"/> <br/> 
+                            <apex:outputText value="4 : {!item.oli.Master_Data_4_Detail__c}" rendered="{!item.oli.Master_Score_4__c <> NULL}"/> <br/>
+                            <apex:outputText value="5 : {!item.oli.Master_Data_5_Detail__c}" rendered="{!item.oli.Master_Score_5__c <> NULL}"/> <br/>
+                        </apex:column>
+                        <apex:column headerValue="Point" style="width:10%">
+                            <apex:outputField value="{!item.oli.Actual_Point__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Actual Data" style="width:20%">
+                            <apex:outputField value="{!item.oli.Actual_Data__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Remarks" style="width:30%">
+                            <apex:outputField value="{!item.oli.Remarks__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Score Auto" style="width:30%">
+                            <apex:outputField value="{!item.oli.Score_Auto__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Source" style="width:30%">
+                            <apex:outputField value="{!item.oli.Data_Source__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Type Score" style="width:10%">
+                            <apex:outputField value="{!item.oli.Type_Score__c}"  style="display:none;"/>
+                        </apex:column>
+
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,67 @@
+<apex:page standardController="Call_Line__c" extensions="CallLineFieldAging" tabStyle="Call_Line__c" >   
+    <style>
+        table{border-collapse: collapse;width:500px;}
+        table thead tr th {border:1px solid #000;padding:2px;text-align:center;}  
+    </style>
+    <apex:pageBlock mode="maindetail" tabStyle="Call_Line__c" >      
+        <apex:pageBlockSection columns="1" rendered="{!isPinalty}">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >{!productName}</apex:outputLabel>   
+            </apex:pageBlockSectionItem>   
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >{!codeName}</apex:outputLabel>   
+            </apex:pageBlockSectionItem>   
+            <apex:pageBlockSectionItem rendered="{!isPinalty}"> 
+                <apex:outputLabel >{!subTypeProduct}</apex:outputLabel>   
+            </apex:pageBlockSectionItem> 
+        </apex:pageBlockSection>
+    </apex:pageBlock> 
+    <apex:pageBlock mode="maindetail" tabStyle="Call_Line__c" >               
+         <apex:pageBlockTable style="width:500px;" value="{!listDataTable}" var="row" align="left" rendered="{!isPinalty}">
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="Description">{!row.Description__c}</apex:column> 
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="Percentage" rendered="{!column1}">{!row.Percentage__c}</apex:column>  
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="Percentage" rendered="{!column3}">{!row.Percentage__c}</apex:column>  
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="IDR" rendered="{!column2}">{!row.IDR__c}</apex:column>  
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="USD" rendered="{!column2}">{!row.USD__c}</apex:column>   
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="IDR" rendered="{!column2}">{!row.IDR_2__c}</apex:column>  
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="USD" rendered="{!column2}">{!row.USD_2__c}</apex:column>   
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="Prime" rendered="{!column4}">{!row.Prime__c}</apex:column>  
+            <apex:column style="border:1px solid #000 !important;padding:2px;" headerValue="Protection" rendered="{!column4}">{!row.Protection__c}</apex:column>   
+        </apex:pageBlockTable> 
+        <!-- <table style="{!showTablePinalty}">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #000;padding:2px;"> <b>Description</b></th>
+                    <th style="{!stylePinalty1}"><b>Percentage</b></th>
+                    <th style="{!stylePinalty3}"><b>Percentage</b></th>
+                    <th style="{!stylePinalty2}"><b>IDR</b></th>
+                    <th style="{!stylePinalty2}"><b>USD</b></th>
+                    <th style="{!stylePinalty2}"><b>IDR</b></th>
+                    <th style="{!stylePinalty2}"><b>USD</b></th>
+                    <th style="{!stylePinalty4}"><b>Prime</b></th>
+                    <th style="{!stylePinalty4}"><b>Protection</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!listDataTable}" var="row">
+                    <tr>
+                        <td style="border:1px solid #000;padding:2px;"> {!row.Description__c}</td>
+                        <td class="value" style="{!stylePinalty1}">{!row.Percentage__c}</td>
+                        <td class="value" style="{!stylePinalty3}">{!row.Variabel__c}</td>
+                        <td class="value" style="{!stylePinalty2}">{!row.IDR__c}</td>
+                        <td class="value" style="{!stylePinalty2}">{!row.USD__c}</td>
+                        <td class="value" style="{!stylePinalty2}">{!row.IDR_2__c}</td>
+                        <td class="value" style="{!stylePinalty2}">{!row.USD_2__c}</td>
+                        <td class="value" style="{!stylePinalty4}">{!row.Prime__c}</td>
+                        <td class="value" style="{!stylePinalty4}">{!row.Protection__c}</td>
+                    </tr>
+                </apex:repeat>
+            </tbody> 
+        </table> -->
+        <apex:pageBlockTable style="width:500px;" value="{!listDataTable}" var="row" align="left" rendered="{!isNCB}">
+            <apex:column headerValue="PRODUK">{!productName}</apex:column>  
+            <apex:column headerValue="KODE">{!codeName}</apex:column>  
+            <apex:column headerValue="NCB">{!row.Description__c}</apex:column>  
+        </apex:pageBlockTable> 
+    </apex:pageBlock> 
+</apex:page>

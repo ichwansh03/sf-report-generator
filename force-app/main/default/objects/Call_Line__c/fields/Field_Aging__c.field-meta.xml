@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Field_Aging__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  NOT(ISBLANK(Contact__r.WelcomeCall_Effective_Date__c)),
+  TEXT(
+    YEAR(TODAY()) - YEAR(Contact__r.WelcomeCall_Effective_Date__c) - 
+    IF(
+      DATE(
+        YEAR(TODAY()),
+        MONTH(Contact__r.WelcomeCall_Effective_Date__c),
+        MIN(
+          DAY(Contact__r.WelcomeCall_Effective_Date__c),
+          CASE(
+            MONTH(Contact__r.WelcomeCall_Effective_Date__c),
+            2, IF(
+                OR( 
+                  MOD(YEAR(TODAY()), 400)=0, 
+                  AND( MOD(YEAR(TODAY()), 4)=0, MOD(YEAR(TODAY()), 100)&lt;&gt;0 )
+                ),
+                29,28),4, 30,6, 30,9, 30,11, 30,31
+          )
+        )
+      ) &gt; TODAY(),
+      1,
+      0
+    )
+  ) &amp; &quot; Tahun, &quot; &amp;
+  TEXT(
+    MOD(
+      ( 
+        MONTH(TODAY()) + 12 - MONTH(Contact__r.WelcomeCall_Effective_Date__c) -
+        IF(
+          DAY(TODAY()) &lt; MIN(
+                      DAY(Contact__r.WelcomeCall_Effective_Date__c),
+                      CASE(
+                        MONTH(Contact__r.WelcomeCall_Effective_Date__c),
+                        2, IF(
+                            OR( 
+                              MOD(YEAR(TODAY()), 400)=0, 
+                              AND( MOD(YEAR(TODAY()), 4)=0, MOD(YEAR(TODAY()), 100)&lt;&gt;0 )
+                            ),
+                            29,28),4,30,6,30,9,30,11,30,31
+                      )
+                    ),
+          1,
+          0
+        )
+      ),
+      12
+    )
+  ) &amp; &quot; Bulan, &quot; &amp;
+  TEXT(
+    IF(
+      DAY(TODAY()) &gt;= MIN(
+                  DAY(Contact__r.WelcomeCall_Effective_Date__c),
+                  CASE(
+                    MONTH(Contact__r.WelcomeCall_Effective_Date__c),
+                    2, IF(
+                        OR( 
+                          MOD(YEAR(TODAY()), 400)=0, 
+                          AND( MOD(YEAR(TODAY()), 4)=0, MOD(YEAR(TODAY()), 100)&lt;&gt;0 )
+                        ),
+                        29,28),4,30,6,30,9,30,11,30,31
+                  )
+                ),
+      DAY(TODAY()) - MIN(
+                      DAY(Contact__r.WelcomeCall_Effective_Date__c),
+                      CASE(
+                        MONTH(Contact__r.WelcomeCall_Effective_Date__c),
+                        2, IF(
+                            OR( 
+                              MOD(YEAR(TODAY()), 400)=0, 
+                              AND( MOD(YEAR(TODAY()), 4)=0, MOD(YEAR(TODAY()), 100)&lt;&gt;0 )
+                            ),
+                            29,28),4,30,6,30,9,30,11,30,31
+                      )
+                    ),
+      CASE(
+        MONTH(TODAY()),
+        2, IF(
+            OR( 
+              MOD(YEAR(TODAY()), 400)=0, 
+              AND( MOD(YEAR(TODAY()), 4)=0, MOD(YEAR(TODAY()), 100)&lt;&gt;0 )
+            ),
+            29,28),4,30,6,30,9,30,11,30,31
+      ) - MIN(
+            DAY(Contact__r.WelcomeCall_Effective_Date__c),
+            CASE(
+              MONTH(Contact__r.WelcomeCall_Effective_Date__c),
+              2, IF(
+                  OR( 
+                    MOD(YEAR(TODAY()), 400)=0, 
+                    AND( MOD(YEAR(TODAY()), 4)=0, MOD(YEAR(TODAY()), 100)&lt;&gt;0 )
+                  ),
+                  29,28),4,30,6,30,9,30,11,30,31
+            )
+          ) + DAY(TODAY())
+    )
+  ) &amp; &quot; Hari&quot;,
+
+  &quot;&quot;
+)</formula>
+    <label>Field Aging</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer_View</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Transfer View</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)} 
+
+var urlInquiry = &quot;/apex/TransferContactALI?retURL=/{!Contact.Id}&amp;id={!Contact.Id}&quot;; 
+
+if (sforce.console.isInConsole()) { 
+var focusedPrimaryTabId, allPrimaryTabIds; 
+(function (c) { 
+&quot;use strict&quot;; 
+
+c.getFocusedPrimaryTabId(function (result) { 
+focusedPrimaryTabId = result.id; 
+}); 
+c.getPrimaryTabIds(function (result) { 
+allPrimaryTabIds = result.ids; 
+}); 
+})(sforce.console); 
+
+sforce.console.openSubtab(focusedPrimaryTabId, urlInquiry, true, &apos;Create New Inquiry&apos;, null,null, &apos;assigntab&apos;); 
+sforce.console.focusSubtabByNameAndPrimaryTabId(&apos;assigntab&apos;, focusedPrimaryTabId); 
+
+
+}else { 
+window.location.href = urlInquiry; 
+}</url>
+</WebLink>

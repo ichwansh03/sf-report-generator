@@ -1,0 +1,1836 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" extensions="PolicyInfoAGIController,RemoteDataController" action="{!initPolicyInfo}">
+    <!-- HEAD -->
+    <title>Policy Info</title>
+     
+    <!-- Java Script -->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <!--  <apex:includeScript value="/support/console/22.0/integration.js"/>-->
+    <apex:includeScript value="/soap/ajax/30.0/connection.js"/>
+    <apex:includeScript value="/support/console/37.0/integration.js"/>
+            
+    <script type="text/javascript">
+        function displayLoading(objName) {
+            //document.getElementById('loadingimg').style.display='block';
+            document.getElementById(objName).style.display='block';
+        }
+        function hideLoading(objName) {
+            //document.getElementById('loadingimg').style.display='none';
+            document.getElementById(objName).style.display='none';
+        }
+    </script>
+        
+    <script type="text/javascript">
+        var Imtech = {};
+        Imtech.Pager = function() {
+            this.datasetname = '';
+            this.pagername = '';
+            //this.paragraphsPerPage = 3;
+            this.currentPage = 1;
+            this.pagingControlsContainer = '';
+            //this.pagingContainerPath = '#content';
+            this.pagingInfoContainer = '';
+            this.numberOfRecords = 0;
+            this.firstPage = 1;
+            this.previousPage = 1;
+            this.nextPage = 2;
+            this.numPages = 5;
+            this.showControl = true;
+            
+            /*
+            this.numPages = function() {
+                var numPages = 0;
+                
+                numPages = 3;
+                /*
+                if (this.paragraphs != null && this.paragraphsPerPage != null) {
+                    numPages = Math.ceil(this.paragraphs.length / this.paragraphsPerPage);
+                }
+                */
+              /*  
+                return numPages;
+            };
+            */
+            
+            this.lastPage = this.numPages;
+            this.showPage = function(page) {
+                
+                //('a : ' + this.datasetname);
+                var startOfRecords = 0;
+                //var numberOfRecords= 100;
+                switch (this.datasetname) {
+                    case "BeneficiaryDetail":
+                        startOfRecords = (this.numberOfRecords * (page - 1)) + 1;
+                        loadDataPagingBeneficiaryDetail(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                        
+                    case "PremiumBreakdown":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingPremiumBreakdown(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                    
+                    case "PolicyChangeLife":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingPolicyChangeLife(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                    
+                    case "EndorsementGI":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingEndorsementGI(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                    
+                    case "RiskInfo":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingRiskInfo(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                    
+                    case "CashValueDetail":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingCashValueDetail(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                    
+                    case "AccountDetail":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingAccountDetail(policyNo, entity, policyApp, '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page); 
+                        break;
+                    
+                    case "AssNotesPOS":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingAssNotesPOS(policyNo, entity, policyApp, 'Summary', 'POS', '', '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page, 1, 0); 
+                        break;
+                    
+                    case "AssNotesPA":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingAssNotesPA(policyNo, entity, policyApp, 'Summary', 'PA', '', '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page, 1, 0); 
+                        break;
+                    
+                    case "AssNotesUW":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingAssNotesUW(policyNo, entity, policyApp, 'Summary', 'UW', '', '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, this.currentPage, page, 1, 0); 
+                        break;
+                    
+                    case "AssNotesOTH":
+                        startOfRecords = (numberOfRecords * (page - 1)) + 1;
+                        numberOfRecords = numberOfRecords;
+                        loadDataPagingAssNotesOTH(policyNo, entity, policyApp, 'Summary', 'OTH', '', '', '', this.numberOfRecords, startOfRecords, this.numberOfRecords, page, 1, 0); 
+                        break;
+
+                }
+                
+                /*
+                var html = '';
+                this.paragraphs.slice((page - 1) * this.paragraphsPerPage,
+                    ((page - 1)*this.paragraphsPerPage) + this.paragraphsPerPage).each(function() {
+                    html += '<div>' + $(this).html() + '</div>';
+                });
+                $(this.pagingContainerPath).html(html);
+                */
+        
+                renderControls(this.pagingControlsContainer, page, this.numPages, this.pagername, this.showControl);
+                this.currentPage = page;
+            }
+        
+            var renderControls = function(container, currentPage, numPages, pagername, showControl) {
+                /*
+                var firstPage = 1;
+                var previousPage = currentPage==1 ? 1 : currentPage - 1;
+                var nextPage = currentPage + 1;
+                var lastPage = numPages;
+                */
+                
+                var firstPage = 1;
+                var previousPage = currentPage==1 ? 1 : currentPage - 1;
+                //var nextPage = currentPage==numPages ? numPages : currentPage + 1;
+                var nextPage = currentPage + 1;
+                var lastPage = numPages;
+                var pagingControls = '';
+                
+                console.log ('showControl :', showControl);
+                if (showControl == true) {
+                    pagingControls += '<ul class="pagination">';
+                    pagingControls += '<li> <a href="#" onclick="' + pagername + '.showPage(' + firstPage + '); return false;"> First </a> </li> ';
+                    pagingControls += '<li> <a href="#" onclick="' + pagername + '.showPage(' + previousPage + '); return false;"> Previous </a> </li>';
+                    
+                    var j = 0;
+                    var penambah = currentPage - 2;
+                    if (currentPage == 1) {penambah = 0;}
+                    
+                    for (var i = 1; i <= numPages; i++) {
+                        //console.log('<li><a href="#" onclick="pager.showPage(' + j + '); return false;">' + j + '</a></li>');
+                        j = i + penambah;
+                        if (j != currentPage) {
+                            pagingControls += '<li><a href="#" onclick="' + pagername + '.showPage(' + j + '); return false;">' + j + '</a></li>';
+                        } else {
+                            pagingControls += '<li><a class="active" href="#">' + j + '</a></li>';
+                        }
+                    }
+            
+                    //pagingControls += '<li>Next</li> <li>Last</li>';
+                    pagingControls += '<li> <a href="#" onclick="' + pagername + '.showPage(' + nextPage + '); return false;"> Next </a> </li>';
+                    //pagingControls += '<li> <a href="#" onclick="pager.showPage(' + lastPage + '); return false;"> Last </a> </li>';
+                    pagingControls += '</ul>';
+                }
+                console.log ('pagingControls : ', pagingControls);
+                $(container).html(pagingControls);
+            }
+            
+            this.renderInfo = function(info) {
+                //alert (this.pagingInfoContainer + '-' + info);
+                info = '<small><i>' + info + '</i></small>';
+                $( this.pagingInfoContainer).html(info);
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        /*
+        #pagingControlBeneficiaryDetail ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlBeneficiaryDetail li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlPremiumBreakdown ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlPremiumBreakdown li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlPolicyChangeLife ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlPolicyChangeLife li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlEndorsementGI ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlEndorsementGI li{display:inline;padding-right:0 0.5em}
+        
+        
+        #pagingControlRiskInfo ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlRiskInfo li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlCashValueDetail ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlCashValueDetail li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlAccountDetail ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlAccountDetail li{display:inline;padding-right:0 0.5em}
+        
+        #pagingControlAssNotesPOS ul{display:inline;padding-left:0.0em; padding-right:0.0em}
+        #pagingControlAssNotesPOS li{display:inline;padding-right:0 0.5em}
+        */
+        
+        ul.pagination { display: inline-block; padding: 0; margin: 0; }
+        ul.pagination li {display: inline; }
+        ul.pagination li a {color: black; float: left; padding: 8px 16px; text-decoration: none; transition: background-color .3s; border: 1px solid #ddd; }
+        .pagination li:first-child a { border-top-left-radius: 5px; border-bottom-left-radius: 5px; }
+        .pagination li:last-child a { border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
+        ul.pagination li a.active { background-color: #338ddb; color: white; border: 1px solid #338ddb; }
+        ul.pagination li a:hover:not(.active) {background-color: #ddd; }
+
+    </style>
+    
+    <script type="text/javascript">
+        var masuk = 0;
+        var data = '';
+        function refreshIfDataNotReady() {
+            masuk = masuk + 1;
+
+            console.log ('refreshIfDataNotReady : ' + masuk);
+            console.log ('policyDetailLifeJSON : {!policyDetailLifeJSON}');
+            
+            if ( data == '') {
+                preparingPageDataFunc();
+                //refreshPolicyInfo();
+            }
+            //else { refreshPolicyInfo(); }
+            
+        }
+        
+        var assNotes = {};
+        var beneficiaryDetailPaging = {};
+        var premiumBreakdownPaging = {};
+        var policyChangeLifePaging = {};
+        var endorsementGIPaging = {};
+        var riskInfoPaging = {};
+        var cashValueDetailPaging = {};
+        var accountDetailPaging = {};
+        
+        var assNotesPOSPaging = {};
+        var assNotesPAPaging = {};
+        var assNotesUWPaging = {};
+        var assNotesOTHPaging = {};
+            
+        var pagerBene = new Imtech.Pager();
+        var pagerPrem = new Imtech.Pager();
+        var pagerPCL = new Imtech.Pager();
+        var pagerEndorseGI = new Imtech.Pager();
+        
+        var pagerRI = new Imtech.Pager();
+        var pagerCVD = new Imtech.Pager();
+        var pagerAD = new Imtech.Pager();
+        var pagerANPOS = new Imtech.Pager();
+        var pagerANPA = new Imtech.Pager();
+        var pagerANUW = new Imtech.Pager();
+        var pagerANOTH = new Imtech.Pager();
+        
+        var numberOfRecords = 100;
+        
+        $(document).ready(function() {
+            
+            initPage();
+            data= '{!policyDetailLifeJSON}';
+            refreshIfDataNotReady();
+            
+            assNotesPOSPaging[1] = '{!assessmentNotesSummaryPOSJSON}';
+            assNotesPAPaging[1] = '{!assessmentNotesSummaryPAJSON}';
+            assNotesUWPaging[1] = '{!assessmentNotesSummaryUWJSON}';
+            assNotesOTHPaging[1] = '{!assessmentNotesSummaryOTHJSON}';
+            
+            /* sequence 2 */
+            pagerANPOS.datasetname = 'AssNotesPOS';
+            pagerANPOS.pagername = 'pagerANPOS';
+            pagerANPOS.pagingControlsContainer = $('#pagingControlAssNotesPOS');
+            pagerANPOS.pagingInfoContainer = $('#loadInfoAssNotesPOS');
+            pagerANPOS.numberOfRecords = 10;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerANPOS.pagingContainer = $('#content'); // set of main container
+            pagerANPOS.paragraphs = $('div.z', pagerANPOS.pagingContainer); // set of required containers
+            pagerANPOS.showControl = true;
+            //if ({!isDisplayAFI_AMFS}) { pagerANPOS.showPage(1);}
+            
+            pagerANUW.datasetname = 'AssNotesUW';
+            pagerANUW.pagername = 'pagerANUW';
+            //pagerANUW.pagingControlsContainer = $('#pagingControlAssNotesUW');
+            pagerANUW.pagingInfoContainer = $('#loadInfoAssNotesUW');
+            pagerANUW.numberOfRecords = 10;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerANUW.pagingContainer = $('#content'); // set of main container
+            pagerANUW.paragraphs = $('div.z', pagerANUW.pagingContainer); // set of required containers
+            pagerANUW.showControl = true;
+            if ({!isDisplayAFI_AMFS}) { pagerANUW.showPage(1);}
+            
+            pagerANPA.datasetname = 'AssNotesPA';
+            pagerANPA.pagername = 'pagerANPA';
+            pagerANPA.pagingControlsContainer = $('#pagingControlAssNotesPA');
+            pagerANPA.pagingInfoContainer = $('#loadInfoAssNotesPA');
+            pagerANPA.numberOfRecords = 10;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerANPA.pagingContainer = $('#content'); // set of main container
+            pagerANPA.paragraphs = $('div.z', pagerANPA.pagingContainer); // set of required containers
+            pagerANPA.showControl = true;
+            //if ({!isDisplayAFI_AMFS}) {pagerANPA.showPage(1);}
+            
+            pagerANOTH.datasetname = 'AssNotesOTH';
+            pagerANOTH.pagername = 'pagerANOTH';
+            pagerANOTH.pagingControlsContainer = $('#pagingControlAssNotesOTH');
+            pagerANOTH.pagingInfoContainer = $('#loadInfoAssNotesOTH');
+            pagerANOTH.numberOfRecords = 10;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerANOTH.pagingContainer = $('#content'); // set of main container
+            pagerANOTH.paragraphs = $('div.z', pagerANOTH.pagingContainer); // set of required containers
+            pagerANOTH.showControl = true;
+            //if ({!isDisplayAFI_AMFS}) { pagerANOTH.showPage(1);}
+            
+            pagerRI.datasetname = 'RiskInfo';
+            pagerRI.pagername = 'pagerRI';
+            pagerRI.pagingControlsContainer = $('#pagingControlRiskInfo');
+            pagerRI.numberOfRecords = 100;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerRI.pagingContainer = $('#content'); // set of main container
+            pagerRI.paragraphs = $('div.z', pagerRI.pagingContainer); // set of required containers
+            pagerRI.showControl = false;
+            //if ({!isDisplayMAGI}) { pagerRI.showPage(1);}
+            
+            
+            /* sequence 3 */        
+            pagerAD.datasetname = 'AccountDetail';
+            pagerAD.pagername = 'pagerAD';
+            pagerAD.pagingControlsContainer = $('#pagingControlAccountDetail');
+            pagerAD.numberOfRecords = 100;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerAD.pagingContainer = $('#content'); // set of main container
+            pagerAD.paragraphs = $('div.z', pagerAD.pagingContainer); // set of required containers
+            pagerAD.showControl = false;
+            //if ({!isDisplayAFI_AMFS}) { pagerAD.showPage(1);}
+            
+            pagerCVD.datasetname = 'CashValueDetail';
+            pagerCVD.pagername = 'pagerCVD';
+            pagerCVD.pagingControlsContainer = $('#pagingControlCashValueDetail');
+            pagerCVD.numberOfRecords = 100;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerCVD.pagingContainer = $('#content'); // set of main container
+            pagerCVD.paragraphs = $('div.z', pagerCVD.pagingContainer); // set of required containers
+            pagerCVD.showControl = false;
+            //if ({!isDisplayAFI}) { pagerCVD.showPage(1);}
+                    
+            pagerBene.datasetname = 'BeneficiaryDetail';
+            pagerBene.pagername = 'pagerBene';
+            pagerBene.pagingControlsContainer = $('#pagingControlBeneficiaryDetail');
+            pagerBene.numberOfRecords = 100;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerBene.pagingContainer = $('#content'); // set of main container
+            pagerBene.paragraphs = $('div.z', pagerBene.pagingContainer); // set of required containers
+            pagerBene.showControl = false;
+            //pagerBene.showPage(1);
+            
+            pagerPrem.datasetname = 'PremiumBreakdown';
+            pagerPrem.pagername = 'pagerPrem';
+            pagerPrem.pagingControlsContainer = $('#pagingControlPremiumBreakdown');
+            pagerPrem.numberOfRecords = 100;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerPrem.pagingContainer = $('#content'); // set of main container
+            pagerPrem.paragraphs = $('div.z', pagerPrem.pagingContainer); // set of required containers
+            pagerPrem.showControl = false;
+            //if ({!isDisplayAFI_AMFS}) { pagerPrem.showPage(1);}
+
+            pagerPCL.datasetname = 'PolicyChangeLife';
+            pagerPCL.pagername = 'pagerPCL';
+            pagerPCL.pagingControlsContainer = $('#pagingControlPolicyChangeLife');
+            pagerPCL.numberOfRecords = 100;
+            //pager.paragraphsPerPage = 5; // set amount elements per page
+            pagerPCL.pagingContainer = $('#content'); // set of main container
+            pagerPCL.paragraphs = $('div.z', pagerPCL.pagingContainer); // set of required containers
+            pagerPCL.showControl = false;
+            //pagerPCL.showPage(1);
+
+            pagerEndorseGI.datasetname = 'EndorsementGI';
+            pagerEndorseGI.pagername = 'pagerEndorseGI';
+            pagerEndorseGI.pagingControlsContainer = $('#pagingControlEndorsementGI');
+            pagerEndorseGI.numberOfRecords = 100;
+            //pagerEndorseGI.paragraphsPerPage = 5; // set amount elements per page
+            pagerEndorseGI.pagingContainer = $('#content'); // set of main container
+            pagerEndorseGI.paragraphs = $('div.z', pagerEndorseGI.pagingContainer); // set of required containers
+            pagerEndorseGI.showControl = false;
+            //pagerEndorseGI.showPage(1);
+            if (entity == 'AFI') {
+                loadDataAgentInfo();
+            }
+            // setTimeout("openNewTab('FUNDINFO', '', '','')", 1000);
+        });
+        
+        $(document).ready(function() {
+            //initPage();
+        });
+    </script>
+    
+    <script type='text/javascript'>
+       function getUrlVars() {
+           var vars = [], hash;
+           var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+           for(var i = 0; i < hashes.length; i++) {
+               hash = hashes[i].split('=');
+               vars.push(hash[0]);
+               vars[hash[0]] = hash[1];
+           }
+           return vars;
+       }
+
+       var childId = Math.floor((Math.random() * 500) + 1);
+       var listener = function (result) {
+           var jsonstr = result.message;
+           //childjsonfunction(jsonstr);
+       };
+
+       // tutup dulu sforce.console.addEventListenerX('ParentDataResponse_'.concat(childId), listener);
+
+       var parentId = getUrlVars()["parentId"];
+
+       sforce.console.fireEvent('RequestParentData_'.concat(parentId), childId);
+    </script>
+
+    <script type="text/javascript">
+       function openNewSubTabX(tabName) {
+           sforce.console.getEnclosingPrimaryTabId(openSubtab);
+       }
+
+       function openNewTabXX(tabName) {
+           alert("go");
+       }
+    </script>
+    
+    <script type="text/javascript">
+        var urlRequestNewTab = '';
+        var titleSubTab = '';
+        var openSubTab = function openSubTab(result) {
+           var primaryTabId = result.id;
+           //urlRequest = "/apex/PaymentInfoPage?";
+            sforce.console.openSubtab(primaryTabId , urlRequestNewTab , true, titleSubTab, null, null);
+        };
+
+        /*
+        var openSubtab = function openSubtab(result) {
+                var primaryTabId = result.id;
+                //urlRequest = '/apex/PolicyInfoPage?parentId='+parentId";
+                urlRequest = "/apex/AssessmentNotesDetailPage2?pno=1234567890&sc=pos&rn=1&p=1&r=100";
+                
+                switch (tabName) {
+                    case 'Assessment Notes Detail' :
+                        urlRequest = "/apex/AssessmentNotesDetailPage?pno=1234567890&sc=pos&rn=1&p=1&r=100";
+                        break;
+                        
+                    case 'PAYMENTINFO' :
+                        urlRequest = "/apex/PaymentInfoPage?";
+                        pageTitle = 'PAYMENT';
+                        break;
+                }
+                sforce.console.openSubtab(primaryTabId , urlRequest , true,
+                         'POS : Assessment Notes Detail', null, null);
+            };
+        */
+
+        function openNewTab(tabName, arg2, arg3, arg4) {
+            switch (tabName) {
+                case 'ASSNOTESDETAILINFO' :
+                    // alert('under performance tuning');
+                    // return false;
+                    urlRequestNewTab = '/apex/AssessmentNotesDetailPage?parentId=' + parentId 
+                               + '&contactID=' + contactID + '&sessionID=' + '{!sessionID}' + '&policyNo=' + policyNo + '&entity=' + entity + '&policyApp=' + policyApp 
+                               + '&operation=' + arg2 + '&classType=' + arg3 + '&refNo=' + arg4;
+                    titleSubTab = 'ASS.NOTES DETAIL ' + arg3;
+                    console.log(urlRequestNewTab +'-' + arg2 + '-' + arg3 + '-' + arg4);
+                    break;
+
+                case 'PAYMENTINFO' :
+                 // urlRequestNewTab ="/apex/PaymentInfoPage?";
+                    urlRequestNewTab = '/apex/PaymentInfoPage?parentId=' + parentId 
+                               + '&contactID=' + contactID + '&sessionID=' + '{!sessionID}' + '&policyNo=' + policyNo + '&entity=' + entity + '&policyApp=' + policyApp;
+                    titleSubTab = 'PAYMENT';
+                    break;
+                
+                case 'FUNDINFO' :
+                    //urlRequestNewTab ="/apex/FundInfoPage?";
+                    urlRequestNewTab = '/apex/FundInfoPage?parentId=' + parentId 
+                               + '&contactID=' + contactID + '&sessionID=' + '{!sessionID}' + '&policyNo=' + policyNo + '&entity=' + entity + '&policyApp=' + policyApp;
+                    titleSubTab = 'FUND';
+                    break;
+            }
+
+            if (sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(openSubTab);
+            } else {
+                //window.location.href = urlRequestNewTab;
+                //window.parent.location.href=(urlRequestNewTab);
+                javascript:var x=window.open(urlRequestNewTab,'_blank');
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        var policyNo = '';
+        var entity = '';
+        var policyApp = '';
+        var contactID = '';
+        
+        function initPage () {
+            var sessionId = getUrlVars()["sessionId"];
+            var queryStr = window.location.search;
+            console.log('queryStr : ' + queryStr);
+            var paramPairs = queryStr.substr(1).split('&');
+            
+            var params = {};
+            for (var i = 0; i < paramPairs.length; i++) {
+                var parts = paramPairs[i].split('=');
+                params[parts[0]] = parts[1];
+                //alert(parts[0] +' - ' + parts[1]);
+            }
+            
+            beneficiaryDetailPaging[0] = null;
+            policyNo = params['policyNo'];
+            entity = params['entity'];
+            policyApp = params['policyApp'];
+            contactID = params['contactID'];
+            
+            //loadDataPagingBeneficiaryDetail(policyNo, entity, policyApp, '', '', 0, 1, 100, 1);
+            //loadDataPagingPremiumBreakdown(policyNo, entity, policyApp, '', '', 0, 1, 100, 1)
+            
+            console.log ('policyNo :' + policyNo);
+            console.log ('entity :' + entity);
+            console.log ('policyApp :' + policyApp);
+            console.log ('contactID :' + contactID);
+            
+            /*
+            console.log('isDisplayAFI before :' + {!isDisplayAFI});
+            console.log('isDisplayMAGI before :' + {!isDisplayMAGI});
+            
+            //initPolicyInfoInController();
+            
+            var contactIDRemoteHolderObj = document.getElementById('{!$Component.blockid.formid.contactIDRemoteHolder}');
+            contactIDRemoteHolderObj.value =contactID;
+            refreshPolicyInfo();
+            
+            console.log('isDisplayAFI after :' + {!isDisplayAFI});
+            console.log('isDisplayMAGI after :' + {!isDisplayMAGI});
+            */
+
+        }
+        
+        function afterLoad() {
+            console.log('success');
+            refreshPolicyInfo();
+            
+            console.log('isDisplayAFI after :' + {!isDisplayAFI});
+            console.log('isDisplayAGI after :' + {!isDisplayAGI});
+        }
+    
+        var dataUsed = null;
+        
+        function loadDataPagingBeneficiaryDetail(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var beneficiaryDetailHolderObj = document.getElementById('{!$Component.blockid.formid.beneficiaryDetailHolder}');
+                    
+                    if (beneficiaryDetailPaging[pageNumber] != null || beneficiaryDetailPaging[pageNumber] != undefined) {
+                        beneficiaryDetailHolderObj.value = beneficiaryDetailPaging[pageNumber];
+                        console.log('jadi:' + beneficiaryDetailPaging[pageNumber]);
+                        refreshBeneficiaryDetail(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataBeneficiaryDetail}',
+                                policyNo, entity, policyApp, 'Beneficiary', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    //alert(result);
+                                    beneficiaryDetailPaging[pageNumber] = result;
+                                    console.log('loadDataPagingBeneficiaryDetail :' + beneficiaryDetailPaging[pageNumber]);
+                                    beneficiaryDetailHolderObj.value = result;
+                                    refreshBeneficiaryDetail(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        function loadPremiumBreakdownInfo() {
+            loadDataPagingPremiumBreakdown(policyNo, entity, policyApp, '', '', 100, 1, 100, 1);
+        }
+
+        function loadDataPagingPremiumBreakdown(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var premiumBreakdownHolderObj = document.getElementById('{!$Component.blockid.formid.premiumBreakdownHolder}');
+                    
+                    if (premiumBreakdownPaging[pageNumber] != null || premiumBreakdownPaging[pageNumber] != undefined) {
+                        premiumBreakdownHolderObj.value = premiumBreakdownPaging[pageNumber];
+                        console.log('jadi:' + premiumBreakdownPaging[pageNumber]);
+                        refreshPremiumBreakdown(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataPremiumBreakdown}',
+                                policyNo, entity, policyApp, 'Premium Breakdown', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingPremiumBreakdown : ' + result);
+                                    premiumBreakdownPaging[pageNumber] = result;
+                                    console.log('pb:' + premiumBreakdownPaging[pageNumber]);
+                                    premiumBreakdownHolderObj.value = result;
+                                    refreshPremiumBreakdown(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        function loadDataPagingPolicyChangeLife(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var policyChangeLifeHolderObj = document.getElementById('{!$Component.blockid.formid.policyChangeLifeHolder}');
+                    
+                    if (policyChangeLifePaging[pageNumber] != null || policyChangeLifePaging[pageNumber] != undefined) {
+                        policyChangeLifeHolderObj.value = policyChangeLifePaging[pageNumber];
+                        console.log('jadi:' + policyChangeLifePaging[pageNumber]);
+                        refreshPolicyChangeLife(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataPolicyDetailLife}', 
+                                policyNo, entity, policyApp, 'Policy Change', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingPolicyChangeLife : ' + result);
+                                    policyChangeLifePaging[pageNumber] = result;
+                                    console.log('pc:' + policyChangeLifePaging[pageNumber]);
+                                    policyChangeLifeHolderObj.value = result;
+                                    refreshPolicyChangeLife(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        function loadDataPagingEndorsementGI(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var endorsementGIHolderObj = document.getElementById('{!$Component.blockid.formid.endorsementGIHolder}');
+                    
+                    if (endorsementGIPaging[pageNumber] != null || endorsementGIPaging[pageNumber] != undefined) {
+                        endorsementGIHolderObj.value = endorsementGIPaging[pageNumber];
+                        console.log('jadi:' + endorsementGIPaging[pageNumber]);
+                        refreshEndorsementGI(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataGIPolicyDetail}', 
+                                policyNo, entity, policyApp, 'Policy Change', '{!certificateNo}', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingEndorsementGI : ' + result);
+                                    endorsementGIPaging[pageNumber] = result;
+                                    console.log('pc:' + endorsementGIPaging[pageNumber]);
+                                    endorsementGIHolderObj.value = result;
+                                    refreshEndorsementGI(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        function loadDataPagingRiskInfo(policyNo, entity, policyApp, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var riskInfoHolderObj = document.getElementById('{!$Component.blockid.formid.riskInfoHolder}');
+                    
+                    if (riskInfoPaging[pageNumber] != null || riskInfoPaging[pageNumber] != undefined) {
+                        riskInfoHolderObj.value = riskInfoPaging[pageNumber];
+                        console.log('jadi:' + riskInfoPaging[pageNumber]);
+                        refreshRiskInfo(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataGIPolicyDetail}', 
+                                policyNo, entity, policyApp, 'Risk Info', '', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber, 
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingRiskInfo : ' + result);
+                                    riskInfoPaging[pageNumber] = result;
+                                    console.log('ri:' + riskInfoPaging[pageNumber]);
+                                    riskInfoHolderObj.value = result;
+                                    refreshRiskInfo(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+           
+        function loadDataPagingCashValueDetail(policyNo, entity, policyApp, startDateTime, endDateTime, 
+            rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var cashValueDetailHolderObj = document.getElementById('{!$Component.blockid.formid.cashValueDetailHolder}');
+                    
+                    if (cashValueDetailPaging[pageNumber] != null || cashValueDetailPaging[pageNumber] != undefined) {
+                        cashValueDetailHolderObj.value = cashValueDetailPaging[pageNumber];
+                        console.log('cashValueDetailPaging :' + cashValueDetailPaging[pageNumber]);
+                        refreshCashValueDetail(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataPolicyDetailLife}', 
+                                policyNo, entity, policyApp, 'Cash Value', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingCashValueDetail : ' + result);
+                                    cashValueDetailPaging[pageNumber] = result;
+                                    console.log('Cash Value Detail :' + cashValueDetailPaging[pageNumber]);
+                                    cashValueDetailHolderObj.value = result;
+                                    refreshCashValueDetail(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+            
+        function loadDataPagingAccountDetail(policyNo, entity, policyApp, startDateTime, endDateTime, 
+            rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var accountDetailHolderObj = document.getElementById('{!$Component.blockid.formid.accountDetailHolder}');
+                    
+                    if (accountDetailPaging[pageNumber] != null || accountDetailPaging[pageNumber] != undefined) {
+                        accountDetailHolderObj.value = accountDetailPaging[pageNumber];
+                        console.log('accountDetailPaging :' + accountDetailPaging[pageNumber]);
+                        refreshAccountDetail(); refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataCustomerInfo}', 
+                                policyNo, entity, policyApp, 'Account Detail', startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingAccountDetail : ' + result);
+                                    accountDetailPaging[pageNumber] = result;
+                                    console.log('Cash Value Detail :' + accountDetailPaging[pageNumber]);
+                                    accountDetailHolderObj.value = result;
+                                    refreshAccountDetail(); refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+          
+        function loadDataPagingAssNotesPOS(policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, 
+            rowPerPage, startOfRecords, numberOfRecords, pageNumber, show, extra) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                        rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var assNotesPOSHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesHolder}');
+                    
+                    var start_time = null;
+                    var end_time = null;
+                    var duration = null;
+                    
+                    if (assNotesPOSPaging[pageNumber] != null || assNotesPOSPaging[pageNumber] != undefined) {
+                        if (show == 1) {
+                            start_time = performance.now();//new Date().getTime();
+                            displayLoading('loadingimgAssNotesPOS');
+
+                            assNotesPOSHolderObj.value = assNotesPOSPaging[pageNumber];
+                            console.log('jadi:' + assNotesPOSPaging[pageNumber]);
+                            refreshAssNotesPOS(); refreshPageMessages();
+                            hideLoading('loadingimgAssNotesPOS');
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerANPOS.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration   : ' + duration);
+                        
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber = pageNumber + 1;
+                        if (extra > 0 && (assNotesPOSPaging[nextPageNumber] == null || assNotesPOSPaging[nextPageNumber] == undefined)) {
+                            extra = extra - 1;
+                            startOfRecords = (numberOfRecords * nextPageNumber) + 1;
+                            loadDataPagingAssNotesPOS(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, nextPageNumber, 0, extra);
+                        }
+
+                    } else {
+                        if (show == 1) {displayLoading('loadingimgAssNotesPOS');}
+                        start_time = performance.now(); //new Date().getTime();
+                        
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // string classType, string refNo
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataAssessmentNotes}', 
+                                policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    assNotesPOSPaging[pageNumber] = result;
+                                    console.log ('SET Value of assNotesPOSPaging[' + pageNumber + '] : ' + assNotesPOSPaging[pageNumber]);
+                                    assNotesPOSHolderObj.value = result;
+                                    
+                                    if (show == 1) {
+                                        refreshAssNotesPOS(); refreshPageMessages();
+                                        hideLoading('loadingimgAssNotesPOS');
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerANPOS.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration   : ' + duration);
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber = pageNumber + 1;
+                                    if (extra > 0 && (assNotesPOSPaging[nextPageNumber] == null || assNotesPOSPaging[nextPageNumber] == undefined)) {
+                                        extra = extra - 1;
+                                        startOfRecords = (numberOfRecords * nextPageNumber) + 1;
+                                        loadDataPagingAssNotesPOS(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, nextPageNumber, 0, extra);
+                                    }
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+               
+        function loadDataPagingAssNotesPA(policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber, show, extra) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var assNotesPAHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesHolder}');
+                    
+                    var start_time = null;
+                    var end_time = null;
+                    var duration = null;
+                    
+                    if (assNotesPAPaging[pageNumber] != null || assNotesPAPaging[pageNumber] != undefined) {
+                        if (show == 1) {
+                            start_time = performance.now();//new Date().getTime();
+                            displayLoading('loadingimgAssNotesPA');
+
+                            assNotesPAHolderObj.value = assNotesPAPaging[pageNumber];
+                            console.log('jadi:' + assNotesPAPaging[pageNumber]);
+                            refreshAssNotesPA(); refreshPageMessages();
+                            hideLoading('loadingimgAssNotesPA');
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerANPA.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration   : ' + duration);
+                        
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber = pageNumber + 1;
+                        if (extra > 0 && (assNotesPAPaging[nextPageNumber] == null || assNotesPAPaging[nextPageNumber] == undefined)) {
+                            extra = extra - 1;
+                            startOfRecords = (numberOfRecords * nextPageNumber) + 1;
+                            loadDataPagingAssNotesPA(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, nextPageNumber, 0, extra);
+                        }
+
+                    } else {
+                        if (show == 1) {displayLoading('loadingimgAssNotesPA');}
+                        start_time = performance.now(); //new Date().getTime();
+                        
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // string classType, string refNo
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataAssessmentNotes}', 
+                                policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    assNotesPAPaging[pageNumber] = result;
+                                    console.log ('SET Value of assNotesPAPaging[' + pageNumber + '] : ' + assNotesPAPaging[pageNumber]);
+                                    assNotesPAHolderObj.value = result;
+                                    
+                                    if (show == 1) {
+                                        refreshAssNotesPA(); refreshPageMessages();
+                                        hideLoading('loadingimgAssNotesPA');
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerANPA.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration   : ' + duration);
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber = pageNumber + 1;
+                                    if (extra > 0 && (assNotesPAPaging[nextPageNumber] == null || assNotesPAPaging[nextPageNumber] == undefined)) {
+                                        extra = extra - 1;
+                                        startOfRecords = (numberOfRecords * nextPageNumber) + 1;
+                                        loadDataPagingAssNotesPA(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, nextPageNumber, 0, extra);
+                                    }
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+               
+        function loadDataPagingAssNotesUW(policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, currentPage, pageNumber, show, extra) {
+                    console.log('policyNo:' + policyNo + '-entity:' + entity + '-policyApp:' + policyApp + '-startDateTime:' + startDateTime + '-endDateTime:' + endDateTime + 
+                    '-rowPerPage' + rowPerPage + '-startOfRecords:' + startOfRecords + '-numberOfRecords:' + numberOfRecords + '-currentPage:' + currentPage + '-pageNumber:' +pageNumber + '-show:' + show + '-extra:' +extra);
+                    var assNotesUWHolderObj = document.getElementById('{!$Component.blockid.SecUW.UWFormid.assNotesSummaryUWHolder}');
+                    
+                    var start_time = null;
+                    var end_time = null;
+                    var duration = null;
+                    
+                    if (assNotesUWPaging[pageNumber] != null || assNotesUWPaging[pageNumber] != undefined) {
+                        if (show == 1 && currentPage != pageNumber) {
+                            start_time = performance.now();//new Date().getTime();
+                            displayLoading('loadingimgAssNotesUW');
+
+                            assNotesUWHolderObj.value = assNotesUWPaging[pageNumber];
+                            console.log('jadi:' + assNotesUWPaging[pageNumber]);
+                            refreshAssNotesUW(); refreshPageMessages();
+                            hideLoading('loadingimgAssNotesUW');
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerANUW.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration   : ' + duration);
+                        
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber = pageNumber + 1;
+                        if (extra > 0 && (assNotesUWPaging[nextPageNumber] == null || assNotesUWPaging[nextPageNumber] == undefined)) {
+                            extra = extra - 1;
+                            startOfRecords = (numberOfRecords * nextPageNumber) + 1;
+                            loadDataPagingAssNotesUW(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, nextPageNumber, 0, extra);
+                        }
+
+                    } else {
+                        if (show == 1) {displayLoading('loadingimgAssNotesUW');}
+                        start_time = performance.now(); //new Date().getTime(); 
+                        
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp, 
+                            // string classType, string refNo
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataAssessmentNotes}', 
+                                policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    assNotesUWPaging[pageNumber] = result;
+                                    console.log ('SET Value of assNotesUWPaging[' + pageNumber + '] : ' + assNotesUWPaging[pageNumber]);
+                                    assNotesUWHolderObj.value = result;
+                                    
+                                    if (show == 1) { 
+                                        refreshAssNotesUW(); refreshPageMessages();
+                                        hideLoading('loadingimgAssNotesUW'); 
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerANUW.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration   : ' + duration);
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber = pageNumber + 1;
+                                    if (extra > 0 && (assNotesUWPaging[nextPageNumber] == null || assNotesUWPaging[nextPageNumber] == undefined)) {
+                                        extra = extra - 1;
+                                        startOfRecords = (numberOfRecords * nextPageNumber) + 1;
+                                        loadDataPagingAssNotesUW(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, currentPage, nextPageNumber, 0, extra);
+                                    }
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        function loadDataPagingAssNotesOTH(policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber, show, extra) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var assNotesOTHHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesHolder}');
+                    
+                    var start_time = null;
+                    var end_time = null;
+                    var duration = null;
+                    
+                    if (assNotesOTHPaging[pageNumber] != null || assNotesOTHPaging[pageNumber] != undefined) {
+                        if (show == 1) {
+                            start_time = performance.now();//new Date().getTime();
+                            displayLoading('loadingimgAssNotesOTH');
+
+                            assNotesOTHHolderObj.value = assNotesOTHPaging[pageNumber];
+                            console.log('jadi:' + assNotesOTHPaging[pageNumber]);
+                            refreshAssNotesOTH(); refreshPageMessages();
+                            hideLoading('loadingimgAssNotesOTH');
+                            end_time = performance.now();//new Date().getTime();
+                            duration = end_time - start_time;
+                            duration = duration.toFixed(3);
+                            pagerANOTH.renderInfo('Load duration : ' + duration + ' milliseconds');
+                            console.log('duration   : ' + duration);
+                        
+                        }
+                        // lazy loading for next page ::
+                        var nextPageNumber= pageNumber +1;
+                        if (extra > 0 && (assNotesOTHPaging[nextPageNumber] == null || assNotesOTHPaging[nextPageNumber] == undefined)) {
+                            extra = extra - 1;
+                            startOfRecords = (numberOfRecords * nextPageNumber) + 1;                                        
+                            loadDataPagingAssNotesOTH(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords,  nextPageNumber, 0, extra) ;
+                        }
+                    
+                    } else {
+                        if (show == 1) {displayLoading('loadingimgAssNotesOTH');}
+                        start_time = performance.now(); //new Date().getTime(); 
+                        
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : String policyNo, String entity, String policyApp,
+                            // string classType, string refNo
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataAssessmentNotes}', 
+                                policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    assNotesOTHPaging[pageNumber] = result;
+                                    console.log ('SET Value of assNotesOTHPaging[' + pageNumber + '] : ' + assNotesOTHPaging[pageNumber]);
+                                    assNotesOTHHolderObj.value = result;
+                                    
+                                    if (show == 1) {
+                                        refreshAssNotesOTH(); refreshPageMessages();
+                                        hideLoading('loadingimgAssNotesOTH'); 
+                                    }
+                                    end_time = performance.now(); //new Date().getTime();
+                                    duration = end_time - start_time;
+                                    duration = duration.toFixed(3);
+                                    
+                                    if (show == 1) {
+                                        pagerANOTH.renderInfo('Load duration : ' + duration + ' milliseconds');
+                                        console.log('duration   : ' + duration);
+                                    }
+                                    
+                                    // lazy loading for next page ::
+                                    var nextPageNumber = pageNumber + 1;
+                                    if (extra > 0 && (assNotesOTHPaging[nextPageNumber] == null || assNotesOTHPaging[nextPageNumber] == undefined)) {
+                                        extra = extra - 1;
+                                        startOfRecords = (numberOfRecords *  nextPageNumber) + 1;
+                                        loadDataPagingAssNotesOTH(policyNo, entity, policyApp, operation, classType, refNo, '', '', rowPerPage, startOfRecords, numberOfRecords, nextPageNumber, 0, extra);
+                                    }
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        function loadDataPagingAssNotes(policyNo, entity, policyApp, operation, classType, refNo, startDateTime, endDateTime, 
+                rowPerPage, startOfRecords, numberOfRecords, pageNumber) {
+                    console.log(policyNo + '-' + entity + '-' + policyApp + '-' + operation + '-' + classType + '-' + startDateTime + '-' + endDateTime + '-' + 
+                rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+                    var assNotesPOSHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesPOSHolder}');
+                    var assNotesUWHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesUWHolder}');
+                    var assNotesPAHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesPAHolder}');
+                    var assNotesOTHHolderObj = document.getElementById('{!$Component.blockid.formid.assNotesOTHHolder}');
+                    
+                    //SAMPAI SINI ... 
+                    //BUAT ASS notes summary 1 function saja
+                    
+                    var assNotesHolderObj = null;
+                    var tmpArray = null;
+                    
+                    if (classType == 'POS') {
+                        tmpArray = assNotesPOSPaging[pageNumber];
+                        assNotesHolderObj =  document.getElementById('{!$Component.blockid.formid.assNotesPOSHolder}');
+                    } else if (classType == 'PA') {
+                        tmpArray = assNotesPAPaging[pageNumber];
+                        assNotesHolderObj =  document.getElementById('{!$Component.blockid.formid.assNotesPAHolder}');
+                    } else if (classType == 'UW') {
+                        tmpArray = assNotesUWPaging[pageNumber];
+                        assNotesHolderObj =  document.getElementById('{!$Component.blockid.formid.assNotesUWHolder}');
+                    } else if (classType == 'OTH') {
+                        tmpArray = assNotesOTHPaging[pageNumber];
+                        assNotesHolderObj =  document.getElementById('{!$Component.blockid.formid.assNotesOTHHolder}');
+                    }
+                    
+                    if (tmpArray != null || tmpArray != undefined) {
+                        assNotesHolderObj.value = tmpArray;
+                        console.log('jadi:' + tmpArray); 
+                        
+                        refreshAssNotesPOS();
+                        
+                        if (classType == 'POS') {
+                            refreshAssNotesPOS();
+                        } else if (classType == 'PA') {
+                            refreshAssNotesPA();
+                        } else if (classType == 'UW') {
+                            refreshAssNotesUW();
+                        } else if (classType == 'OTH') {
+                            refreshAssNotesOTH();
+                        }
+                        
+                        refreshPageMessages();
+                    } else {
+                        Visualforce.remoting.Manager.invokeAction(
+                            // param : getRemoteDataAssessmentNotes (String policyNo, String entity, String policyApp, string operation, string classType, string refNo,
+                            // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber) 
+                            '{!$RemoteAction.RemoteDataController.getRemoteDataAssessmentNotes}', 
+                                policyNo, entity, policyApp, operation, classType, refNo, 
+                                startDateTime, endDateTime, rowPerPage, startOfRecords, numberOfRecords, pageNumber,
+                            function (result, event) {
+                                if (event.status) {
+                                    console.log('loadDataPagingAssNotes : ' + result);
+                                    assNotesPOSPaging[pageNumber] = result;
+                                    console.log('AN :' + assNotesPOSPaging[pageNumber]);
+                                    
+                                    assNotesHolderObj.value = result;
+                                    
+                                    if (classType == 'POS') {
+                                        refreshAssNotesPOS();
+                                    } else if (classType == 'PA') {
+                                        refreshAssNotesPA();
+                                    } else if (classType == 'UW') {
+                                        refreshAssNotesUW();
+                                    } else if (classType == 'OTH') {
+                                        refreshAssNotesOTH();
+                                    }
+                                    
+                                    refreshPageMessages();
+                                }
+                            }, {escape: true}
+                        );
+                    }
+                }
+
+        //showAgentInfo on click
+        function loadDataAgentInfoClick() {
+            loadDataAgentInfo();
+        }
+
+        function loadDataAgentInfo() {
+            console.log('execute load agent data info');
+            //console.log(policyNo + '-' + entity + '-' + policyApp + '-' + startDateTime + '-' + endDateTime + '-' + 
+            //rowPerPage + '-' + startOfRecords + '-' + numberOfRecords + '-' + pageNumber);
+            var agentInfoHolderObj = document.getElementById('{!$Component.blockid.formid.agentInfoHolder}');
+
+            Visualforce.remoting.Manager.invokeAction(
+                // param : String policyNo, String entity, String policyApp, 
+                // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                '{!$RemoteAction.RemoteDataController.getRemoteDataAgentInfo}', 
+                    //policyNo, entity, policyApp, 'Agent Info', '', '', 0, 0, 0, 0,
+                    '{!agentServicingCode}', entity, policyApp, 'Agent Info', '', '', 0, 0, 0, 0,
+                function (result, event) {
+                    if (event.status) {
+                        console.log('loadDataAgentInfo: ' + result);
+                        agentInfoHolderObj.value = result;
+                        refreshAgentInfo(); refreshPageMessages();
+                    }
+                }, {escape: true}
+            );
+        }
+            
+        function loadDataAgentReportingStructureHierarchy() {
+            var agentReportingStructureHierarchyHolderObj = document.getElementById('{!$Component.blockid.formid.agentReportingStructureHierarchyHolder}');
+
+            Visualforce.remoting.Manager.invokeAction(
+                // param : String policyNo, String entity, String policyApp, 
+                // String startDateTime, String endDateTime, Integer rowPerPage, Integer startOfRecords, Integer numberOfRecords, Integer pageNumber
+                '{!$RemoteAction.RemoteDataController.getRemoteDataAgentInfo}', 
+                    //policyNo, entity, policyApp, 'Reporting Structure Hierachy', null, null, null, null, null, null,
+                    '{!agentServicingCode}', entity, 'IDAS', 'Reporting Structure Hierarchy', null, null, null, null, null, null,
+                function (result, event) {
+                    if (event.status) {
+                        console.log('loadDataAgentReportingStructureHierarchy: ' + result);
+                        agentReportingStructureHierarchyHolderObj.value = result;
+                        refreshAgentReportingStructureHierarchy(); refreshPageMessages();
+                    }
+                }, {escape: true}
+            );
+        }
+
+    </script>
+    <!-- .End of Java Script -->
+    
+    <body>
+    <!--  <body > --> 
+    <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+        
+        <!--   
+        TEST
+        <br/>
+        isDisplayAMFS: {!isDisplayAMFS}<br/>
+        isDisplayAFI : {!isDisplayAFI} <br/>
+        isDisplayMAGI : {!isDisplayMAGI} <br/>
+        isDisplayAFI_AMFS : {!isDisplayAFI_AMFS} <br/>
+        isDisplayAMFS_MAGI : {!isDisplayAMFS_MAGI} <br/>
+        isDisplayAFI_MAGI : {!isDisplayAFI_MAGI} <br/>
+        isDisplayAFI_AMFS_MAGI : {!isDisplayAFI_AMFS_MAGI} <br/>
+        -->
+        
+        <apex:pageBlock mode="maindetail" tabStyle="Contact" id="blockid" >   
+            <apex:outputPanel id="panelPolicyInfo" rendered="true">
+                <apex:sectionHeader title="Policy Info" subtitle="{!policyNo} : {!contactName} " printUrl="PolicyInfoPage" />
+                <apex:outputPanel id="panelPageMessages" rendered="true"><apex:pageMessages /></apex:outputPanel>
+                
+                <!--  <input type="button" value="Open" id="newTEST" onClick="openNewTab('POLICYINFO');" /> -->
+                <!-- *** POLICY DETAIL  -->
+                
+                <!-- (1) *** POLICY DETAIL for GI -->
+                <apex:pageBlockSection title="Policy Details" columns="1" collapsible="true"    id="SecGIPolicyDetail" rendered="{!isDisplayAGI}">
+                    <!--<apex:pageBlockSection title="JSON" columns="1" collapsible="true"  id="jsonPDGI" rendered="{!isDisplayJSON}">
+                        <apex:outputText value="{!EIPPolicyDetailList}" ></apex:outputText>
+                    </apex:pageBlockSection>-->
+                                
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Policy No"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.PolicyNo}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Reference Date"></apex:outputLabel>
+                                <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!policyDetailGIData.ReferenceDate}" /></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Policy Holder"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.PolicyHolder}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Cover Date"></apex:outputLabel>
+                                <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!policyDetailGIData.CoverDate}" /></apex:outputText>
+                        </apex:pageBlockSectionItem>  
+                    </apex:pageBlockSection>
+                
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Reference No"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.ReferenceNo}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Segment"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.Segment}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Total Insured"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.Insured}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Branch Name"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.BranchName}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Description"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.Description}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Branch Code"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.BranchCode}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Start Date"></apex:outputLabel>
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!policyDetailGIData.StartDate}" /></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Status Description"></apex:outputLabel>
+                                <apex:outputText value="{!policyDetailGIData.StatusDescription}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="End Date"></apex:outputLabel>
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!policyDetailGIData.EndDate}" /></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="TSI"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.TSI}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Premium"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Premium}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Certificate No"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.CertificateNo}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Policy Date"></apex:outputLabel>
+                            <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!policyDetailGIData.PolicyDate}" /></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Usage"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.Usage}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Marketing Officer Name"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MarketingOfficerName}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Marketing Officer Code"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MarketingOfficerCode}" ></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="2" >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Marketing Officer Dept"></apex:outputLabel>
+                            <apex:outputText value="{!policyDetailGIData.MarketingOfficerDept}"></apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                </apex:pageBlockSection>
+
+                <!-- (2) *** INSURED DETAIL INFO (GI) only for MAGI  -->
+                <apex:pageBlockSection title="Insured Detail" collapsible="true" columns="1" rendered="{!isDisplayAGI}" id="Sec3">
+                    <!-- script> twistSection(document.getElementById('img_{!$Component.Sec3}')); /script  -->
+                <!--{!UPPER(ProductCode)}
+                <br/>-->
+                    <apex:pageBlockTable id="idtableH" value="{!insuredDetailList}" rendered="{!IF(UPPER(ProductCode) == 'HEALTH', true, false)}" var="ins" style="overflow:auto;width:95%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">ID No</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column headerValue="Name">{!ins.Name}</apex:column>
+                        <apex:column > <apex:facet name="header">Place of<br/>Birth</apex:facet>{!ins.PlaceofBirth}</apex:column>
+                        <apex:column > <apex:facet name="header">Date of<br/>Birth</apex:facet> <apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!ins.DateofBirth}" /></apex:outputText> </apex:column>
+                        <apex:column headerValue="Gender">{!ins.Gender}</apex:column>
+                        <apex:column headerValue="Email">{!ins.Email}</apex:column>
+                        <apex:column headerValue="Mobile">{!ins.Mobile}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    <apex:pageBlockTable id="idtableMV" value="{!insuredDetailList}" rendered="{!IF(Contains(UPPER(ProductCode), 'MOTOR'), true, false)}" var="ins" style="overflow:auto;width:95%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">Risk Number</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column > <apex:facet name="header">Vehicle Merk<br/>and Model</apex:facet>{!ins.VehicleMerkModel}</apex:column>
+                        <apex:column > <apex:facet name="header">Police<br/>Reg.No</apex:facet>{!ins.PoliceRegNo}</apex:column>
+                        <apex:column > <apex:facet name="header">Year of<br/>Manufacture</apex:facet>{!ins.YearofManufacturing}</apex:column>
+                        <apex:column headerValue="Policy Cover">{!ins.PolicyCover}</apex:column>
+                        <apex:column > <apex:facet name="header">Vehicle Sum<br/>Insured</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.SumInsured}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Basic<br/>Premium</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.PremiumAmount}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Object Insured/<br/>Extra Coverage</apex:facet>{!ins.ObjectInsured}</apex:column>
+                        <apex:column > <apex:facet name="header">Extra Coverage<br/>Limits</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.ExtraCoverageLimits}"/> </apex:outputText></apex:column>
+                        <apex:column headerValue="Policy Deductible">{!ins.Deductible}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    <apex:pageBlockTable id="idtableL" value="{!insuredDetailList}" rendered="{!IF(UPPER(ProductCode) == 'LIABILITY', true, false)}" var="ins" style="overflow:auto;width:100%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">Risk Number</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column > <apex:facet name="header">Premises</apex:facet>{!ins.RiskOccupation}</apex:column>
+                        <apex:column > <apex:facet name="header">Place of<br/>Employed</apex:facet>{!ins.Destination}</apex:column>
+                        <apex:column > <apex:facet name="header">Object Insured</apex:facet>{!ins.ObjectInsured}</apex:column>
+                        <apex:column > <apex:facet name="header">No.of<br/>Employee</apex:facet>{!ins.NoEmployee}</apex:column>
+                        <apex:column > <apex:facet name="header">Limit of<br/>Liability</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.TPLLimit}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Limit of Liability<br/>any one Occurrence</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.LimitOccurrence}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Limit of Liability<br/>any one Period</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.LimitPeriod}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Premium<br/>Amount</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.PremiumAmount}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Territorial<br/>Limit</apex:facet>{!ins.TerritorialLimit}</apex:column>
+                        <apex:column > <apex:facet name="header">Owner<br/>Business</apex:facet>{!ins.OwnerBusiness}</apex:column>
+                        <apex:column headerValue="Deductible">{!ins.Deductible}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    <apex:pageBlockTable id="idtableT" value="{!insuredDetailList}" rendered="{!IF(Contains(UPPER(ProductCode), 'TRAVEL'), true, false)}" var="ins" style="overflow:auto;width:95%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">Risk Number</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column headerValue="Insured Name" >{!ins.InsuredName}</apex:column>
+                        <apex:column headerValue="Age" >{!ins.Age}</apex:column>
+                        <apex:column > <apex:facet name="header">No.of Risks<br/>and Occupation</apex:facet>{!ins.RiskOccupation}</apex:column>
+                        <apex:column headerValue="Beneficiary" >{!ins.Beneficiary}</apex:column>
+                        <apex:column headerValue="Relation" >{!ins.Relation}</apex:column>
+                        <apex:column headerValue="Policy Plan" >{!ins.PolicyPlan}</apex:column>
+                        <apex:column headerValue="Policy Cover" >{!ins.PolicyCover}</apex:column>
+                        <apex:column > <apex:facet name="header">Sum<br/>Insured</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.SumInsured}"/> </apex:outputText></apex:column>
+                        <apex:column headerValue="Premium" ><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.Premium}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Premium<br/>Amount</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.PremiumAmount}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Destination</apex:facet>{!ins.Destination}</apex:column>
+                        <apex:column > <apex:facet name="header">No.of<br/>Lives</apex:facet>{!ins.NoEmployee}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    <apex:pageBlockTable id="idtableM" value="{!insuredDetailList}" rendered="{!IF(UPPER(ProductCode) == 'MARINE', true, false)}" var="ins" style="overflow:auto;width:100%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">Risk Number</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column headerValue="Vessel Name">{!ins.VesselName}</apex:column>
+                        <apex:column headerValue="Vessel Type">{!ins.VesselType}</apex:column>
+                        <apex:column > <apex:facet name="header">Year of<br/>Manufacture</apex:facet>{!ins.YearofManufacturing}</apex:column>
+                        <apex:column > <apex:facet name="header">Vessel<br/>Flag</apex:facet>{!ins.VesselFlag}</apex:column>
+                        <apex:column > <apex:facet name="header">Interest<br/>Insured</apex:facet>{!ins.RiskOccupation}</apex:column>
+                        <apex:column > <apex:facet name="header">Conveyance<br/>Name</apex:facet>{!ins.ConveyanceName}</apex:column>
+                        <apex:column > <apex:facet name="header">Departure<br/>From</apex:facet>{!ins.DepartureFrom}</apex:column>
+                        <apex:column headerValue="To">{!ins.To}</apex:column> 
+                        <apex:column > <apex:facet name="header">Time<br/>Departure</apex:facet><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!ins.TimeDeparture}" /></apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Object<br/>Insured</apex:facet>{!ins.ObjectInsured}</apex:column>
+                        <apex:column > <apex:facet name="header">Sum<br/>Insured</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.SumInsured}"/></apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Type of<br/>Cover</apex:facet>{!ins.TypeCover}</apex:column>
+                        <apex:column > <apex:facet name="header">Premium<br/>Amount</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.PremiumAmount}"/> </apex:outputText></apex:column>
+                        <apex:column headerValue="Deductible">{!ins.Deductible}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    <apex:pageBlockTable id="idtableO" value="{!insuredDetailList}" rendered="{!IF(Contains(UPPER(ProductCode), 'OTHER'), true, false)}" var="ins" style="overflow:auto;width:95%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">Risk Number</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column > <apex:facet name="header">Property Address/<br/>Premises</apex:facet>{!ins.RiskOccupation}</apex:column>
+                        <apex:column > <apex:facet name="header">Object Insured</apex:facet>{!ins.ObjectInsured}</apex:column>
+                        <apex:column > <apex:facet name="header">Limit any<br/>one Accident</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.LimitAccident}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Estimate Annual<br/>Carrying</apex:facet>{!ins.EstimateCarrying}</apex:column>
+                        <apex:column > <apex:facet name="header">Rate cash<br/>in Premises</apex:facet>{!ins.RatePremises}</apex:column>
+                        <apex:column > <apex:facet name="header">Rate cash<br/>in Transit</apex:facet>{!ins.RateTransit}</apex:column>
+                        <apex:column > <apex:facet name="header">Owner<br/>Business</apex:facet>{!ins.OwnerBusiness}</apex:column>
+                        <apex:column headerValue="Deductible">{!ins.Deductible}</apex:column>
+                    </apex:pageBlockTable>
+                    
+                    <apex:pageBlockTable id="idtableP" value="{!insuredDetailList}" rendered="{!IF(UPPER(ProductCode) == 'PROPERTY', true, false)}" var="ins" style="overflow:auto;width:95%;table-layout:auto;" align="left" border="1">   
+                        <!--<apex:column headerValue="Product">{!ins.Product}</apex:column>-->
+                        <apex:column ><apex:facet name="header">Risk Number</apex:facet>{!ins.IDNo}</apex:column>
+                        <apex:column > <apex:facet name="header">Job Site</apex:facet>{!ins.Destination}</apex:column>
+                        <apex:column > <apex:facet name="header">Contract<br/>Title</apex:facet>{!ins.ContractTitle}</apex:column>
+                        <apex:column > <apex:facet name="header">Contract<br/>Works</apex:facet>{!ins.ContractWorks}</apex:column>
+                        <apex:column > <apex:facet name="header">Sum<br/>Insured</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.SumInsured}"/></apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Rate of<br/>Premium</apex:facet>{!ins.RatePremium}</apex:column>
+                        <apex:column > <apex:facet name="header">Premium<br/>Amount</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.PremiumAmount}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Owner<br/>Business</apex:facet>{!ins.OwnerBusiness}</apex:column>
+                        <apex:column > <apex:facet name="header">TPL Limit</apex:facet><apex:outputText value="{0, number, ###,###,###,##0.00}"> <apex:param value="{!ins.TPLLimit}"/> </apex:outputText></apex:column>
+                        <apex:column > <apex:facet name="header">Property Address/<br/>Premises</apex:facet>{!ins.RiskOccupation}</apex:column>
+                        <apex:column > <apex:facet name="header">Object Insured</apex:facet>{!ins.ObjectInsured}</apex:column>
+                        <apex:column headerValue="Deductible">{!ins.Deductible}</apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>  
+                <!-- *** .END OF INSURED DETAIL INFO (GI) only for MAGI --> 
+
+                <!-- (3) *** Benefit Detail  -->
+                <apex:pageBlockSection title="Benefit Detail" collapsible="true" columns="1" id="idbnfDetail" rendered="{!isDisplayAFI_AMFS_AGI}">
+                    <!-- </script> twistSection(document.getElementById('img_{!$Component.idbnfSec}')); </script> -->
+                    <div id="pagingControlBeneficiaryDetail"></div>
+                    <apex:outputPanel id="panelBeneficiaryDetail" rendered="true">
+                        <apex:pageBlockTable id="idbnf" value="{!benefitDetailList}" var="r" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1">
+                            <apex:column headerValue="Plan Code">{!r.PlanCode}</apex:column>
+                            <apex:column headerValue="Benefit Code">{!r.BenefitCode}</apex:column>
+                            <apex:column headerValue="Benefit Description">{!r.BenefitDesc}</apex:column>
+                            <apex:column headerValue="Benefit Unit in Day" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!r.BenefitInDay}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Benefit Unit in Visit" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!r.BenefitInVisit}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Benefit Unit in Month" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!r.BenefitInMonth}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Benefit Unit in Year" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!r.BenefitInYear}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Benefit Unit in Life" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!r.BenefitInLife}"/> </apex:outputText></apex:column>
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>  
+                <!-- *** .END OF Benefit Detail  --> 
+
+                <!-- (4) *** PREMIUM BREAKDOWN --> 
+                <apex:pageBlockSection title="Premium Breakdown" collapsible="true" columns="1" rendered="{!isDisplayAGI}" > <!-- rendered="{!isDisplayAFI_AMFS}" -->
+                    <apex:pageBlockSectionItem rendered="{!isDisplayAMFS}" >
+                        <input type="button" value="Show" id="showPremiumBreakdownBtn" onClick="loadPremiumBreakdownInfo();" />
+                    </apex:pageBlockSectionItem>
+                    
+                    <div id="pagingControlPremiumBreakdown"></div>
+                    <apex:outputPanel id="panelPremiumBreakdown" rendered="true">
+                    <apex:pageBlockTable id="idprembreak" value="{!premiumBreakdownList}" var="prem" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <!--<apex:column > <apex:facet name="header">Basic Insurance<br/>Product Code</apex:facet>  {!prem.InsuranceProductCd} </apex:column>-->
+                        <apex:column headerValue="Transaction No">{!prem.TransactionNo}</apex:column>
+                        <apex:column headerValue="Product Type" rendered="{!IF(AND(LEFT(policyNo, 1) == 'G', LEFT(policyNo, 2) != 'GA'), true, false)}">{!prem.ProductType}</apex:column>
+                        <apex:column headerValue="Risk No" rendered="{!IF(OR(LEFT(policyNo, 1) != 'G', LEFT(policyNo, 2) == 'GA'), true, false)}">{!prem.RiskNo}</apex:column>
+                        <apex:column headerValue="Insured No" rendered="{!IF(OR(LEFT(policyNo, 1) != 'G', LEFT(policyNo, 2) == 'GA'), true, false)}">{!prem.InsuredNo}</apex:column>
+                        <apex:column headerValue="Insured Name" rendered="{!IF(OR(LEFT(policyNo, 1) != 'G', LEFT(policyNo, 2) == 'GA'), true, false)}">{!prem.InsuredName}</apex:column>
+                        <apex:column headerValue="Plan Code">{!prem.PlanCode}</apex:column>
+                        <!--  <apex:column headerValue="Basic Plan"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.BasicPlan}"/> </apex:outputText></apex:column> -->
+                        
+                        <apex:column headerValue="Plan Type">{!prem.PlanType}</apex:column>
+                        <!--<apex:column headerValue="Plan Type"><apex:outputText  value="{!prem.PlanType}"  rendered="{!IF(prem.ProductType == 'CLIN', true, false)}"/></apex:column>-->
+                        
+                        <apex:column headerValue="Plan Effective Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!prem.PlanEffectiveDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Plan Expired Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!prem.PlanExpiredDate}" /></apex:outputText></apex:column>
+                        <!--  <apex:column headerValue="Plan SI" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.PlanSi}"/> </apex:outputText></apex:column> -->
+                        <apex:column headerValue="Plan SI" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.PlanSI}"/> </apex:outputText></apex:column>
+                        <!--    <apex:column headerValue="Modal Plan Premium" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.ModalPlanPremium}"/></apex:outputText></apex:column> -->
+                        <apex:column headerValue="Modal Plan Premium" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.ModalPlanPremium}"/></apex:outputText></apex:column>
+                        <apex:column headerValue="Plan Status">{!prem.PlanStatus}</apex:column>
+                        <apex:column headerValue="Class Code">{!prem.ClassCode}</apex:column>
+                        <apex:column headerValue="Modal Plan Loading">{!prem.ModalPlanLoading}</apex:column>
+                        <apex:column headerValue="Termination Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!prem.TerminationDate}" /></apex:outputText></apex:column> 
+                        <apex:column headerValue="Gross Premium" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.GrossPremium}"/> </apex:outputText></apex:column>
+                        <!-- <apex:column headerValue="Gross Premium"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.GrossPremium}"/> </apex:outputText></apex:column> -->
+                        <apex:column headerValue="Nett Premium" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.NettPremium}"/> </apex:outputText></apex:column>
+                        <!-- <apex:column headerValue="Nett Premium"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!prem.NettPremium}"/> </apex:outputText></apex:column> -->
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+                <!-- *** .END OF BREAKDOWN --> 
+
+                <!-- (5) *** RISK INFO -->
+                <apex:pageBlockSection title="Risk Info" collapsible="true" columns="1" rendered="{!isDisplayAGI}" >
+                    <div id="pagingControlRiskInfo"></div>
+                    <apex:outputPanel id="panelRiskInfo" rendered="true">
+                    <apex:pageBlockTable id="idRiskInf" value="{!riskDetailList}" var="ri" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Transaction No">{!ri.TransactionNo}</apex:column>
+                        <apex:column headerValue="Member No" rendered="{!IF(AND(LEFT(policyNo, 1) == 'G', LEFT(policyNo, 2) != 'GA'), true, false)}">{!ri.MemberNo}</apex:column>
+                        <apex:column headerValue="Member Name" rendered="{!IF(AND(LEFT(policyNo, 1) == 'G', LEFT(policyNo, 2) != 'GA'), true, false)}">{!ri.MemberName}</apex:column>
+                        <!-- <apex:column headerValue="Tahun Pertanggungan">Hide - {!ri.TahunPertanggungan}</apex:column> -->
+                        <!-- <apex:column headerValue="TSI">Hide - {!ri.TSI}</apex:column> -->
+                        <!-- <apex:column headerValue="Premium">Hide - {ri.Premium}</apex:column> -->
+                        <!-- <apex:column headerValue="Premium" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!ri.Premium}"/> </apex:outputText></apex:column> -->
+                        <apex:column headerValue="Coverage">{!ri.Coverage}</apex:column>
+                        <apex:column headerValue="Plan No" rendered="{!IF(AND(LEFT(policyNo, 1) == 'G', LEFT(policyNo, 2) != 'GA'), true, false)}">{!ri.PlanNo}</apex:column>
+                        <apex:column headerValue="Risk No" rendered="{!IF(OR(LEFT(policyNo, 1) != 'G', LEFT(policyNo, 2) == 'GA'), true, false)}">{!ri.RiskNo}</apex:column>
+                        <apex:column headerValue="Effective Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!ri.StartDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Termination Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!ri.EndDate}" /></apex:outputText></apex:column>
+                        <!-- <apex:column headerValue="Benefit Limit">hide - {!ri.Coverage}</apex:column> -->
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>  
+                <!-- *** .END OF RISK INFO --> 
+                
+                <!-- (6) *** OWN RISK -->
+                <apex:pageBlockSection title="Own Risk" collapsible="true" columns="1" rendered="{!isDisplayAGI}">
+                    <apex:pageBlockSection title="JSON" columns="1" collapsible="true"  id="jsonOwnRisk" rendered="{!isDisplayJSON}">
+                        <apex:outputText value="{!ownRiskDataJSON}" ></apex:outputText>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Own Retention/Deductible Remarks"></apex:outputLabel>
+                            <apex:outputText value="{!ownRiskData.OwnRetentionDeductibleRemarks}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>  
+                <!-- *** .END OF OWN RETENTION/OR -->
+
+                <!-- (7) *** BENEFICIARY -->
+                <apex:pageBlockSection title="Beneficiary Detail" collapsible="true" columns="1" id="idbnfSec" rendered="{!isDisplayAFI_AMFS_AGI}">
+                    <!-- </script> twistSection(document.getElementById('img_{!$Component.idbnfSec}')); </script> -->
+                    <div id="pagingControlBeneficiaryDetail"></div>
+                    <apex:outputPanel id="panelBeneficiaryDetail" rendered="true">
+                        <apex:pageBlockTable id="idbnf" value="{!beneficiaryDetailList}" var="r" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1">
+                        <!--  apex:pageBlockTable id="idbnf" value="{!beneficiaryDetailList}" var="r" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1"> -->
+                            <apex:column headerValue="Name">{!r.Name}</apex:column>
+                            <apex:column headerValue="Place of Birth">{!r.PlaceofBirth}</apex:column>
+                            <apex:column headerValue="Date of Birth"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!r.DateOfBirth}" /></apex:outputText></apex:column>
+                            <!--  <apex:column headerValue="Date of Birth">{!r.DateOfBirth}"  </apex:column> -->
+                            <apex:column headerValue="Gender">{!r.Gender}</apex:column>
+                            <apex:column headerValue="Relation">{!r.Relation}</apex:column>           
+                            <apex:column headerValue="Percentage">{!r.Percentage}</apex:column>
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>  
+                <!-- *** .END OF BENEFICIARY --> 
+
+                <!-- (8) *** INTEREST INFO -->
+                <apex:pageBlockSection title="Interest Info" collapsible="true" columns="1" rendered="{!isDisplayAGI}">
+                    <apex:pageBlockSection title="JSON" columns="1" collapsible="true"  id="jsonIntrInfo" rendered="{!isDisplayJSON}">
+                        <apex:outputText value="{!interestInfoListJSON}" ></apex:outputText>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockTable id="idinterest" value="{!interestInfoList}" var="inter" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Additional Benefit">{!inter.AdditionalBenefit}</apex:column>
+                        <apex:column headerValue="Limit">{!inter.sLimit}</apex:column>
+                    </apex:pageBlockTable> 
+                </apex:pageBlockSection>  
+                <!-- *** .END OF INTEREST INFO --> 
+                            
+                <!-- (9) *** PAYMENT -->
+                <apex:pageBlockSection title="Payment" collapsible="true" columns="10" rendered="{!isDisplayAFI_AMFS_AGI}">
+                    <input type="button" value="Open" id="paymentInfoBtn" onClick="openNewTab('PAYMENTINFO', '', '','');" />
+                </apex:pageBlockSection>
+                
+                <!-- *** SURVEY TAKEN -->
+                <apex:pageBlockSection title="Survey Taken" collapsible="true" columns="10" rendered="true">
+                    <apex:pageBlockTable id="idAssNotesPOS" value="{!assessmentNotesSummaryPOSList}" var="dt" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                        <apex:column > <apex:facet name="header">ID</apex:facet>  </apex:column>
+                        <apex:column > <apex:facet name="header">Case</apex:facet>  </apex:column>
+                        <apex:column > <apex:facet name="header">Survey</apex:facet> </apex:column>
+                        <apex:column > <apex:facet name="header">Created Date</apex:facet>  </apex:column>
+                        <apex:column > <apex:facet name="header">Created By</apex:facet>  </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>  
+                <!-- *** .END OF SURVEY TAKEN -->  
+                        
+
+                <!-- ### ASSESSMENT NOTES ### -->
+                <!-- *** POS -->
+                <apex:pageBlockSection title="POS" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}" id="SecAN">
+                    <!--    <script> twistSection(document.getElementById('img_{!$Component.SecAN}')); </script> -->
+                    <apex:outputPanel id="panelSecPOS" rendered="true">
+                        <apex:outputLabel style="font-weight:bold" value="Assessment Notes (Life) POS - Summary List"></apex:outputLabel>
+                            <br/><br/>
+                            <table><tr><td id="pagingControlAssNotesPOS"> </td> <td> <img id="loadingimgAssNotesPOS" style="display:none" src="/img/loading.gif" /></td></tr></table>
+                            
+                            <apex:outputPanel id="panelAssNotesPOS" rendered="true">
+                            <apex:pageBlockSectionItem >
+                                <apex:form id="POSFormid">
+                                    <apex:pageBlockTable id="idAssNotesPOS" value="{!assessmentNotesSummaryPOSList}" var="dt" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                                        <apex:column ><input type="radio" name="selectRadio" id="radio" onclick="openNewTab('ASSNOTESDETAILINFO', 'Assessment Notes Detail', '{!dt.assessmentClassType}', '{!dt.RefNo}');"/></apex:column>
+                                        <apex:column headerValue="Last Input Date and Time"><apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss}"><apex:param value="{!dt.LastInputDateTime+offset}" /></apex:outputText></apex:column>
+                                        <apex:column > <apex:facet name="header">Tran Type/Claim Type</apex:facet> {!dt.TranTypeClaimType} </apex:column>
+                                        <apex:column > <apex:facet name="header">Ref No. </apex:facet> {!dt.RefNo}.</apex:column>
+                                        <apex:column > <apex:facet name="header">Status</apex:facet> {!dt.Status} </apex:column>
+                                        <!-- <apex:column > <apex:facet name="header">Remark</apex:facet> {!dt.Remark} </apex:column> -->
+                                    </apex:pageBlockTable>
+                                </apex:form> 
+                            </apex:pageBlockSectionItem>
+                        </apex:outputPanel> 
+                    </apex:outputPanel>
+                    <apex:pageBlockSectionItem >
+                        <div id="loadInfoAssNotesPOS"></div>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <!-- *** .END OF POS -->     
+
+
+                <!-- *** POLICY ADMIN -->
+                <apex:pageBlockSection title="Policy Admin" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}" id="SecPA">
+                    <apex:outputPanel id="panelSecPA" rendered="true">
+                        <apex:outputLabel style="font-weight:bold" value="Assessment Notes (Life) PA - Summary List"></apex:outputLabel>
+                        <br/><br/>
+                        <table><tr><td id="pagingControlAssNotesPA"> </td> <td> <img id="loadingimgAssNotesPA" style="display:none" src="/img/loading.gif" /></td></tr></table>
+                        <apex:outputPanel id="panelAssNotesPA" rendered="true">
+                        <apex:pageBlockSectionItem >
+                                <apex:form id="PAFormid">
+                                    <apex:pageBlockTable id="idAssNotesPA" value="{!assessmentNotesSummaryPAList}" var="dt" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                                        <apex:column ><input type="radio" name="selectRadio" id="radio" onclick="openNewTab('ASSNOTESDETAILINFO', 'Assessment Notes Detail', '{!dt.assessmentClassType}', '{!dt.RefNo}');"/></apex:column>
+                                        <apex:column headerValue="Last Input Date and Time"><apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss}"><apex:param value="{!dt.LastInputDateTime+offset}" /></apex:outputText></apex:column>
+                                        <apex:column > <apex:facet name="header">Tran Type/Claim Type</apex:facet> {!dt.TranTypeClaimType} </apex:column>
+                                        <apex:column > <apex:facet name="header">Ref No. </apex:facet> {!dt.RefNo}.</apex:column>
+                                        <apex:column > <apex:facet name="header">Status</apex:facet> {!dt.Status} </apex:column>
+                                        <!-- <apex:column > <apex:facet name="header">Remark</apex:facet> {!dt.Remark} </apex:column> -->
+                                    </apex:pageBlockTable>
+                                </apex:form>  
+                            </apex:pageBlockSectionItem>
+                        </apex:outputPanel> 
+                    </apex:outputPanel>
+                    <apex:pageBlockSectionItem >
+                        <div id="loadInfoAssNotesPA"></div>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <!-- *** .END OF POLICY ADMIN -->     
+
+                <!-- *** UNDER WRITING -->
+                <apex:pageBlockSection title="Under Writing" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}" id="SecUW">
+                    <apex:form id="UWFormid">
+                        <!--    <apex:inputHidden value="{!assNotesJSON}" id="assNotesHolder" /> -->
+                        <apex:inputHidden value="{!assNotesSummaryUWJSON}" id="assNotesSummaryUWHolder" />
+                        <apex:actionFunction name="refreshAssNotesUW" reRender="panelAssNotesUW"/>
+                        <apex:outputPanel id="panelSecUW" rendered="true">
+                            <apex:outputLabel style="font-weight:bold" value="Assessment Notes (Life) UW - Summary List"></apex:outputLabel>
+                                <br/><br/>
+                                <table><tr><td id="pagingControlAssNotesUW"> </td> <td> <img id="loadingimgAssNotesUW" style="display:none" src="/img/loading.gif" /></td></tr></table>
+                                <br/>
+                                <apex:outputPanel id="panelAssNotesUW" rendered="true">
+                                <apex:pageBlockSectionItem >
+                                    <apex:pageBlockTable id="idAssNotesUW" value="{!assessmentNotesSummaryUWList}" var="dt" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                                        <apex:column ><input type="radio" name="selectRadio" id="radio" onclick="openNewTab('ASSNOTESDETAILINFO', 'Assessment Notes Detail', '{!dt.assessmentClassType}', '{!dt.RefNo}');"/></apex:column>
+                                        <apex:column headerValue="Last Input Date and Time"><apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss}"><apex:param value="{!dt.LastInputDateTime+offset}" /></apex:outputText></apex:column>
+                                        <apex:column > <apex:facet name="header">Tran Type/Claim Type</apex:facet> {!dt.TranTypeClaimType} </apex:column>
+                                        <apex:column > <apex:facet name="header">Ref No. </apex:facet> {!dt.RefNo}.</apex:column>
+                                        <apex:column > <apex:facet name="header">Status</apex:facet> {!dt.Status} </apex:column>
+                                        <apex:column > <apex:facet name="header">Remark</apex:facet> {!dt.Remark} </apex:column>
+                                    </apex:pageBlockTable>
+                                </apex:pageBlockSectionItem>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:form>   
+                    <apex:pageBlockSectionItem >
+                        <div id="loadInfoAssNotesUW"></div>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <!-- *** .END OF UNDER WRITING -->                   
+
+
+                <!-- *** OTHERS -->
+                <apex:pageBlockSection title="Others" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}" id="SecOth">
+                    <apex:outputPanel id="panelSecOTH" rendered="true">
+                        <apex:outputLabel style="font-weight:bold" value="Assessment Notes (Life) Other - Summary List"></apex:outputLabel>
+                            <br/><br/>
+                            <table><tr><td id="pagingControlAssNotesOTH"> </td> <td> <img id="loadingimgAssNotesOTH" style="display:none" src="/img/loading.gif" /></td></tr></table>
+                            <apex:outputPanel id="panelAssNotesOTH" rendered="true">
+                            <apex:pageBlockSectionItem >
+                                <apex:form id="OTHFormid">
+                                    <apex:pageBlockTable id="idAssNotesOth" value="{!assessmentNotesSummaryOTHList}" var="dt" style="overflow:auto;width:1000px;word-wrap: break-word;" align="left" border="1">
+                                        <apex:column ><input type="radio" name="selectRadio" id="radio" onclick="openNewTab('ASSNOTESDETAILINFO', 'Assessment Notes Detail', '{!dt.assessmentClassType}', '{!dt.RefNo}');"/></apex:column>
+                                        <apex:column headerValue="Last Input Date and Time"><apex:outputText value="{0, date, dd-MMM-yyyy HH:mm:ss}"><apex:param value="{!dt.LastInputDateTime+offset}" /></apex:outputText></apex:column>
+                                        <apex:column > <apex:facet name="header">Tran Type/Claim Type</apex:facet> {!dt.TranTypeClaimType} </apex:column>
+                                        <apex:column > <apex:facet name="header">Ref No. </apex:facet> {!dt.RefNo}.</apex:column>
+                                        <apex:column > <apex:facet name="header">Status</apex:facet> {!dt.Status} </apex:column>
+                                        <apex:column > <apex:facet name="header">Remark</apex:facet> {!dt.Remark} </apex:column>
+                                    </apex:pageBlockTable>
+                                </apex:form>    
+                            </apex:pageBlockSectionItem>
+                        </apex:outputPanel>   
+                    </apex:outputPanel>
+                    <apex:pageBlockSectionItem >
+                        <div id="loadInfoAssNotesOTH"></div>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <!-- *** .END OF OTHERS -->
+                 
+                
+                <!-- ***  CASH VALUE-->
+                <apex:pageBlockSection title="Cash Value Detail" collapsible="true" columns="1" rendered="{!isDisplayAFI}">
+                    <div id="pagingControlCashValueDetail"></div>
+                    <apex:outputPanel id="panelCashValueDetail" rendered="true">
+                        <apex:pageBlockTable id="idcashValueDetail" value="{!cashValueDetailList}" var="cash" style="overflow:auto;width:1000px;table-layout:fixed;" align="left" border="1">
+                            <apex:column headerValue="Loan" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.Loan}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Loan Interest" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.LoanInterest}"/> </apex:outputText></apex:column>           
+                            <apex:column headerValue="Dividend" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.Dividend}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Dividend Interest" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.DividendInterest}"/> </apex:outputText></apex:column>
+                            <!-- <apex:column headerValue="Future Premium Deposit" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FtrPremDeposit}"/> </apex:outputText></apex:column>  -->
+                            <!-- <apex:column headerValue="Future Premium Deposit Interest" style="text-align: right;"><apex:outputText value="{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FtrPremDepInter}"/> </apex:outputText></apex:column>  -->
+                            <apex:column style="text-align: right;"> <apex:facet name="header">Future Premium<br/>Deposit</apex:facet> <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FuturePremiumDeposit}"/> </apex:outputText></apex:column>
+                            <apex:column style="text-align: right;"> <apex:facet name="header">Future Premium<br/>Deposit Interest</apex:facet> <apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.FuturePremiumDepositInterest}"/> </apex:outputText></apex:column>
+                            <apex:column headerValue="Cash Value" style="text-align: right;"><apex:outputText value="{!polisRider.MataUang}{0, number, ###,###,###,###.00}"> <apex:param value="{!cash.CashValue}"/> </apex:outputText></apex:column>
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+                <!-- *** .END OF CASH VALUE -->
+                
+                <!-- ***  ACOCUNT DETAIL-->
+                <apex:pageBlockSection title="Account Detail" collapsible="true" columns="1" rendered="{!isDisplayAFI_AMFS}">
+                    <div id="pagingControlAccountDetail"></div>
+                    <apex:outputPanel id="panelAccountDetail" rendered="true">
+                    <apex:pageBlockTable id="idaccDetail" value="{!accountDetailList}" var="accDet" style="overflow:auto;width:1000px;" align="left" border="1">
+                        <apex:column headerValue="Account No">{!accDet.AccountNo}</apex:column>
+                        <apex:column headerValue="Account Name">{!accDet.AccountName}</apex:column>
+                        <apex:column headerValue="Account Effective Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!accDet.AccountEffectiveDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Account Expired Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!accDet.AccountExpiredDate}" /></apex:outputText></apex:column>
+                        <apex:column headerValue="Account Type">{!accDet.AccountType}</apex:column>
+                        <apex:column headerValue="Account Status">{!accDet.AccountStatus}</apex:column>
+                        <apex:column headerValue="Collection Bank">{!accDet.CollectionBank}</apex:column>
+                        <apex:column headerValue="Branch">{!accDet.Branch}</apex:column>
+                        <apex:column headerValue="Reject Code">{!accDet.RejectCode}</apex:column>
+                        <apex:column headerValue="Reject Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!accDet.RejectDate}" /></apex:outputText></apex:column>
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>            
+                <!-- ***  .END OF ACOCUNT DETAIL-->
+              
+                <apex:form id="Formid">         
+                    <!--  
+                    <apex:inputHidden value="{!beneficiaryDetailJSON}" id="beneficiaryDetailHolder" />
+                    <apex:actionFunction name="refreshBeneficiaryDetail" reRender="panelBeneficiaryDetail"/>
+                    
+                    <apex:inputHidden value="{!premiumBreakdownJSON}" id="premiumBreakdownHolder" />
+                    <apex:actionFunction name="refreshPremiumBreakdown" reRender="panelPremiumBreakdown"/>
+                    
+                    <apex:inputHidden value="{!policyChangeLifeJSON}" id="policyChangeLifeHolder" />
+                    <apex:actionFunction name="refreshPolicyChangeLife" reRender="panelPolicyChangeLife"/>
+        
+                    <apex:inputHidden value="{!endorsementGIJSON}" id="endorsementGIHolder" />
+                    <apex:actionFunction name="refreshEndorsementGI" reRender="panelEndorsementGI"/>
+                         
+                    <apex:inputHidden value="{!riskInfoJSON}" id="riskInfoHolder" />
+                    <apex:actionFunction name="refreshRiskInfo" reRender="panelRiskInfo"/>
+        
+                    <apex:inputHidden value="{!cashValueDetailJSON}" id="cashValueDetailHolder" />
+                    <apex:actionFunction name="refreshCashValueDetail" reRender="panelCashValueDetail"/>
+                    
+                    <apex:inputHidden value="{!accountDetailJSON}" id="accountDetailHolder" />
+                    <apex:actionFunction name="refreshAccountDetail" reRender="panelAccountDetail"/>         
+                    -->
+                    
+                    <apex:inputHidden value="{!premiumBreakdownJSON}" id="premiumBreakdownHolder" />
+                    <apex:actionFunction name="refreshPremiumBreakdown" reRender="panelPremiumBreakdown"/>
+                    
+                    <apex:actionFunction name="refreshAssNotesPOS" reRender="panelAssNotesPOS"/>
+        
+                    <apex:actionFunction name="refreshAssNotesPA" reRender="panelAssNotesPA"/>
+        
+                    <apex:actionFunction name="refreshAssNotesOTH" reRender="panelAssNotesOTH"/>
+                    
+                    <apex:inputHidden value="{!agentInfoJSON}" id="agentInfoHolder" />
+                    <apex:actionFunction name="refreshAgentInfo" reRender="panelAgentInfo"/>
+                     
+                    <!--<apex:inputHidden value="{!agentReportingStructureHierarchyJSON}" id="agentReportingStructureHierarchyHolder" />-->
+                    <apex:actionFunction name="refreshAgentReportingStructureHierarchy" reRender="panelAgentReportingStructureHierarchy"/>
+                    
+                    <!--  <apex:inputHidden value="{!contactIDRemote}" id="contactIDRemoteHolder" /> -->
+                    
+                    <apex:actionFunction name="initPolicyInfoInController" action="{!initPolicyInfo}" onComplete="afterLoad();" />
+                        
+                    <apex:actionFunction name="refreshPolicyInfo" reRender="panelPolicyInfo"   onComplete=" data= '{!policyDetailLifeJSON}'; console.log('data= ' + data); if (masuk<25 && data=='') { refreshIfDataNotReady();}" />
+                    
+                    <apex:actionFunction name="refreshPageMessages" reRender="panelPageMessages"/>
+                
+                    <apex:actionFunction name="callMethodSyncDataOfPolicyInfo" action="{!loadDataSeq2and3}" onComplete="afterLoad();" />
+                
+                    <apex:actionFunction name="preparingPageDataFunc" action="{!preparingPageDataCallFromPage}" onComplete="refreshPolicyInfo();">
+                        <apex:param name="sessionID" value="{!sessionID}"/>
+                        <apex:param name="pageName" value="PolicyInfoPage"/>
+                    </apex:actionFunction>
+                </apex:form>
+            </apex:outputPanel>                                       
+        </apex:pageBlock> <!-- .END OF <apex:pageBlock mode="maindetail" tabStyle="Contact" > -->
+    </div> <!-- .END OF <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;"> --> 
+    </body>                     
+</apex:page>

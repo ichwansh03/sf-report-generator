@@ -1,0 +1,81 @@
+<apex:page showHeader="false" sidebar="false" standardController="Contact" extensions="InformationPanelClass" action="{!calloutPolicyAgent}">
+	
+    <style>
+        .customFont{
+        	font-size: 90%;
+        }
+    </style>    
+        
+    <apex:pageBlock >
+        <div id="wrapper" class="customFont">
+            <apex:PageBlockSection columns="1" title="Policy" >
+                <apex:outputText value="Policy Number" />
+                <apex:outputText value="{!policyNo}" />
+                &nbsp;
+                <apex:outputText value="Product Name" />
+                <apex:outputText value="{!policyDetailsProductName}" />
+                &nbsp;
+                <apex:outputText value="Policy Status" />
+                <apex:outputText value="{!policyDetailsPolicyStatus}" />
+                &nbsp;
+                <apex:outputText value="Effective Date" />
+                <apex:outputText value="{0, date, dd'-'MMM'-'yyyy}">
+                    <apex:param value="{!policyDetailsEffectiveDate}" />
+                </apex:outputText>
+                &nbsp;
+                <apex:outputText value="Due Date" />
+                <apex:outputText value="{0, date, dd'-'MMM'-'yyyy}">
+                    <apex:param value="{!policyDetailsDueDate}" />
+                </apex:outputText>
+                &nbsp;
+                <apex:outputPanel rendered="{!IF(Contact.Entity__c=='MAGI', true, false)}">
+                    <apex:outputText value="Total Premium" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(Contact.Entity__c=='MAGI', true, false)}">
+                    <apex:outputText value="{0, number, ###,##0}"><apex:param value="{!policyDetailsTotalPremium}" /> </apex:outputText>
+                </apex:outputPanel>
+                &nbsp;
+                <apex:outputPanel rendered="{!IF(Contact.Entity__c=='AMFS', true, false)}">
+                    <apex:outputText value="Status ePolicy" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(Contact.Entity__c=='AMFS', true, false)}">
+                    <apex:outputText value="{!policyDetailsEPolicy}" />
+                </apex:outputPanel>
+                &nbsp;
+                <apex:outputPanel rendered="{!IF(Contact.Entity__c=='AMFS', true, false)}">
+                    <apex:outputText value="Payment Mode" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(Contact.Entity__c=='AMFS', true, false)}">
+                    <apex:outputText value="{!policyDetailsPaymentMode}" />
+                </apex:outputPanel>
+                &nbsp;
+                <apex:outputPanel rendered="{!IF(OR(Contact.Entity__c=='AMFS', Contact.Entity__c=='AFI'), true, false)}">
+                    <apex:outputText value="Agent Name" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(OR(Contact.Entity__c=='AMFS', Contact.Entity__c=='AFI'), true, false)}">
+                    <apex:outputText value="{!(agentInfoAgentFirstName + ' ' + agentInfoAgentLastName)}" />
+                </apex:outputPanel>
+                &nbsp;
+                <apex:outputPanel rendered="{!IF(OR(Contact.Entity__c=='AMFS', Contact.Entity__c=='AFI'), true, false)}">
+                    <apex:outputText value="Agent Code" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(OR(Contact.Entity__c=='AMFS', Contact.Entity__c=='AFI'), true, false)}">
+                    <apex:outputText value="{!agentInfoAgentNo}" />
+                </apex:outputPanel>
+                &nbsp;
+                <apex:outputText value="Agent Status" />
+                <apex:outputText value="{!agentInfoAgentStatus}" />
+            </apex:PageBlockSection>
+            <apex:pageBlockSection columns="1" title="Claim">
+                <apex:outputText value="Last Claim No." />
+                <apex:outputText value="{!claimDetailsLastClaimNo}" />
+                &nbsp;
+                <apex:outputText value="Last Claim Status" />
+                <apex:outputText value="{!claimDetailsLastClaimStatus1}" />
+                &nbsp;
+                <apex:outputText value="Number of Claim" />
+                <apex:outputText value="{!claimDetailsNumberOfClaim}" />
+            </apex:pageBlockSection>          
+        </div>
+  </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,67 @@
+<apex:page controller="LookupPopup_ctrl" sidebar="false" showheader="false" standardstylesheets="true">
+<head>
+    <title>Custom Lookup</title>
+</head>
+  <apex:messages />
+  <apex:form id="form" >  
+     <div style="width 90%; margin-left:10px">
+        <div style='text-align:center; font-size:20px; font-weight:bold'>Lookup</div>
+        <p>Please enter the search term below and click the 'Go' button.  This will
+           execute a search across all text fields</p>
+        <p><span style="color:red">IMPORTANT: </span>Please ensure you enter at least two characters</p>
+        <hr/>
+        <span><apex:inputText value="{!query}" id="query"/></span> 
+        <span><apex:commandButton value="Go" action="{!runQuery}"/></span>        
+        <apex:pageBlock mode="mainDetail" rendered="{!doneLookup}">
+          <apex:pageBlockButtons location="bottom">
+            <apex:commandButton value="Close Window" onclick="CloseWindow(); return false;" />
+          </apex:pageBlockButtons>
+          <apex:pageBlockSection columns="1"> 
+            <apex:outputPanel id="pagination">
+                <apex:outputPanel rendered="{!IF(totalRow > 0, TRUE, FALSE)}">
+                    <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}">&lt; Previous Page</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == 1}">&lt; Previous Page</apex:outputText> 
+                    &nbsp; {!infoPagination} &nbsp; 
+                    <apex:commandLink status="stSearch" rendered="{!current_page != total_page}" action="{!getDataNext}">Next Page &gt;</apex:commandLink>
+                    <apex:outputText rendered="{!current_page == total_page}">Next Page &gt;</apex:outputText> 
+                </apex:outputPanel>
+            </apex:outputPanel> 
+              <apex:pageBlockTable value="{!contacts}" var="contact">
+                <apex:column headerValue="Name">
+                  <apex:outputLink value="#" onclick="fillIn('{!contact.Name}', '{!contact.id}')">{!contact.Name}</apex:outputLink>       
+                </apex:column>
+                <apex:column headerValue="Phone" value="{!contact.Policy_No__c}"/>
+                <apex:column headerValue="Phone" value="{!contact.Phone}"/>
+                <apex:column headerValue="Mobile" value="{!contact.MobilePhone}"/>
+                <apex:column headerValue="Email" value="{!contact.Email}"/>
+              </apex:pageBlockTable>    
+          </apex:pageBlockSection>
+        </apex:pageBlock>
+     </div>
+   </apex:form>
+   <script language="javascript">
+   window.onload = new function() 
+   { 
+      // bring popup window to front
+      window.focus(); 
+      var ele=document.getElementById('{!$Component.form.block.section.query}');
+      if (ele)
+      {
+         ele.focus();
+      }
+   }   
+   function fillIn(name, id)
+   {
+      var winMain=window.opener;
+      if (null==winMain)
+      {
+         winMain=window.parent.opener;
+      }
+      var ele=winMain.document.getElementById('{!$CurrentPage.parameters.namefield}');
+      ele.value=name;
+      ele=winMain.document.getElementById('{!$CurrentPage.parameters.idfield}');
+      ele.value=id;
+      winMain.closeLookupPopup();
+   }
+   </script>   
+</apex:page>

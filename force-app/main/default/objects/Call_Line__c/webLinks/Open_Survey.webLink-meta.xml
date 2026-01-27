@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Open_Survey</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Open Survey</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>srcUp(&apos;{!Call_Line__c.Survey_URL__c}&apos;);</url>
+</WebLink>

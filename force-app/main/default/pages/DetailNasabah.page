@@ -1,0 +1,711 @@
+<apex:page standardController="Call_Line__c" extensions="DetailNasabahCtrl" showHeader="false" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False" applyHtmlTag="False" >
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <style>
+      .THIS .custom-background {
+            background-color: white;
+        }
+    </style>
+    <head>
+  <apex:slds /> 
+</head>
+    
+<body class="slds-scope">
+    <apex:pageMessages escape="false" id="errorMsgId"/>
+    <!-- MASTHEAD -->
+    <!-- / MASTHEAD -->
+    <!-- REQUIRED SLDS WRAPPER -->
+    <!-- PAGE HEADER -->
+    <!-- / PAGE HEADER -->
+
+    <!-- ACCOUNT DETAIL CARD -->
+    <apex:form >
+      <apex:commandButton styleClass="slds-button slds-button_brand" action="{!populateDetailNasabah}" value="Show Data" reRender="detailNsbId,errorMsgId"/>
+      <apex:outputPanel rendered="true" id="detailNsbId">
+      <!--  <div class="slds-grid slds-wrap">
+          <div class="slds-col slds-size_1-of-4 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Polis</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.polisNo}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-3 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Effective Date</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">
+                  <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                    <apex:param value="{!dTask.effectiveDate}" />
+                  </apex:outputText>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-4 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">APE</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">
+                  <apex:outputText styleClass="slds-form-element__static" value="{0, number, ###,##0.00#}" >
+                    <apex:param value="{!dTask.ape}"/>
+                  </apex:outputText>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-6 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly ">
+              <span class="slds-form-element__label">Premi</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">
+                  <apex:outputText styleClass="slds-form-element__static" value="{0, number, ###,##0.00#}" >
+                    <apex:param value="{!dTask.premi}"/>
+                  </apex:outputText>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly ">
+              <span class="slds-form-element__label">Produk</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static slds-container_left">{!dTask.productCD} ({!dTask.productName})</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-4 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Telephone</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.telephone}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-4 slds-border_right slds-nowrap">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Cara Bayar</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.cBayar}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-border_right">
+           <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+             <span class="slds-form-element__label">Nama Owner</span>
+             <div class="slds-form-element__control">
+               <div class="slds-form-element__static">{!dTask.polisOwnerName}</div>
+             </div>
+           </div>
+          </div>
+          <div class="slds-col slds-size_1-of-4 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Issued Date</span>
+              <div class="slds-form-element__control">
+                <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                    <apex:param value="{!dTask.issuedDate}"/>
+                </apex:outputText>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-4 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">DOB</span>
+              <div class="slds-form-element__control">
+                <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                    <apex:param value="{!dTask.dob}"/>
+                </apex:outputText>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Nama Tertanggung</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.polisInsuredName}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Email</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.email}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Alamat</span>
+              <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{!dTask.address}</div>
+                <textarea disabled="disabled" class="slds-textarea custom-background" rows="5">{!dTask.address}</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-3 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Attempt</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.attempt}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-3 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Status</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.status}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-3 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Days</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.days}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Nama FA</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.faName}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-border_right">
+            <div class="slds-form-element slds-form-element_horizontal slds-form-element_readonly">
+              <span class="slds-form-element__label">Cabang</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{!dTask.cabang}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+    -->
+      <div class="slds-form" role="list">
+        <div class="slds-form__row">
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Polis</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.polisNo}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Effective Date</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">
+                            <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                                <apex:param value="{!dTask.effectiveDate}" />
+                            </apex:outputText>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                	<span class="slds-form-element__label">APE</span>
+                  	<div class="slds-form-element__control">
+                        <div class="slds-form-element__static">
+                          <apex:outputText styleClass="slds-form-element__static" value="{0, number, ###,##0.00#}" >
+                            <apex:param value="{!dTask.ape}"/>
+                          </apex:outputText>
+                        </div>
+                  	</div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Premi</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">
+                            <apex:outputText styleClass="slds-form-element__static" value="{0, number, ###,##0.00#}" >
+                                <apex:param value="{!dTask.premi}"/>
+                            </apex:outputText>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="slds-form__row">
+            <div class="slds-form__item slds-size_1-of-2" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Produk</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.productCD} ({!dTask.productName})</div>
+                    </div>
+                </div>
+            </div>  
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Total Top Up</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">
+                            <apex:outputText styleClass="slds-form-element__static" value="{0, number, ###,##0.00#}" >
+                                <apex:param value="{!dTask.totalTopUp}"/>
+                            </apex:outputText>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Uang Pertanggungan</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">
+                            <apex:outputText styleClass="slds-form-element__static" value="{0, number, ###,##0.00#}" >
+                                <apex:param value="{!dTask.totalPremium}"/>
+                            </apex:outputText>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-form__row">
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Policy Status</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.policyStatusCD}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Issued Date</span>
+                    <div class="slds-form-element__control">
+                        <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                            <apex:param value="{!dTask.issuedDate}"/>
+                        </apex:outputText>
+                    </div>
+                </div>
+            </div>
+           <!-- <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Status Call Line</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.status}</div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Cara Bayar</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.cBayar}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Nama Owner</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.polisOwnerName}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-form__row">
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Nama Tertanggung</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.polisInsuredName}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">DOB</span>
+                    <div class="slds-form-element__control">
+                        <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                            <apex:param value="{!dTask.dob}"/>
+                        </apex:outputText>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Telephone</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.telephone}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Email</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.email}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-form__row">
+            <div class="slds-form__item slds-size_1-of-2" role="listitem">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked ">
+                    <span class="slds-form-element__label">Alamat</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static slds-text-longform">{!dTask.address}</div>
+                        <!-- <textarea disabled="disabled" class="slds-textarea custom-background" rows="5">{!dTask.address}</textarea> -->
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Cabang</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.cabang} - (Nama Cabang)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Nama FA</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.faName}</div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <div class="slds-form__row">
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">PSOURCE</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static"> {!dTask.PSOURCE}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Rider Code</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">  {!dTask.productCD}	</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Amount benefit rider</span>
+                    <div class="slds-form-element__control"> 
+                        <div class="slds-form-element__static">   
+                            <apex:outputText styleClass="slds-input" value="{0, number, ###,##0.00#}" >
+                                <apex:param value="{!dTask.premi}"/>
+                            </apex:outputText>
+                            <!-- {!dTask.AmountBenefit}-->
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Trans Date</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">  {!dTask.AmountBenefitDate}</div>
+                        <!-- <apex:outputText styleClass="slds-form-element__static" value="{0, date, dd-MMM-yyyy}">
+                            <apex:param value="{!dTask.AmountBenefitDate}"/>
+                        </apex:outputText> -->
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Attempt</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.attempt}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Days</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{!dTask.days}</div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="slds-form__item slds-size_1-of-4" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Region Code</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static"></div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+       	<div class="slds-form__row"> 
+            <div class="slds-form__item slds-size_1-of-2" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_stacked  ">
+                    <span class="slds-form-element__label">Informasi Pending POS</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static"> {!dTask.policyStatusCD} </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+        <!--  
+         <div class="panel panel-default ">
+          <button aria-controls ="#collapseDetail1" type="button" class="collapsible" onclick="#collapseDetail1">Detail Nasabah 1 (Polis, Effective Date, APE, Produk, Telephone, C. Bayar, Nama Owner, Issued Date, DOB, Nama Tertanggung, Email)</button>
+          <div id="collapseDetail1" class="panel-collapse content">
+            <div class="panel-body">
+              <table class="slds-table slds-table_cell-buffer ">
+                <tbody>
+                  <tr class="">
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Polis">Polis</div>
+                    </th>
+                    <td data-label="Polis">
+                      <div class="slds-truncate" title="{!dTask.polisNo}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.polisNo}"/>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Cabang">Effective Date</div>
+                    </th>
+                    <td data-label="Effective Date" >
+                      <div class="slds-truncate" title="{!dTask.effectiveDate}">
+                        <apex:outputText styleClass="slds-input" value="{0, date, dd-MMM-yyyy}">
+                          <apex:param value="{!dTask.effectiveDate}" />
+                        </apex:outputText>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="APE">APE</div>
+                    </th>
+                    <td data-label="APE">
+                      <div class="slds-truncate" title="{!dTask.ape}">
+                        <apex:outputText styleClass="slds-input" value="{0, number, ###,##0.00#}" >
+                          <apex:param value="{!dTask.ape}"/>
+                        </apex:outputText>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Premi">Premi</div>
+                    </th>
+                    <td data-label="Premi" colspan="3">
+                      <div class="slds-truncate" title="{!dTask.premi}">
+                        <apex:outputText styleClass="slds-input" value="{0, number, ###,##0.00#}" >
+                          <apex:param value="{!dTask.premi}"/>
+                        </apex:outputText>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Produk">Produk</div>
+                    </th>
+                    <td data-label="Produk">
+                      <div class="slds-truncate" title="{!dTask.productCD}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.productCD}"/>
+                      </div>
+                    </td>
+                    <td data-label="Produk" colspan="2">
+                      <div class="slds-truncate" title="{!dTask.productName}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.productName}"/>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Telephone">Telephone</div>
+                    </th>
+                    <td data-label="Telephone">
+                      <div class="slds-truncate" title="{!dTask.telephone}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.telephone}"/>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="C. Bayar">C. Bayar</div>
+                    </th>
+                    <td data-label="C. Bayar" colspan="3">
+                      <div class="slds-truncate" title="{!dTask.cBayar}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.cBayar}"/>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Nama Owner">Nama Owner</div>
+                    </th>
+                    <td data-label="Nama Owner" colspan="3">
+                      <div class="slds-truncate" title="{!dTask.polisOwnerName}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.polisOwnerName}"/>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Issued Date">Issued Date</div>
+                    </th>
+                    <td data-label="Issued Date">
+                      <div class="slds-truncate" title="{!dTask.issuedDate}">
+                        <apex:outputText styleClass="slds-input" value="{0, date, dd-MMM-yyyy}">
+                          <apex:param value="{!dTask.issuedDate}" />
+                        </apex:outputText>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="DOB">DOB</div>
+                    </th>
+                    <td data-label="DOB" colspan="3">
+                      <div class="slds-truncate" title="{!dTask.dob}">
+                        <apex:outputText styleClass="slds-input" value="{0, date, dd-MMM-yyyy}">
+                          <apex:param value="{!dTask.dob}" />
+                        </apex:outputText>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Nama Tertanggung">Nama Tertanggung</div>
+                    </th>
+                    <td data-label="Nama Tertanggung" colspan="3">
+                      <div class="slds-truncate" title="{!dTask.polisInsuredName}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.polisInsuredName}"/>
+                      </div>
+                    </td>
+                    <th class="slds-text-title_caps" scope="row">
+                      <div class="slds-truncate" title="Email">Email</div>
+                    </th>
+                    <td data-label="Email" colspan="5">
+                      <div class="slds-truncate" title="{!dTask.email}">
+                        <apex:outputText styleClass="slds-input" value="{!dTask.email}"/>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="collapsible" onclick="#collapseDetail2">Detail Nasabah 2 (Total Premi, Total Top Up, Alamat, Attempt, Status, Days, Nama FA, Cabang)</button>
+        <div id="collapseDetail2" class="panel-collapse content">
+          <div class="panel-body">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+              <tbody>
+                <tr class="">
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="TotalPremi">Total Premi</div>
+                  </th>
+                  <td data-label="Total" colspan="3">
+                    <div class="slds-truncate" title="{!dTask.totalPremium}">
+                      <apex:outputText styleClass="slds-input" value="{0, number, ###,##0.00#}" >
+                        <apex:param value="{!dTask.totalPremium}"/>
+                      </apex:outputText>
+                    </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="TotalTopUp">Total Top Up</div>
+                  </th>
+                  <td data-label="Total" colspan="3">
+                    <div class="slds-truncate" title="{!dTask.totalTopUp}">
+                      <apex:outputText styleClass="slds-input" value="{0, number, ###,##0.00#}" >
+                        <apex:param value="{!dTask.totalTopUp}"/>
+                      </apex:outputText>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="slds-line-height_reset">
+                  <th class="slds-text-title_caps" scope="row" rowspan="3">
+                    <div class="slds-truncate" title="Alamat">Alamat</div>
+                  </th>
+                  <td data-label="Alamat" colspan="3" rowspan="3">
+                    <div class="slds-text-align_left" title="{!dTask.address}">
+                      <textarea disabled="disabled" class="slds-textarea custom-background" rows="5" placeholder="Alamat">{!dTask.address}</textarea>
+                    </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="Attempt">Attempt</div>
+                  </th>
+                  <td data-label="Attempt">
+                    <div class="slds-truncate" title="{!dTask.attempt}">
+                      <apex:outputText styleClass="slds-input" value="{!dTask.attempt}"/>
+                    </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="Status">Status</div>
+                  </th>
+                  <td data-label="Status">
+                    <div class="slds-truncate" title="{!dTask.status}">
+                      <apex:outputText styleClass="slds-input" value="{!dTask.status}"/>
+                    </div>
+                  </td>
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="Days">Days</div>
+                  </th>
+                  <td data-label="Days">
+                    <div class="slds-truncate" title="{!dTask.days}">
+                      <apex:outputText styleClass="slds-input" value="{!dTask.days}"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="slds-line-height_reset">
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="Nama FA">Nama FA</div>
+                  </th>
+                  <td data-label="Nama FA" colspan="5">
+                    <div class="slds-truncate" title="{!dTask.faName}">
+                      <apex:outputText styleClass="slds-input" value="{!dTask.faName}"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="slds-line-height_reset">
+                  <th class="slds-text-title_caps" scope="row">
+                    <div class="slds-truncate" title="Cabang">Cabang</div>
+                  </th>
+                  <td data-label="Cabang" colspan="5">
+                    <div class="slds-truncate" title="{!dTask.cabang}">
+                      <apex:outputText styleClass="slds-input" value="{!dTask.cabang}"/>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+           </div>
+        </div> -->
+      </apex:outputPanel>
+    </apex:form>
+    <!-- / ACCOUNT DETAIL CARD -->
+</body>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+              content.style.display = "none";
+            } else {
+              content.style.display = "block";
+            }
+          });
+        }
+        
+        
+      console.log("serializeError : " +'{!serializeError}');
+      var mapNametoScript;
+      if('{!serializeError}' != null && '{!serializeError}' != ""){
+        mapNametoScript = JSON.parse('{!serializeError}');
+        }
+        $(document).ready(function() {
+            var strMsg = '';
+            if(mapNametoScript != null){
+                for(var [key, value] of Object.entries(mapNametoScript)){
+                    strMsg = strMsg+key+' '+value+"\n";
+                    
+                }
+            }
+            if(strMsg!= ''){
+                alert("Gagal mengambil data Customer :\n "+strMsg);
+            }
+    })
+    </script>
+    
+    </html>
+</apex:page>

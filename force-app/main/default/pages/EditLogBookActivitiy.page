@@ -1,0 +1,139 @@
+<apex:page controller="LogBookActivitiyController"
+    showHeader="false" sideBar="false" title="{!$ObjectType.Log_Book_Activitiy__c.label}" action="{!initEdit}">  
+    <!-- Java Script -->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <apex:includeScript value="/support/console/37.0/integration.js"/>
+    
+    <script type="text/javascript">
+    	$(document).ready(function(){
+            $('form').attr('autocomplete', 'off');
+        });
+    
+    	function openCaseDetail(id, caseNo) {            
+            var recordUrl ='/'+ id;
+            var tabLabel = caseNo;
+            
+            if (sforce.console.isInConsole()) {
+                callOpenSubtab(recordUrl, tabLabel);
+            } else {
+                javascript:var x=window.open(recordUrl,'_blank');
+            }
+        }
+
+        // console method for opening tab
+        function callOpenSubtab(recordUrl, tabLabel) {
+
+            var openSuccess = function(result) {
+                //Report whether we succeeded in opening the subtab
+                if (result.success == true) {
+                    console.log('subtab successfully opened');
+                } else {
+                    console.log('subtab cannot be opened');
+                }
+            };
+			sforce.console.openPrimaryTab(null, recordUrl, true, tabLabel, openSuccess, tabLabel);
+        }
+    </script>
+    
+    <apex:form id="logBookActivitiyCreateForm">
+        <apex:sectionHeader title="Transaction Data" subtitle="Transaction Detail" rendered="{!visibleDetail}"/>
+        <apex:sectionHeader title="Transaction Data" subtitle="Edit Transaction Data" rendered="{!visibleEdit}"/>
+        <apex:pagemessages id="msg"/>
+        <apex:pageBlock >
+            <apex:variable var="idxDoc" value="1"/>
+            <apex:variable var="trxType" value="{!logBookDetail.Log_Case__r.Type}"/>
+            <apex:pageBlockSection columns="1">
+                <apex:outputField value="{!logBookDetail.Log_Book_Activitiy__r.Log_Book_Date__c}"/>
+                <apex:outputField value="{!logBookDetail.Log_Book_Activitiy__r.Touch_Point__c}"/>
+                <apex:outputField value="{!logBookDetail.Log_Book_Activitiy__r.Queue_No__c}"/>
+                <apex:outputField value="{!logBookDetail.Policy_Number__c}"/>
+                <apex:outputField value="{!logBookDetail.Policy_Name_Holder__c}"/>
+                <apex:outputField value="{!logBookDetail.Customer_Name__c}"/> 
+                <apex:inputField value="{!logBookDetail.Email_PP__c}" rendered="{!showPP}"/>
+                <apex:inputField value="{!logBookDetail.Phone_PP__c}" rendered="{!showPP}"/> 
+                <apex:inputField value="{!logBookDetail.Email_Non_PP__c}" rendered="{!showNonPP}"/>
+                <apex:inputField value="{!logBookDetail.Phone_Non_PP__c}" rendered="{!showNonPP}"/> 
+                <apex:outputField value="{!logBookDetail.Customer_Relation__c}"/>
+                <apex:outputField value="{!logBookDetail.Segmentation__c}"/>
+                <apex:outputField value="{!logBookDetail.Product_Type__c}"/>
+                <apex:outputField value="{!logBookDetail.Need_CR__c}"/>
+                <apex:outputField value="{!logBookDetail.Department__c}"/>
+                <apex:outputField value="{!logBookDetail.Kind_Of_Transaction__c}"/>
+                <apex:outputField value="{!logBookDetail.Document_Type__c}"/>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Documents" />
+                    <apex:outputPanel ></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:repeat value="{!docInformation}" var="docs">
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel id="doc" value="{!idxDoc})"  />
+                        <apex:outputPanel >
+                            <apex:outputText value="{!docs}"/>
+                            <apex:variable var="idxDoc" value="{!VALUE(idxDoc) + 1}"/>
+                        </apex:outputPanel>
+                    </apex:pageblockSectionItem>
+                </apex:repeat>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Description" />
+                    <apex:outputLabel value="{!logBookDetail.Remarks_Long_Text__c}" /> 
+                </apex:pageblockSectionItem>
+                <!-- <apex:outputField value="{!logBookDetail.Remarks__c}"/> -->
+                <apex:outputField value="{!logBookDetail.Log_Book_Activitiy__r.CSO_Name__c}"/>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Case No" />
+                    <apex:outputPanel >
+                        <apex:commandLink value="{!logBookDetail.Log_Case__r.CaseNumber}" onclick="openCaseDetail('{!logBookDetail.Log_Case__c}', '{!logBookDetail.Log_Case__r.CaseNumber}');"/>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Type of Transaction" />
+                    <apex:outputPanel ><apex:outputText value="{!trxType}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Case Type" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Case_Type_Config__c}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:outputField value="{!logBookDetail.Customer_Mood__c}"/>
+                <apex:pageblockSectionItem rendered="{!trxType == 'Complaint'}">
+                    <apex:outputLabel value="Nature" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Nature_Config__c}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem rendered="{!trxType == 'Complaint'}">
+                    <apex:outputLabel value="Category" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Category_Config__c}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Subject" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Subject}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Description" rendered="{!trxType != 'Complaint'}"/>
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Description}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem rendered="{!trxType == 'Complaint'}">
+                    <apex:outputLabel value="Complaint Detail" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Description__c}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem rendered="{!trxType != 'Inquiry'}">
+                    <apex:outputLabel value="PIC Department" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.PIC_Department_LU__c}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem rendered="{!trxType != 'Complaint'}">
+                    <apex:outputLabel value="Status" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Log_Case__r.Status}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem rendered="{!trxType == 'Complaint'}">
+                    <apex:outputLabel value="Sensitive Customer" />
+                    <apex:outputPanel ><apex:outputField value="{!logBookDetail.Contact_Policy__r.Sensitive_Customer__c}"/></apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:inputField value="{!logBookDetail.Notes__c}" rendered="{!visibleEdit}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton id="btnEdit" value="Edit" action="{!edit}" rendered="{!visibleDetail}"/>
+                <apex:commandButton id="btnSave" value="Save" action="{!edit}" rendered="{!visibleEdit}"/>
+                <!--<apex:commandButton value="Back" action="{!URLFOR($Page.LogBookActivitiy)}" immediate="true"/>-->
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

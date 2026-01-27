@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_Cooling_Off2__c</fullName>
+    <formula>IF(Contact__r.Campaign_Type__c = &apos;TelUW&apos;,
+DATEVALUE(WelcomeCall_Schedule_Date__c) + 29,
+Contact__r.WelcomeCall_Issued_Date__c + WelcomeCall_Period_Day__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Cooling Off</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

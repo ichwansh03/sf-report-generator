@@ -1,0 +1,358 @@
+<apex:page controller="SocialPost_CustomPage_ctrl" showHeader="true" sidebar="true" action="{!redirect}">
+     <style>
+        .efhpTitle {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: rgb(73, 75, 78);
+        padding-bottom: 7px;
+        }
+        .efhpRow {
+        padding-bottom: 3px;
+        }
+        .efhpDescription {
+        word-wrap: break-word;
+        color: #494b4e;
+        min-height: 25px;
+        }
+        .efhpValue a {
+        color: #015ba7;
+        text-decoration: none;
+        overflow: hidden;
+        }
+        .vl {
+        border-left: 1px solid #dbdfe0;
+        height: 70px;
+        }
+    </style>
+   
+    <table>
+        <tr>
+            <td style="vertical-align: middle;" rowspan="2"><img src="/img/social/SocialPost32.png"/></td>
+            <td><div><STRONG>Social Post</STRONG></div></td>
+        </tr>
+        <tr>
+            <td style="vertical-align: bottom;"><div class="efhpTitle">{!detail.data.name}</div></td>
+        </tr>
+    </table>
+    
+    <apex:form id="formId">
+        <apex:pageMessages />        
+        <apex:pageBlock id="STDetail" mode="maindetail" title="">
+            <apex:pageBlockSection title="Information" columns="2" collapsible="true" showHeader="true"> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Name"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.name}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Headline"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.headline}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Message"></apex:outputLabel>
+                    <apex:outputText escape="false" value="{!detail.data.Content}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Persona"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.personaId}" >{!detail.data.handle}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Posted Date"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputText value="{0,date,M/d/yyyy HH:mm a}"> <apex:param value="{!detail.data.posted}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Post URL"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="{!detail.data.postUrl}" >{!detail.data.postUrlCompact}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Parent"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.parentId}" >{!detail.data.parentInfo}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Who"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.WhoId}" >{!detail.data.whoName}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem>  
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Handle"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Handle}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Network"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Provider}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="In Reply To"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.replyToId}" >{!detail.data.replyInfo}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Post Tags"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.PostTags}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Notes"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Notes}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Sentiment"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Sentiment}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Count Post"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Count_Post_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Source Tags"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.SourceTags}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >  </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Status}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >  </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status Message"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.StatusMessage}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+            <apex:pageBlockSection title="New Section" columns="2" collapsible="true" showHeader="true"> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Analyzer Score"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.AnalyzerScore}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputPanel > 
+                            <apex:outputLink value="/{!detail.data.createdById}" >{!detail.data.createdName}</apex:outputLink>  , &nbsp;
+                            <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.createdDate}" /> 
+                       </apex:outputText>
+                        </apex:outputPanel> 
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Assigned To"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.AssignedTo}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Deleted By"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.DeletedById}" >{!detail.data.DeletedName}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attachment Type"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.AttachmentType}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Engagement Level"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.EngagementLevel}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Attachment URL"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.AttachmentUrl}" >{!detail.data.AttachmentUrl}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="External Post Id"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.ExternalPostId}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Classification"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Classification}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Harvest Date"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!detail.data.HarvestDate}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Comment Count"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.CommentCount}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Hidden By"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.HiddenById}" >{!detail.data.HiddenByName}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Keyword Group Name"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.KeywordGroupName}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Inbound Link Count"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.InboundLinkCount}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Language"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Language}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Is Outbound"></apex:outputLabel>
+                    <apex:outputText > <img src="/img/checkbox_{!IF(!detail.data.IsOutbound, 'un', '')}checked.gif"/> </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputPanel >
+                            <apex:outputLink value="/{!detail.data.lastModifiedById}" >{!detail.data.modifiedName}</apex:outputLink>, &nbsp;
+                            <apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!detail.data.lastModifiedDate}" /> 
+                       </apex:outputText></apex:outputPanel> 
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Likes and Votes"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.LikesAndVotes}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Liked By"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.LikedBy}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Managed Social Account"></apex:outputLabel>
+                    <apex:outputPanel ><apex:outputLink value="/{!detail.data.outboundSocialAccountId}" >{!detail.data.OutboundSocialAccountName} </apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Owner"></apex:outputLabel>
+                    <apex:outputPanel ><img style="vertical-align: bottom;" width="15" height="15" src="/profilephoto/005/T"/>&nbsp;<apex:outputLink value="/{!detail.data.ownerId}" >{!detail.data.ownerName}</apex:outputLink>  </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Message Clipping"></apex:outputLabel>
+                    <apex:outputText escape="false" value="{!detail.data.Content}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Post Priority"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.PostPriority}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Message Type"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.MessageType}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Recipient"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Recipient}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Review Score"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.ReviewScore}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Recipient Type"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.RecipientType}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Shares"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Shares}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Response Context"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.responseContextExternalId}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Studio Media Provider"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.mediaProvider}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reviewed Status"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.ReviewedStatus}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Studio Media Type"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.MediaType}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Review Scale"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.ReviewScale}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Studio Post Id"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.R6PostId}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unique Commentors"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.UniqueCommentors}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Studio Source Id"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.R6SourceId}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="View Count"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.ViewCount}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Social Studio Topic Id"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.R6TopicId}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem > </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Spam Rating"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.SpamRating}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem > </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Thread Size"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.ThreadSize}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem > </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Topic Profile Name"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.TopicProfileName}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem > </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Topic Type"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.TopicType}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+            <apex:pageBlockSection title="Schedule" columns="2" collapsible="true" showHeader="true"> 
+                 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="First Response Date"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!detail.data.First_Response_Date_In_Datetime_c}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="PostDate Temporary"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!detail.data.PostDate_Temporary_c}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Response Date"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!detail.data.Last_Response_Date_c}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Datetime"></apex:outputLabel>
+                    <apex:outputLabel >
+                        <apex:outputText value="{0,date,M/d/yyyy}"> <apex:param value="{!detail.data.Target_Datetime_c}" /> </apex:outputText>
+                    </apex:outputLabel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Over SLA SosMed AFI"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.Over_SLA_SosMed_AFI_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target TAT"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.target_TAT_c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem > </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Status"></apex:outputLabel>
+                    <apex:outputText value="{!detail.data.target_Status_c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+        <apex:pageblock id="SocialPost" title="Social Posts" tabStyle="case">  
+            <apex:pageBlockTable value="{!listDataSocial}"  var="lst"> 
+
+                <apex:column headerValue="Message" value="{!lst.Content}"> </apex:column> 
+                <apex:column headerValue="Social Persona"><apex:outputLink value="/{!lst.personaId}" >{!lst.handle}</apex:outputLink> </apex:column> 
+                <apex:column headerValue="Posted Date"><apex:outputText value="{0,date,M/d/yyyy hh:mm a}"> <apex:param value="{!lst.posted}" /> </apex:outputText></apex:column>
+                <apex:column headerValue="Parent"><apex:outputLink value="/{!lst.parentId}" >{!lst.parent.name}</apex:outputLink> </apex:column> 
+                <apex:column headerValue="Post URL"><apex:outputLink value="{!lst.postUrl}" >{!lst.postUrl}</apex:outputLink> </apex:column> 
+            </apex:pageBlockTable>  
+        </apex:pageblock> 
+    </apex:form>
+</apex:page>

@@ -1,0 +1,424 @@
+<!--
+  @description       : 
+  @author            : Ahmad Yazid Munif
+  @group             : 
+  @last modified on  : 09-04-2025
+  @last modified by  : Ahmad Yazid Munif
+-->
+<apex:page docType="html-5.0" controller="LogBookActivitiyController"
+           action="{!init}" showHeader="false" sideBar="false" title="{!$ObjectType.Log_Book_Activitiy__c.label}">
+    
+    <!-- Java Script -->
+    <apex:stylesheet value="{!$Resource.jquery_ui_1_12_1_css}" />
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>
+    <apex:includeScript value="{!$Resource.jquery_ui_1_12_1_JS}"/>
+    <apex:includeScript value="/support/console/37.0/integration.js"/>
+    <apex:includeScript value="/soap/ajax/53.0/connection.js"/>
+    <script type="text/javascript" src="/support/api/33.0/interaction.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $('form').attr('autocomplete', 'off');
+        
+        $("[id$=logDate]").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true});
+    });
+    
+    function checkTimeout(){ 
+        var currentDate = new Date();
+        var day = currentDate.getDate();
+        var month = currentDate.getMonth() + 1;
+        var year = currentDate.getFullYear();
+        var hour = currentDate.getHours();
+        var minutes = currentDate.getMinutes();
+        var second = currentDate.getSeconds();
+        console.log(day + "/" + month + "/" + year + '  ' + hour +':' +minutes+ ':'+second);
+        
+        
+        /*
+        setTimeout(function(){
+        for(var i = 0;i<document.getElementsByName("submit").length;i++){
+            document.getElementsByName("submit")[i].disabled = false;
+                var element = document.getElementsByName("submit")[i] ;
+                element.disabled = true;
+            };
+        },10000);
+        */
+    }
+    
+    function openLogbookDetail(id, state) {            
+        var recordUrl ='/apex/EditLogBookActivitiy?id='+ id + '&state=' + state ;
+        var tabLabel ='Log Book Activitiy Detail';
+        
+        if (sforce.console.isInConsole()) {
+            callOpenSubtab(recordUrl, tabLabel);
+        } else {
+            javascript:var x=window.open(recordUrl,'_blank');
+        }
+        
+    }
+    
+    
+    function openContact(id, name) {            
+        var recordUrl ='/'+ id;
+        var tabLabel = name;
+        
+        if (sforce.console.isInConsole()) {
+            callOpenSubtab(recordUrl, tabLabel);
+        } else {
+            javascript:var x=window.open(recordUrl,'_blank');
+        }
+    }
+    
+    // identify the record
+    
+    function openICF(policyNo,queueNum){
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        var logBookQuery = sforce.connection.query("Select Id, Name, LastModifiedDate, LastModifiedParent__c, Contact_Policy__c, URL_ICF_Walkin__c from Log_Book_Activitiy_Detail__c WHERE Log_Book_Activitiy__r.Queue_No__c = '"+queueNum+"' order by LastModifiedParent__c desc");
+        var logResult = logBookQuery.getArray('records');
+        var createddate1 = new Date(logResult[0].LastModifiedParent__c);
+        var urlWalkin = logResult[0].URL_ICF_Walkin__c;
+        console.log(urlWalkin);
+        var maxTime = '{!($Label.ICF_Limited_Time)}';
+        var createddate2 = new Date(createddate1.getTime()+maxTime*60000);
+        var currentDate = new Date('{!datetimenow}');
+        var now = new Date();
+        console.log('createddate1 : '+createddate1+',\ncreateddate2 : '+createddate2+',\ncurrentdate : '+currentDate+',\ntimeinbrowser : '+now);
+        if(currentDate > createddate2){
+            alert('Cannot fill ICF. (more than '+maxTime+' minute since created).\nCreated: '+createddate1+'. \nNow: '+currentDate);
+        }else{
+            var tabLabel = 'Take Survey';
+            javascript:var x=window.open(urlWalkin,'_blank');
+            // check, apakah ada yang open, jika ada, tidak boleh create baru.
+            //var dresult = sforce.connection.query("Select Id, Survey_URL__c from Email_Sms_Log__c WHERE Policy_no__c = '"+policyNo+"' and Survey_URL__c != '' order by CreatedDate Desc LIMIT 1");
+            //var dresult = sforce.connection.query("Select Id, Survey_URL__c from Email_Sms_Log__c WHERE Policy_no__c = '"+policyNo+"' and ICF_Walk_IN__c != '' and Survey_URL__c != '' order by CreatedDate Desc LIMIT 1");
+            //var drecords2 = dresult.getArray('records');
+            //if (drecords2.length > 0) {
+            //    var result = drecords2;
+            //var recordUrl = result[0].Survey_URL__c;
+            //      var tabLabel = 'Take Survey';
+            //      javascript:var x=window.open(recordUrl,'_blank');
+            //} else {
+            //    console.log('Tidak ada data ICF');
+            //    alert('No ICF is currently available or ICF already filled.');
+            //}
+        }
+    }
+    
+    function openPDF(queue,touchPoint,dateLog) {
+        console.log('dateLog : '+dateLog);
+        dateLog = new Date(dateLog);
+        console.log('date length :'+dateLog.getDate().length);
+        var day = (dateLog.getDate()).length > 1? (dateLog.getDate()) : '0'+(dateLog.getDate());
+        var month = (dateLog.getMonth()+1).length > 1? (dateLog.getMonth()+1) : '0'+(dateLog.getMonth()+1);
+        var year = dateLog.getFullYear();
+        dateLog = year+'-'+month+'-'+day;
+        var recordUrl ='/apex/LogBookActivitiyPDF?queue='+ queue+'&touchPoint='+touchPoint+'&dateLog='+dateLog;
+        var tabLabel ='Log Book Activity';
+        
+        if (sforce.console.isInConsole()) {
+            callOpenSubtab(recordUrl, tabLabel);
+        } else {
+            javascript:var x=window.open(recordUrl,'_blank');
+        }
+    }
+    
+    function openCaseDetail(id, caseNo) {            
+        var recordUrl ='/'+ id;
+        var tabLabel = caseNo;
+        
+        if (sforce.console.isInConsole()) {
+            callOpenSubtab(recordUrl, tabLabel);
+        } else {
+            javascript:var x=window.open(recordUrl,'_blank');
+        }
+    }
+    
+    // console method for opening tab
+    function callOpenSubtab(recordUrl, tabLabel) {
+        
+        var openSuccess = function(result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                console.log('subtab successfully opened');
+            } else {
+                console.log('subtab cannot be opened');
+            }
+        };
+        sforce.console.openPrimaryTab(null, recordUrl, true, tabLabel, openSuccess, tabLabel);
+    }
+    
+    function convert(str) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    
+    /* TIM MII AT 27/06/2022 **/
+    
+    function sendRecieptEmail(queue,touchPoint,dateLog,emailPP,emailNonPP,LogId) {
+        console.log('dateLog : '+dateLog);
+        dateLog = new Date(dateLog);
+        console.log('date length :'+dateLog.getDate().length);
+        var day = (dateLog.getDate()).length > 1? (dateLog.getDate()) : '0'+(dateLog.getDate());
+        var month = (dateLog.getMonth()+1).length > 1? (dateLog.getMonth()+1) : '0'+(dateLog.getMonth()+1);
+        var year = dateLog.getFullYear();
+        dateLog = year+'-'+month+'-'+day;
+        var tabLabel ='Log Book Activity';
+        
+        console.log('emailPP = '+emailPP);
+        console.log('emailNonPP = '+emailNonPP);
+        if ((emailPP == null || emailPP == '') && (emailNonPP == null || emailNonPP == '')) {
+            alert('Email PP ataupun Non PP belum diinput, silahkan mengirimkan e-receipt menggunakan metode lain');
+            return false;
+        }
+        
+        var conf = confirm("Are You Sure Want to Send?");
+        if(conf) {
+            
+            console.log('masuk');
+            console.log('queue = '+queue);
+            console.log('touchPoint = '+touchPoint);
+            console.log('dateLog = '+dateLog); 
+            sendNotif(queue, touchPoint, dateLog,'Email',LogId);
+            
+            searchLog();
+            
+            return false;
+        }
+    }
+    
+    function sendRecieptSMS(queue,touchPoint,dateLog,phonePP,phoneNonPP,LogId) {
+        console.log('dateLog : '+dateLog);
+        dateLog = new Date(dateLog);
+        console.log('date length :'+dateLog.getDate().length);
+        var day = (dateLog.getDate()).length > 1? (dateLog.getDate()) : '0'+(dateLog.getDate());
+        var month = (dateLog.getMonth()+1).length > 1? (dateLog.getMonth()+1) : '0'+(dateLog.getMonth()+1);
+        var year = dateLog.getFullYear();
+        dateLog = year+'-'+month+'-'+day;
+        var tabLabel ='Log Book Activity';
+        
+        if ((phonePP == null || phonePP == '') && (phoneNonPP == null || phoneNonPP == '')) {
+            alert('Phone PP ataupun Non PP belum diinput, silahkan mengirimkan e-receipt menggunakan metode lain');
+            return false;
+        } 
+        
+        var conf = confirm("Are You Sure Want to Send?");
+        if(conf) {
+            
+            console.log('masuk');
+            console.log('queue = '+queue);
+            console.log('touchPoint = '+touchPoint);
+            console.log('dateLog = '+dateLog);
+            sendNotif(queue, touchPoint, dateLog,'SMS',LogId);
+            
+            
+            searchLog();
+            
+            return false;
+        }
+    }
+    /*
+    function sendtoDipcad(logId) {
+        console.log('logBookDetailId : '+logId);
+        
+        var conf = confirm("Are You Sure Want to Send?");
+        if(conf) {
+            console.log('masuk'+logId);
+            sendEmailtoDipcad(logId);
+            
+            return false;
+        }
+    }
+    **/
+    
+    /* END OF TIM MII AT 27/06/2022 **/
+    </script>
+    
+    <apex:form id="logBookActivitiyForm">
+        <!-- TIM MII AT 27/06/2022 --> 
+        <apex:actionFunction name="sendNotif" action="{!sendNotif}" rerender="none">
+            <apex:param name="paramQueue" assignTo="{!paramQueue}" value="" />
+            <apex:param name="paramTouchPoint" assignTo="{!paramTouchPoint}" value="" />
+            <apex:param name="paramDateLog" assignTo="{!paramDateLog}" value="" /> 
+            <apex:param name="sendType" assignTo="{!sendType}" value="" /> 
+            <apex:param name="lbdId" assignTo="{!lbdId}" value="" />  
+        </apex:actionFunction>  
+        
+        <!-- <apex:actionFunction name="sendEmailtoDipcad" action="{!sendEmailtoDipcad}" rerender="none">
+            <apex:param name="lbdId" assignTo="{!lbdId}" value="" />  
+        </apex:actionFunction> -->
+        
+        <apex:actionFunction name="searchLog" action="{!inquirySearch}" reRender="logBookTable, msg" status="pageStatus" > 
+        </apex:actionFunction>  
+        <!-- END OF TIM MII AT 27/06/2022 -->
+        
+        <apex:sectionHeader title="{!$ObjectType.Log_Book_Activitiy__c.label}"/>
+        <apex:pagemessages id="msg"/>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="2">
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Date" for="logDate"/>
+                    <apex:inputText value="{!logBookDate}" id="logDate"/>
+                </apex:pageblockSectionItem>
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Policy Number" for="policyNo"/>
+                    <apex:inputText id="policyNo" value="{!logBookDetail.Policy_Number__c}"/>
+                </apex:pageblockSectionItem>
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Touch Point" for="touchPoint"/>
+                    <apex:selectList value="{!logBook.Touch_Point__c}" size="1" id="touchPoint">
+                        <apex:selectOptions value="{!touchPoints}"/>
+                    </apex:selectList>
+                </apex:pageblockSectionItem>
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Policy Name Holder" for="policyNmHolder"/>
+                    <apex:inputText id="policyNmHolder" value="{!logBookDetail.Policy_Name_Holder__c}"/>
+                </apex:pageblockSectionItem>
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Queue Number" for="queueNo"/>
+                    <apex:inputText id="queueNo" value="{!logBook.Queue_No__c}"/>
+                </apex:pageblockSectionItem>
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Customer Name" for="custName"/>
+                    <apex:inputText id="custName" value="{!logBookDetail.Customer_Name__c}"/>
+                </apex:pageblockSectionItem>
+                
+                <apex:pageblockSectionItem />
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Kind Of Transaction" for="kindOfTrx"/>
+                    <apex:selectList value="{!logBookDetail.Kind_Of_Transaction__c}" size="1" id="kindOfTrx">
+                        <apex:selectOptions value="{!kindOfTransaction}"/>
+                    </apex:selectList>
+                </apex:pageblockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >
+                        <div style="text-align: center">
+                            <apex:commandLink id="searchLog" styleClass="btn" value="Search" action="{!inquirySearch}" reRender="logBookTable, msg" status="pageStatus" onclick="checkTimeout();"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="1">
+                <apex:actionStatus id="pageStatus">
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            <div style="text-align: center">
+                                <img src="/img/loading32.gif" width="25" height="25" />
+                            </div>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:pageBlockTable value="{!listDetail}" var="activitiy" border="1" id="logBookTable">
+                    <apex:column headerValue="Date">
+                        <apex:outputField id="bookDate" value="{!activitiy.Log_Book_Activitiy__r.Log_Book_Date__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Queue Number" >
+                        <apex:outputField value="{!activitiy.Log_Book_Activitiy__r.Queue_No__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Policy Number" >
+                        <apex:commandLink value="{!activitiy.Policy_Number__c}" onclick="openLogbookDetail('{!activitiy.id}', 'd');"/>
+                    </apex:column>
+                    <apex:column headerValue="Policy Name Holder">
+                        <apex:outputField value="{!activitiy.Policy_Name_Holder__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Customer Name">
+                        <apex:outputField value="{!activitiy.Customer_Name__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Transaction Type">
+                        <apex:outputField value="{!activitiy.Kind_Of_Transaction__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Case No">
+                        <apex:commandLink value="{!activitiy.Log_Case__r.CaseNumber}" onclick="openCaseDetail('{!activitiy.Log_Case__c}', '{!activitiy.Log_Case__r.CaseNumber}');"/>
+                    </apex:column>
+                    <apex:column headerValue="Status Send"> 
+                        <span>  
+                            <apex:outputField value="{!activitiy.Log_Book_Activitiy__r.Status_send__c}" rendered="{!activitiy.Department__c != 'CCC'}"/>
+                            <apex:outputLabel rendered="{!AND(activitiy.Log_Book_Activitiy__r.Status_send__c != null, activitiy.Department__c != 'CCC')}">&nbsp;-&nbsp;</apex:outputLabel>
+                            <apex:outputField value="{!activitiy.Log_Book_Activitiy__r.Sequence_SMS__c}" rendered="{!AND(activitiy.Log_Book_Activitiy__r.Status_send__c == 'SMS', activitiy.Department__c != 'CCC')}"/>
+                            <apex:outputField value="{!activitiy.Log_Book_Activitiy__r.Sequence_Email__c}" rendered="{!AND(activitiy.Log_Book_Activitiy__r.Status_send__c == 'Email', activitiy.Department__c != 'CCC') }"/>
+                        </span> 
+                    </apex:column>
+                    <apex:column headerValue="Metadata">
+                        <apex:outputText value="Pending" rendered="{!ISBLANK(activitiy.Status_to_Metadata__c)}" />
+                        <apex:outputField value="{!activitiy.Status_to_Metadata__c}" rendered="{!NOT(ISBLANK(activitiy.Status_to_Metadata__c))}" />
+                    </apex:column>
+                    <apex:column headerValue="Modified Date">
+                        <apex:outputField value="{!activitiy.LastModifiedDate}"/>
+                    </apex:column>
+                    <apex:column headerValue="Action">
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="Open Contact" onclick="openContact('{!activitiy.Contact_Policy__c}','{!activitiy.Customer_Name__c}');" />
+                        &nbsp;&nbsp;
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="Edit" onclick="openLogbookDetail('{!activitiy.id}', 'e');" />
+                        &nbsp;&nbsp;
+                        <!-- MII hana 15/11/22  -->
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="EditQ" action="{!URLFOR($Page.CreateLogBookActivitiy, null, [type='Walk-In', logbookactivitiyid=activitiy.log_book_activitiy__r.id, policyNo=activitiy.Policy_Number__c,editQ='true'], true)}"/>
+                        
+                        &nbsp;&nbsp;
+                        
+                        
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="ICF" onclick="openICF('{!activitiy.Policy_Number__c}','{!activitiy.Log_Book_Activitiy__r.Queue_No__c}');"/>
+                        <apex:variable value="{!activitiy.Log_Book_Activitiy__r.Log_Book_Date__c}" var="logDates"/>
+                        &nbsp;&nbsp;
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="Preview Receipt" onclick="openPDF('{!activitiy.Log_Book_Activitiy__r.Queue_No__c}','{!activitiy.Log_Book_Activitiy__r.Touch_Point__c}','{!activitiy.Log_Book_Activitiy__r.Log_Book_Date__c}');"
+                                          rendered="{!activitiy.Department__c != 'CCC'}">
+                        </apex:commandLink>
+                        &nbsp;&nbsp; 
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="Send Email" onclick="sendRecieptEmail('{!activitiy.Log_Book_Activitiy__r.Queue_No__c}','{!activitiy.Log_Book_Activitiy__r.Touch_Point__c}','{!activitiy.Log_Book_Activitiy__r.Log_Book_Date__c}','{!activitiy.Email_PP__c}','{!activitiy.Email_Non_PP__c}','{!activitiy.id}');"
+                                          
+                                          rendered="{!activitiy.Department__c != 'CCC'}" reRender="logBookTable">
+                        </apex:commandLink> 
+                        &nbsp;&nbsp;
+                        <!-- <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="Resend Email to DIPCAD" onclick="sendtoDipcad('{!activitiy.id}');"
+                                          rendered="{!activitiy.Department__c != 'CCC'}" reRender="logBookTable">
+                        </apex:commandLink> 
+                        &nbsp;&nbsp; -->
+                        <apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+                                          value="Send SMS" onclick="sendRecieptSMS('{!activitiy.Log_Book_Activitiy__r.Queue_No__c}','{!activitiy.Log_Book_Activitiy__r.Touch_Point__c}','{!activitiy.Log_Book_Activitiy__r.Log_Book_Date__c}','{!activitiy.Phone_PP__c}','{!activitiy.Phone_Non_PP__c}','{!activitiy.id}');"
+                                          rendered="{!activitiy.Department__c != 'CCC'}" reRender="logBookTable">
+                        </apex:commandLink>
+                        
+                        <!-- action="{!sendNotif}" -->
+                        <!--
+<apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+value="Save Receipt" action="{!previewPDF}">
+<apex:param name="queue" value="{!activitiy.Log_Book_Activitiy__r.Queue_No__c}"/>
+<apex:param name="touchPoint" value="{!activitiy.Log_Book_Activitiy__r.Touch_Point__c}"/>
+<apex:param name="isInsert" value="true"/>
+</apex:commandLink>
+-->
+                        <!--
+<apex:commandLink styleClass="btn" style="text-decoration:none;padding:1px;"
+value="Print Receipt" action="{!generatePDF}" target="_blank">
+</apex:commandLink>
+-->
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="New Walk In" action="{!URLFOR($Page.CreateLogBookActivitiy, null, [type='Walk-In'], true)}" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

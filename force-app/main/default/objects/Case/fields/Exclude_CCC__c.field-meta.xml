@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exclude_CCC__c</fullName>
+    <description>&amp;&amp; Type != &apos;Complaint&apos;</description>
+    <externalId>false</externalId>
+    <formula>BLANKVALUE(
+IF( Entity__c == &apos;MAGI&apos;, 
+   CASE (TEXT(Case_Type_Config__c),&apos;AMFS Customer&apos;,&apos;I Ask - AMFS Customer&apos;,
+   &apos;Drop Call/Wrong Number&apos;,&apos;I Ask - Drop Call/Wrong Number&apos;,
+   &apos;ERA/Towing Request&apos;,&apos;I Ask - ERA/Towing Request&apos;,
+   &apos;MV Claim Report&apos;,&apos;I Ask - MV Claim Report&apos;,
+   &apos;Non MV Claim Report&apos;,&apos;I Ask - Non MV Claim Report&apos;,&apos;&apos;)
+&amp;&quot;&quot;&amp;
+   CASE (TEXT(Complaint_type__c),&apos;Simple&apos;,&apos;I Complain - Simple&apos;,
+   &apos;Complex Case&apos;,&apos;I Complain - Complex Case&apos;,
+   &apos;Priority&apos;,&apos;I Complain - Priority&apos;,
+   &apos;Potensial Complaint (MAGI)&apos;,&apos;I Complain - Potensial Complaint (MAGI)&apos;,&apos;&apos;)
+,
+IF( Entity__c == &apos;AMFS&apos;,
+   CASE (TEXT(Case_Type_Config__c),&apos;Drop Call&apos;,&apos;I Ask - Drop Call&apos;,
+   &apos;Off Line Application&apos;,&apos;I Ask - Off Line Application&apos;,
+   &apos;Policy Inquiry_Claim Payment Status&apos;,&apos;I Ask - Policy Inquiry_Claim Payment Status&apos;,
+   &apos;Policy Inquiry_Claim Status&apos;,&apos;I Ask - Policy Inquiry_Claim Status&apos;,
+   &apos;Policy Inquiry_Delay Printing Policy&apos;,&apos;I Ask - Policy Inquiry_Delay Printing Policy&apos;,
+   &apos;Policy Inquiry_Pending Information (Claim)&apos;,&apos;I Ask - Policy Inquiry_Pending Information (Claim)&apos;,
+   &apos;Policy Inquiry_SMARTS Related&apos;,&apos;I Ask - Policy Inquiry_SMARTS Related&apos;,
+   &apos;Survey_Unwilling&apos;,&apos;I Ask - Survey_Unwilling&apos;,&apos;&apos;)
+&amp;&quot;&quot;&amp;
+   CASE (TEXT(Complaint_type__c),&apos;Potential Complaint&apos;,&apos;I Complain - Potential Complaint&apos;,&apos;&apos;)
+,
+IF( Entity__c == &apos;AFI&apos;,
+   CASE (TEXT(Case_Type_Config__c),&apos;(NB/UW) Information Status&apos;,&apos;I Ask - (NB/UW) Information Status&apos;,
+   &apos;Claim Information Status&apos;,&apos;I Ask - Claim Information Status&apos;,
+   &apos;Complaint Status&apos;,&apos;I Ask - Complaint Status&apos;,
+   &apos;Delivery Status&apos;,&apos;I Ask - Delivery Status&apos;,
+   &apos;Drop Call&apos;,&apos;I Ask - Drop Call&apos;,
+   &apos;IVR Utilization&apos;,&apos;I Ask - IVR Utilization&apos;,
+   &apos;Off Line Application&apos;,&apos;I Ask - Off Line Application&apos;,
+   &apos;Soft Complaint&apos;,&apos;I Ask - Soft Complaint&apos;,&apos;&apos;)
+&amp;&quot;&quot;&amp;
+   CASE (TEXT(Complaint_type__c),&apos;Complex Case&apos;,&apos;I Complain - Complex Case&apos;,
+   &apos;Priority&apos;,&apos;I Complain - Priority&apos;,&apos;&apos;)
+,&apos;&apos;
+))),&apos;Create Log ICF&apos;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Exclude CCC</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

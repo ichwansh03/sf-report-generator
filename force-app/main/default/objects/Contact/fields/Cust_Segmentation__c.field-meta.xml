@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cust_Segmentation__c</fullName>
+    <inlineHelpText>Customer Segmentation for AMFS Only</inlineHelpText>
+    <label>Cust Segmentation</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Regular</fullName>
+                <default>true</default>
+                <label>Regular</label>
+            </value>
+            <value>
+                <fullName>Priority</fullName>
+                <default>false</default>
+                <label>Priority</label>
+            </value>
+            <value>
+                <fullName>Private</fullName>
+                <default>false</default>
+                <label>Private</label>
+            </value>
+            <value>
+                <fullName>Regular, Nasabah Aceh</fullName>
+                <default>false</default>
+                <label>Regular, Nasabah Aceh</label>
+            </value>
+            <value>
+                <fullName>Priority, Nasabah Aceh</fullName>
+                <default>false</default>
+                <label>Priority, Nasabah Aceh</label>
+            </value>
+            <value>
+                <fullName>Private, Nasabah Aceh</fullName>
+                <default>false</default>
+                <label>Private, Nasabah Aceh</label>
+            </value>
+            <value>
+                <fullName>None</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>None</label>
+            </value>
+            <value>
+                <fullName>Priorit</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Priorit</label>
+            </value>
+            <value>
+                <fullName>Privaate</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Privaate</label>
+            </value>
+            <value>
+                <fullName>Privat</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Privat</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Picklist_Field__c</fullName>
+    <label>New Picklist Field</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Option A</fullName>
+                <default>false</default>
+                <label>Option A</label>
+            </value>
+            <value>
+                <fullName>Option B</fullName>
+                <default>false</default>
+                <label>Option B</label>
+            </value>
+            <value>
+                <fullName>Option C</fullName>
+                <default>false</default>
+                <label>Option C</label>
+            </value>
+            <value>
+                <fullName>Option D</fullName>
+                <default>false</default>
+                <label>Option D</label>
+            </value>
+            <value>
+                <fullName>Option E</fullName>
+                <default>false</default>
+                <label>Option E</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

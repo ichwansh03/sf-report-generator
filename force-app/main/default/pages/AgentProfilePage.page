@@ -1,0 +1,63 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" extensions="PolicyInfoController" action="{!initAgentProfile}" > 
+
+ 
+    <!-- HEAD -->
+    <apex:includeScript value="{!$Resource.JQuery1_9_1}"/>	 
+    <!--  <script src="../../resource/1445396331000/EpisodeJS" type="text/javascript"></script>      -->  
+    
+    <!--  <apex:includeScript value="/support/console/22.0/integration.js"/> --> 
+    <apex:includeScript value="/soap/ajax/32.0/connection.js"/>		
+	<apex:includeScript value="/support/console/37.0/integration.js"/>		
+    
+     
+    <!--  <script src="../../soap/ajax/32.0/connection.js" type="text/javascript"></script> -->
+    
+    <!-- .END OF HEAD -->
+    
+    
+    <!--  JAVASCRIPT ABOVE --> 
+    
+    <!--  .END OF JAVASCRIPT ABOVE -->
+
+	<body>
+	<apex:form >
+	
+        
+    <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;">
+        <apex:pageMessages />
+            
+        <apex:pageBlock mode="maindetail" tabStyle="Contact" id="agent" rendered="true" >
+	            
+	            <!-- *** Agent Hierachy -->
+	            
+	            <apex:pageBlockSection title="Top-Down Hierachy" collapsible="true" rendered="true" columns="1">
+					<apex:outputPanel id="panelAgentTopDownHierarchy" rendered="true">
+						<apex:pageBlockSection title="Debug" columns="1" collapsible="true" 	id="jsonRSH" rendered="{!isDisplayJSON}">
+							<apex:outputText value="{!agentTopDownHierarchyListReqPayloadJSON}" ></apex:outputText> <br/>
+							<apex:outputText value="{!agentTopDownHierarchyListResPayloadJSON}" ></apex:outputText> 
+							
+						</apex:pageBlockSection>
+					
+						<apex:pageBlockTable id="idAgentTopDownHierarchy" value="{!agentTopDownHierarchyList}" var="r" style="overflow:auto;width:1000px;" align="left" border="1">
+							<apex:column headerValue="Agent Code">{!r.AgentCode}</apex:column> 
+							<apex:column headerValue="Agent Name">{!r.AgentName}</apex:column> 
+							<apex:column headerValue="Pos Code">{!r.PosCode}</apex:column> 
+							<apex:column headerValue="Leader Eff Date"><apex:outputText value="{0, date, dd-MMM-yyyy}"><apex:param value="{!r.LeaderEffDate}" /></apex:outputText></apex:column>
+							<apex:column headerValue="Term">{!r.Term}</apex:column>
+						</apex:pageBlockTable>
+					</apex:outputPanel>            
+	            
+	            </apex:pageBlockSection>
+	            
+
+        
+        </apex:pageBlock>
+        
+        
+    </div> <!-- .END OF <div style="background-color:white;margin-left:0px;margin-right:-10px;margin-bottom:0cm;"> --> 
+    
+
+  	</apex:form>     
+	</body>
+
+</apex:page>

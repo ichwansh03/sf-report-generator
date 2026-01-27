@@ -1,0 +1,110 @@
+<apex:page controller="CallLineGeneratorControllerAMFS" showHeader="true" sidebar="false">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+<apex:sectionHeader title="" subtitle="Call Distribution AMFS"/>
+    
+ <apex:form id="progressBar">   
+        <apex:actionPoller rerender="progressBar" interval="10" action="{!updateProgress}" status="counterstatus"/>
+      <apex:pageMessages /> 
+    </apex:form>
+<apex:form id="formid">
+    <apex:pageBlock >
+      <div align="left">
+          <apex:actionStatus id="actStatusId" >
+                    <apex:facet name="start" >
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                    <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                </div>
+            </div>
+        </apex:facet>
+            	</apex:actionStatus>
+           <apex:pageBlockButtons >
+          	<apex:commandButton action="{!save}" value="Save" status="actStatusId"/>
+          </apex:pageBlockButtons>
+      </div>
+      <p>&nbsp;</p>
+        <apex:pageBlockSection title="Please select campaign and distribution method">
+            <apex:selectList value="{!choosen_campaign}" label="Campaign" size="1">
+                <apex:selectOption itemValue="" itemLabel="-"/>
+                <apex:actionSupport event="onchange" action="{!populateFreshData}" reRender="formid" status="actStatusId" />
+                <apex:selectOptions value="{!optionCampaign_list}"/>
+            </apex:selectList>             
+            <apex:selectList value="{!choosen_method}" label="Distribution Method" size="1">
+                <apex:selectOption itemValue="" itemLabel="-"/>
+                <apex:actionSupport event="onchange" action="{!distribute}" reRender="formid" status="actStatusId"/>
+                <apex:selectOptions value="{!distributeoptionList}"/>
+            </apex:selectList> 
+            <apex:outputLabel value="Max Record / Agent : " for="theTextInput" rendered="{!isMaxRecord}">
+                <apex:inputText value="{!inputValue}" id="theTextInput"/>
+            </apex:outputLabel>
+        </apex:pageBlockSection>
+        <br/>  
+      <br/>  
+      <br/>
+      <table id="totpol">
+          <tr>
+              <td style="font-size:14px;"><apex:outputText value="Total Policy"/></td>
+              <td style="font-size:14px;"><apex:outputText value=":"/></td>
+              <td style="font-size:14px;"><apex:outputText value="{!totalPolicies} dari {!IF(totalData == NULL, 0,totalData)} Data - GAP({!totalGAP})"/></td>
+          </tr>
+          <tr>
+              <td style="font-size:14px;"><apex:outputText value="Total Agent"/></td>
+              <td style="font-size:14px;"><apex:outputText value=":"/></td>
+              <td style="font-size:14px;"><apex:outputText value="{!totalAgents}"/></td>
+          </tr>
+         <tr>
+             <td style="font-size:14px;"><apex:outputText value="Total APE/Amount"/></td>
+              <td style="font-size:14px;"><apex:outputText value=":"/></td>
+              <td style="font-size:14px;"><apex:outputText value="{!string_APE}"/></td>
+          </tr>
+      </table> 
+        <apex:pageBlockSection title="Policy List to be distributed" id="list1" rendered="{!choosen_method!='Specific'}">
+            <apex:pageBlockTable id="idpbt"  value="{!assignmentList}" var="dist" style="overflow:auto;width:850px;" align="center" border="1">
+                <apex:column headerValue="Agent">{!dist.agentName}</apex:column>
+                <apex:column headerValue="Total Distributed">
+                    <apex:inputText value="{!dist.policyTotal}" rendered="{!choosen_method=='Manual by Count'}"/>
+                    <apex:outputText value="{!dist.policyTotal}" rendered="{!choosen_method=='Automatic'}"/>
+                </apex:column>
+                <apex:column headerValue="APE/Amount Distributed"><apex:outputText value="{!dist.StringAPE_Distributed}"/></apex:column> 
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+
+      <apex:pageBlockSection title="Policy List to be distributed" id="list2" rendered="{!choosen_method=='Specific'}">
+      <apex:pageBlockTable id="idspec"  value="{!callLineList}" var="assignm" style="overflow:auto;width:850px;" align="center" border="1">
+        <apex:column headerValue="Policy No">{!assignm.Policy_No__c}</apex:column>
+        <apex:column headerValue="Agent"><apex:inputField value="{!assignm.Agent__c}"/>
+        <apex:inputHidden value="{!assignm.Entity__c}" />
+        </apex:column>
+       </apex:pageBlockTable>
+      </apex:pageBlockSection>
+        
+    <apex:pageBlockSection columns="2" title="List Agent">
+        <apex:pageBlockSectionItem >
+            <apex:commandButton action="{!reorder}" value="Re-Order" status="actStatusId"/>
+            <apex:commandButton action="{!resetAgent}" value="Reset" status="actStatusId"/>
+        </apex:pageBlockSectionItem>
+        <br/>
+        	<apex:pageBlockTable value="{!agentListView}" var="a" width="10%">
+                <apex:column headerValue="Agent list" width="10%" >
+                    <apex:outputfield value="{!a.User_Detail__r.Name}"/>
+                </apex:column>
+                <apex:column headerValue="Sequence" width="10%">
+                    <apex:inputField value="{!a.User_Detail__r.Sequence__c}" rendered="{!choosen_method=='Automatic'}"/><apex:outputField value="{!a.User_Detail__r.Sequence__c}" rendered="{!choosen_method=='Manual by Amount/APE'}"/>
+                </apex:column>
+        	</apex:pageBlockTable>
+    </apex:pageBlockSection>
+
+        <apex:pageBlockSection title="Policy List has been takeout" rendered="{!choosen_method!='Specific'}">
+            <apex:pageBlockTable id="idpbt" value="{!notifyClPolicy}" var="clr" style="overflow:auto;width:200px;" border="1">
+                <apex:column headerValue="Policy Number">{!clr.Policy_No__c}</apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+     </apex:pageBlock>
+</apex:form>
+    </html>
+</apex:page>

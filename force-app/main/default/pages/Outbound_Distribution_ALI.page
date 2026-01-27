@@ -1,0 +1,82 @@
+<apex:page controller="CallLineGeneratorControllerALI">
+<apex:sectionHeader title="" subtitle="Call Distribution"/>
+<apex:form id="formid">
+    <apex:pageMessages />
+    <apex:pageBlock >
+      <div align="left">
+          <apex:commandButton action="{!save}" value="Save" />
+      </div>
+      <p>&nbsp;</p>
+        <!--apex:pageMessage summary="{!errormessage}" rendered="{!renderErrorMessage}" severity="error" strength="3" /-->
+        <apex:pageBlockSection title="Please select campaign and distribution method">
+            <apex:selectList value="{!choosen_campaign}" label="Campaign" size="1" >
+                <apex:selectOption itemValue="" itemLabel="-"/>
+                <apex:actionSupport event="onchange" action="{!populateFreshData}" reRender="formid"/>
+                <apex:selectOptions value="{!campaignList}"/>
+            </apex:selectList>             
+            <apex:selectList value="{!choosen_method}" label="Distribution Method" size="1">
+                <apex:selectOption itemValue="" itemLabel="-"/>
+                <apex:actionSupport event="onchange" action="{!distribute}" reRender="formid"/>
+                <apex:selectOptions value="{!methodList}"/>
+            </apex:selectList> 
+            <apex:outputLabel value="Max Record / Agent : " for="theTextInput" rendered="{!isMaxRecord}">
+                <apex:inputText value="{!inputValue}" id="theTextInput"/>
+            </apex:outputLabel>
+        </apex:pageBlockSection>
+        <br/>  
+        <span align="center">
+        <!--apex:commandButton action="{!distribute}" value="Distribute"/-->&nbsp;
+        <!--apex:commandButton action="{!distributeAuto}" value="Distribute Automatically"/>&nbsp;
+        <apex:commandButton action="{!distributeManual}" value="Distribute Manually"/>&nbsp;
+        <apex:commandButton action="{!distributeSpecific}" value="Distribute Specific Data"/-->&nbsp;
+        </span>
+      <br/>  
+      <br/>
+      <table id="totpol">
+          <tr>
+              <td style="font-size:14px;"><apex:outputText value="Assign Manual from Queue"/></td>
+              <td style="font-size:14px;"><apex:outputText value=":"/></td>
+              <td style="font-size:14px;"><apex:outputLink value="https://cs57.salesforce.com/a01?fcf=00B0k000000Zhxa" id="theLink">here</apex:outputLink></td>
+          </tr>
+          <tr>
+              <td style="font-size:14px;"><apex:outputText value="Total Policy"/></td>
+              <td style="font-size:14px;"><apex:outputText value=":"/></td>
+              <td style="font-size:14px;"><apex:outputText value="{!totalPolicies} dari {!IF(totalData == NULL, 0,totalData)} Data - GAP({!totalGAP})"/></td>
+          </tr>
+          <tr>
+              <td style="font-size:14px;"><apex:outputText value="Total Agent"/></td>
+              <td style="font-size:14px;"><apex:outputText value=":"/></td>
+              <td style="font-size:14px;"><apex:outputText value="{!totalAgents}"/></td>
+          </tr>
+      </table> 
+      <apex:pageBlockSection title="Policy List to be distributed" id="list1" rendered="{!choosen_method!='Specific'}">
+      <apex:pageBlockTable id="idpbt"  value="{!assignmentList}" var="dist" style="overflow:auto;width:850px;" align="center" border="1">
+        <apex:column headerValue="Agent">{!dist.agentName}</apex:column>
+        <apex:column headerValue="Total Distributed"><apex:inputText value="{!dist.policyTotal}" rendered="{!choosen_method=='Manual'}"/><apex:outputText value="{!dist.policyTotal}" rendered="{!choosen_method=='Automatic'}"/></apex:column>
+       </apex:pageBlockTable>
+      </apex:pageBlockSection>
+
+      <apex:pageBlockSection title="Policy List to be distributed" id="list2" rendered="{!choosen_method=='Specific'}">
+      <apex:pageBlockTable id="idspec"  value="{!callLineList}" var="assignm" style="overflow:auto;width:850px;" align="center" border="1">
+        <apex:column headerValue="Policy No">{!assignm.Policy_No__c}</apex:column>
+        <apex:column headerValue="Agent"><apex:inputField value="{!assignm.Agent__c}"/>
+        <apex:inputHidden value="{!assignm.Entity__c}" />
+            <!-- apex:selectList value="{!assignm.Agent__c}" size="1">
+                <apex:selectOption itemValue="" itemLabel="-None-"/>
+                <apex:selectOptions value="{!agentList}" />
+            </apex:selectList -->
+        </apex:column>
+       </apex:pageBlockTable>
+      </apex:pageBlockSection>
+
+    <apex:pageBlockSection columns="2" title="List Agent">
+        <apex:pageBlockTable value="{!agentList}" var="a" width="10%">
+            <apex:column headerValue="Agent list" width="10%" >
+                <apex:outputfield value="{!a.Name}"/>
+            </apex:column>
+        </apex:pageBlockTable>  
+    </apex:pageBlockSection>
+
+     </apex:pageBlock>
+</apex:form>
+</apex:page>

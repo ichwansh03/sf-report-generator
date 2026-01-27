@@ -1,0 +1,1476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Category__c</fullName>
+    <label>Category</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Nature__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Others - Others</fullName>
+                <default>false</default>
+                <label>Others - Others</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery - Delivery</fullName>
+                <default>false</default>
+                <label>Courier Delivery - Delivery</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery - Inquiry Delivery</fullName>
+                <default>false</default>
+                <label>Courier Delivery - Inquiry Delivery</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery - Inquiry Receipt</fullName>
+                <default>false</default>
+                <label>Courier Delivery - Inquiry Receipt</label>
+            </value>
+            <value>
+                <fullName>Claim Decision</fullName>
+                <default>false</default>
+                <label>Claim Decision</label>
+            </value>
+            <value>
+                <fullName>Claim Delay</fullName>
+                <default>false</default>
+                <label>Claim Delay</label>
+            </value>
+            <value>
+                <fullName>Financial Advisor Service</fullName>
+                <default>false</default>
+                <label>Financial Advisor Service</label>
+            </value>
+            <value>
+                <fullName>Forgery</fullName>
+                <default>false</default>
+                <label>Forgery</label>
+            </value>
+            <value>
+                <fullName>Misappropriation</fullName>
+                <default>false</default>
+                <label>Misappropriation</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation - Incomplete Information</fullName>
+                <default>false</default>
+                <label>Misrepresentation - Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation - Lack of Professional Knowledge</fullName>
+                <default>false</default>
+                <label>Misrepresentation - Lack of Professional Knowledge</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation - Misrepresentation</fullName>
+                <default>false</default>
+                <label>Misrepresentation - Misrepresentation</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation - Premium Holiday</fullName>
+                <default>false</default>
+                <label>Misrepresentation - Premium Holiday</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation - TM</fullName>
+                <default>false</default>
+                <label>Misrepresentation - TM</label>
+            </value>
+            <value>
+                <fullName>New Business</fullName>
+                <default>false</default>
+                <label>New Business</label>
+            </value>
+            <value>
+                <fullName>Non Disclosure</fullName>
+                <default>false</default>
+                <label>Non Disclosure</label>
+            </value>
+            <value>
+                <fullName>Facility Service</fullName>
+                <default>false</default>
+                <label>Facility Service</label>
+            </value>
+            <value>
+                <fullName>Collector</fullName>
+                <default>false</default>
+                <label>Collector</label>
+            </value>
+            <value>
+                <fullName>Courtesy</fullName>
+                <default>false</default>
+                <label>Courtesy</label>
+            </value>
+            <value>
+                <fullName>Employee Training</fullName>
+                <default>false</default>
+                <label>Employee Training</label>
+            </value>
+            <value>
+                <fullName>Event</fullName>
+                <default>false</default>
+                <label>Event</label>
+            </value>
+            <value>
+                <fullName>Hardware Problem - IT</fullName>
+                <default>false</default>
+                <label>Hardware Problem - IT</label>
+            </value>
+            <value>
+                <fullName>Information - Marketing</fullName>
+                <default>false</default>
+                <label>Information - Marketing</label>
+            </value>
+            <value>
+                <fullName>Merchandise</fullName>
+                <default>false</default>
+                <label>Merchandise</label>
+            </value>
+            <value>
+                <fullName>No Follow Up</fullName>
+                <default>false</default>
+                <label>No Follow Up</label>
+            </value>
+            <value>
+                <fullName>Product</fullName>
+                <default>false</default>
+                <label>Product</label>
+            </value>
+            <value>
+                <fullName>Service - Activity Support</fullName>
+                <default>false</default>
+                <label>Service - Activity Support</label>
+            </value>
+            <value>
+                <fullName>Service Facility</fullName>
+                <default>false</default>
+                <label>Service Facility</label>
+            </value>
+            <value>
+                <fullName>Skill/Product Knowledge</fullName>
+                <default>false</default>
+                <label>Skill/Product Knowledge</label>
+            </value>
+            <value>
+                <fullName>Soft ware Problem - IT</fullName>
+                <default>false</default>
+                <label>Soft ware Problem - IT</label>
+            </value>
+            <value>
+                <fullName>Supplier - Procurement</fullName>
+                <default>false</default>
+                <label>Supplier - Procurement</label>
+            </value>
+            <value>
+                <fullName>System Availability - AS400/Email/Network</fullName>
+                <default>false</default>
+                <label>System Availability - AS400/Email/Network</label>
+            </value>
+            <value>
+                <fullName>Training Material</fullName>
+                <default>false</default>
+                <label>Training Material</label>
+            </value>
+            <value>
+                <fullName>Trancsaction Statement/Bulletin/Newsletter</fullName>
+                <default>false</default>
+                <label>Trancsaction Statement/Bulletin/Newsletter</label>
+            </value>
+            <value>
+                <fullName>System Availability RLS - IT</fullName>
+                <default>false</default>
+                <label>System Availability RLS - IT</label>
+            </value>
+            <value>
+                <fullName>POS - Financial Changes</fullName>
+                <default>false</default>
+                <label>POS - Financial Changes</label>
+            </value>
+            <value>
+                <fullName>POS - Non Financial</fullName>
+                <default>false</default>
+                <label>POS - Non Financial</label>
+            </value>
+            <value>
+                <fullName>POS - Redemption and Case Related to NAV</fullName>
+                <default>false</default>
+                <label>POS - Redemption and Case Related to NAV</label>
+            </value>
+            <value>
+                <fullName>POS - Withdrawal</fullName>
+                <default>false</default>
+                <label>POS - Withdrawal</label>
+            </value>
+            <value>
+                <fullName>Agent License/New Recruit</fullName>
+                <default>false</default>
+                <label>Agent License/New Recruit</label>
+            </value>
+            <value>
+                <fullName>Agent Movement (Promotion/Demotion/Terminate)</fullName>
+                <default>false</default>
+                <label>Agent Movement (Promotion/Demotion/Terminate)</label>
+            </value>
+            <value>
+                <fullName>Compensation &amp; Benefit Payment - HR</fullName>
+                <default>false</default>
+                <label>Compensation &amp; Benefit Payment - HR</label>
+            </value>
+            <value>
+                <fullName>Compensation (Agency/PFS)</fullName>
+                <default>false</default>
+                <label>Compensation (Agency/PFS)</label>
+            </value>
+            <value>
+                <fullName>Delay Process - General</fullName>
+                <default>false</default>
+                <label>Delay Process - General</label>
+            </value>
+            <value>
+                <fullName>Delay Process - UW</fullName>
+                <default>false</default>
+                <label>Delay Process - UW</label>
+            </value>
+            <value>
+                <fullName>Information (Report/Letter)</fullName>
+                <default>false</default>
+                <label>Information (Report/Letter)</label>
+            </value>
+            <value>
+                <fullName>Lost Document - General</fullName>
+                <default>false</default>
+                <label>Lost Document - General</label>
+            </value>
+            <value>
+                <fullName>Lost document - UW</fullName>
+                <default>false</default>
+                <label>Lost document - UW</label>
+            </value>
+            <value>
+                <fullName>Orpham Management</fullName>
+                <default>false</default>
+                <label>Orpham Management</label>
+            </value>
+            <value>
+                <fullName>Payment Benefit</fullName>
+                <default>false</default>
+                <label>Payment Benefit</label>
+            </value>
+            <value>
+                <fullName>Administrator Procedures - Payment Commission</fullName>
+                <default>false</default>
+                <label>Administrator Procedures - Payment Commission</label>
+            </value>
+            <value>
+                <fullName>Payment License</fullName>
+                <default>false</default>
+                <label>Payment License</label>
+            </value>
+            <value>
+                <fullName>Persistency</fullName>
+                <default>false</default>
+                <label>Persistency</label>
+            </value>
+            <value>
+                <fullName>Product Calculation - AMFS</fullName>
+                <default>false</default>
+                <label>Product Calculation - AMFS</label>
+            </value>
+            <value>
+                <fullName>SMS</fullName>
+                <default>false</default>
+                <label>SMS</label>
+            </value>
+            <value>
+                <fullName>System Error - IT</fullName>
+                <default>false</default>
+                <label>System Error - IT</label>
+            </value>
+            <value>
+                <fullName>Tax Calculation</fullName>
+                <default>false</default>
+                <label>Tax Calculation</label>
+            </value>
+            <value>
+                <fullName>TM Service</fullName>
+                <default>false</default>
+                <label>TM Service</label>
+            </value>
+            <value>
+                <fullName>UW Decision</fullName>
+                <default>false</default>
+                <label>UW Decision</label>
+            </value>
+            <value>
+                <fullName>Varcom Calculation - AMFS</fullName>
+                <default>false</default>
+                <label>Varcom Calculation - AMFS</label>
+            </value>
+            <value>
+                <fullName>Wrong Calculation</fullName>
+                <default>false</default>
+                <label>Wrong Calculation</label>
+            </value>
+            <value>
+                <fullName>Wrong Capture - General</fullName>
+                <default>false</default>
+                <label>Wrong Capture - General</label>
+            </value>
+            <value>
+                <fullName>Wrong Capture - UW</fullName>
+                <default>false</default>
+                <label>Wrong Capture - UW</label>
+            </value>
+            <value>
+                <fullName>Without Consent</fullName>
+                <default>false</default>
+                <label>Without Consent</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery - Policy Duplicate</fullName>
+                <default>false</default>
+                <label>Courier Delivery - Policy Duplicate</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery - Policy Retur</fullName>
+                <default>false</default>
+                <label>Courier Delivery - Policy Retur</label>
+            </value>
+            <value>
+                <fullName>Courier Delivery - Investigation</fullName>
+                <default>false</default>
+                <label>Courier Delivery - Investigation</label>
+            </value>
+            <value>
+                <fullName>Twisting/Chunning</fullName>
+                <default>false</default>
+                <label>Twisting/Chunning</label>
+            </value>
+            <value>
+                <fullName>Courier Investigation - Delivery</fullName>
+                <default>false</default>
+                <label>Courier Investigation - Delivery</label>
+            </value>
+            <value>
+                <fullName>Courier Investigation - Inquiry Investigation</fullName>
+                <default>false</default>
+                <label>Courier Investigation - Inquiry Investigation</label>
+            </value>
+            <value>
+                <fullName>Courier Investigation - Policy Duplicate</fullName>
+                <default>false</default>
+                <label>Courier Investigation - Policy Duplicate</label>
+            </value>
+            <value>
+                <fullName>Comben - Agent code</fullName>
+                <default>false</default>
+                <label>Comben - Agent code</label>
+            </value>
+            <value>
+                <fullName>Comben - Bank Commision</fullName>
+                <default>false</default>
+                <label>Comben - Bank Commision</label>
+            </value>
+            <value>
+                <fullName>Comben - Basic Compesantion</fullName>
+                <default>false</default>
+                <label>Comben - Basic Compesantion</label>
+            </value>
+            <value>
+                <fullName>Comben - Commision/Varcom Calculation</fullName>
+                <default>false</default>
+                <label>Comben - Commision/Varcom Calculation</label>
+            </value>
+            <value>
+                <fullName>Comben - Credit Card Confirmation</fullName>
+                <default>false</default>
+                <label>Comben - Credit Card Confirmation</label>
+            </value>
+            <value>
+                <fullName>Comben - FA Statement</fullName>
+                <default>false</default>
+                <label>Comben - FA Statement</label>
+            </value>
+            <value>
+                <fullName>Comben - FA Statement Report Delivery</fullName>
+                <default>false</default>
+                <label>Comben - FA Statement Report Delivery</label>
+            </value>
+            <value>
+                <fullName>Comben - Medical Helpdesk FA</fullName>
+                <default>false</default>
+                <label>Comben - Medical Helpdesk FA</label>
+            </value>
+            <value>
+                <fullName>Comben - Persistency</fullName>
+                <default>false</default>
+                <label>Comben - Persistency</label>
+            </value>
+            <value>
+                <fullName>Comben - QAB (Quaterly Activity Bonus) Calculation</fullName>
+                <default>false</default>
+                <label>Comben - QAB (Quaterly Activity Bonus) Calculation</label>
+            </value>
+            <value>
+                <fullName>Policy Duplicate</fullName>
+                <default>false</default>
+                <label>Policy Duplicate</label>
+            </value>
+            <value>
+                <fullName>Incomplete Information</fullName>
+                <default>false</default>
+                <label>Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>Misrepresentation</fullName>
+                <default>false</default>
+                <label>Misrepresentation</label>
+            </value>
+            <value>
+                <fullName>Lack of Professional Knowledge</fullName>
+                <default>false</default>
+                <label>Lack of Professional Knowledge</label>
+            </value>
+            <value>
+                <fullName>Service Attitude</fullName>
+                <default>false</default>
+                <label>Service Attitude</label>
+            </value>
+            <value>
+                <fullName>UW Decision - New Business</fullName>
+                <default>false</default>
+                <label>UW Decision - New Business</label>
+            </value>
+            <value>
+                <fullName>UW Decision - Endorsement/Cancellation</fullName>
+                <default>false</default>
+                <label>UW Decision - Endorsement/Cancellation</label>
+            </value>
+            <value>
+                <fullName>Underwriting Delay - New Business</fullName>
+                <default>false</default>
+                <label>Underwriting Delay - New Business</label>
+            </value>
+            <value>
+                <fullName>Underwriting Delay - Endorsement/Cancellation</fullName>
+                <default>false</default>
+                <label>Underwriting Delay - Endorsement/Cancellation</label>
+            </value>
+            <value>
+                <fullName>Claims Decision - Rejected Claim</fullName>
+                <default>false</default>
+                <label>Claims Decision - Rejected Claim</label>
+            </value>
+            <value>
+                <fullName>Claims Decision - OR Amount</fullName>
+                <default>false</default>
+                <label>Claims Decision - OR Amount</label>
+            </value>
+            <value>
+                <fullName>Claims Decision - Approved Claim Amount</fullName>
+                <default>false</default>
+                <label>Claims Decision - Approved Claim Amount</label>
+            </value>
+            <value>
+                <fullName>Claims Delay - Claim Survey</fullName>
+                <default>false</default>
+                <label>Claims Delay - Claim Survey</label>
+            </value>
+            <value>
+                <fullName>Claims Delay - SPK Issuance</fullName>
+                <default>false</default>
+                <label>Claims Delay - SPK Issuance</label>
+            </value>
+            <value>
+                <fullName>Claims Delay - Estimation</fullName>
+                <default>false</default>
+                <label>Claims Delay - Estimation</label>
+            </value>
+            <value>
+                <fullName>Claims Delay - Sparepart Delay</fullName>
+                <default>false</default>
+                <label>Claims Delay - Sparepart Delay</label>
+            </value>
+            <value>
+                <fullName>Claims Delay - Others</fullName>
+                <default>false</default>
+                <label>Claims Delay - Others</label>
+            </value>
+            <value>
+                <fullName>Missing Document - Policy Not Received</fullName>
+                <default>false</default>
+                <label>Missing Document - Policy Not Received</label>
+            </value>
+            <value>
+                <fullName>Missing Document - Policy Incomplete</fullName>
+                <default>false</default>
+                <label>Missing Document - Policy Incomplete</label>
+            </value>
+            <value>
+                <fullName>Missing Document - Policy Returned</fullName>
+                <default>false</default>
+                <label>Missing Document - Policy Returned</label>
+            </value>
+            <value>
+                <fullName>Missing Document - Claim Document</fullName>
+                <default>false</default>
+                <label>Missing Document - Claim Document</label>
+            </value>
+            <value>
+                <fullName>Others - Policy Duplicate</fullName>
+                <default>false</default>
+                <label>Others - Policy Duplicate</label>
+            </value>
+            <value>
+                <fullName>Others - Forgery</fullName>
+                <default>false</default>
+                <label>Others - Forgery</label>
+            </value>
+            <value>
+                <fullName>Processing Error - Administration</fullName>
+                <default>false</default>
+                <label>Processing Error - Administration</label>
+            </value>
+            <value>
+                <fullName>Processing Error - Fund Transaction</fullName>
+                <default>false</default>
+                <label>Processing Error - Fund Transaction</label>
+            </value>
+            <value>
+                <fullName>Process Deficiency - Repair Result</fullName>
+                <default>false</default>
+                <label>Process Deficiency - Repair Result</label>
+            </value>
+            <value>
+                <fullName>Process Deficiency - Others</fullName>
+                <default>false</default>
+                <label>Process Deficiency - Others</label>
+            </value>
+            <value>
+                <fullName>Process Delay - Claim Payment</fullName>
+                <default>false</default>
+                <label>Process Delay - Claim Payment</label>
+            </value>
+            <value>
+                <fullName>Process Delay - Refund Payment</fullName>
+                <default>false</default>
+                <label>Process Delay - Refund Payment</label>
+            </value>
+            <value>
+                <fullName>Others - Administration Waive</fullName>
+                <default>false</default>
+                <label>Others - Administration Waive</label>
+            </value>
+            <value>
+                <fullName>Others - Merchandise</fullName>
+                <default>false</default>
+                <label>Others - Merchandise</label>
+            </value>
+            <value>
+                <fullName>Others - Premium Collection</fullName>
+                <default>false</default>
+                <label>Others - Premium Collection</label>
+            </value>
+            <value>
+                <fullName>Others - Refund Amount</fullName>
+                <default>false</default>
+                <label>Others - Refund Amount</label>
+            </value>
+            <value>
+                <fullName>Processing Error</fullName>
+                <default>false</default>
+                <label>Processing Error</label>
+            </value>
+            <value>
+                <fullName>Delay Process - Collection</fullName>
+                <default>false</default>
+                <label>Delay Process - Collection</label>
+            </value>
+            <value>
+                <fullName>Delay Process - POS</fullName>
+                <default>false</default>
+                <label>Delay Process - POS</label>
+            </value>
+            <value>
+                <fullName>Delivery</fullName>
+                <default>false</default>
+                <label>Delivery</label>
+            </value>
+            <value>
+                <fullName>Agent Services</fullName>
+                <default>false</default>
+                <label>Agent Services</label>
+            </value>
+            <value>
+                <fullName>Missing Document Claim</fullName>
+                <default>false</default>
+                <label>Missing Document Claim</label>
+            </value>
+            <value>
+                <fullName>Process Deficiency &amp; Delay</fullName>
+                <default>false</default>
+                <label>Process Deficiency &amp; Delay</label>
+            </value>
+            <value>
+                <fullName>Claim Payment Amount</fullName>
+                <default>false</default>
+                <label>Claim Payment Amount</label>
+            </value>
+            <value>
+                <fullName>Agency Services</fullName>
+                <default>false</default>
+                <label>Agency Services</label>
+            </value>
+            <value>
+                <fullName>Twisting &amp; Churning</fullName>
+                <default>false</default>
+                <label>Twisting &amp; Churning</label>
+            </value>
+            <value>
+                <fullName>Incomplete Information (Marketing)</fullName>
+                <default>false</default>
+                <label>Incomplete Information (Marketing)</label>
+            </value>
+            <value>
+                <fullName>CS-3rd parties related</fullName>
+                <default>false</default>
+                <label>CS-3rd parties related</label>
+            </value>
+            <value>
+                <fullName>CS-Missing document</fullName>
+                <default>false</default>
+                <label>CS-Missing document</label>
+            </value>
+            <value>
+                <fullName>CS-Process Deficiency</fullName>
+                <default>false</default>
+                <label>CS-Process Deficiency</label>
+            </value>
+            <value>
+                <fullName>Cashback</fullName>
+                <default>false</default>
+                <label>Cashback</label>
+            </value>
+            <value>
+                <fullName>Dana Cooling Off</fullName>
+                <default>false</default>
+                <label>Dana Cooling Off</label>
+            </value>
+            <value>
+                <fullName>Gagal Debet</fullName>
+                <default>false</default>
+                <label>Gagal Debet</label>
+            </value>
+            <value>
+                <fullName>No Claim Bonus</fullName>
+                <default>false</default>
+                <label>No Claim Bonus</label>
+            </value>
+            <value>
+                <fullName>Pemulihan Polis</fullName>
+                <default>false</default>
+                <label>Pemulihan Polis</label>
+            </value>
+            <value>
+                <fullName>Pendebetan Premi</fullName>
+                <default>false</default>
+                <label>Pendebetan Premi</label>
+            </value>
+            <value>
+                <fullName>DC-Forgery</fullName>
+                <default>false</default>
+                <label>DC-Forgery</label>
+            </value>
+            <value>
+                <fullName>DC-Incomplete Information</fullName>
+                <default>false</default>
+                <label>DC-Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>DC-Knowledge/Attitude</fullName>
+                <default>false</default>
+                <label>DC-Knowledge/Attitude</label>
+            </value>
+            <value>
+                <fullName>DC-Lack of follow-up</fullName>
+                <default>false</default>
+                <label>DC-Lack of follow-up</label>
+            </value>
+            <value>
+                <fullName>DC-Misappropriation</fullName>
+                <default>false</default>
+                <label>DC-Misappropriation</label>
+            </value>
+            <value>
+                <fullName>DC-Misrepresentation</fullName>
+                <default>false</default>
+                <label>DC-Misrepresentation</label>
+            </value>
+            <value>
+                <fullName>DC-Non disclosure</fullName>
+                <default>false</default>
+                <label>DC-Non disclosure</label>
+            </value>
+            <value>
+                <fullName>DC-Twisting</fullName>
+                <default>false</default>
+                <label>DC-Twisting</label>
+            </value>
+            <value>
+                <fullName>DC-Without Consent</fullName>
+                <default>false</default>
+                <label>DC-Without Consent</label>
+            </value>
+            <value>
+                <fullName>TC-Forgery</fullName>
+                <default>false</default>
+                <label>TC-Forgery</label>
+            </value>
+            <value>
+                <fullName>TC-Incomplete Information</fullName>
+                <default>false</default>
+                <label>TC-Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>TC-Knowledge/Attitude</fullName>
+                <default>false</default>
+                <label>TC-Knowledge/Attitude</label>
+            </value>
+            <value>
+                <fullName>TC-Lack of follow-up</fullName>
+                <default>false</default>
+                <label>TC-Lack of follow-up</label>
+            </value>
+            <value>
+                <fullName>TC-Misappropriation</fullName>
+                <default>false</default>
+                <label>TC-Misappropriation</label>
+            </value>
+            <value>
+                <fullName>TC-Misrepresentation</fullName>
+                <default>false</default>
+                <label>TC-Misrepresentation</label>
+            </value>
+            <value>
+                <fullName>TC-Non disclosure</fullName>
+                <default>false</default>
+                <label>TC-Non disclosure</label>
+            </value>
+            <value>
+                <fullName>TC-Twisting</fullName>
+                <default>false</default>
+                <label>TC-Twisting</label>
+            </value>
+            <value>
+                <fullName>TC-Without Consent</fullName>
+                <default>false</default>
+                <label>TC-Without Consent</label>
+            </value>
+            <value>
+                <fullName>CS-Processing Error</fullName>
+                <default>false</default>
+                <label>CS-Processing Error</label>
+            </value>
+            <value>
+                <fullName>CS-Underwriting Decisions</fullName>
+                <default>false</default>
+                <label>CS-Underwriting Decisions</label>
+            </value>
+            <value>
+                <fullName>CS-Claims Delay</fullName>
+                <default>false</default>
+                <label>CS-Claims Delay</label>
+            </value>
+            <value>
+                <fullName>CS-Process Delay</fullName>
+                <default>false</default>
+                <label>CS-Process Delay</label>
+            </value>
+            <value>
+                <fullName>CS-Underwriting Delay</fullName>
+                <default>false</default>
+                <label>CS-Underwriting Delay</label>
+            </value>
+            <value>
+                <fullName>CS-Claims Decision</fullName>
+                <default>false</default>
+                <label>CS-Claims Decision</label>
+            </value>
+            <value>
+                <fullName>CS-Incomplete Information</fullName>
+                <default>false</default>
+                <label>CS-Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>CS-Knowledge/Attitude</fullName>
+                <default>false</default>
+                <label>CS-Knowledge/Attitude</label>
+            </value>
+            <value>
+                <fullName>CS-Lack of follow-up</fullName>
+                <default>false</default>
+                <label>CS-Lack of follow-up</label>
+            </value>
+            <value>
+                <fullName>MKT-Difficult to find information</fullName>
+                <default>false</default>
+                <label>MKT-Difficult to find information</label>
+            </value>
+            <value>
+                <fullName>MKT-Information and communication not clear / relevant</fullName>
+                <default>false</default>
+                <label>MKT-Information and communication not clear / relevant</label>
+            </value>
+            <value>
+                <fullName>MKT-Higher price versus competition</fullName>
+                <default>false</default>
+                <label>MKT-Higher price versus competition</label>
+            </value>
+            <value>
+                <fullName>MKT-Price Increases</fullName>
+                <default>false</default>
+                <label>MKT-Price Increases</label>
+            </value>
+            <value>
+                <fullName>MKT-App/ Website Related</fullName>
+                <default>false</default>
+                <label>MKT-App/ Website Related</label>
+            </value>
+            <value>
+                <fullName>Knowledge - Customer</fullName>
+                <default>false</default>
+                <label>Knowledge - Customer</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Misappropiation</controllingFieldValue>
+            <controllingFieldValue>Forgery</controllingFieldValue>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Misappropriation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <valueName>Misrepresentation - Incomplete Information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <valueName>Misrepresentation - Lack of Professional Knowledge</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <valueName>Misrepresentation - Misrepresentation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <valueName>Misrepresentation - Premium Holiday</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <valueName>Misrepresentation - TM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <controllingFieldValue>New Business</controllingFieldValue>
+            <valueName>New Business</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Misrepresentation</controllingFieldValue>
+            <controllingFieldValue>Non Disclosure</controllingFieldValue>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Non Disclosure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Others - Others</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Facility Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Collector</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Courtesy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Employee Training</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Event</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Hardware Problem - IT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Information - Marketing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Merchandise</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>No Follow Up</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Product</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Service - Activity Support</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Service Facility</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Skill/Product Knowledge</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Soft ware Problem - IT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Supplier - Procurement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>System Availability - AS400/Email/Network</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Training Material</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Trancsaction Statement/Bulletin/Newsletter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>System Availability RLS - IT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <controllingFieldValue>POS</controllingFieldValue>
+            <valueName>POS - Financial Changes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <controllingFieldValue>POS</controllingFieldValue>
+            <valueName>POS - Redemption and Case Related to NAV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <controllingFieldValue>POS</controllingFieldValue>
+            <valueName>POS - Withdrawal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Others - Administration Waive</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Others - Merchandise</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Others - Premium Collection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Others - Refund Amount</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>POS</controllingFieldValue>
+            <valueName>POS - Non Financial</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Policy Duplicate</controllingFieldValue>
+            <valueName>Courier Delivery - Policy Duplicate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Policy Duplicate</controllingFieldValue>
+            <valueName>Policy Duplicate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Policy Retur</controllingFieldValue>
+            <valueName>Courier Delivery - Policy Retur</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Process</controllingFieldValue>
+            <valueName>Processing Error - Administration</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Process</controllingFieldValue>
+            <valueName>Processing Error - Fund Transaction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Process</controllingFieldValue>
+            <valueName>Process Deficiency - Repair Result</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Process</controllingFieldValue>
+            <valueName>Process Deficiency - Others</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Process</controllingFieldValue>
+            <valueName>Process Delay - Claim Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Process</controllingFieldValue>
+            <valueName>Process Delay - Refund Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sales</controllingFieldValue>
+            <controllingFieldValue>Human Error</controllingFieldValue>
+            <valueName>Incomplete Information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sales</controllingFieldValue>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Misrepresentation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sales</controllingFieldValue>
+            <controllingFieldValue>Human Error</controllingFieldValue>
+            <valueName>Lack of Professional Knowledge</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sales</controllingFieldValue>
+            <controllingFieldValue>Human Error</controllingFieldValue>
+            <valueName>Service Attitude</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Agent License/New Recruit</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Agent Movement (Promotion/Demotion/Terminate)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Compensation &amp; Benefit Payment - HR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Compensation (Agency/PFS)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Delay Process - General</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Delay Process - UW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Information (Report/Letter)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Lost Document - General</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Lost document - UW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Orpham Management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Payment Benefit</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Administrator Procedures - Payment Commission</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Payment License</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Persistency</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Product Calculation - AMFS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>SMS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>System Error - IT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Tax Calculation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <controllingFieldValue>TM Service</controllingFieldValue>
+            <valueName>TM Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>UW Decision</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Varcom Calculation - AMFS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Wrong Calculation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Wrong Capture - General</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Wrong Capture - UW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Delay Process - Collection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Administrator Procedures</controllingFieldValue>
+            <valueName>Delay Process - POS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Decision - Rejected Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Decision - OR Amount</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Decision - Approved Claim Amount</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Delay - Claim Survey</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Delay - SPK Issuance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Delay - Estimation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Delay - Sparepart Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Claims Delay - Others</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claim</controllingFieldValue>
+            <controllingFieldValue>Claim Decision</controllingFieldValue>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <valueName>Claim Decision</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claim</controllingFieldValue>
+            <controllingFieldValue>Claim Decision</controllingFieldValue>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <valueName>Claim Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Agent code</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Bank Commision</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Basic Compesantion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Commision/Varcom Calculation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Credit Card Confirmation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - FA Statement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - FA Statement Report Delivery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Medical Helpdesk FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - Persistency</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comben</controllingFieldValue>
+            <valueName>Comben - QAB (Quaterly Activity Bonus) Calculation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Courier Delivery - Delivery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Courier Delivery - Inquiry Delivery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Courier Delivery - Inquiry Receipt</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Missing Document - Policy Not Received</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Missing Document - Policy Incomplete</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Missing Document - Policy Returned</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Missing Document - Claim Document</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Delivery</controllingFieldValue>
+            <valueName>Others - Policy Duplicate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Investigation</controllingFieldValue>
+            <valueName>Courier Delivery - Investigation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Investigation</controllingFieldValue>
+            <valueName>Courier Investigation - Delivery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Investigation</controllingFieldValue>
+            <valueName>Courier Investigation - Inquiry Investigation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Courier Investigation</controllingFieldValue>
+            <valueName>Courier Investigation - Policy Duplicate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Advisor Service</controllingFieldValue>
+            <valueName>Financial Advisor Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Forgery</controllingFieldValue>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Forgery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Forgery</controllingFieldValue>
+            <valueName>Others - Forgery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Twisting/Chunning</controllingFieldValue>
+            <valueName>Twisting/Chunning</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transaction</controllingFieldValue>
+            <valueName>Cashback</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transaction</controllingFieldValue>
+            <valueName>Dana Cooling Off</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transaction</controllingFieldValue>
+            <valueName>Gagal Debet</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transaction</controllingFieldValue>
+            <valueName>No Claim Bonus</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transaction</controllingFieldValue>
+            <valueName>Pemulihan Polis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transaction</controllingFieldValue>
+            <valueName>Pendebetan Premi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Underwriting</controllingFieldValue>
+            <valueName>UW Decision - New Business</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Underwriting</controllingFieldValue>
+            <valueName>UW Decision - Endorsement/Cancellation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Underwriting</controllingFieldValue>
+            <valueName>Underwriting Delay - New Business</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Underwriting</controllingFieldValue>
+            <valueName>Underwriting Delay - Endorsement/Cancellation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <controllingFieldValue>Processing Error</controllingFieldValue>
+            <valueName>Processing Error</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <valueName>Missing Document Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <valueName>Process Deficiency &amp; Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <valueName>Claim Payment Amount</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain CS</controllingFieldValue>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-3rd parties related</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Without Consent</controllingFieldValue>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Without Consent</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Agency Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain DC</controllingFieldValue>
+            <valueName>Twisting &amp; Churning</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complain MKT</controllingFieldValue>
+            <valueName>Incomplete Information (Marketing)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agent Services</controllingFieldValue>
+            <valueName>Agent Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI DC</controllingFieldValue>
+            <valueName>DC-Forgery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI DC</controllingFieldValue>
+            <valueName>DC-Incomplete Information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI DC</controllingFieldValue>
+            <valueName>DC-Knowledge/Attitude</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI DC</controllingFieldValue>
+            <valueName>DC-Misrepresentation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI DC</controllingFieldValue>
+            <valueName>DC-Non disclosure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-Missing document</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-Process Deficiency</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-Processing Error</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-Underwriting Decisions</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-Process Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI CS</controllingFieldValue>
+            <valueName>CS-Knowledge/Attitude</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI MKT</controllingFieldValue>
+            <valueName>MKT-Difficult to find information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI MKT</controllingFieldValue>
+            <valueName>MKT-Information and communication not clear / relevant</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI MKT</controllingFieldValue>
+            <valueName>MKT-Price Increases</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI TC</controllingFieldValue>
+            <valueName>TC-Forgery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI TC</controllingFieldValue>
+            <valueName>TC-Incomplete Information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI TC</controllingFieldValue>
+            <valueName>TC-Knowledge/Attitude</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI TC</controllingFieldValue>
+            <valueName>TC-Misrepresentation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AFI TC</controllingFieldValue>
+            <valueName>TC-Non disclosure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Information / communication</controllingFieldValue>
+            <valueName>Knowledge - Customer</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

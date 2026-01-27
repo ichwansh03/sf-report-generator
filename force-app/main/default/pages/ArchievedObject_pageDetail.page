@@ -1,0 +1,63 @@
+<apex:page controller="ArchivedObject_CustomPage_ctrl" showHeader="true" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False">
+     <style>
+        
+        .slds-text-title_caps {
+            border-left: 0.5px solid grey; 
+            border-right: 0.5px solid grey;
+        }
+        
+        .slds-truncate{
+            text-align:center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+        
+        /* This is for the full screen DIV */
+        .popupBackground {
+            /* Background color */
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            
+            /* Dimensions */
+            width: 100%;
+            height: 300%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            position: absolute;
+            
+            /* Mouse */
+            cursor:wait;
+        }
+        
+        /* This is for the message DIV */
+        .PopupPanel {
+            /* Background color */
+            border: solid 2px #ffba1a;
+            background-color: white;
+            
+            /* Dimensions */
+            left: 50%;
+            width: 200px;
+            margin-left: -100px;
+            top: 50%;
+            height: 75px;
+            margin-top: -25px;
+            z-index: 999;
+            position: fixed;
+            
+            /* Mouse */
+            cursor:pointer;
+        }
+    </style>
+    
+    <apex:form id="formId">
+        <apex:pageblock id="CustomObject" title="Archive All Object History" tabStyle="Case">
+             <apex:pageBlockTable value="{!customObjects}" var="ts" rendered="{!customObjects.size != 0}">  
+               <apex:column headerValue="Object Name" value="{!ts.objectName}"/>
+                 <apex:column headerValue="Count" value="{!ts.count}" />
+            </apex:pageBlockTable>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

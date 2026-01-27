@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancel</fullName>
+    <availability>online</availability>
+    <description>Go to DMTM webpage</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Cancel</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+var urlInquiry = &quot;https://wrdsql01/dmtm-ali/POS/CancelPolicy.aspx?PolicyId={!Contact.Policy_No_ALI__c}&amp;Caller=ccc&amp;isframe=1&quot;;
+
+
+//var urlInquiry = &quot;https://10.47.17.14/dmtm-ali/POS/CancelPolicy.aspx?PolicyId={!Contact.Policy_No_ALI__c}&amp;Caller=ccc&amp;isframe=1&quot;;
+
+//var urlInquiry = &quot;https://10.47.17.14/dmtm-ali/POS/CancelPolicy.aspx?PolicyId={!Contact.Policy_No__c}&amp;Caller=ccc&amp;isframe=1&quot;;
+
+//var urlInquiry = &quot;http://www.google.co.id&quot;;
+
+
+{
+/*
+window.location.href = urlInquiry;
+window.location.open(urlInquiry,&quot;&quot;);
+*/
+//window.location.href = urlInquiry;
+window.open(urlInquiry,&apos;_blank&apos;);
+
+}</url>
+</WebLink>

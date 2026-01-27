@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidateUpdatableCMUOnly</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( $Profile.Name &lt;&gt; &apos;System Administrator&apos;, 
+TEXT(Type) = &apos;Complaint&apos;, 
+
+OR ( 
+AND ( 
+TEXT(Nature_Config__c) &lt;&gt; &apos;Courier Delivery&apos;, 
+TEXT(Nature_Config__c) &lt;&gt; &apos;Policy Retur&apos;, 
+TEXT(Nature_Config__c) &lt;&gt; &apos;Policy Duplicate&apos;, 
+TEXT(Nature_Config__c) &lt;&gt; &apos;Courier Investigation&apos;, 
+Entity__c = &apos;AMFS&apos;, 
+$Profile.Name = &apos;Other Dept AMFS&apos; 
+) , 
+Entity__c &lt;&gt; &apos;AMFS&apos; 
+
+) 
+, 
+$Profile.Name &lt;&gt; &apos;CMU-ALI&apos;, $Profile.Name &lt;&gt; &apos;CMU-AFI&apos;, $Profile.Name &lt;&gt; &apos;CMU A-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU B-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU C-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU D-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU-MAGI&apos;, 
+$Profile.Name &lt;&gt; &apos;SPV CMU-AFI&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-AMFS&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-MAGI&apos;, $Profile.Name &lt;&gt; &apos;Inbound &amp; Outbound Agent AGI&apos;, $Profile.Name &lt;&gt; &apos;Back Office AGI&apos;, $Profile.Name &lt;&gt; &apos;CCC Manager AGI&apos;, $Profile.Name &lt;&gt; &apos;Supervisor Inbound &amp; Outbound AGI&apos;,
+OR( 
+ISCHANGED( Pending_Status__c ), 
+ISCHANGED( Financial_Lost__c ), 
+ISCHANGED( Financial_Lost_Currency__c ), 
+ISCHANGED( Complaint__c ), 
+ISCHANGED( Complaint_Resume__c ), 
+ISCHANGED( Reason_Root_Cause__c ), 
+ISCHANGED( Jenis_Pertanggungan__c ), 
+ISCHANGED( Tanggal_Assign__c ), 
+ISCHANGED( Chronological__c ), 
+ISCHANGED( Demand__c ), 
+ISCHANGED( Subject ), 
+ISCHANGED( Status ), 
+ISCHANGED( Region__c ), 
+ISCHANGED( Other_Information__c ), 
+ISCHANGED( Recommendation__c ), 
+ISCHANGED( Appeal__c ), 
+ISCHANGED( Related_ticket__c ), 
+ISCHANGED( Case_Error__c ), 
+ISCHANGED( Lokasi_Survey__c ), 
+ISCHANGED( PIC_Surveyor__c ), 
+ISCHANGED( COB__c ), 
+ISCHANGED( Received_Party__c ), 
+ISCHANGED( Lampiran__c )))</errorConditionFormula>
+    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU #3&lt;&lt;&lt;</errorMessage>
+</ValidationRule>

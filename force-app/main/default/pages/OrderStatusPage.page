@@ -1,0 +1,15 @@
+<apex:page controller="ChangePaymentController" action="{!OrderStatusInit}" showHeader="false" sidebar="false">
+    <script>
+    function closeWindow() {
+        window.close();
+    }
+    </script>
+    
+    <!-- apex:pageMessages ></apex:pageMessages -->
+    <apex:pageMessages escape="false"> </apex:pageMessages>
+    
+    <apex:form >
+        <apex:commandButton value="Close" onclick="closeWindow(); return false;" />
+    </apex:form>
+
+</apex:page>

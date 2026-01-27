@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_CHS_with_Consent</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New CHS</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/61.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/61.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/61.0/integration.js&quot;)}
+
+var caseList = sforce.connection.query(&quot;SELECT Id FROM Case WHERE Type = &apos;Complaint&apos; AND ContactId=&apos;{!Contact.Id}&apos;&quot;);
+console.log(caseList);
+var records = caseList.getArray(&quot;records&quot;);
+
+console.log(records.length);
+
+var caseId;
+var urlCHS = &quot;&quot;;
+
+if(&quot;{!Contact.Entity__c}&quot; == &quot;AMFS&quot;) {
+// Custom confirmation message
+var userConfirmed = confirm(&quot;Disarankan untuk melakukan pengecekkan Consent Nasabah sebelum melanjutkan Pelayanan.\nApakah Anda ingin melanjutkan Pelayanan?\nKlik &apos;OK&apos; untuk melanjutkan Pelayanan atau Klik &apos;Cancel&apos; untuk Pengecekkan Consent terlebih dahulu.&quot;);
+	if (userConfirmed) {
+		if (records.length &gt; 0){
+			var caseId;
+			for (var i=0; i&lt;records.length;i++){
+				caseId = records[i].Id;
+			}
+		}
+		console.log(caseId);
+		if (caseId != null){
+			urlCHS = &quot;/apex/CaseComplaintLayoutContact?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Record_Type_Keeper__c}&amp;00N9000000CD53R=0&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&amp;idcase=&quot;+caseId;
+		} else {
+			urlCHS = &quot;/apex/CaseComplaintLayoutContact?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Record_Type_Keeper__c}&amp;00N9000000CD53R=0&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&quot;;
+		}
+
+		if (sforce.console.isInConsole()) {
+			sforce.console.getEnclosingTabId(function(enclosingResult){
+				sforce.console.getEnclosingPrimaryTabId(function(){
+					sforce.console.openPrimaryTab(null, urlCHS, true, &apos;Create New CHS&apos;, null);
+				});
+			});
+		}else {
+			window.location.href = urlCHS;
+		}
+	}
+} else {
+	if (records.length &gt; 0){
+		var caseId;
+		for (var i=0; i&lt;records.length;i++){
+			caseId = records[i].Id;
+		}
+	}
+	console.log(caseId);
+	if (caseId != null){
+		urlCHS = &quot;/apex/CaseComplaintLayoutContact?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Record_Type_Keeper__c}&amp;00N9000000CD53R=0&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&amp;idcase=&quot;+caseId;
+	} else {
+		urlCHS = &quot;/apex/CaseComplaintLayoutContact?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Record_Type_Keeper__c}&amp;00N9000000CD53R=0&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&quot;;
+	}
+
+	if (sforce.console.isInConsole()) {
+		sforce.console.getEnclosingTabId(function(enclosingResult){
+			sforce.console.getEnclosingPrimaryTabId(function(){
+				sforce.console.openPrimaryTab(null, urlCHS, true, &apos;Create New CHS&apos;, null);
+			});
+		});
+	}else {
+		window.location.href = urlCHS;
+	}
+}</url>
+</WebLink>

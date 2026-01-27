@@ -1,0 +1,69 @@
+<apex:page standardController="LiveChatButton" extensions="LiveChatConfigController" showHeader="true" standardStylesheets="false" sidebar="false" docType="html-5.0" applyBodyTag="False" action="{!startAddHolidayDates}">
+    
+    <apex:includeScript value="{!URLFOR($Resource.Jquery)}"  />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css"/>
+
+    
+    <style>
+        .ct{
+        text-align:center;
+        }
+    </style>
+    
+    <script type="text/javascript">
+    function cancel(){
+        var urlRequestNewTab = '/apex/LiveChatConfig';
+        javascript:var x=window.open(urlRequestNewTab,'_self');
+    }
+    </script>
+    
+    <body class="slds-scope">
+        <apex:sectionHeader title="Live Chat Add Holiday Dates"/>
+        <apex:pageMessages escape="false" id="errorMsgId"/>
+        <apex:form id="holidayDates">
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:commandButton value="+ NEW HOLIDAY DATES" reRender="holidayDates" Status="status" immediate="true" action="{!addHolidayDates}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:variable var="cnt" value="{!0}"/>
+                <apex:repeat value="{!newHoliday}" var="newHol">
+                    <apex:pageBlockSection columns="4">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New Holiday Dates" for="holidayDates"/>
+                            <apex:input type="date" value="{!newHol.value}" id="holidayDates" />
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:commandLink styleClass="btn" value="X" action="{!minusHolidayDates}" >
+                                <apex:param name="cnt" value="{!cnt}" />
+                            </apex:commandLink>
+                        </apex:pageBlockSectionItem>
+                        <apex:variable var="cnt" value="{!cnt+1}"/>
+                    </apex:pageBlockSection>
+                </apex:repeat>
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Save" action="{!saveNewHolidayDates}" styleClass="slds-button slds-button_brand"/>
+                    <apex:commandButton value="Back" action="{!URLFOR($Page.LiveChatConfig)}" immediate="true" styleClass="slds-button slds-button_brand"/>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            <apex:pageBlock rendered="{!IF(OR(saveNewHoliday != null,invalidNewHoliday != null), true, false)}">
+                <apex:pageBlockSection >
+                    <apex:pageBlockTable value="{!saveNewHoliday}" var="saveHol" style="overflow:auto;width:850px;" border="1" rendered="{!IF(saveNewHoliday.size != 0, true, false)}">
+                        <apex:column headerValue="Date">{!saveHol}</apex:column>
+                        <apex:column headerValue="Status">Success</apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >
+                    <apex:pageBlockTable value="{!invalidNewHoliday}" var="invalidHol" style="overflow:auto;width:850px;" border="1" rendered="{!IF(invalidNewHoliday.size != 0, true, false)}">
+                        <apex:column headerValue="Date">{!invalidHol.dateHoliday}</apex:column>
+                        <apex:column headerValue="Error">{!invalidHol.messageError}</apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+    </body>
+</apex:page>

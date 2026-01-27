@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AMFS_CR_RTU_Call_Line</fullName>
+    <filterScope>Queue</filterScope>
+    <label>AMFS CR - RTU</label>
+    <queue>AMFS_CR_RTU</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

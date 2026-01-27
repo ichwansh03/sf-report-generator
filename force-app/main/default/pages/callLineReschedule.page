@@ -1,0 +1,227 @@
+<apex:page standardController="Call_Line__c" extensions="callLineReschedule" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="true" applyBodyTag="false" docType="html-5.0">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <head>
+        
+      <meta charset="utf-8" />
+      <meta http-equiv="x-ua-compatible" content="ie=edge" />
+      <!-- Import the Design System style sheet -->
+      <style>
+		.table-data, .table-data th, .table-data td {
+           border: 1px solid black;
+           padding: 15px;
+        }
+        .message{
+          color: red;
+          }
+      </style>
+	</head>
+    <body>
+      <!-- REQUIRED SLDS WRAPPER -->
+        <div>
+            <apex:form >
+                <apex:param name="clId" value="0"/>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Current Call Line</label>
+                                        <apex:inputField value="{!currentCL.name}" styleClass="form-control"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Pick Reschedule Date</label>
+                                        <apex:inputHidden value="{!newCallDate.WelcomeCall_Schedule_Date__c}" id="myHiddenVar" />
+                                        <!--<apex:inputfield id="datepickId" value="{!newCallDate.WelcomeCall_Schedule_Date__c}" showDatePicker="true" />-->
+                                        <input type='text' class="form-control" id='datetimepicker1' value="{!newCallDate.WelcomeCall_Schedule_Date__c}" onblur="document.getElementById('{!$Component.myHiddenVar}').value = this.value;" />
+                                    </div>
+                                    <!--<apex:inputfield id="datepickId" value="{!newCallDate.WelcomeCall_Schedule_Date__c}" label="Pick a new date" showDatePicker="true" styleClass="form-control" />-->
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="slds-text-heading_small slds-p-left_small">Current call line schedule:</div>
+                                    <br/>
+                                    <apex:outputPanel id="panelTable" layout="block">
+                                        <table id="table" class="table-data">
+                                            <thead>
+                                                <tr>
+                                                    <th>Call Line No.</th>
+                                                    <th>Name</th>
+                                                    <th>Policy No.</th>
+                                                    <th>Reschedule Date</th>
+                                                    <th>Reschedule From Call Line</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <apex:actionFunction action="{!redirectCallLine}" name="func_redirect">
+                                                	<apex:param name="redClId" value="" assignTo="{!redirectClId}"/>
+                                                </apex:actionFunction>
+                                                <apex:repeat id="currentSchedule" value="{!currentSchedule}" var="schedule">
+                                                    <tr>
+                                                        <!--<td><input type="button" onclick="redirect_tab('{!schedule.Id}'); return false;" value="{!schedule.Name}" class="btn btn-primary"/>
+                                                        </td>-->
+                                                        <td>
+                                                            <a href="#" onclick="openReschedule('{!schedule.id}')" >{!schedule.Name}</a>
+                                                        <!--<a href="javascript:srcUp('/{!schedule.Id}?isdtp=vw')" >{!schedule.Name}</a>-->
+                                                        </td>
+                                                        <!--<td><apex:outputLink value="/{!schedule.id}">{!schedule.Name}</apex:outputLink></td>-->
+                                                        <td><apex:outputField value="{!schedule.Contact__r.name}" /></td>
+                                                        <td><apex:outputField value="{!schedule.Policy_No__c}"/></td>
+                                                        <td><apex:outputField value="{!schedule.WelcomeCall_Schedule_Date__c}"/></td>
+                                                        <td><apex:outputField value="{!schedule.WelcomeCall_Reference__r.name}"/></td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+                                     <apex:outputPanel id="pagination">
+                                        <apex:outputPanel rendered="{!currentSchedule.size != 0}">
+                                         <apex:actionFunction name="loadData" action="{!loadData}" status="stSearch" reRender="pagination,panelTable,errorMsgId,processTime,totalRow"/>  
+                                         <apex:selectList value="{!SIZE_DATA}" multiselect="false" size="1" onchange="loadData();">
+                    					 <apex:selectOptions value="{!paginationSizeOptions}"/>
+                						 </apex:selectList>
+  
+                                            
+                                            <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataFirst}" reRender="pagination,panelTable,errorMsgId,processTime,totalRow">First</apex:commandLink>
+                                            <apex:outputText rendered="{!current_page == 1}">First</apex:outputText>
+                                            &nbsp;|&nbsp;
+                                            <apex:commandLink status="stSearch" rendered="{!current_page != 1}" action="{!getDataPrevious}" reRender="pagination,panelTable,errorMsgId,processTime,totalRow">Previous&nbsp;</apex:commandLink>
+                                            <apex:outputText rendered="{!current_page == 1}">Previous</apex:outputText>
+                                            &nbsp;|&nbsp;
+                                            <apex:repeat value="{!list_page}" var="i" id="theRepeat">
+                                                <apex:commandLink action="{!getDataToPage}" status="stSearch" rendered="{!i != TEXT(current_page)}" value="{!i}" id="theValue" reRender="pagination,panelTable,errorMsgId,processTime,totalRow">
+                                                    <apex:param name="nickName"
+                                                                value="{!i}"
+                                                                assignTo="{!to_page}"/>
+                                                </apex:commandLink>
+                                                <apex:outputText rendered="{!i == TEXT(current_page)}" value="{!i}"/>
+                                                &nbsp;|&nbsp;
+                                            </apex:repeat>
+                                            
+                                            <apex:commandLink status="stSearch" rendered="{!AND(current_page != total_page,total_page != 0)}" action="{!getDataNext}" reRender="pagination,panelTable,errorMsgId,processTime,totalRow">Next</apex:commandLink>
+                                            <apex:outputText rendered="{!OR(current_page == total_page,total_page == 0)}">Next</apex:outputText>
+                                            &nbsp;|&nbsp;
+                                            <apex:commandLink status="stSearch" rendered="{!AND(current_page != total_page,total_page != 0)}" action="{!getDataLast}" reRender="pagination,panelTable,errorMsgId,processTime,totalRow">Last</apex:commandLink>
+                                            <apex:outputText rendered="{!OR(current_page == total_page,total_page == 0)}">Last</apex:outputText>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <br/><apex:outputText style="font-style:italic" id="processTime" value="{!processTime}" escape="false"/><br/>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                            <apex:outputPanel id="panelStatus" layout="block">
+                                <div class="form-group">
+                                    <label>Call Status</label>
+                                    <apex:inputField id="activity_result" value="{!currentCL.Activity_Result__c}" styleClass="form-control" onchange="document.getElementById('{!$Component.detailStatusBool}').value = true; document.getElementById('{!$Component.reasonDetailStatusBool}').value = true;" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Reason Status</label>
+                                    <apex:inputField value="{!currentCL.Verification__c}" styleClass="form-control" onchange="document.getElementById('{!$Component.detailStatusBool}').value = document.getElementById('{!$Component.detailStatusSelect}').disabled; document.getElementById('{!$Component.reasonDetailStatusBool}').value = true;"/>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Detail Status</label>
+                                    <apex:inputHidden value="{!detailStatus}" id="detailStatusBool" />
+                                    <apex:inputField id="detailStatusSelect" value="{!currentCL.WelcomeCall_Detail_Status__c}" styleClass="form-control" onchange="document.getElementById('{!$Component.reasonDetailStatusBool}').value = document.getElementById('{!$Component.reasonDetailStatusSelect}').disabled"/>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Reason Detail Status</label>
+                                    <apex:inputHidden value="{!reasonDetailStatus}" id="reasonDetailStatusBool" />
+                                    <apex:inputField id="reasonDetailStatusSelect" value="{!currentCL.WelcomeCall_Reason_Detail_Status__c}" styleClass="form-control" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <apex:inputField value="{!currentCL.Notes__c}" styleClass="form-control" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Confirm</label>&nbsp;&nbsp;
+                                    <apex:inputField value="{!currentCL.Confirm__c}" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Call Line Status</label>
+                                    <apex:inputField value="{!currentCL.WelcomeCall_Call_Line_Status__c}" styleClass="form-control" html-disabled="true" />
+                                </div>
+                            </apex:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <apex:pageMessages id="warnMsg"></apex:pageMessages>
+                        <apex:outputPanel id="buttonPanel">
+                            <apex:commandButton action="{!saveReschedule}" value="Save" onclick="this.disabled=true;this.value='Submitting...';"
+                                                reRender="warnMsg,callpickId,panelTable,panelStatus,buttonPanel" styleClass="btn btn-primary"/>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </apex:form>
+      	</div>
+    </body>
+    <!--<apex:slds />-->
+    <apex:stylesheet value="{! $Resource.Bootstrap3_3_3_min }"/>
+    <apex:stylesheet value="{! $Resource.BootstrapDatetimepickerCSS }"/>
+    <apex:stylesheet value="{! $Resource.jquery_dataTables_min1_10_19 }"/>
+    <apex:includeScript value="{! $Resource.jQuery3_3_1 }"/>
+    <apex:includeScript value="{! $Resource.Moment }"/>
+	<apex:includeScript value="{! $Resource.Transition }"/>
+	<apex:includeScript value="{! $Resource.Collapse }"/>
+    <apex:includeScript value="/support/console/44.0/integration.js"/>
+	<apex:includeScript value="{! $Resource.Bootstrap3_3_3_minjs }"/>
+    <apex:includeScript value="{! $Resource.BootstrapDatetimepickerJS }"/>
+    <apex:includeScript value="{! $Resource.jquery_dataTables_min1_10_19js }"/>
+    <script>
+        function redirect_tab(clid){
+        	console.log(clid);
+            func_redirect(clid);
+        }
+    function openReschedule(callid) {
+        var id = callid;
+        if (sforce.console.isInConsole()) {
+            console.log("console");
+            
+            var url = '/'+id+'?isdtp=vw';
+            console.log(sforce.console);
+            console.log(sforce);
+            sforce.console.openPrimaryTab(null, url , false,'Call Line', null, 'Call Line Tab');
+            //srcUp('url');
+        } else {
+            console.log("classic");
+            var win = window.open('/'+id, '_blank');
+            console.log(win);
+            win.focus();
+        }
+        
+    }
+    
+    $j = jQuery.noConflict();
+    
+    function pickValue(){
+        pickValues();
+    }
+    
+    function setFocusOnLoad(){
+    	console.log(window.location.top);
+    }
+    
+    $j('#datetimepicker1').datetimepicker({
+    	useCurrent: false,
+        showClose:true,
+        sideBySide:true
+    });
+    $j(document).ready(function() {
+        var activity_disabled = '{!activityDisabled}';
+        if(activity_disabled != '')
+        	document.getElementById('j_id0:j_id4:activity_result').disabled = true;
+        //$j('#table').DataTable();
+    });
+    </script>
+</html>
+</apex:page>

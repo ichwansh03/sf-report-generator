@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_complaint_decision</fullName>
+    <active>true</active>
+    <description>complaint decision can&apos;t be empty when close case for AMFS</description>
+    <errorConditionFormula>IF(
+AND(
+ISPICKVAL(Type, &apos;Complaint&apos;),
+ISPICKVAL(Entity_Backup__c, &apos;AMFS&apos;),
+OR(ISPICKVAL(CHS_Status__c, &apos;Closed - Invalid&apos;), ISPICKVAL(CHS_Status__c, &apos;Closed - Valid&apos;)),
+ISBLANK(Complaint_Decision__c)
+),
+true,
+false
+)</errorConditionFormula>
+    <errorDisplayField>Complaint_Decision__c</errorDisplayField>
+    <errorMessage>Complaint Decision can&apos;t be empty when closed case complaint</errorMessage>
+</ValidationRule>

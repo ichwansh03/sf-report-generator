@@ -1,0 +1,160 @@
+<apex:page controller="ProductivityDetail_Ctrl">
+    <head>
+ </head>
+ <style>
+    .alignCenter{
+        text-align:center;
+        
+    }
+    .alignLeft{
+        text-align:left;
+    }
+    /*---------------  Additional styles for TableExport js ---------------*/
+    .tableexport-caption button{
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #c6cad1;
+    }
+    .btn-light, .btn-light:hover, .btn-light:focus, .btn-light:active {
+        text-decoration: none;
+    }
+    .btn-light {
+        font: bold 12px sans-serif;
+        color: #222222;
+        cursor: pointer;
+        font-family: 'Exo', sans-serif;
+        background-color: #f4f6f9;
+    }
+     .text-right {
+        text-align :right;
+     }
+     .text-left {
+        text-align :left;
+     }
+</style>
+ <apex:form id="form">
+    <body>
+      <apex:pageBlock id="Paging">
+        <div class="container-fluid">
+            <div class="row">  
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div style="text-align:center; font-size:25px; margin-bottom:20px;margin-top:20px;">
+                        Productivity Details <br/> ( {!HeaderName} )
+                    </div>
+                <div>
+            </div>
+            
+            <br/>
+            
+                 <table id="TblBTK" class="display" style="width:100%" >
+                    <div class="text-white">
+                    <thead class="bg-secondary">  
+                     <tr>
+                         <th>No.</th>
+                         <th>Name</th>
+                         <th>Policy No</th>
+                         <th>Contact </th>
+                         <th>Criteria</th>
+                         <th>Product</th>
+                         <th>Status</th>
+                         <th>Attempt Calls</th>
+                         <th>Call Status</th>
+                         <th>Reason Status</th>
+                         <th>Detail Status</th>
+                         <th>Notes</th>
+                         <th>Schedule Date</th>
+                         <th>Phone</th>
+                         <th>Contacted Number</th>
+                         <th>Home Phone</th>
+                         <th>Other Phone</th>
+                         <th>Expired Date</th>
+                         <th>Agent Name</th>
+                         
+                         
+                     </tr>
+                     
+                 </thead>
+                 </div>
+                    <tbody>
+                         <apex:variable value="{!1}" var="rowNum"/>
+                        <apex:repeat value="{!details}" var="key">
+                         <apex:repeat value="{!details[key]}" var="detail">
+                             <tr>
+                                 <td class="text-right"><apex:outputText value="{!FLOOR(rowNum)}"/></td>
+                                 <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                 <td class="text-left">{!detail.Name}</td>
+                                 <td class="text-left">{!detail.Policy_No__c}</td>
+                                 <td class="text-left">{!detail.Contact__r.lastName}</td>
+                                 <td class="text-left">{!detail.WelcomeCall_Criteria__c}</td>
+                                 <td class="text-left">{!detail.Formula_Product__c}</td>
+                                 <td class="text-left">{!detail.WelcomeCall_Call_Line_Status__c}</td>
+                                 <td class="text-right">{!detail.WelcomeCall_Attempt__c}</td>
+                                 <td class="text-left">{!detail.Activity_Result__c}</td>
+                                 <td class="text-left">{!detail.Verification__c}</td>
+                                 <td class="text-left">{!detail.WelcomeCall_Detail_Status__c}</td>
+                                 <td class="text-left">{!detail.Notes__c}</td>
+
+                                 <td class="text-left"><apex:outputText value="{0,date,dd' 'MMMMM' 'yyyy}">
+                                        <apex:param value="{!detail.WelcomeCall_Schedule_Date__c}" /> 
+                                    </apex:outputText>
+                                 </td>
+                                 <td class="text-left">{!detail.Phone__c}</td>
+                                 <td class="text-left">{!detail.Contacted_Number__c}</td>
+                                 <td class="text-left">{!detail.Home_Phone__c}</td>
+                                 <td class="text-left">{!detail.Other_Phone__c}</td>
+                                 <td class="text-left"><apex:outputText value="{0,date,dd' 'MMMMM' 'yyyy}">
+                                        <apex:param value="{!detail.Expired_Date__c}" /> 
+                                    </apex:outputText>
+                                 </td>
+                                 <td class="text-left">{!detail.Owner.Name}</td>
+                             </tr>
+                         </apex:repeat>
+                        </apex:repeat>
+                    </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+        
+    <div class="modal" style="background-position: center;"></div>
+    <apex:stylesheet value="{! $Resource.jquery_dataTables_min1_10_19 }"/>
+    <apex:stylesheet value="{! $Resource.buttons_dataTables_min1_5_2 }"/>
+    <apex:stylesheet value="{! $Resource.google_fonts }"/>
+    <apex:includeScript value="{! $Resource.jQuery3_3_1 }"/>
+    <apex:includeScript value="{! $Resource.Bootstrap3_3_3_minjs }"/> 
+    <apex:includeScript value="{! $Resource.jquery_dataTables_min1_10_19js }"/> 
+    <apex:includeScript value="{! $Resource.dataTables_buttons_min1_5_2js }"/> 
+    <apex:includeScript value="{! $Resource.buttons_flash_min1_5_2js }"/> 
+    <apex:includeScript value="{! $Resource.jszip_min3_1_3js }"/> 
+    <apex:includeScript value="{! $Resource.pdfmake_min_0_1_36js }"/> 
+    <apex:includeScript value="{! $Resource.vfs_fonts_0_1_36js }"/> 
+    <apex:includeScript value="{! $Resource.buttons_html5_min_1_5_2js }"/> 
+    <apex:includeScript value="{! $Resource.buttons_print_min_1_5_2js }"/> 
+    <apex:includeScript value="{! $Resource.FileSaver_min_1_3_8js }"/> 
+    <apex:includeScript value="{! $Resource.xlsx_core_min_0_13_1js }"/> 
+    <script src="{!$Resource.TableExport_JS}"></script>
+    
+    <script>    
+            $(document).ready(function() { 
+                // DataTable
+                var table = $('#TblBTK').DataTable(
+                {
+                    "scrollX": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                    'csv', 'excel', 'print'
+                ]
+                }
+                );
+                
+        /*$('#TblBTK').tableExport({
+                formats: ["xlsx","xls", "csv"],
+                filename: 'Report Agent Productivity',
+                bootstrap: false
+            });  */
+        } );
+    </script>
+</apex:pageBlock>
+    </body>
+</apex:form>
+</apex:page>

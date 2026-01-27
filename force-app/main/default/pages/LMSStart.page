@@ -1,0 +1,119 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page controller="LMSStartController" sidebar="false"> 
+
+    <style>
+        html body.sfdcBody{
+            padding:0;
+        }
+    </style>
+
+    <div class="almond-slds">
+  
+      <div class="slds-page-header slds-m-bottom--large" role="banner">
+          <div class="slds-grid">
+              <div class="slds-col slds-has-flexi-truncate">
+                  <div class="slds-media slds-no-space slds-grow">
+                      <div class="slds-media__figure" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                          <use xlink:href="{!URLFOR($Resource.almond_uilib, '/slds/icons/standard-sprite/svg/symbols.svg')}#home"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body">
+                          <p class="slds-text-title--caps slds-line-height--reset">{!$Label.ALMS_Start_Here_Title}</p>
+                          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="{!$Label.ALMS_Start_Here_SubTitle}">{!$Label.ALMS_Start_Here_SubTitle}</h1>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <link href="{!URLFOR($Resource.almond_uilib, '/slds/styles/salesforce-lightning-design-system-vf.min.css')}" rel="stylesheet" media="screen" />
+      <script src="{!URLFOR($Resource.almond_uilib, '/js/jquery.min.js')}" />
+
+      <apex:form id="theForm">
+      
+          <div class="slds-grid slds-wrap slds-grid--pull-padded">
+              <div class="slds-p-horizontal--small slds-size--1-of-1">
+
+                  <apex:actionStatus id="status">
+                      <apex:facet name="start">
+                          <c:LMSStatus />
+                      </apex:facet>
+                  </apex:actionStatus>
+
+                  <apex:outputPanel layout="block" style="width:100%;position:relative;" rendered="{!hasMessages}">
+                      <div class="slds-notify slds-notify--toast slds-theme--info slds-m-bottom--large" style="width: 100%;min-width:10rem;" role="alert">
+                          <div class="slds-notify__content slds-grid">
+                              <div class="slds-col slds-align-middle">
+                                <apex:pageMessages />
+                              </div>
+                          </div>
+                      </div>
+                  </apex:outputPanel>
+                  
+                  <h3 class="slds-section-title--divider">{!$Label.ALMS_Start_Sample_Data_Section}</h3>
+                  <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+                      <div style="width:100%;position:relative;">
+                        <div class="slds-notify slds-notify--toast slds-theme--info slds-m-bottom--large" style="width: 100%;min-width:10rem;" role="alert">
+                            <div class="slds-notify__content slds-grid">
+                                <div class="slds-col slds-align-middle">
+                                  {!$Label.ALMS_Start_Here_Message}
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                          <div class="slds-form-element" style="text-align: center;">
+                              <apex:commandButton value="{!$Label.ALMS_Start_Sample_Data_Button}" action="{!initSampleData}" rerender="theForm" status="status" styleClass="slds-button slds-button--brand"/>
+                          </div>
+                      </div>
+                  </div>
+
+                  <h3 class="slds-section-title--divider">{!$Label.ALMS_Additional_Options}</h3>
+                  <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+                      <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <apex:inputTextArea value="{!jsonData}" style="height:300px;width:98%;" styleClass="slds-textarea" />
+                          </div>
+                      </div>
+                      <div class="slds-form-element">
+                          <div class="slds-form-element__control" style="text-align: center;">
+                              <apex:commandButton value="{!$Label.ALMS_Load_JSON}" action="{!initFromJSONString}" rerender="theForm" status="status" styleClass="slds-button slds-button--brand"/>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  
+              </div>
+          </div>
+
+      </apex:form>
+
+    </div>
+</apex:page>

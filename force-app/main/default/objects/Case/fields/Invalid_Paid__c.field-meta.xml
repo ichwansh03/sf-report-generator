@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invalid_Paid__c</fullName>
+    <label>Invalid &amp; Paid</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Complaint_Decision_AMFS__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Compensation Payment</fullName>
+                <default>false</default>
+                <label>Compensation Payment</label>
+            </value>
+            <value>
+                <fullName>Paid</fullName>
+                <default>false</default>
+                <label>Paid</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Invalid &amp; Paid</controllingFieldValue>
+            <valueName>Compensation Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Invalid &amp; Paid</controllingFieldValue>
+            <valueName>Paid</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

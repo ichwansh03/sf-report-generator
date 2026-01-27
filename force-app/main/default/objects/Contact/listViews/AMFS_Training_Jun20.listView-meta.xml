@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AMFS_Training_Jun20</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>Policy_No__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CONTACT.PHONE1</columns>
+    <columns>CONTACT.PHONE3</columns>
+    <columns>CONTACT.EMAIL</columns>
+    <columns>Entity__c</columns>
+    <columns>PolicyApp__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Entity__c</field>
+        <operation>equals</operation>
+        <value>AMFS</value>
+    </filters>
+    <filters>
+        <field>CONTACT.LAST_NAME</field>
+        <operation>contains</operation>
+        <value>Training</value>
+    </filters>
+    <label>AMFS - Training Jun20</label>
+    <language>en_US</language>
+    <sharedTo>
+        <roleAndSubordinatesInternal>AMFS_CEO</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

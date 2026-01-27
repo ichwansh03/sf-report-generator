@@ -1,0 +1,99 @@
+<apex:page controller="File_Update_AMFS_Ctrl">
+    <style>
+        .requiredLoaderBG {
+        background-color: rgb(71,71,71);
+        opacity:0.7;
+        filter:alpha(opacity=70);
+        background-image:url('{!$Resource.ajaxLoadGif}');
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+        }
+        
+        #el_loading
+        {
+        display: none;
+        }
+    </style>
+    <script>
+    function onUpload()
+    {
+        var ul = document.getElementById('el_loading');
+        ul.style.display = 'inline';
+    }
+    </script>
+    <apex:sectionHeader title="" subtitle="Update Status Paid/Not Paid"/>
+    <apex:form enctype="multipart/form-data">
+        <apex:pageMessages rendered="{!FlagMessage}"/>
+        <apex:pageBlock title="Upload a File">
+            <apex:pageBlockSection showHeader="false" columns="2" id="pbs1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="File" for="file"/>
+                    <apex:inputFile value="{!document.body}" contentType="text/plain; charset=UTF-8" filename="{!document.name}" id="file"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Campaign Name" for="fileName"/>
+                    <apex:selectList value="{!choosen_campaign}" label="Campaign Type" size="1">
+                        <apex:selectOption itemValue="" itemLabel="-"/>
+                        <apex:selectOptions value="{!optionCampaign_list}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <br/>  
+            <span align="center">
+                <apex:commandButton action="{!Upload}" value="Upload" onclick="onUpload();" />&nbsp;
+                <apex:commandButton action="{!Reset}" value="Reset" onclick="onUpload();" />&nbsp;
+            </span>
+            <br/> 
+            <table width="100%" >
+                <tr>
+                    <td width="50%">
+                        <table>
+                            <tr>
+                                <td>Total Data</td>
+                                <td>:</td>
+                                <td>{!uploadedNum}</td>
+                            </tr>
+                            <tr>    
+                                <td>Valid Data</td>
+                                <td>:</td>
+                                <td>{!validNum}</td>
+                            </tr>
+                            <tr>    
+                                <td>Invalid Data</td>
+                                <td>:</td>
+                                <td>{!invalidNum}</td>
+                            </tr>       
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br/>  
+            <br/>  
+            
+            <apex:pageBlockSection title="Invalid Policy List">
+                <!--apex:pageBlockTable id="idpbt" value="{!invalidPolicyList}" var="invalidPol" style="overflow:auto;width:850px;" border="1">
+				<apex:column headerValue="Policy No">{!invalidPol}</apex:column>
+				</apex:pageBlockTable>-->
+                <apex:pageBlockTable id="idpbt" value="{!list_invalidPolicy}" var="invalidPol" style="overflow:auto;width:850px;" border="1">
+                    <apex:column headerValue="Policy No">{!invalidPol.policyNo}</apex:column>
+                    <apex:column headerValue="Status">{!invalidPol.status}</apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.75;width:100%;">
+        <div class="waitingHolder" style="top: 100px; width: 91px;">
+            <img class="waitingImage" src="{!$Resource.ajaxLoadGif}" title="Please Wait..."  style="width: 40;height:40;"/>
+            <!--<span class="waitingDescription">Attachment is Uploading . . . .</span>-->
+        </div>
+    </div>
+</apex:page>

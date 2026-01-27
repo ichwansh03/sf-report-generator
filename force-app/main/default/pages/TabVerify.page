@@ -1,0 +1,583 @@
+<apex:page standardController="Call_Line__c" extensions="TabVerifyCtrl" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <head>
+      <link rel="stylesheet" type="text/css" href="{!$Resource.Bootstrap3_3_3_min}"/>
+      <script type="text/javascript" src="{!$Resource.JQuery1_9_1}"/>
+      <script type="text/javascript" src="{!$Resource.Bootstrap3_3_3_minjs}"/>
+      <meta charset="utf-8" />
+      <meta http-equiv="x-ua-compatible" content="ie=edge" />
+      <!-- Import the Design System style sheet -->
+       </head>
+    <body>
+      <!-- REQUIRED SLDS WRAPPER -->
+        <div>
+            <div class="row">
+                <div class="col-md-8">
+                    <form>
+                       <div class="panel-group" id="accordion">
+                       </div>
+                    </form>
+                </div>
+                
+                <div class="col-md-4">
+                    <apex:form id="changesForm">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Edit Data</div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label>Alamat 1</label>
+                                    <input type="text" class="form-control" id="address1" maxlength="24" placeholder="Max 24 characters"/>
+                                    <!--<textarea class="form-control" id="address1" rows="4" placeholder="Address"></textarea>-->
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Alamat 2</label>
+                                    <input type="text" class="form-control" id="address2" maxlength="24" placeholder="Max 24 characters"/>
+                                    <!--<textarea class="form-control" id="address2" rows="4" placeholder="Address"></textarea>-->
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Alamat 3</label>
+                                    <input type="text" class="form-control" id="address3" maxlength="24" placeholder="Max 24 characters"/>
+                                    <!--<textarea class="form-control" id="address3" rows="4" placeholder="Address"></textarea>-->
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Alamat 4</label>
+                                    <input type="text" class="form-control" id="address4" maxlength="24" placeholder="Max 24 characters"/>
+                                    <!--<textarea class="form-control" id="address4" rows="4" placeholder="Address"></textarea>-->
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="name@example.com"/>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Other</label>
+                                    <input type="text" class="form-control" id="other" placeholder="Other"/>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-primary" onclick="lockChanges()">Lock Changes </button>
+                                <!--<apex:commandButton action="{!saveDataChanges}" styleClass="btn btn-primary" value="Save Changes" />-->
+                            </div>
+                        </div>
+                        
+                    </apex:form>
+                </div>
+                
+            </div>
+            
+        </div>
+    </body>
+    <style>
+        .rightPosition {
+          text-align:right; 
+          width:100%; 
+          padding:0;
+        }
+    </style>    
+ 
+    <script type="text/javascript">
+        var tempMapAnswerQuestion = new Map();
+        var isStatusClosed = '{!isStatusClosed}';
+        var mapNametoScript = JSON.parse('{!serialMapDirection}');
+        var mapOfScript = JSON.parse('{!serialMapScript}');
+        var responseVal = JSON.parse('{!serialDatatoSaved}');
+        var mapInputPerSection = JSON.parse('{!serialInputPerSection}');
+        var mapDependencyListValue = JSON.parse('{!serialDependencyListValue}');
+        var mapDependencyList = JSON.parse('{!serialDependencyList}');
+        var firstSection = '{!firstSection}';
+        
+    //console.log(JSON.stringify(mapOfScript));
+
+          //set dependency picklist
+          function setDependencyPicklist(section, parentGrpType, dr){
+              parentGrpType = (parentGrpType != null ? parentGrpType.replace(/\s/g,'') : '');
+              $('#'+parentGrpType+section).find('option[value=""]').remove();
+              if(dr == null){
+                  return;
+              }
+              var dataValue = mapDependencyListValue[dr.name];
+              var data = mapDependencyList[parentGrpType];
+
+              if(data != null && data != undefined){
+                  section = (section != null ? section.replace(/\s/g,'') : '');
+                  $.each(data, function(i, grpType){  
+                    $('#'+grpType+section).find('option').remove();
+                    // set none value
+                      /**$('#'+grpType+section)
+                         .append($("<option></option>")
+                                   .attr("value",null)
+                                   .text("---None---"));*/
+                  });
+                  
+                  if(dataValue != null && dataValue != undefined){
+                      $.each(dataValue, function(i, item){  
+                         var grpType = (item.grpType != null ? item.grpType.replace(/\s/g,'') : '');
+                         $('#'+grpType+section)
+                             .append($("<option "+(item.fgIsExist ? ' selected':'')+"></option>")
+                                        .attr("value",item.name)
+                                        .text(item.contentAnswer)); 
+                      })
+                  }
+              }
+          }
+          
+          function lockChanges(){
+              var isVerify = getValuePerSection("Verifikasi Data", "Radio Button", "Radio Button");
+              var isVerifyUpdate = getValuePerSection("Verifikasi Berhasil dengan pengkinian Data", "Radio Button", "Radio Button");
+              if(isStatusClosed == 'true'){
+                  alert("Call Line Status telah Closed.");
+                  return null;
+              }
+              if(isVerify == null || mapNametoScript[isVerify].contentAnswer == "Verikasi Tidak Berhasil"){
+                  alert("Data harus ter-verifikasi sebelum melakukan perubahan Data lain.");
+                  return null;
+              }
+              var r = confirm("Data akan disimpan?");
+              if(r == true){
+                  var address1 = $("#address1").val();
+                  var address2 = $("#address2").val();
+                  var address3 = $("#address3").val();
+                  var address4 = $("#address4").val();
+                  var email = $("#email").val();
+                  var other = $("#other").val();
+                  
+                  var response = responseVal["VerifikasiData"];
+                  response.address1 = address1;
+                  response.address2 = address2;
+                  response.address3 = address3;
+                  response.address4 = address4;
+                  response.email = email;
+                  response.other = other;
+              } else {
+                return null;    
+              }
+          }
+          function openOtherTab(currTab, section, isNext, isReschedule){
+              var btnNext = $("#btnnext"+section).attr("href");
+              var vals = $("#collapse"+section+">div>div>div").children();
+              // populate value
+              var response = responseVal[section];
+              if(isNext){
+                  // set prev
+                  var nextSection = btnNext.replace('#collapse','');
+                  var btnPrev = $("#btnprevious"+nextSection);
+                  btnPrev.attr("href", "#collapse"+section);
+                  
+                  // force to re-schedule tab
+                  if(isReschedule){
+                      btnNext = $("#btnreschedule"+section).attr("href");
+                  }
+                  if(btnNext == null || btnNext == ""){
+                      alert("Pilih Salah Satu Data Response.");
+                      return null;
+                  }
+                  
+                  response.isValid = true;
+                  var j=1;
+                  var mapTemp = new Object();
+                  var data = mapInputPerSection[section];
+                  //for(var i=0; i< vals.length; i++){
+                  $.each(data, function(i, item){
+                      //mapTemp.
+                      var type = item.type;//vals.get(i).type;
+                      //type = type == null ? vals.get(i).tagName : type;
+                      var answerVal = getValuePerSection(section, item.grpType);
+                      if( answerVal == ""){
+                          answerVal = "skip";
+                      }
+                      if(item.fgNote && item.contentAnswer == ''){
+                        // note
+                        section = item.section != null ? item.section.replace(/\s/g,'') : "";
+                        var note = $("#note"+section).val();
+                        response.note = note;
+                        response.question1 = item.name;
+                      } else if (answerVal != "skip" && j == 1 && mapTemp[answerVal] == null){
+                        // input 1
+                        response.question1 = answerVal;
+                        response.answer1 = mapNametoScript[answerVal].contentAnswer;
+                          if(true/**mapNametoScript[answerVal].fgNote*/){
+                            section = item.section != null ? item.section.replace(/\s/g,'') : "";
+                            var note = $("#note"+section).val();
+                            console.log('note '+note);
+                            response.note = note;
+                          }
+
+                        mapTemp[answerVal] = answerVal;
+                        console.log(answerVal +"1 "+response.answer1);
+                        j++;
+                      } else if (answerVal != "skip" && j == 2 && mapTemp[answerVal] == null){
+                        // input 2
+                        response.question2 = answerVal;
+                        var contentAsw = mapNametoScript[answerVal];
+                        response.answer2 = contentAsw != null ? mapNametoScript[answerVal].contentAnswer : null;
+                          if(contentAsw != null /**&& contentAsw.fgNote*/){
+                            section = item.section != null ? item.section.replace(/\s/g,'') : "";
+                            var note = $("#note"+section).val();
+                            console.log('note '+note);
+                            response.note = note;
+                          }
+
+                        mapTemp[answerVal] = answerVal;
+                          console.log(answerVal +"2 "+response.answer2);
+                        j++;
+                      } else if (answerVal != "skip" && j == 3 && mapTemp[answerVal] == null){
+                        // input 3
+                        response.question3 = answerVal;
+                        var contentAsw = mapNametoScript[answerVal];
+                        response.answer3 = contentAsw != null ? mapNametoScript[answerVal].contentAnswer : null;
+                          //response.answer3 = mapNametoScript[answerVal].contentAnswer;
+                          if(contentAsw != null /**&& mapNametoScript[contentAsw].fgNote*/){
+                            section = item.section != null ? item.section.replace(/\s/g,'') : "";
+                            var note = $("#note"+section).val();
+                            console.log('note '+note);
+                            response.note = note;
+                          }
+
+                        mapTemp[answerVal] = answerVal;
+                          console.log(answerVal +"3 "+response.answer3);
+                        j++;
+                      } else if (answerVal != "skip" && j == 4 && mapTemp[answerVal] == null){
+                        // input 4
+                        response.question4 = answerVal;
+                        var contentAsw = mapNametoScript[answerVal];
+                        response.answer4 = contentAsw != null ? mapNametoScript[answerVal].contentAnswer : null;
+                          //response.answer4 = mapNametoScript[answerVal].contentAnswer;
+                          if(contentAsw != null /**&& mapNametoScript[contentAsw].fgNote*/){
+                            section = item.section != null ? item.section.replace(/\s/g,'') : "";
+                            var note = $("#note"+section).val();
+                            console.log('note '+note);
+                            response.note = note;
+                          }
+                        mapTemp[answerVal] = answerVal;
+                          console.log(answerVal +" "+response.answer4);
+                        j++;
+                      }
+                  })
+                  if(btnNext.indexOf("#collapse") == -1 ){
+                      proceedData(btnNext, currTab, section);
+                  }
+              } else {
+                  response.isValid = false;
+                  var btnPrev = $("#btnnext"+section).attr("href");
+                  //toTab(currTab, next);
+                  return true;
+              }
+          }
+          function multiValues(record){
+              var inputs = record.multiContentAnswer;
+              var html='';
+              Object.keys(inputs).sort(function( a,b ) {
+                    if (a < b) return -1;
+                    if (b < a) return 1;
+                    return 0;
+                }).forEach(function(keyP) {
+                    var rec = inputs[keyP];
+                    var grpType = keyP != null ? keyP.replace(/\s/g,'').toLowerCase() :"";
+                    switch (true) {
+                        case grpType.includes("radiobutton"):
+                            html =html +''+addRadioButton(rec);
+                            break;
+                        case grpType.includes("picklist"):
+                            html =html +''+addPickList(rec, record.section, keyP);
+                            break;
+                        default :
+                            html =html+'';
+                    }
+                })
+              
+              return html;
+            }
+          function getValuePerSection(section, keyP){
+                section = section != null ? section.replace(/\s/g,'') : "";
+                keyP = keyP != null ? keyP.replace(/\s/g,'') :"";
+                var grpType = keyP != null ? keyP.toLowerCase() :"";
+                switch (true) {
+                case grpType.includes("radiobutton"):
+                    return $("input[name="+keyP+section+"]:checked").val();
+                case grpType.includes("radio"):
+                    return $("input[name="+keyP+section+"]:checked").val();
+                case grpType.includes("select"):
+                case grpType.includes("select-one"):
+                case grpType.includes("picklist"):
+                case grpType.includes("input"):
+                case grpType.includes("number"):
+                case grpType.includes("text"):
+                    return $("#"+keyP+section).val();
+                case grpType.includes("textarea"):
+                    return $("#note"+section).val();
+                default :
+                    console.log("not an input "+grpType);
+                    return "skip";
+                }
+           }
+          // function to set previous and next direction
+          function setPrevNextValue(section, grpKey){
+              var answerVal = getValuePerSection(section, grpKey);
+              var dr = mapNametoScript[answerVal];
+              if(dr == null){
+                  $("#btnnext"+section).attr("href", "");
+                  return;
+              }
+              //set dependency picklist
+              setDependencyPicklist(section, grpKey, dr);
+              
+              var next = (dr.next != null ? dr.next.replace(/\s/g,'') : '');
+              var addnote = $("#divnote"+section);
+              var btnNext = $("#btnnext"+section);
+              var btnPrev = $("#btnprevious"+next);
+              
+              next = setNextPrevValue(dr, true);
+              btnNext.attr("href", next);
+              btnPrev.attr("href", "#collapse"+section);
+              console.log("dr.fgNote "+dr.fgNote);
+              if(dr.fgNote == true){
+                addnote.show();
+              } else {
+                $("#note"+section).val("");
+                addnote.hide();
+              }
+          }
+          function setNextPrevValue(dr, isNext){
+              var direct = (dr.next != null ? dr.next.replace(/\s/g,'') : '');
+              if(isNext == false){
+                  direct = (dr.previous != null ? dr.previous.replace(/\s/g,'') : '');
+              }
+              console.log('dr == '+JSON.stringify(dr));
+              if(dr.fgreSchedul){
+                return "reschedule";
+              }else if(dr.fgClosing){
+                return "penutup";
+              }else if(dr.fgLegal){
+                return "legalstatement";
+              }else if(dr.fgProduct){
+                return "product";
+              } else if(dr.fgInfoProduct){
+                return "infoproduct";
+              } else if(direct == '' || direct == 'nexttab' || direct == null){
+                return "nexttab";
+              } else {
+                return "#collapse"+direct;
+              }
+          }              
+          // function to add radio button html
+          function addRadioButton(mValue){
+                var htmlbutton ='';
+                //var buttons = record.multiContentAnswer;
+                var myMap = new Map();
+                if(mValue != null){
+                  //for(var [key, mValue] of Object.entries(buttons)){
+                    htmlbutton = '<div class="form-group radio col-md-9">';
+                    var i=0;
+                  Object.keys(mValue).sort(function( a,b ) {
+                        if (mValue[a].orderAnswer < mValue[b].orderAnswer) return -1;
+                        if (mValue[b].orderAnswer < mValue[a].orderAnswer) return 1;
+                        return 0;
+                    }).forEach(function(keyP) {
+                      //for(var [key, value] of Object.entries(mValue)){
+                        var dr = mValue[keyP];
+                        var section = dr.section != null ? dr.section.replace(/\s/g,'') : '';
+                        var nm = dr.grpType != null ? dr.grpType.replace(/\s/g,'') : '';
+                        htmlbutton = htmlbutton +' '+['<label class="radio-inline">', 
+                                                      (dr.imageResourceAnswer != ''? ' <image id="theImage" src="/servlet/servlet.FileDownload?file='+dr.imageResourceAnswer+'" width="50" height="50"/>':''),
+                                                      ' <br><input', (isStatusClosed == 'true'? ' disabled':''),
+                                                      ' type="radio"', (dr.fgIsExist ? ' checked':''),
+                                                      ' name="',nm,section,'" title="',dr.contentAnswer,'"',
+                                                      ' value="',dr.name,'" onchange="setPrevNextValue(\''+section+'\',\''+nm+'\')">',dr.contentAnswer,'</label>'].join('');
+                        i++;
+                    })
+                    htmlbutton = htmlbutton +''+'</div>';
+                }
+                return htmlbutton;
+          }
+          // function to add image on top off content question
+          function addImage(record){
+              var section = record.section != null ? record.section.replace(/\s/g,'') : '';
+              var htmlRes='';
+              $.each(record.imageResourceContent, function(i, item){
+                  if(item != null && item != ''){
+                      htmlRes = htmlRes+ ' '+['<image name="',section,'Image" src="/servlet/servlet.FileDownload?file='+item+'" width="50%" height="150"/>'].join('');
+                  }
+              })
+              return htmlRes;
+          }
+          // function to add picklist html
+          function addPickList(mValues, section, grpType){
+              var htmlPicklist ='';
+              if(mValues != null){
+                  grpType = grpType.replace(/\s/g,'');
+                  htmlPicklist = ['<div class="form-group col-md-3">Select ',grpType,' :',
+                                  '<select', (isStatusClosed == 'true'? ' disabled':''),' onchange="setPrevNextValue(\''+section+'\',\''+grpType+'\')" class="form-control" id="',grpType,section,
+                                  '">'].join('');
+                  var i;
+                  htmlPicklist = htmlPicklist + '<option value="">---None---</option>';
+                  Object.keys(mValues).sort(function( a,b ) {
+                        if (mValues[a].orderAnswer < mValues[b].orderAnswer) return -1;
+                        if (mValues[b].orderAnswer < mValues[a].orderAnswer) return 1;
+                        return 0;
+                    }).forEach(function(keyP) {
+                      //for(var [key, value] of Object.entries(mValues)){
+                      var value = mValues[keyP];
+                      if(value.parentDependency == '' || value.fgIsExist || value.fgDefault){
+                            htmlPicklist = htmlPicklist + '<option '+ (value.fgIsExist ? ' selected':'')+' value="'+value.name+'">'+value.contentAnswer+'</option>';
+                            i++;
+                          }
+                    })
+                  htmlPicklist = htmlPicklist +'</select></div>';
+              }
+              return htmlPicklist;
+          }
+          // function to add 2 buttons { prvious and next }
+          function addNextPrevButton(record, i){
+              var defNext;
+              var defPrevious;
+              for(var [key, mValue] of Object.entries(record.multiContentAnswer)){
+                  for(var [key, value] of Object.entries(mValue)){
+                      if(value.fgIsExist || record.contentCount == 1){
+                          defNext = setNextPrevValue(value, true);
+                          defPrevious = setNextPrevValue(value, false);
+                          break;
+                      }
+                  }
+              }
+              var section = record.section != null ? record.section.replace(/\s/g,'') : '';
+              return ['<div class="rightPosition col-md-12">',
+                      '<button type="button"', ' id="btnreschedule',section,'"', (isStatusClosed == 'true'? ' disabled':''),' onclick="openOtherTab(\''+record.tabName+'\',\''+section+'\',true, true)"',
+                      ' class="btn btn-info next-step" href="#reschedule" data-toggle="collapse" data-parent="#accordion">',
+                      'Re-Schedule </button>',' ',
+                      '<button type="button" style="display:', (i==0? ' none':''),'"', (isStatusClosed == 'true'? ' disabled':''),' onclick="openOtherTab(\''+record.tabName+'\',\''+section+'\',false, false)" id="btnprevious',section,
+                      '" class="btn btn-warning prev-step" href="',defPrevious,'" data-toggle="collapse" data-parent="#accordion">',
+                      'Previous </button>',' ',
+                      '<button type="button"', ' id="btnnext',section,'"', (isStatusClosed == 'true'? ' disabled':''),' onclick="openOtherTab(\''+record.tabName+'\',\''+section+'\',true, false)"',
+                      ' class="btn btn-primary next-step" href="',defNext,'" data-toggle="collapse" data-parent="#accordion">',
+                      'Next </button>', '</div>'
+                     ].join('');
+          }
+    
+          // function to add text area html
+          function addNote(record){
+              var section = record.section != null ? record.section.replace(/\s/g,'') : '';
+              return ['<div style="display:',((record.defNote != '' && record.defNote != null) || (record.contentCount == 1 && record.defaultFgNote) ? ' ': ' none'),'" class="form-group col-md-9" title="Note" id="divnote',section,'">','<label for="note',section,
+                      '">Note:</label>','<textarea class="form-control" id="note',section,'" rows="5" placeholder="Note">',record.defNote
+                      ,'</textarea>','</div>'].join('');
+          }
+          // function to proceed the data to ctrl
+          function proceedData(btnNext, currTab, sec) {
+                btnNext = btnNext.replace("#","");
+                var txt;
+                var nextTab='';
+                    if(btnNext == "reschedule"){
+                       next = "reschedule";
+                       nextTab = "Reschedule";
+                    } else if( btnNext == "legalstatement"){
+                       next = "legalstatement";
+                       nextTab = "Legal Statement";
+                    } else if(btnNext == "penutup"){
+                       next = "penutup";
+                       nextTab = "Penutup";
+                    } else if( btnNext == "product"){
+                        next = "product";
+                        nextTab = "Product";
+                    } else if( btnNext == "infoproduct"){
+                        next = "detailproduct";
+                        nextTab = "Detail Product";
+                    } else if( btnNext == "nexttab"){
+                       next = "sesiinformasiprodukdanpertanyaanpelayananfa";
+                       nextTab = "Sesi Informasi Produk dan Pertanyaan Pelayanan FA";
+                    } else {
+                    }
+              //var r = confirm("Data akan disimpan, lanjut ke tab "+nextTab+"?");
+                var resVal = JSON.stringify(responseVal);
+                if (true) {
+                    addRemoveDisabled(true, sec);
+                    TabVerifyCtrl.SaveorUpdateScript(resVal, currTab,
+                      function(result, event) {
+                          if (event.statusCode != 200) {
+                            alert("There is an Error. Data is not Saved.");
+                            console.log("Something Wrong! "+event.message);
+                              addRemoveDisabled(false, sec);
+                          } else {
+                              console.log("Data Saved.");
+                              //set ID after save
+                              var data = result;
+                              $.each(data, function(i, item){
+                                console.log(JSON.stringify(item));
+                                var section = item.WelcomeCall_Section__c.replace(/\s/g,'');
+                                responseVal[section].responseId = item.Id;
+                                responseVal[section].isValid = false;
+                              })
+                              $("#collapse"+firstSection+"Id").click();
+                              toTab(currTab, next);
+                              addRemoveDisabled(false, sec);
+                          }
+                    });
+                } else {
+                    return null;
+                }
+            }
+            function addRemoveDisabled(isAdd, sec){
+              if(isAdd){
+                    document.getElementById("btnnext"+sec).setAttribute("disabled", true);
+                    document.getElementById("btnreschedule"+sec).setAttribute("disabled", true);
+              } else {
+                    document.getElementById("btnnext"+sec).removeAttribute("disabled");
+                    document.getElementById("btnreschedule"+sec).removeAttribute("disabled");
+              }    
+          }
+          function toTab(currTab, des){
+              currTab = currTab != null ? currTab.replace(/\s/g,'').toLowerCase() :"";
+              var currentTab = $("#tab-default-"+currTab+"__item", window.parent.document);
+              var desTab = $("#tab-default-"+des+"__item", window.parent.document);
+              currentTab.removeClass('active');
+              desTab.addClass('active');
+              var currElemen =currentTab.children("a").attr("href");
+              var desElemen =desTab.children("a").attr("href");
+              $(currElemen, window.parent.document).removeClass("active");
+              $(desElemen, window.parent.document).addClass("active");
+          }
+          (function () {
+            /* FUNCTION createAccordion */
+            function createAccordion(record, i){
+                var section = record.section != null ? record.section.replace(/\s/g,'') : '';
+                tempMapAnswerQuestion.set(section, record.contentQuestion);
+                return ['<div class="panel panel-default ">', '<div class="panel-heading ">', '<h4 class="panel-title ">',
+                        (i==0 ? ('<a data-toggle="collapse" id="collapse'+section+'Id" data-parent="#accordion" href="#collapse'+(section)+'">'):''), record.section, (i==0 ? '</a>':''),
+                        // '</h4>', '</div>', '<div id="collapse',section,'" class="panel-collapse collapse',(i==0 ? ' in':' in'),'">', '<div class="panel-body">',
+                        '</h4>', '</div>', '<div id="collapse',section,'" class="panel-collapse collapse',(i==0 ? ' in':''),'">', '<div class="panel-body">',
+                        addImage(record),record.contentQuestion, '<div class="row panel-body">', multiValues(record), 
+                        addNote(record), '<div class="col-md-12">',record.contentQuestion2 ,'</div>', addNextPrevButton(record, i),'</div>', '</div>', '</div>','</div>','</div>'
+                       ].join('');
+            }
+              
+              var j=0;
+              var htmlRes='';
+              Object.keys(mapOfScript).sort(function( a,b ) {
+                    if (mapOfScript[a].secOrder < mapOfScript[b].secOrder) return -1;
+                    if (mapOfScript[b].secOrder < mapOfScript[a].secOrder) return 1;
+                    return 0;
+                }).forEach(function(key) {
+                      if(j == 0){
+                        htmlRes = createAccordion(mapOfScript[key], j);
+                      } else {
+                        htmlRes = htmlRes +''+createAccordion(mapOfScript[key], j);
+                      }
+                      j++;
+              })
+                var divList = document.getElementById('accordion');
+                divList.innerHTML =htmlRes;
+              
+              var response = responseVal["VerifikasiData"];
+              $("#address1").val(response.address1);    
+              $("#address2").val(response.address2);
+              $("#address3").val(response.address3);
+              $("#address4").val(response.address4);
+              $("#email").val(response.email);
+              $("#other").val(response.other);
+          })();
+                      
+        </script>
+</html>
+</apex:page>

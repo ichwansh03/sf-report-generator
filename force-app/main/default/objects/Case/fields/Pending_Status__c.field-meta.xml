@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pending_Status__c</fullName>
+    <label>Pending Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>CHS_Status__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Not Yet Proceed by CMU</fullName>
+                <default>false</default>
+                <label>Not Yet Proceed by CMU</label>
+            </value>
+            <value>
+                <fullName>Customer Non Contacted</fullName>
+                <default>false</default>
+                <label>Customer Non Contacted</label>
+            </value>
+            <value>
+                <fullName>Customer Contacted But No Response</fullName>
+                <default>false</default>
+                <label>Customer Contacted But No Response</label>
+            </value>
+            <value>
+                <fullName>Not Yet Submit Complaint Report</fullName>
+                <default>false</default>
+                <label>Not Yet Submit Complaint Report</label>
+            </value>
+            <value>
+                <fullName>Need More Document</fullName>
+                <default>false</default>
+                <label>Need More Document</label>
+            </value>
+            <value>
+                <fullName>Investigated by FCO</fullName>
+                <default>false</default>
+                <label>Investigated by FCO</label>
+            </value>
+            <value>
+                <fullName>Waiting For Confirmation From Related Dept</fullName>
+                <default>false</default>
+                <label>Waiting For Confirmation From Related Dept</label>
+            </value>
+            <value>
+                <fullName>Memo Circulation</fullName>
+                <default>false</default>
+                <label>Memo Circulation</label>
+            </value>
+            <value>
+                <fullName>Appeal</fullName>
+                <default>false</default>
+                <label>Appeal</label>
+            </value>
+            <value>
+                <fullName>SQ</fullName>
+                <default>false</default>
+                <label>SQ</label>
+            </value>
+            <value>
+                <fullName>Call Nasabah Info Hasil Memo</fullName>
+                <default>false</default>
+                <label>Call Nasabah Info Hasil Memo</label>
+            </value>
+            <value>
+                <fullName>Call Nasabah (1)</fullName>
+                <default>false</default>
+                <label>Call Nasabah (1)</label>
+            </value>
+            <value>
+                <fullName>Call Nasabah (2)</fullName>
+                <default>false</default>
+                <label>Call Nasabah (2)</label>
+            </value>
+            <value>
+                <fullName>Surat</fullName>
+                <default>false</default>
+                <label>Surat</label>
+            </value>
+            <value>
+                <fullName>W/F Meeting Coordination</fullName>
+                <default>false</default>
+                <label>W/F Meeting Coordination</label>
+            </value>
+            <value>
+                <fullName>Surat Penyelesaian/Pencabutan FA</fullName>
+                <default>false</default>
+                <label>Surat Penyelesaian/Pencabutan FA</label>
+            </value>
+            <value>
+                <fullName>Memo on Progress</fullName>
+                <default>false</default>
+                <label>Memo on Progress</label>
+            </value>
+            <value>
+                <fullName>W/F Memo FCO</fullName>
+                <default>false</default>
+                <label>W/F Memo FCO</label>
+            </value>
+            <value>
+                <fullName>TC/Int FA</fullName>
+                <default>false</default>
+                <label>TC/Int FA</label>
+            </value>
+            <value>
+                <fullName>Pending Litigation</fullName>
+                <default>false</default>
+                <label>Pending Litigation</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Not Yet Proceed by CMU</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Customer Non Contacted</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Customer Contacted But No Response</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Not Yet Submit Complaint Report</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Need More Document</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Investigated by FCO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Waiting For Confirmation From Related Dept</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Memo Circulation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Appeal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>SQ</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Call Nasabah Info Hasil Memo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Call Nasabah (1)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Call Nasabah (2)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Surat</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>W/F Meeting Coordination</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Surat Penyelesaian/Pencabutan FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Memo on Progress</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>W/F Memo FCO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>TC/Int FA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>In Progress CMU</controllingFieldValue>
+            <valueName>Pending Litigation</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

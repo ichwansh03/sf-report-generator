@@ -1,0 +1,45 @@
+<apex:page controller="DMU_Custom_Data_View_Controller" contentType="txt/xml#{!filename}.xls" cache="true">
+    <apex:outputText value="{!xlsHeader}"/>
+    <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel"
+    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:html="http://www.w3.org/TR/REC-html40">
+        <Styles>
+            <Style ss:ID="s1">
+                <Alignment/>
+                <Borders/>
+                <Font ss:Bold="1"/>
+                <Interior/>
+                <NumberFormat/>
+                <Protection/>
+            </Style>
+        </Styles>
+        <Worksheet ss:Name="Summary">
+            <Table x:FullColumns="1" x:FullRows="1">
+                <Column ss:Width="170"/>
+                <Column ss:Width="280"/>
+                <Column ss:Width="330"/>
+                <Row>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >ID</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Type Doc</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Total Documents</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Success</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >Not Success</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String" >In Progess</Data></Cell>
+
+                </Row>
+                <apex:repeat value="{!SummaryDMUList}" var="ph">
+                    <Row>
+                        <Cell><Data ss:Type="String">{!ph.DateText}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Type_Doc}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Total_Documents}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Success}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.Not_Success}</Data></Cell>
+                        <Cell><Data ss:Type="String">{!ph.InProgress}</Data></Cell>
+                    </Row>
+                </apex:repeat>
+            </Table>
+        </Worksheet>
+    </Workbook>
+</apex:page>

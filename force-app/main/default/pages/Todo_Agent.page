@@ -1,0 +1,16 @@
+<apex:page standardController="Call_Line__c" extensions="TodoAgent" tabStyle="Call_Line__c">
+    <apex:form >
+        <apex:pageMessages id="messages"/>
+        <apex:pageBlock tabStyle="Call_Line__c" id="todoList">
+            <apex:pageBlockTable value="{!todos}" var="task" id="todoList">
+                <apex:column value="{!task.item}" width="500px" headerValue="To-Do List"/>
+                <apex:column headerValue="Status">
+                    <apex:inputCheckbox value="{!task.isChecked}" disabled="{!checkCl == false}">
+                        <apex:actionSupport event="onchange" reRender="todoList, messages" action="{!save}"/>
+                    </apex:inputCheckbox>
+                </apex:column>
+            </apex:pageBlockTable>
+            <br/>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

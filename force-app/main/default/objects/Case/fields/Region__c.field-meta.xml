@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Region__c</fullName>
+    <label>Region</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>REGIONAL 1</fullName>
+                <default>false</default>
+                <label>REGIONAL 1</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 2</fullName>
+                <default>false</default>
+                <label>REGIONAL 2</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 3</fullName>
+                <default>false</default>
+                <label>REGIONAL 3</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 4</fullName>
+                <default>false</default>
+                <label>REGIONAL 4</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 5</fullName>
+                <default>false</default>
+                <label>REGIONAL 5</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 6</fullName>
+                <default>false</default>
+                <label>REGIONAL 6</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 7</fullName>
+                <default>false</default>
+                <label>REGIONAL 7</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 8</fullName>
+                <default>false</default>
+                <label>REGIONAL 8</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 9</fullName>
+                <default>false</default>
+                <label>REGIONAL 9</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 10</fullName>
+                <default>false</default>
+                <label>REGIONAL 10</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 11</fullName>
+                <default>false</default>
+                <label>REGIONAL 11</label>
+            </value>
+            <value>
+                <fullName>REGIONAL 12</fullName>
+                <default>false</default>
+                <label>REGIONAL 12</label>
+            </value>
+            <value>
+                <fullName>BSM REG. 2</fullName>
+                <default>false</default>
+                <label>BSM REG. 2</label>
+            </value>
+            <value>
+                <fullName>BSM REG. 3</fullName>
+                <default>false</default>
+                <label>BSM REG. 3</label>
+            </value>
+            <value>
+                <fullName>BSM REG. 4</fullName>
+                <default>false</default>
+                <label>BSM REG. 4</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

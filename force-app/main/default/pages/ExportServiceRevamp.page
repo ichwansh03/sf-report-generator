@@ -1,0 +1,12 @@
+<apex:page controller="LogCoreIntegrationController" readOnly="true" cache="true" contentType="application/vnd.ms-excel#Integration_Logs_{!$CurrentPage.parameters.report}_{!$CurrentPage.parameters.status}.xls">
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!appLog}" var="log">
+            <apex:column value="{!log.Policy_No__c}" headerValue="Policy No"/>
+            <apex:column value="{!log.Report_Name__c}" headerValue="Report"/>
+            <apex:column value="{!log.Status__c}" headerValue="Status"/>
+            <apex:column value="{!log.Error_Message__c}" headerValue="Error Message"/>
+            <apex:column value="{!log.LastModifiedDate}" headerValue="Request Time"/>
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+</apex:page>

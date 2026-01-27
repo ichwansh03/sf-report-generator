@@ -1,0 +1,13 @@
+<apex:page id="pageId" controller="TransferContactControllerALI">  
+    <apex:form id="mainFormId">
+        <apex:pageBlock id="pgBDataId">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!Save}" reRender="errors,pgSalesPlanId" status="ajaxStatus"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1" title="Assign Log" showHeader="false">
+                <apex:inputfield value="{!newLog.OwnerId}" style="font-weight: bold;" />
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        <apex:actionstatus startStyleClass="requiredLoaderBG" id="ajaxStatus" />  
+    </apex:form>
+</apex:page>
