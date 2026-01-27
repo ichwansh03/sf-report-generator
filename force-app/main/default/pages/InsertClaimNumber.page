@@ -1,41 +1,126 @@
 <apex:page standardController="Call_Line__c" extensions="ClaimNumberController" action="{!getClaimNumber}" tabStyle="Call_Line__c">
     
     <script>
-    if (window.top === window.self) {
-        document.addEventListener('DOMContentLoaded', function() {
-            const saveBtn = parent.document.querySelector('input[name="save"]');
-            
-            if (saveBtn) {
-                const originalOnClick = saveBtn.onclick;
-                
-                saveBtn.onclick = function(e) {
-                    e.preventDefault();
-                    
-                    const selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
-                    
-                    if (selectedCount === 0) {
-                        alert('Pilih minimal 1 claim!');
-                        return;
-                    }
-                    
-                    if (typeof saveClaimDataJS === 'function') {
-                        saveClaimDataJS();
-                        
-                        setTimeout(() => {
-                            if (originalOnClick) {
-                            originalOnClick.call(saveBtn);
-                        } else {
-                                   parent.document.querySelector('form').submit();
-                    }
-                }, 500);
+    // Collect form data and rebuild claimWrappers list
+    function captureClaimData() {
+        console.log('captureClaimData called');
+        var claimForm = document.getElementById('j_id0:claimForm');
+        if (!claimForm) {
+            console.error('Claim form not found');
+            return true; // Allow save to continue even if form not found
+        }
+        
+        // Find all select dropdowns and input text fields
+        var selects = claimForm.querySelectorAll('select[id*="claimRepeat:"]');
+        var inputs = claimForm.querySelectorAll('input[type="text"][id*="claimRepeat:"]');
+        
+        console.log('Found selects:', selects.length, 'Found inputs:', inputs.length);
+        
+        // Store data in hidden fields for server-side processing
+        var claimsData = [];
+        for (var i = 0; i < selects.length; i++) {
+            var claimNum = selects[i].value;
+            var desc = inputs[i] ? inputs[i].value : '';
+            if (claimNum) {
+                claimsData.push(claimNum + '|' + desc);
             }
-        };
-                                  }
-                                  });
+        }
+        
+        // Store in hidden field
+        var hiddenField = document.getElementById('j_id0:claimForm:claimsDataField');
+        if (hiddenField) {
+            hiddenField.value = claimsData.join('~');
+            console.log('Captured claim data:', hiddenField.value);
+            
+            // Trigger the hidden button to save claim data
+            var hiddenBtn = document.getElementById('j_id0:claimForm:processClaimData');
+            if (hiddenBtn) {
+                console.log('Clicking hidden button to save claim data');
+                hiddenBtn.click();
+            }
+        } else {
+            console.error('Hidden field not found');
+        }
+        return true;
     }
+    
+    // Hook into the standard Save button
+    function hookSaveButton() {
+        console.log('Attempting to hook save button...');
+        
+        // Try to find the save button in various locations
+        var saveBtn = null;
+        
+        // Method 1: Look in top window
+        try {
+            if (window.top && window.top.document) {
+                saveBtn = window.top.document.querySelector('input[name="save"]');
+                if (saveBtn) console.log('Found save button in window.top');
+            }
+        } catch (e) {
+            console.log('Cannot access window.top:', e);
+        }
+        
+        // Method 2: Look in parent window
+        if (!saveBtn) {
+            try {
+                if (window.parent && window.parent.document && window.parent !== window) {
+                    saveBtn = window.parent.document.querySelector('input[name="save"]');
+                    if (saveBtn) console.log('Found save button in window.parent');
+                }
+            } catch (e) {
+                console.log('Cannot access window.parent:', e);
+            }
+        }
+        
+        // Method 3: Look in current window
+        if (!saveBtn) {
+            saveBtn = document.querySelector('input[name="save"]');
+            if (saveBtn) console.log('Found save button in current window');
+        }
+        
+        if (saveBtn) {
+            console.log('Save button found, attaching handler');
+            
+            // Store original onclick if it exists
+            var originalOnclick = saveBtn.onclick;
+            
+            // Replace with our handler
+            saveBtn.onclick = function(e) {
+                console.log('Save button clicked - capturing claim data');
+                captureClaimData();
+                
+                // Call original handler if it existed
+                if (originalOnclick) {
+                    return originalOnclick.call(this, e);
+                }
+                return true;
+            };
+            
+            console.log('Save button hook installed successfully');
+        } else {
+            console.warn('Save button not found - will retry');
+            // Retry after a short delay
+            setTimeout(hookSaveButton, 500);
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', hookSaveButton);
+    } else {
+        hookSaveButton();
+    }
+    
+    // Also try after window load as a fallback
+    window.addEventListener('load', function() {
+        setTimeout(hookSaveButton, 100);
+    });
     </script>
     
     <apex:form id="claimForm">
+        <apex:inputHidden id="claimsDataField" value="{!claimsDataJson}"/>
+        <apex:commandButton id="processClaimData" action="{!submitSelected}" style="display:none;" reRender="main" status="actStatus"/>
         
         <div style="margin-left: 50px; margin-top: 10px;">
             <apex:actionStatus id="actStatus">
@@ -60,16 +145,14 @@
                             <apex:param name="index" value="{!cw.idx}" assignTo="{!deleteClaim}" />
                             <apex:image url="{!URLFOR($Resource.ErrorIcon)}" width="18" height="18" style="margin-right: 5px" />
                         </apex:commandLink>
-                        <apex:selectList value="{!cw.claimNumber}" size="1" style="margin-right: 10px">
+                        <apex:selectList id="claimNumber" value="{!cw.claimNumber}" size="1" style="margin-right: 10px">
                             <apex:selectOptions value="{!claimResponses}" />
                         </apex:selectList>
-                        <apex:inputText value="{!cw.description}" html-placeholder="Claim remark" style="margin-right: 10px" />
+                        <apex:inputText id="description" value="{!cw.description}" html-placeholder="Claim remark" style="margin-right: 10px" />
                         <apex:commandButton value="+" action="{!addClaimRow}" rendered="{!AND(cw.idx == claimWrappers.size - 1, claimWrappers.size < claimResponses.size)}"
                                             reRender="main" />
                     </apex:outputPanel>
                 </apex:repeat>
-                
-                <apex:commandButton action="{!submitSelected}" value="Update" reRender="main" status="actStatus"/>
             </apex:outputPanel>
         </div>
     </apex:form>

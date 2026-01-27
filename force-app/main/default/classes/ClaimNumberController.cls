@@ -5,6 +5,7 @@ public class ClaimNumberController {
     public Integer deleteClaim {get; set;}
     public boolean isTeleclaim {get; set;}
     public Call_Line__c cl { get; set; }
+    public String claimsDataJson {get; set;}
 
     public ClaimNumberController(ApexPages.StandardController pages) {
         isTeleclaim = false;
@@ -24,7 +25,6 @@ public class ClaimNumberController {
         system.debug('policy no: '+cl.Policy_No__c);
         
         try {
-            
             claimResponses.clear();
             List<String> claimNumbers = new List<String>();
             
@@ -41,7 +41,6 @@ public class ClaimNumberController {
                         if (claim != null && claim.claimNumber != null) {
                             system.debug('claim number get');
                             claimNumbers.add(claim.claimNumber);
-                            //claimWrappers.add(new ClaimWrapper(claim.claimNumber,''));
                         }
                     }
                 }
@@ -89,43 +88,89 @@ public class ClaimNumberController {
     }
     
     private void populateSavedClaims() {
-        if (String.isBlank(cl.Description__c)) return;
+        String savedData = cl.Description__c;
+        if (String.isBlank(savedData)) return;
+        if (savedData.startsWith('#')) {
+            savedData = savedData.substring(1);
+        }
+        List<String> parts = savedData.split('#');
+        Set<String> savedClaimNumbers = new Set<String>();
         
-        List<String> savedClaims = cl.Description__c.split(';');
-        
-        for (String claimData : savedClaims) {
-            if (String.isBlank(claimData)) continue;
-            
-            List<String> parts = claimData.split('#');
-            String savedClaimNum = parts[0];
-            String savedDesc = parts.size() > 1 ? parts[1] : '';
-            
-            for (ClaimWrapper cw : claimWrappers) {
-                if (cw.claimNumber == savedClaimNum) {
-                    
-                    cw.description = savedDesc;
-                    break;
+        for (Integer i = 0; i < parts.size(); i += 2) {
+            if (i < parts.size()) {
+                String claimNum = parts[i];
+                String newDesc = '';
+                if ((i + 1) < parts.size()) {
+                    newDesc = parts[i + 1];
+                }
+                if (!String.isBlank(claimNum)) {
+                    claimWrappers.add(new ClaimWrapper(claimWrappers.size(), claimNum, newDesc));
+                    savedClaimNumbers.add(claimNum);
                 }
             }
+        }
+        
+        // Add saved claim numbers to claimResponses so they appear in dropdown
+        for (String claimNum : savedClaimNumbers) {
+            claimResponses.add(new SelectOption(claimNum, claimNum));
         }
     }
 
     public void submitSelected() {
-        List<String> selectedClaims = new List<String>();
+        System.debug('=== submitSelected method called ===');
+        System.debug('claimsDataJson value: ' + claimsDataJson);
+        
+        List<String> claimDataList = new List<String>();
         Set<String> uniqueClaims = new Set<String>();
-        for (ClaimWrapper cw : claimWrappers) {
-            if (uniqueClaims.contains(cw.claimNumber)) {
-                ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, 'Duplicate claim numbers in: '+cw.claimNumber));
-                throw new IllegalArgumentException('Duplicate claim number: '+cw.claimNumber);
+        
+        // Parse the captured claims data from hidden field
+        if (String.isNotBlank(claimsDataJson)) {
+            List<String> claimsArray = claimsDataJson.split('~');
+            
+            for (String claimPair : claimsArray) {
+                if (String.isBlank(claimPair)) continue;
+                
+                List<String> parts = claimPair.split('\\|');
+                String claimNum = parts.size() > 0 ? parts[0].trim() : '';
+                String description = parts.size() > 1 ? parts[1].trim() : '';
+                
+                if (String.isBlank(claimNum)) continue;
+                
+                if (uniqueClaims.contains(claimNum)) {
+                    ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, 'Duplicate claim numbers in: ' + claimNum));
+                    throw new IllegalArgumentException('Duplicate claim number: ' + claimNum);
+                }
+                
+                uniqueClaims.add(claimNum);
+                String formattedClaim = '#' + claimNum + '#' + description;
+                claimDataList.add(formattedClaim);
             }
-            uniqueClaims.add(cw.claimNumber);
-            selectedClaims.add(cw.claimNumber);
-            //if (cw.selected) selectedClaims.add(cw.claimNumber+'#'+cw.description);
+        } else {
+            // Fallback to claimWrappers if captured data is not available
+            for (ClaimWrapper cw : claimWrappers) {
+                if (String.isBlank(cw.claimNumber)) continue;
+                
+                if (uniqueClaims.contains(cw.claimNumber)) {
+                    ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, 'Duplicate claim numbers in: '+cw.claimNumber));
+                    throw new IllegalArgumentException('Duplicate claim number: '+cw.claimNumber);
+                }
+                
+                uniqueClaims.add(cw.claimNumber);
+                String formattedClaim = '#' + cw.claimNumber + '#' + (String.isBlank(cw.description) ? '' : cw.description);
+                claimDataList.add(formattedClaim);
+            }
         }
 
-        cl.Description__c = String.join(selectedClaims,';');
-        update cl;
-        ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.CONFIRM, 'Selected: ' + String.join(selectedClaims, ', ')));
+        String formattedData = String.join(claimDataList, '');
+        cl.Description__c = formattedData;
+        
+        try {
+            update cl;
+            ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.CONFIRM, 'Claim numbers saved successfully: ' + String.join(uniqueClaims, ', ')));
+        } catch (DmlException e) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, 'Error saving claim data: ' + e.getMessage()));
+            throw e;
+        }
     }
     
     public class ClaimWrapper {
