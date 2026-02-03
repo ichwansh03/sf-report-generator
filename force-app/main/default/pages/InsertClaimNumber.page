@@ -1,126 +1,136 @@
 <apex:page standardController="Call_Line__c" extensions="ClaimNumberController" action="{!getClaimNumber}" tabStyle="Call_Line__c">
     
     <script>
-    // Collect form data and rebuild claimWrappers list
-    function captureClaimData() {
-        console.log('captureClaimData called');
-        var claimForm = document.getElementById('j_id0:claimForm');
-        if (!claimForm) {
-            console.error('Claim form not found');
-            return true; // Allow save to continue even if form not found
-        }
+        var isFormDirty = false;
         
-        // Find all select dropdowns and input text fields
-        var selects = claimForm.querySelectorAll('select[id*="claimRepeat:"]');
-        var inputs = claimForm.querySelectorAll('input[type="text"][id*="claimRepeat:"]');
-        
-        console.log('Found selects:', selects.length, 'Found inputs:', inputs.length);
-        
-        // Store data in hidden fields for server-side processing
-        var claimsData = [];
-        for (var i = 0; i < selects.length; i++) {
-            var claimNum = selects[i].value;
-            var desc = inputs[i] ? inputs[i].value : '';
-            if (claimNum) {
-                claimsData.push(claimNum + '|' + desc);
-            }
-        }
-        
-        // Store in hidden field
-        var hiddenField = document.getElementById('j_id0:claimForm:claimsDataField');
-        if (hiddenField) {
-            hiddenField.value = claimsData.join('~');
-            console.log('Captured claim data:', hiddenField.value);
+        // Detect when user modifies claim inputs
+        function attachChangeListeners() {
+            var claimSelects = document.querySelectorAll('[id*="claimNumber"]');
+            var claimInputs = document.querySelectorAll('[id*="description"]');
             
-            // Trigger the hidden button to save claim data
-            var hiddenBtn = document.getElementById('j_id0:claimForm:processClaimData');
-            if (hiddenBtn) {
-                console.log('Clicking hidden button to save claim data');
-                hiddenBtn.click();
-            }
-        } else {
-            console.error('Hidden field not found');
-        }
-        return true;
-    }
-    
-    // Hook into the standard Save button
-    function hookSaveButton() {
-        console.log('Attempting to hook save button...');
-        
-        // Try to find the save button in various locations
-        var saveBtn = null;
-        
-        // Method 1: Look in top window
-        try {
-            if (window.top && window.top.document) {
-                saveBtn = window.top.document.querySelector('input[name="save"]');
-                if (saveBtn) console.log('Found save button in window.top');
-            }
-        } catch (e) {
-            console.log('Cannot access window.top:', e);
+            console.log('Found claim selects: ' + claimSelects.length);
+            console.log('Found claim inputs: ' + claimInputs.length);
+            
+            claimSelects.forEach(function(select) {
+                select.addEventListener('change', function() {
+                    console.log('Claim number changed');
+                    isFormDirty = true;
+                });
+            });
+            
+            claimInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    console.log('Description changed');
+                    isFormDirty = true;
+                });
+                input.addEventListener('blur', function() {
+                    console.log('Description blur - marking dirty');
+                    isFormDirty = true;
+                });
+            });
         }
         
-        // Method 2: Look in parent window
-        if (!saveBtn) {
+        // Try to intercept parent page save in multiple ways
+        function initializeSaveInterceptor() {
+            console.log('=== Initializing save interceptor ===');
+            attachChangeListeners();
+            
+            // Method 1: Watch for visibility changes (page is about to unload/save)
+            document.addEventListener('visibilitychange', function() {
+                console.log('Visibility changed, visibility state: ' + document.visibilityState);
+                if (document.visibilityState === 'hidden' && isFormDirty) {
+                    console.log('Page may be saving - calling submitSelected');
+                    saveClaimsBeforeSave();
+                }
+            });
+            
+            // Method 2: Watch for beforeunload (page refresh/navigation)
+            window.addEventListener('beforeunload', function(e) {
+                console.log('beforeunload triggered, isFormDirty: ' + isFormDirty);
+                if (isFormDirty) {
+                    console.log('Saving claims before unload');
+                    // Try to save synchronously
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('POST', window.location.href, false); // synchronous
+                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    
+                    // Collect claim data
+                    var claimData = collectClaimData();
+                    console.log('Claim data to save: ' + claimData);
+                }
+            });
+            
+            // Method 3: Override form submit if parent tries to submit
             try {
-                if (window.parent && window.parent.document && window.parent !== window) {
-                    saveBtn = window.parent.document.querySelector('input[name="save"]');
-                    if (saveBtn) console.log('Found save button in window.parent');
+                var parentForm = window.top.document.querySelector('form');
+                if (parentForm) {
+                    var originalSubmit = parentForm.submit;
+                    parentForm.submit = function() {
+                        console.log('Parent form submit intercepted');
+                        if (isFormDirty) {
+                            console.log('Calling saveClaimsBeforeSave before parent submit');
+                            saveClaimsBeforeSave();
+                        }
+                        return originalSubmit.apply(parentForm, arguments);
+                    };
+                    console.log('Parent form submit intercepted successfully');
                 }
             } catch (e) {
-                console.log('Cannot access window.parent:', e);
+                console.log('Could not intercept parent form: ' + e.message);
             }
         }
         
-        // Method 3: Look in current window
-        if (!saveBtn) {
-            saveBtn = document.querySelector('input[name="save"]');
-            if (saveBtn) console.log('Found save button in current window');
+        function collectClaimData() {
+            var claimData = [];
+            var claimSelects = document.querySelectorAll('[id*="claimNumber"]');
+            var claimInputs = document.querySelectorAll('[id*="description"]');
+            
+            for (var i = 0; i < claimSelects.length; i++) {
+                var claimNum = claimSelects[i].value || '';
+                var desc = claimInputs[i] ? claimInputs[i].value || '' : '';
+                if (claimNum) {
+                    claimData.push(claimNum + '|' + desc);
+                }
+            }
+            return claimData.join('~');
         }
         
-        if (saveBtn) {
-            console.log('Save button found, attaching handler');
-            
-            // Store original onclick if it exists
-            var originalOnclick = saveBtn.onclick;
-            
-            // Replace with our handler
-            saveBtn.onclick = function(e) {
-                console.log('Save button clicked - capturing claim data');
-                captureClaimData();
-                
-                // Call original handler if it existed
-                if (originalOnclick) {
-                    return originalOnclick.call(this, e);
-                }
-                return true;
-            };
-            
-            console.log('Save button hook installed successfully');
+        // Initialize on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeSaveInterceptor);
         } else {
-            console.warn('Save button not found - will retry');
-            // Retry after a short delay
-            setTimeout(hookSaveButton, 500);
+            initializeSaveInterceptor();
         }
-    }
-    
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', hookSaveButton);
-    } else {
-        hookSaveButton();
-    }
-    
-    // Also try after window load as a fallback
-    window.addEventListener('load', function() {
-        setTimeout(hookSaveButton, 100);
-    });
     </script>
     
     <apex:form id="claimForm">
-        <apex:inputHidden id="claimsDataField" value="{!claimsDataJson}"/>
-        <apex:commandButton id="processClaimData" action="{!submitSelected}" style="display:none;" reRender="main" status="actStatus"/>
+        <!-- Hidden button that will be triggered to save claims -->
+        <apex:actionFunction name="saveClaimsBeforeSave" action="{!submitSelected}" rerender="main" status="actStatus" oncomplete="onClaimsSaveComplete()" />
+        
+        <script>
+            function onClaimsSaveComplete() {
+                console.log('=== Claim save completed ===');
+                isFormDirty = false;
+                
+                // After saving claims, trigger parent page save
+                try {
+                    var saveButton = window.top.document.querySelector('[data-action="save"]') ||
+                                    window.top.document.querySelector('button[title*="Save"]') ||
+                                    window.top.document.querySelector('button[name*="save"]');
+                    
+                    if (saveButton) {
+                        console.log('Found and clicking save button');
+                        setTimeout(function() {
+                            saveButton.click();
+                        }, 500);
+                    } else {
+                        console.log('Could not find save button');
+                    }
+                } catch (e) {
+                    console.log('Error clicking save button: ' + e.message);
+                }
+            }
+        </script>
         
         <div style="margin-left: 50px; margin-top: 10px;">
             <apex:actionStatus id="actStatus">
