@@ -241,7 +241,7 @@ public class FilterConverter {
     /**
      * @description Sanitizes values to prevent SOQL injection and applies proper quoting
      */
-    private static String sanitizeAndQuoteValue(String value) {
+    public static String sanitizeAndQuoteValue(String value) {
         if (String.isBlank(value)) {
             return 'null';
         }
@@ -288,7 +288,8 @@ public class FilterConverter {
         if (String.isBlank(value) || value.length() < 10) {
             return false;
         }
-        return value.matches('^\\d{4}-\\d{2}-\\d{2}$');
+        Pattern datePattern = Pattern.compile('^\\d{4}-\\d{2}-\\d{2}$');
+        return datePattern.matcher(value).matches();
     }
     
     /**

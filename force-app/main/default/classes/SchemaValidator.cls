@@ -96,7 +96,7 @@ public class SchemaValidator {
         fieldDef.displayType = String.valueOf(fieldDescribe.getType());
         fieldDef.isAccessible = fieldDescribe.isAccessible();
         fieldDef.isFilterable = fieldDescribe.isFilterable();
-        fieldDef.isQueryable = fieldDescribe.isQueryable();
+        fieldDef.isQueryable = fieldDescribe.isAccessible();
         
         // Get relationship name if this is a lookup/master-detail
         if (fieldDescribe.getType() == Schema.DisplayType.REFERENCE) {

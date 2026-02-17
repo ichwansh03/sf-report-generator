@@ -23,39 +23,40 @@ public class ReportToSoqlException extends Exception {
     public ExceptionType exceptionType { get; private set; }
     public String context { get; private set; }
     public String reportId { get; private set; }
+    private String errorMessage { get; set; }
     
     /**
      * @description Constructor with exception type and message
      */
     public ReportToSoqlException(ExceptionType type, String message) {
-        super(message);
         this.exceptionType = type;
+        this.errorMessage = message;
     }
     
     /**
      * @description Constructor with exception type, message, and context
      */
     public ReportToSoqlException(ExceptionType type, String message, String context) {
-        super(message);
         this.exceptionType = type;
         this.context = context;
+        this.errorMessage = message;
     }
     
     /**
      * @description Constructor with exception type, message, context, and reportId
      */
     public ReportToSoqlException(ExceptionType type, String message, String context, String reportId) {
-        super(message);
         this.exceptionType = type;
         this.context = context;
         this.reportId = reportId;
+        this.errorMessage = message;
     }
     
     /**
      * @description Gets the full error message with context
      */
     public String getFullErrorMessage() {
-        String msg = 'ReportToSoql Error [' + exceptionType + ']: ' + getMessage();
+        String msg = 'ReportToSoql Error [' + exceptionType + ']: ' + errorMessage;
         if (String.isNotBlank(context)) {
             msg += ' | Context: ' + context;
         }
@@ -63,5 +64,12 @@ public class ReportToSoqlException extends Exception {
             msg += ' | ReportId: ' + reportId;
         }
         return msg;
+    }
+    
+    /**
+     * @description Override getMessage to return the stored error message
+     */
+    public override String getMessage() {
+        return errorMessage;
     }
 }
