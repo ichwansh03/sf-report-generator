@@ -1,6 +1,0 @@
-<apex:page id="pageId" standardController="Agent_KPI__c" sidebar="false" showChat="false" showHeader="false">
-    <table>
-        <tr><td><b>Final Score </b></td><td>:</td><td><font size="6">{!Agent_KPI__c.Final_Score__c}</font></td></tr>
-        <tr><td><b>Final Rating </b></td><td>:</td><td><font size="6">{!Agent_KPI__c.Final_Rating_Desc__c} ( {!Agent_KPI__c.Final_Rating__c} )</font></td></tr>
-    </table>
-</apex:page>

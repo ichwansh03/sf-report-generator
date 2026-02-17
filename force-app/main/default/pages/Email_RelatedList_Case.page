@@ -1,5 +1,0 @@
-<apex:page standardController="Case" extensions="Email_CustomPage_ctrl">
-    <apex:form id="formId">
-        <c:Email_RelatedList parentId="{!id}" />
-    </apex:form>
-</apex:page>

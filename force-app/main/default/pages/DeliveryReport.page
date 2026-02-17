@@ -1,3 +1,0 @@
-<apex:page controller="DeliveryReport" action="{!executemethod}" cache="false" sidebar="false" showheader="false">
-    {!response}
-</apex:page>

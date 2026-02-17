@@ -1,3 +1,0 @@
-<apex:page controller="Email_CustomPage_ctrl" sidebar="false" showHeader="false">
-    <apex:outputText escape="false" value="{!Body_HTML}"/>
-</apex:page>

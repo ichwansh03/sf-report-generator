@@ -1,3 +1,0 @@
-<apex:page standardController="Email_SMS_Log__c" sidebar="false">
-  <apex:outputText value="{!Email_SMS_Log__c.Email_Text__c}" escape="false" />
-</apex:page>
