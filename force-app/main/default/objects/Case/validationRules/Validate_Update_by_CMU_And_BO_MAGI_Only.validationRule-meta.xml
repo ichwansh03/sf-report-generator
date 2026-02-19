@@ -21,5 +21,5 @@ Entity__c &lt;&gt; &apos;AMFS&apos;
 $Profile.Name &lt;&gt; &apos;CMU-ALI&apos;, $Profile.Name &lt;&gt; &apos;CMU-AFI&apos;, $Profile.Name &lt;&gt; &apos;CMU A-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU B-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU C-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU D-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU-MAGI&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-AFI&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-AMFS&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-MAGI&apos;, $Profile.Name &lt;&gt; &apos;Other Dept MAGI&apos;, 
 $Profile.Name &lt;&gt; &apos;Inbound Agent-MAGI&apos;, $Profile.Name &lt;&gt; &apos;Inbound Agent B-MAGI&apos;, $Profile.Name &lt;&gt; &apos;Outbound Agent MAGI&apos;, $Profile.Name &lt;&gt; &apos;Email Agent-MAGI&apos;, $Profile.Name &lt;&gt; &apos;Walkin Agent-MAGI&apos;, 
 OR( ISCHANGED( Progress_Action__c )))</errorConditionFormula>
-    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU #2&lt;&lt;&lt;</errorMessage>
+    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU 2&lt;&lt;&lt;</errorMessage>
 </ValidationRule>

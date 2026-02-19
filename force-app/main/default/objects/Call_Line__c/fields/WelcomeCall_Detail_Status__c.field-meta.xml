@@ -24,7 +24,7 @@
             </value>
             <value>
                 <fullName>Customer wants to meet FA</fullName>
-                <color>#66E9BD</color>
+                <color>66E9BD</color>
                 <default>false</default>
                 <label>Customer wants to meet FA</label>
             </value>
@@ -40,7 +40,7 @@
             </value>
             <value>
                 <fullName>FA Service</fullName>
-                <color>#FF0000</color>
+                <color>FF0000</color>
                 <default>false</default>
                 <label>FA Service</label>
             </value>
@@ -56,7 +56,7 @@
             </value>
             <value>
                 <fullName>Nasabah butuh dana</fullName>
-                <color>#FF9900</color>
+                <color>FF9900</color>
                 <default>false</default>
                 <label>Nasabah butuh dana</label>
             </value>
@@ -87,7 +87,7 @@
             </value>
             <value>
                 <fullName>Others</fullName>
-                <color>#FFFF66</color>
+                <color>FFFF66</color>
                 <default>false</default>
                 <label>Others</label>
             </value>
@@ -98,7 +98,7 @@
             </value>
             <value>
                 <fullName>Polis tidak sesuai</fullName>
-                <color>#0B6FCE</color>
+                <color>0B6FCE</color>
                 <default>false</default>
                 <label>Polis tidak sesuai</label>
             </value>
@@ -109,7 +109,7 @@
             </value>
             <value>
                 <fullName>Produk Tidak Sesuai</fullName>
-                <color>#33CC00</color>
+                <color>33CC00</color>
                 <default>false</default>
                 <label>Produk Tidak Sesuai</label>
             </value>
@@ -120,7 +120,7 @@
             </value>
             <value>
                 <fullName>Sedang proses pembatalan polis di POS</fullName>
-                <color>#A845DC</color>
+                <color>A845DC</color>
                 <default>false</default>
                 <label>Sedang proses pembatalan polis di POS</label>
             </value>

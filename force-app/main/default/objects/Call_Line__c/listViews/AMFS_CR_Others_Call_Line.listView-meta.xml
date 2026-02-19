@@ -9,12 +9,12 @@
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#241014-041845</value>
+        <value>Gen241014-041845</value>
     </filters>
     <filters>
         <field>Campaign_Name__c</field>
         <operation>equals</operation>
-        <value>Collection-Others - Gagal Debet#20241014</value>
+        <value>Collection-Others - Gagal Debet20241014</value>
     </filters>
     <filters>
         <field>CREATED_DATE</field>

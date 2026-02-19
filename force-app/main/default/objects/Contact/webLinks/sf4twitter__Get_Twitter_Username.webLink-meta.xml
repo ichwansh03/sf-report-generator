@@ -9,7 +9,7 @@ twitter user name.</description>
     <masterLabel>Get Twitter Username</masterLabel>
     <openType>onClickJavaScript</openType>
     <protected>false</protected>
-    <url>var results = (new RegExp(&quot;[\\?&amp;]isdtp=([^&amp;#]*)&quot;)).exec(window.location.href);
+    <url>var results = (new RegExp(&quot;[\\?&amp;]isdtp=([^&amp;]*)&quot;)).exec(window.location.href);
 if ( results == null ){
 window.location = &apos;/apex/sf4twitter__TwitterGetUsername?cid={!Contact.Id}&amp;retURL=&apos; + encodeURIComponent(window.location);
 }else{

@@ -21,5 +21,5 @@ Entity__c &lt;&gt; &apos;AMFS&apos;
 
 $Profile.Name &lt;&gt; &apos;CMU-ALI&apos;, $Profile.Name &lt;&gt; &apos;CMU-AFI&apos;, $Profile.Name &lt;&gt; &apos;CMU A-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU B-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU C-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU D-AMFS&apos;, $Profile.Name &lt;&gt; &apos;CMU-MAGI&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-AFI&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-AMFS&apos;, $Profile.Name &lt;&gt; &apos;SPV CMU-MAGI&apos;, $Profile.Name &lt;&gt; &apos;Other Dept AFI&apos;, $Profile.Name &lt;&gt; &apos;Other Dept AMFS&apos;, $Profile.Name &lt;&gt; &apos;Other Dept MAGI&apos;, 
 OR( ISCHANGED( Corrective_Action__c )))</errorConditionFormula>
-    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU #1&lt;&lt;&lt;</errorMessage>
+    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU 1&lt;&lt;&lt;</errorMessage>
 </ValidationRule>

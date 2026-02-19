@@ -19,12 +19,12 @@
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#230807-035437</value>
+        <value>Gen230807-035437</value>
     </filters>
     <filters>
         <field>Campaign_Name__c</field>
         <operation>equals</operation>
-        <value>Collection-TRO Project#202387</value>
+        <value>Collection-TRO Project202387</value>
     </filters>
     <label>Review Data Salah-TRO</label>
     <language>en_US</language>

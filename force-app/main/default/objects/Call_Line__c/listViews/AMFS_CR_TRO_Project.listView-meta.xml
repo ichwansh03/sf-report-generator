@@ -23,7 +23,7 @@
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#221031-031800</value>
+        <value>Gen221031-031800</value>
     </filters>
     <label>AMFS CR - TRO Project</label>
     <language>en_US</language>

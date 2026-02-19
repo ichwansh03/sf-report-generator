@@ -1,15 +1,15 @@
-# Report to SOQL Converter - Setup & Configuration Guide
+ Report to SOQL Converter - Setup & Configuration Guide
 
-## Prerequisites
+ Prerequisites
 
 - Salesforce org with API enabled
 - User must have "API Enabled" user permission
 - Access to Setup for creating Named Credentials
 - Analytics API access enabled for your org
 
-## Step 1: Create Named Credential
+ Step 1: Create Named Credential
 
-### Via Salesforce Setup UI
+ Via Salesforce Setup UI
 
 1. **Navigate to Named Credentials:**
    - Go to Setup → Apps → App Manager
@@ -37,7 +37,7 @@
    - Click to authorize the connection with an admin account
    - Confirm the OAuth flow
 
-### Via Metadata API (SFDX)
+ Via Metadata API (SFDX)
 
 Create a `NamedCredential` metadata file:
 
@@ -71,19 +71,19 @@ Create a `NamedCredential` metadata file:
 </NamedCredential>
 ```
 
-## Step 2: Deploy Apex Classes
+ Step 2: Deploy Apex Classes
 
-### Using SFDX
+ Using SFDX
 
 ```bash
-# Deploy all Report to SOQL classes
+ Deploy all Report to SOQL classes
 sfdx force:source:deploy -p force-app/main/default/classes/ReportToSoql*.cls
 
-# Or deploy entire package
+ Or deploy entire package
 sfdx force:source:deploy
 ```
 
-### Using Metadata API (ANT)
+ Using Metadata API (ANT)
 
 Add to your `build.xml`:
 
@@ -98,16 +98,16 @@ Add to your `build.xml`:
 <members>ReportToSoqlConverter</members>
 ```
 
-## Step 3: Verify Installation
+ Step 3: Verify Installation
 
-### Run Validation Tests
+ Run Validation Tests
 
 ```bash
-# Run all Report to SOQL tests
+ Run all Report to SOQL tests
 sfdx force:apex:test:run -n "*Report*" --loglevel debug
 ```
 
-### Test Named Credential Connection
+ Test Named Credential Connection
 
 Create a quick test:
 
@@ -137,19 +137,19 @@ public class NamedCredentialTest {
 }
 ```
 
-## Step 4: Grant User Permissions
+ Step 4: Grant User Permissions
 
-### Required OLS (Object Level Security)
+ Required OLS (Object Level Security)
 Users need READ access to:
 - Reports (to read report metadata)
 - Base objects of the reports being converted (Account, Contact, etc.)
 
-### Required FLS (Field Level Security)
+ Required FLS (Field Level Security)
 Users need READ access to:
 - All fields referenced in report filters
 - All fields in report columns
 
-### Grant Permissions via Profile or Permission Set
+ Grant Permissions via Profile or Permission Set
 
 1. **Via Permission Set (Recommended):**
    - Create new Permission Set
@@ -162,7 +162,7 @@ Users need READ access to:
    - Enable "View Setup and Configuration"
    - Set object and field permissions
 
-## Example: Minimal Permission Set
+ Example: Minimal Permission Set
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -189,9 +189,9 @@ Users need READ access to:
 </PermissionSet>
 ```
 
-## Step 5: Basic Usage
+ Step 5: Basic Usage
 
-### In Apex Code
+ In Apex Code
 
 ```apex
 public class ReportQueryExample {
@@ -226,7 +226,7 @@ public class ReportQueryExample {
 }
 ```
 
-### In Flow
+ In Flow
 
 Create a Flow with Apex Action:
 
@@ -237,7 +237,7 @@ Create a Flow with Apex Action:
 4. Record Query: Execute SOQL query
 ```
 
-### In REST API
+ In REST API
 
 Create REST endpoint:
 
@@ -272,16 +272,16 @@ global class ReportConvertService {
 }
 ```
 
-## Troubleshooting Setup Issues
+ Troubleshooting Setup Issues
 
-### Issue: "Named Credential Not Found"
+ Issue: "Named Credential Not Found"
 
 **Solution:**
 1. Verify the Named Credential name is exactly: `AnalyticsAPI`
 2. Check the URL matches your Salesforce instance
 3. Ensure you're in the right sandbox/production org
 
-### Issue: "401 Unauthorized"
+ Issue: "401 Unauthorized"
 
 **Solution:**
 1. Re-authorize the Named Credential:
@@ -291,7 +291,7 @@ global class ReportConvertService {
    - Complete OAuth flow
 2. Verify the user account used for authorization has API access
 
-### Issue: "Insufficient Permissions"
+ Issue: "Insufficient Permissions"
 
 **Solution:**
 1. Check user has "API Enabled" permission in their profile
@@ -299,16 +299,16 @@ global class ReportConvertService {
 3. Check FLS for all report columns and filter fields
 4. Verify OLS for base object
 
-### Issue: "Report Not Found"
+ Issue: "Report Not Found"
 
 **Solution:**
 1. Verify the report ID is correct and exists
 2. Confirm the user running the code can access the report
 3. Check the report hasn't been deleted or archived
 
-## Performance Optimization
+ Performance Optimization
 
-### Cache Report Metadata
+ Cache Report Metadata
 
 For frequently used reports, implement caching:
 
@@ -332,7 +332,7 @@ public class CachedReportConverter {
 }
 ```
 
-### Use Batch Processing
+ Use Batch Processing
 
 For large result sets:
 
@@ -358,9 +358,9 @@ public class ReportQueryBatch implements Database.Batchable<SObject> {
 }
 ```
 
-## Monitoring & Logging
+ Monitoring & Logging
 
-### Enable Debug Logging
+ Enable Debug Logging
 
 ```apex
 // In your code
@@ -371,7 +371,7 @@ String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
 System.debug(LoggingLevel.DEBUG, 'Generated SOQL: ' + soqlQuery);
 ```
 
-### Monitor Security Events
+ Monitor Security Events
 
 Check SecurityEnforcer logs in Debug Logs:
 
@@ -382,7 +382,7 @@ Details: ReportId: 00O1X000000IZkUAW | Duration: 245ms |
 User: 005xx000001SZE
 ```
 
-## Production Deployment Checklist
+ Production Deployment Checklist
 
 - [ ] Named Credential created and authorized
 - [ ] All Apex classes deployed
@@ -396,7 +396,7 @@ User: 005xx000001SZE
 - [ ] Documentation provided to end users
 - [ ] Monitoring established for failures
 
-## Support Resources
+ Support Resources
 
 - **Salesforce Analytics API Docs:** [Link](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/)
 - **Named Credentials:** [Setup Guide](https://help.salesforce.com/s/articleView?id=sf.named_credentials_create.htm)

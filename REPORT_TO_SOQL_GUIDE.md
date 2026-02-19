@@ -1,10 +1,10 @@
-# Report to SOQL Converter - Production-Ready Service
+ Report to SOQL Converter - Production-Ready Service
 
-## Overview
+ Overview
 
 The **ReportToSoqlConverter** is a production-ready Apex service that dynamically generates valid SOQL queries from Salesforce Reports using the Analytics REST API. It provides secure, validated conversion with comprehensive error handling and security enforcement.
 
-## Architecture
+ Architecture
 
 The solution follows clean architecture principles with clear separation of concerns:
 
@@ -18,9 +18,9 @@ ReportToSoqlConverter (Main Service)
 └── SoqlQueryBuilder (Query Construction)
 ```
 
-## Components
+ Components
 
-### 1. ReportToSoqlException
+ 1. ReportToSoqlException
 Custom exception class providing categorized error handling with detailed context.
 
 **Exception Types:**
@@ -35,7 +35,7 @@ Custom exception class providing categorized error handling with detailed contex
 - `SOQL_GENERATION_ERROR` - Query generation failures
 - `INSUFFICIENT_PERMISSIONS` - FLS/OLS violations
 
-### 2. ReportApiClient
+ 2. ReportApiClient
 Handles authenticated HTTP callouts to the Salesforce Analytics REST API.
 
 **Features:**
@@ -56,7 +56,7 @@ Type: OAuth 2.0
 /services/data/v62.0/analytics/reports/{REPORT_ID}?includeDetails=true
 ```
 
-### 3. ReportMetadataParser
+ 3. ReportMetadataParser
 Parses JSON response and extracts relevant report metadata.
 
 **Extracted Data:**
@@ -73,7 +73,7 @@ Parses JSON response and extracts relevant report metadata.
   - MatrixReport
   - BucketFieldReport
 
-### 4. FilterConverter
+ 4. FilterConverter
 Transforms report filters to SOQL WHERE clause conditions.
 
 **Operator Mapping:**
@@ -109,7 +109,7 @@ Transforms report filters to SOQL WHERE clause conditions.
   - String injection attempts in filter values
   - Escapes single quotes in string values
 
-### 5. SchemaValidator
+ 5. SchemaValidator
 Validates fields, objects, and relationships using Schema.DescribeFResult.
 
 **Validation Checks:**
@@ -126,7 +126,7 @@ Validates fields, objects, and relationships using Schema.DescribeFResult.
 - Relationship fields (Account.Owner)
 - Multi-level relationships (Account.Owner.Manager)
 
-### 6. SecurityEnforcer
+ 6. SecurityEnforcer
 Enforces object-level access, field-level security, and sharing rules.
 
 **`with sharing` Declaration:**
@@ -143,7 +143,7 @@ Respects organization's sharing rules through the `with sharing` keyword.
 - Records user ID and timestamp
 - Categorizes events as successes or failures
 
-### 7. SoqlQueryBuilder
+ 7. SoqlQueryBuilder
 Constructs complete SOQL query from parsed report metadata.
 
 **Query Components:**
@@ -163,9 +163,9 @@ WHERE [converted filters with boolean logic]
 - Falls back to simple AND if boolean filter is malformed
 - Includes ID field in SELECT if not specified
 
-## Usage
+ Usage
 
-### Basic Usage
+ Basic Usage
 ```apex
 try {
     String reportId = '00O1X000000IZkUAW';
@@ -178,7 +178,7 @@ try {
 }
 ```
 
-### Query Execution
+ Query Execution
 ```apex
 // Method 1: Direct query
 List<SObject> results = ReportToSoqlConverter.queryFromReport(reportId);
@@ -187,7 +187,7 @@ List<SObject> results = ReportToSoqlConverter.queryFromReport(reportId);
 Database.QueryLocator locator = ReportToSoqlConverter.queryLocatorFromReport(reportId, 10000);
 ```
 
-### Error Handling
+ Error Handling
 ```apex
 try {
     String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
@@ -208,9 +208,9 @@ try {
 }
 ```
 
-## Requirements
+ Requirements
 
-### Salesforce Configuration
+ Salesforce Configuration
 
 1. **Named Credential Setup:**
    - Create a Named Credential named `AnalyticsAPI`
@@ -232,7 +232,7 @@ try {
 5. **Object-Level Security:**
    - User must have read access to the base object
 
-### Limitations & Constraints
+ Limitations & Constraints
 
 **Supported Report Types:**
 - ✅ TabularReport (standard tabular reports)
@@ -250,7 +250,7 @@ try {
 - No grouping functions
 - No ranking functions
 
-## Testing
+ Testing
 
 All components include comprehensive unit tests:
 
@@ -265,21 +265,21 @@ All components include comprehensive unit tests:
 | SoqlQueryBuilder | SoqlQueryBuilder_Test | Query structure & logic |
 | ReportToSoqlConverter | ReportToSoqlConverter_Test | Integration testing |
 
-### Running Tests
+ Running Tests
 ```bash
-# Run all tests for this feature
+ Run all tests for this feature
 sfdx force:apex:test:run -n "*Report*"
 
-# Run specific test class
+ Run specific test class
 sfdx force:apex:test:run -n ReportToSoqlConverter_Test
 
-# With code coverage reporting
+ With code coverage reporting
 sfdx force:apex:test:run -n "*Report*" --codecoverage --resultformat json
 ```
 
-## Example Implementation
+ Example Implementation
 
-### Scenario: Convert Account Report to SOQL
+ Scenario: Convert Account Report to SOQL
 
 **Report Setup:**
 - Report Name: "Active Accounts"
@@ -308,7 +308,7 @@ try {
 }
 ```
 
-## Performance Considerations
+ Performance Considerations
 
 1. **API Callout Time:**
    - Typically 200-500ms per report fetch
@@ -325,7 +325,7 @@ try {
    - Query execution counts against SOQL governor limit
    - Schema.getGlobalDescribe() cached at each test method execution
 
-## Security Best Practices
+ Security Best Practices
 
 1. **Always Use Named Credential:**
    - Never hardcode authentication in code
@@ -348,9 +348,9 @@ try {
    - String values are escaped automatically
    - Validates against suspicious SQL keywords
 
-## Troubleshooting
+ Troubleshooting
 
-### Common Issues
+ Common Issues
 
 **401 Unauthorized Error:**
 - Verify Named Credential is configured correctly
@@ -377,7 +377,7 @@ try {
 - Confirm OLS/FLS settings allow the user
 - Check sharing rules for the base object
 
-## Future Enhancements
+ Future Enhancements
 
 Potential improvements for future versions:
 
@@ -399,7 +399,7 @@ Potential improvements for future versions:
    - Custom Salesforce functions
    - Complex formula field conversion
 
-## Support & Maintenance
+ Support & Maintenance
 
 For issues, questions, or enhancement requests:
 1. Review the test classes for usage examples

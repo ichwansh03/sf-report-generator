@@ -44,5 +44,5 @@ ISCHANGED( PIC_Surveyor__c ),
 ISCHANGED( COB__c ), 
 ISCHANGED( Received_Party__c ), 
 ISCHANGED( Lampiran__c )))</errorConditionFormula>
-    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU #3&lt;&lt;&lt;</errorMessage>
+    <errorMessage>&gt;&gt;&gt;You cannot change the fields which should be filled by CMU 3&lt;&lt;&lt;</errorMessage>
 </ValidationRule>

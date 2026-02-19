@@ -1,15 +1,15 @@
-# Report to SOQL Converter - Quick Reference Guide
+ Report to SOQL Converter - Quick Reference Guide
 
-## Quick Start
+ Quick Start
 
-### Basic Usage (3 lines)
+ Basic Usage (3 lines)
 ```apex
 String reportId = '00O1X000000IZkUAW';
 String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
 List<SObject> results = Database.query(soqlQuery);
 ```
 
-### With Error Handling
+ With Error Handling
 ```apex
 try {
     String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
@@ -19,21 +19,21 @@ try {
 }
 ```
 
-## Common Use Cases
+ Common Use Cases
 
-### 1. Convert Report to SOQL Query
+ 1. Convert Report to SOQL Query
 ```apex
 String reportId = '00O1X000000IZkUAW';
 String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
 // soqlQuery: "SELECT Id, Name, Phone FROM Account WHERE Industry = 'Technology' AND BillingState = 'CA'"
 ```
 
-### 2. Execute Report as Direct Query
+ 2. Execute Report as Direct Query
 ```apex
 List<SObject> results = ReportToSoqlConverter.queryFromReport('00O1X000000IZkUAW');
 ```
 
-### 3. Use QueryLocator for Batch Processing
+ 3. Use QueryLocator for Batch Processing
 ```apex
 Database.QueryLocator locator = ReportToSoqlConverter.queryLocatorFromReport(reportId, 10000);
 
@@ -41,14 +41,14 @@ Database.QueryLocator locator = ReportToSoqlConverter.queryLocatorFromReport(rep
 Database.executeBatch(new ReportQueryBatch(reportId));
 ```
 
-### 4. Get SOQL Query for Inspection
+ 4. Get SOQL Query for Inspection
 ```apex
 String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
 // Can log, validate, or modify before execution
 System.debug('Query: ' + soqlQuery);
 ```
 
-### 5. Handle Different Error Types
+ 5. Handle Different Error Types
 ```apex
 try {
     String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
@@ -73,16 +73,16 @@ try {
 }
 ```
 
-## Frequently Asked Questions
+ Frequently Asked Questions
 
-### Q: Which report types are supported?
+ Q: Which report types are supported?
 **A:** Only **TabularReport** (standard tabular reports). Not supported:
 - JoinedReport (multi-object)
 - SummaryReport (grouped data)
 - MatrixReport (pivot tables)
 - BucketFieldReport (bucketed columns)
 
-### Q: Can I modify the generated SOQL query?
+ Q: Can I modify the generated SOQL query?
 **A:** Yes! You can capture the SOQL string and modify it:
 ```apex
 String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
@@ -91,7 +91,7 @@ soqlQuery = soqlQuery.replace('LIMIT 10000', 'LIMIT 500');
 List<SObject> results = Database.query(soqlQuery);
 ```
 
-### Q: How do I handle large result sets?
+ Q: How do I handle large result sets?
 **A:** Use QueryLocator with batch processing:
 ```apex
 Database.executeBatch(
@@ -100,10 +100,10 @@ Database.executeBatch(
 );
 ```
 
-### Q: What about report filters with special characters?
+ Q: What about report filters with special characters?
 **A:** The service automatically escapes single quotes in filter values.
 
-### Q: Can I cache the generated SOQL?
+ Q: Can I cache the generated SOQL?
 **A:** Yes. The SOQL output is deterministic for the same report:
 ```apex
 private static Map<String, String> cache = new Map<String, String>();
@@ -116,26 +116,26 @@ public static String generateCached(String reportId) {
 }
 ```
 
-### Q: How do I prevent SOQL injection?
+ Q: How do I prevent SOQL injection?
 **A:** The service handles this automatically. All filter values are:
 - Validated against keyword patterns (SELECT, UNION, etc.)
 - String values are escaped and quoted
 - Numeric and date values are validated
 
-### Q: Can I use relative date filters?
+ Q: Can I use relative date filters?
 **A:** Yes! Supported formats:
 - `LAST_N_DAYS:30`
 - `THIS_MONTH`, `THIS_QUARTER`, `THIS_YEAR`
 - `LAST_MONTH`, `LAST_QUARTER`, `LAST_YEAR`
 - `FISCAL_YEAR:2024`
 
-### Q: What's the performance impact?
+ Q: What's the performance impact?
 **A:** Minimal.
 - API call: 200-500ms
 - SOQL generation: <50ms
 - Query execution: depends on data volume
 
-## Operator Reference
+ Operator Reference
 
 | Report Operator | SOQL Equivalent | Example |
 |---|---|---|
@@ -149,7 +149,7 @@ public static String generateCached(String reportId) {
 | includes | INCLUDES | Skills INCLUDES ('Apex', 'Visualforce') |
 | excludes | EXCLUDES | Status EXCLUDES ('Closed', 'Won') |
 
-## Common Error Messages
+ Common Error Messages
 
 | Error | Cause | Solution |
 |---|---|---|
@@ -160,9 +160,9 @@ public static String generateCached(String reportId) {
 | `Unsupported report type` | Not a tabular report | Use simple tabular report |
 | `Field not found` | Field doesn't exist on object | Verify field API name |
 
-## Integration Examples
+ Integration Examples
 
-### Lightning Web Component
+ Lightning Web Component
 ```javascript
 import { LightningElement, wire } from 'lwc';
 import generateSoqlFromReport from '@salesforce/apex/ReportToSoqlConverter.generateSoqlFromReport';
@@ -183,13 +183,13 @@ export default class ReportConverter extends LightningElement {
 }
 ```
 
-### Flow Integration
+ Flow Integration
 1. Create Flow variable of type `Text` named `reportId`
 2. Add `Action` element calling `ReportToSoqlConverter` Apex method
 3. Map `reportId` input and capture output to new variable
 4. Use SOQL query in subsequent Record Query action
 
-### Process Builder / Automated Actions
+ Process Builder / Automated Actions
 ```apex
 // Triggered by process builder
 public class ReportConvertAction {
@@ -211,7 +211,7 @@ public class ReportConvertAction {
 }
 ```
 
-### Scheduled Batch Job
+ Scheduled Batch Job
 ```apex
 public class ScheduledReportQuery implements Schedulable {
     public void execute(SchedulableContext context) {
@@ -226,9 +226,9 @@ public class ScheduledReportQuery implements Schedulable {
 // Frequency: Daily at 2 AM
 ```
 
-## Best Practices
+ Best Practices
 
-### ✅ DO
+ ✅ DO
 - Use try-catch blocks around conversions
 - Validate report ID before conversion
 - Cache SOQL queries for repeated use
@@ -237,7 +237,7 @@ public class ScheduledReportQuery implements Schedulable {
 - Grant minimal required permissions
 - Test with real report data
 
-### ❌ DON'T
+ ❌ DON'T
 - Hardcode report IDs in production
 - Modify generated SOQL without validation
 - Use summary/matrix reports
@@ -246,7 +246,7 @@ public class ScheduledReportQuery implements Schedulable {
 - Execute unlimited queries
 - Assume all report types work
 
-## Limits & Constraints
+ Limits & Constraints
 
 | Limit | Value | Note |
 |---|---|---|
@@ -256,14 +256,14 @@ public class ScheduledReportQuery implements Schedulable {
 | Query Result Rows | 50,000 default | Use LIMIT clause |
 | API Response Time | 30 seconds | Timeout configured |
 
-## Additional Resources
+ Additional Resources
 
 - **Full Documentation:** See `REPORT_TO_SOQL_GUIDE.md`
 - **Setup Guide:** See `SETUP_AND_CONFIGURATION.md`
 - **Test Examples:** See `_Test.cls` files for code examples
 - **Analytics API:** https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/
 
-## Version Information
+ Version Information
 
 - **API Version:** 62.0
 - **Release Date:** February 2026

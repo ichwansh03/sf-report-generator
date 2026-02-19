@@ -20,12 +20,12 @@
     <filters>
         <field>Campaign_Name__c</field>
         <operation>equals</operation>
-        <value>Collection-Redemption TM#20241031</value>
+        <value>Collection-Redemption TM20241031</value>
     </filters>
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#241031-042151</value>
+        <value>Gen241031-042151</value>
     </filters>
     <filters>
         <field>Batch_No__c</field>

@@ -14,7 +14,7 @@
             <sorted>true</sorted>
             <value>
                 <fullName>Ahli waris tidak sesuai keinginan nasabah</fullName>
-                <color>#33FF33</color>
+                <color>33FF33</color>
                 <default>false</default>
                 <label>Ahli waris tidak sesuai keinginan nasabah</label>
             </value>
@@ -30,7 +30,7 @@
             </value>
             <value>
                 <fullName>Data polis tidak sesuai keinginan nasabah</fullName>
-                <color>#000099</color>
+                <color>000099</color>
                 <default>false</default>
                 <label>Data polis tidak sesuai keinginan nasabah</label>
             </value>
@@ -46,7 +46,7 @@
             </value>
             <value>
                 <fullName>Informasi tentang investasi yang fluktuatif dan tidak dijamin</fullName>
-                <color>#33CC00</color>
+                <color>33CC00</color>
                 <default>false</default>
                 <label>Informasi tentang investasi yang fluktuatif dan tidak dijamin</label>
             </value>
@@ -57,7 +57,7 @@
             </value>
             <value>
                 <fullName>Klausal kegagalan pendebitan</fullName>
-                <color>#A845DC</color>
+                <color>A845DC</color>
                 <default>false</default>
                 <label>Klausal kegagalan pendebitan</label>
             </value>
@@ -68,7 +68,7 @@
             </value>
             <value>
                 <fullName>Konfirmasi mengenai penalty (MEP)</fullName>
-                <color>#FF9900</color>
+                <color>FF9900</color>
                 <default>false</default>
                 <label>Konfirmasi mengenai penalty (MEP)</label>
             </value>
@@ -84,25 +84,25 @@
             </value>
             <value>
                 <fullName>Memastikan nasabah membaca kembali aplikasi sebelum di tandatangani</fullName>
-                <color>#FF0000</color>
+                <color>FF0000</color>
                 <default>false</default>
                 <label>Memastikan nasabah membaca kembali aplikasi sebelum di tandatangani</label>
             </value>
             <value>
                 <fullName>Nasabah hanya ingin sekali bayar</fullName>
-                <color>#33FFFF</color>
+                <color>33FFFF</color>
                 <default>false</default>
                 <label>Nasabah hanya ingin sekali bayar</label>
             </value>
             <value>
                 <fullName>Nasabah ingin deposito / tabungan / hanya investasi</fullName>
-                <color>#F3D904</color>
+                <color>F3D904</color>
                 <default>false</default>
                 <label>Nasabah ingin deposito / tabungan / hanya investasi</label>
             </value>
             <value>
                 <fullName>Nasabah ingin produk lain</fullName>
-                <color>#A53711</color>
+                <color>A53711</color>
                 <default>false</default>
                 <label>Nasabah ingin produk lain</label>
             </value>
@@ -118,13 +118,13 @@
             </value>
             <value>
                 <fullName>Nominal premi dan cara bayar</fullName>
-                <color>#0B6FCE</color>
+                <color>0B6FCE</color>
                 <default>false</default>
                 <label>Nominal premi dan cara bayar</label>
             </value>
             <value>
                 <fullName>Others</fullName>
-                <color>#FF6666</color>
+                <color>FF6666</color>
                 <default>false</default>
                 <label>Others</label>
             </value>
@@ -145,25 +145,25 @@
             </value>
             <value>
                 <fullName>Tidak dijelaskan biaya asuransi</fullName>
-                <color>#666666</color>
+                <color>666666</color>
                 <default>false</default>
                 <label>Tidak dijelaskan biaya asuransi</label>
             </value>
             <value>
                 <fullName>Tidak dijelaskan fluktuasi nilai investasi</fullName>
-                <color>#CC33CC</color>
+                <color>CC33CC</color>
                 <default>false</default>
                 <label>Tidak dijelaskan fluktuasi nilai investasi</label>
             </value>
             <value>
                 <fullName>Tidak dijelaskan masa pembayaran premi</fullName>
-                <color>#F96FB7</color>
+                <color>F96FB7</color>
                 <default>false</default>
                 <label>Tidak dijelaskan masa pembayaran premi</label>
             </value>
             <value>
                 <fullName>Tidak dijelaskan tentang biaya penalty</fullName>
-                <color>#000000</color>
+                <color>000000</color>
                 <default>false</default>
                 <label>Tidak dijelaskan tentang biaya penalty</label>
             </value>

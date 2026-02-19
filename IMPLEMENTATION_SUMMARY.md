@@ -1,34 +1,34 @@
-# Report to SOQL Converter - Implementation Summary
+ Report to SOQL Converter - Implementation Summary
 
-## Project Overview
+ Project Overview
 
 A **production-ready Apex service** that dynamically converts Salesforce Reports to executable SOQL queries using the Analytics REST API. The solution implements enterprise-grade security, validation, and error handling with clean architecture principles.
 
-## What Has Been Delivered
+ What Has Been Delivered
 
-### Core Apex Classes (8 classes)
+ Core Apex Classes (8 classes)
 
-#### 1. **ReportToSoqlException.cls**
+ 1. **ReportToSoqlException.cls**
 - Custom exception class with categorized error types
 - Provides rich context: type, message, context, reportId
 - Method: `getFullErrorMessage()` for detailed error reporting
 - Exception Types: 10 different categories for precise error handling
 
-#### 2. **ReportApiClient.cls**
+ 2. **ReportApiClient.cls**
 - Handles authenticated HTTP callouts to Analytics REST API v62.0
 - Uses Named Credential for secure authentication
 - Auto-retry logic with exponential backoff for transient failures
 - 30-second timeout with configurable retry parameters
 - Comprehensive status code handling (401, 404, 5xx)
 
-#### 3. **ReportMetadataParser.cls**
+ 3. **ReportMetadataParser.cls**
 - Parses JSON responses from Analytics API
 - Validates report structure and type
 - Rejects unsupported report types (Joined, Summary, Matrix, Bucket)
 - Extracts: reportType, reportBooleanFilter, reportFilters, detailColumns, baseObject
 - Defaults for missing optional fields
 
-#### 4. **FilterConverter.cls**
+ 4. **FilterConverter.cls**
 - Maps report operators to SOQL operators (13 mappings)
 - Converts filter values with type handling:
   - Text fields with proper escaping
@@ -42,7 +42,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
   - Escapes single quotes
   - Validates filter values against suspicious patterns
 
-#### 5. **SchemaValidator.cls**
+ 5. **SchemaValidator.cls**
 - Validates objects and fields using Schema.DescribeSObjectResult
 - Checks object-level and field-level readability
 - Supports relationship traversal (Account.Owner.Email)
@@ -50,7 +50,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Multi-field validation with error collection
 - Direct and relationship field support
 
-#### 6. **SecurityEnforcer.cls**
+ 6. **SecurityEnforcer.cls**
 - `with sharing` declaration enforces org sharing rules
 - Object-level access validation
 - Field-level security (FLS) enforcement
@@ -58,7 +58,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Security event logging for audit trail
 - DML operation prevention
 
-#### 7. **SoqlQueryBuilder.cls**
+ 7. **SoqlQueryBuilder.cls**
 - Constructs complete SOQL queries from parsed metadata
 - SELECT clause: Validates and includes all available columns
 - FROM clause: Uses base object from report
@@ -66,7 +66,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Boolean filter logic: Handles parentheticals and AND/OR composition
 - Graceful degradation for invalid columns
 
-#### 8. **ReportToSoqlConverter.cls** (Main Service)
+ 8. **ReportToSoqlConverter.cls** (Main Service)
 - **Public API:** `generateSoqlFromReport(Id reportId)` → String
 - Utility methods:
   - `queryFromReport(Id reportId)` → List<SObject>
@@ -76,7 +76,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Duration tracking for performance monitoring
 - Security event logging
 
-### Test Classes (7 classes with comprehensive coverage)
+ Test Classes (7 classes with comprehensive coverage)
 
 1. **ReportToSoqlException_Test** - Exception creation, context, formatting
 2. **FilterConverter_Test** - Operator mapping, injection prevention, value conversion
@@ -86,9 +86,9 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 6. **ReportToSoqlConverter_Test** - Integration testing with HTTP mocking
 7. All tests use Assert framework (Salesforce best practices)
 
-### Documentation Files (4 comprehensive guides)
+ Documentation Files (4 comprehensive guides)
 
-#### 1. **REPORT_TO_SOQL_GUIDE.md**
+ 1. **REPORT_TO_SOQL_GUIDE.md**
 - Architecture diagram showing component relationships
 - Detailed description of each component
 - API requirements and configuration
@@ -100,7 +100,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Troubleshooting guide
 - Future enhancement roadmap
 
-#### 2. **SETUP_AND_CONFIGURATION.md**
+ 2. **SETUP_AND_CONFIGURATION.md**
 - Named Credential creation (UI and Metadata API)
 - Class deployment instructions (SFDX, Metadata API)
 - Verification and testing procedures
@@ -110,7 +110,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Performance optimization tips
 - Monitoring and logging setup
 
-#### 3. **QUICK_REFERENCE.md**
+ 3. **QUICK_REFERENCE.md**
 - 3-line quick start example
 - 10 common use cases with code
 - FAQ section (8 questions)
@@ -120,7 +120,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - Best practices checklist
 - Limits and constraints
 
-#### 4. **EXAMPLE_IMPLEMENTATIONS.apex**
+ 4. **EXAMPLE_IMPLEMENTATIONS.apex**
 - 10 real-world example implementations:
   1. Simple report conversion
   2. Batch processing with QueryLocator
@@ -133,9 +133,9 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
   9. Query validation
   10. Metrics tracking
 
-## Key Features
+ Key Features
 
-### ✅ Implemented Features
+ ✅ Implemented Features
 
 **Core Functionality**
 - ✅ Dynamic SOQL generation from reports
@@ -176,7 +176,7 @@ A **production-ready Apex service** that dynamically converts Salesforce Reports
 - ✅ Error scenario testing
 - ✅ Security validation testing
 
-### 📋 Architecture Highlights
+ 📋 Architecture Highlights
 
 **Clean Separation of Concerns**
 ```
@@ -198,7 +198,7 @@ Domain Layer: ReportToSoqlException
 - **Repository Pattern** - SchemaValidator caches schema metadata
 - **Exception Handling Pattern** - Custom exception with rich context
 
-## Quality Metrics
+ Quality Metrics
 
 | Metric | Value |
 |--------|-------|
@@ -212,7 +212,7 @@ Domain Layer: ReportToSoqlException
 | Supported Report Types | 1 (TabularReport) |
 | Security Controls | 5 layers (OLS, FLS, Sharing, Injection Prevention, Query Validation) |
 
-## Production Readiness Checklist
+ Production Readiness Checklist
 
 - ✅ **Security**
   - Named Credential authentication
@@ -253,9 +253,9 @@ Domain Layer: ReportToSoqlException
   - Consistent naming conventions
   - SOLID principles adherence
 
-## Installation Quick Start
+ Installation Quick Start
 
-### 1. Create Named Credential
+ 1. Create Named Credential
 ```
 Name: AnalyticsAPI
 URL: https://your-instance.salesforce.com
@@ -263,36 +263,36 @@ Type: OAuth 2.0
 Scope: analytics_api_read refresh_token
 ```
 
-### 2. Deploy Classes
+ 2. Deploy Classes
 ```bash
 sfdx force:source:deploy -p force-app/main/default/classes/ReportToSoql*
 ```
 
-### 3. Run Tests
+ 3. Run Tests
 ```bash
 sfdx force:apex:test:run -n "*Report*"
 ```
 
-### 4. Basic Usage
+ 4. Basic Usage
 ```apex
 String soqlQuery = ReportToSoqlConverter.generateSoqlFromReport(reportId);
 List<SObject> results = Database.query(soqlQuery);
 ```
 
-## API Reference
+ API Reference
 
-### Main Method
+ Main Method
 ```apex
 public static String generateSoqlFromReport(Id reportId)
 ```
 
-### Utility Methods
+ Utility Methods
 ```apex
 public static List<SObject> queryFromReport(Id reportId)
 public static Database.QueryLocator queryLocatorFromReport(Id reportId, Integer pageSize)
 ```
 
-### Exception Types
+ Exception Types
 ```apex
 ReportToSoqlException.ExceptionType {
     API_ERROR,
@@ -308,7 +308,7 @@ ReportToSoqlException.ExceptionType {
 }
 ```
 
-## File Structure
+ File Structure
 
 ```
 force-app/main/default/classes/
@@ -348,7 +348,7 @@ Documentation/
 └── EXAMPLE_IMPLEMENTATIONS.apex (Real-world examples)
 ```
 
-## Next Steps
+ Next Steps
 
 1. **Setup** - Follow SETUP_AND_CONFIGURATION.md
 2. **Deploy** - Deploy Apex classes to your org
@@ -357,7 +357,7 @@ Documentation/
 5. **Integrate** - Use in your applications
 6. **Monitor** - Track security events and performance
 
-## Support Resources
+ Support Resources
 
 - **Full Documentation:** REPORT_TO_SOQL_GUIDE.md
 - **Setup Guide:** SETUP_AND_CONFIGURATION.md
@@ -366,14 +366,14 @@ Documentation/
 - **API Docs:** Salesforce Analytics REST API v62.0
 - **Test Files:** *_Test.cls files for usage patterns
 
-## Version Information
+ Version Information
 
 - **API Version:** 62.0 (Salesforce Winter 2025)
 - **Minimum Salesforce Version:** v62.0
 - **Release Date:** February 2026
 - **Status:** Production Ready
 
-## Summary
+ Summary
 
 This comprehensive solution provides enterprise-grade functionality for converting Salesforce Reports to dynamic SOQL queries. With 8 core classes, 7 test suites, and 4 documentation guides, it's designed for immediate production deployment with extensive security, validation, and error handling built in.
 

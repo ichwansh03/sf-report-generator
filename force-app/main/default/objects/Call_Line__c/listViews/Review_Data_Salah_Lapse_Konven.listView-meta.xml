@@ -23,7 +23,7 @@
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#211015-027094</value>
+        <value>Gen211015-027094</value>
     </filters>
     <label>Review Data Salah-Lapse Konven</label>
     <language>en_US</language>

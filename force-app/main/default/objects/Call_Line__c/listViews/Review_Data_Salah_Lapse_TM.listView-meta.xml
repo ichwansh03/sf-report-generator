@@ -24,7 +24,7 @@
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#250103-043640</value>
+        <value>Gen250103-043640</value>
     </filters>
     <label>Review Data Salah-Lapse TM</label>
     <language>en_US</language>

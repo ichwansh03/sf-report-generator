@@ -7,7 +7,7 @@
     <filters>
         <field>Call_List__c</field>
         <operation>equals</operation>
-        <value>Gen#250408-044630</value>
+        <value>Gen250408-044630</value>
     </filters>
     <filters>
         <field>CREATED_DATE</field>
