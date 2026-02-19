@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Retry__c</fullName>
+    <label>Status Retry</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Rescheduled</fullName>
+                <default>false</default>
+                <label>Rescheduled</label>
+            </value>
+            <value>
+                <fullName>Callback from CCC</fullName>
+                <default>false</default>
+                <label>Callback from CCC</label>
+            </value>
+            <value>
+                <fullName>Booking Call</fullName>
+                <default>false</default>
+                <label>Booking Call</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

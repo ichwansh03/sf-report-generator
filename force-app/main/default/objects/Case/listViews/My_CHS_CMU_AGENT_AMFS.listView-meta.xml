@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_CHS_CMU_AGENT_AMFS</fullName>
+    <booleanFilter>1 AND 2 AND (3 OR 4)</booleanFilter>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CHS_Status__c</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Policy_Numbers__c</columns>
+    <columns>Due_Date_Time__c</columns>
+    <columns>Flagging_SLA__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.TYPE</field>
+        <operation>equals</operation>
+        <value>Complaint</value>
+    </filters>
+    <filters>
+        <field>CHS_Status__c</field>
+        <operation>notEqual</operation>
+        <value>Closed - Invalid,Closed - Valid</value>
+    </filters>
+    <filters>
+        <field>Is_Logged_In_User_CMU_Agent__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Is_Logged_In_User_PIC__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>My CHS (CMU AGENT AMFS)</label>
+    <sharedTo>
+        <group>Group_CMU_Agent_AMFS</group>
+    </sharedTo>
+</ListView>

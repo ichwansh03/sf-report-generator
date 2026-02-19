@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Interaction2__c</fullName>
+    <description>IF( ISBLANK(ParentId), TRUE, FALSE)</description>
+    <formula>IF( ISBLANK(ParentId),
+TRUE,
+IF(((Parent.CreatedDate + 30) &lt; CreatedDate), TRUE, FALSE)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>First Interaction</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

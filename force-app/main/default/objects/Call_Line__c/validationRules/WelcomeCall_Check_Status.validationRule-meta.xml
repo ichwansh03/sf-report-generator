@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_Check_Status</fullName>
+    <active>false</active>
+    <description>Check Status Reason Welcome Call</description>
+    <errorConditionFormula>RecordType.Name = &apos;Welcome Call&apos; 
+&amp;&amp;
+ NOT(ISPICKVAL(WelcomeCall_Call_Line_Status__c, &quot;CLOSED&quot;))
+&amp;&amp;
+OR ( ISPICKVAL(Verification__c , &apos;Reschedule&apos;),
+ISPICKVAL(Verification__c , &apos;Cancel the Policy&apos;))</errorConditionFormula>
+    <errorMessage>Call Line Status must be &quot; CLOSED&quot; if Reason Status &quot; Cancel The Policy or Reschedule &quot;</errorMessage>
+</ValidationRule>

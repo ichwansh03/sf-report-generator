@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campaign_Tele_Uw_Welcome_Call</fullName>
+    <columns>NAME</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Case_Type_Config__c</columns>
+    <columns>Generated_Date__c</columns>
+    <columns>Expired_Date__c</columns>
+    <columns>IsExpired__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Case_Type_Config__c</field>
+        <operation>equals</operation>
+        <value>Welcome Call,TelUW</value>
+    </filters>
+    <label>Campaign Tele Uw &amp; Welcome Call</label>
+    <language>en_US</language>
+    <sharedTo>
+        <role>AMFS_Outbound_SPV</role>
+    </sharedTo>
+</ListView>

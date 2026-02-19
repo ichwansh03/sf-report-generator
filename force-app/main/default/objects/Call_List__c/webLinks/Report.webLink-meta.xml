@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Report</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Report</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>var entity = &quot;{!TEXT($User.Entity__c)}&quot;; 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+
+var o = new sforce.SObject(&quot;Call_List__c&quot;); 
+o.id = &quot;{!Call_List__c.Id}&quot;; 
+
+o.Update_Agent_Child__c = &quot;TRUE&quot;; 
+
+sforce.connection.update([o]); 
+// window.location.reload(); 
+
+window.open(&quot;/{!Call_List__c.Report_ID__c}?drilldown=1&amp;drillcol=FK_CUSTENT_ID&amp;drillval={!Call_List__c.Id}&amp;drillop=equals&quot;,&quot;&quot;);</url>
+</WebLink>

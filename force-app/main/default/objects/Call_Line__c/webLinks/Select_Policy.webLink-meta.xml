@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Select_Policy</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Select Policy</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)}
+//window.location = &quot;/apex/RelatedPolicyView?id={!Call_Line__c.Id}&quot;;
+
+
+if (sforce.console.isInConsole()) {
+    sforce.console.getEnclosingTabId(function(enclosingResult){
+        sforce.console.getEnclosingPrimaryTabId(function(primaryResult){
+            sforce.console.openPrimaryTab(primaryResult.id, &quot;/apex/RelatedPolicyView?id={!Call_Line__c.Id}&quot;, true, &apos;Select Policy&apos;, null);
+        });
+    });
+
+}else {
+    window.location.href = &quot;/{!Call_Line__c.Id}&quot;;
+}</url>
+</WebLink>

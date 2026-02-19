@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreventInputIllegalCharacter</fullName>
+    <active>false</active>
+    <errorConditionFormula>OR(
+CONTAINS(InsuredObjectMV__c , &quot;(&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;)&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;*&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;.&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;/&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;-&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;:&quot;),
+CONTAINS(InsuredObjectMV__c , &quot;;&quot;)
+)</errorConditionFormula>
+    <errorMessage>InsuredObjectMV__c must not contain special characters . / * - () :</errorMessage>
+</ValidationRule>

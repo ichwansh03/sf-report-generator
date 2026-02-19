@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Merimen_URL</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Merimen URL</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)} 
+
+/* 
+var urlInquiry = &quot;/500/e?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Inquiry_RecordTypeId_Keeper__c}&amp;cas5=Inquiry&amp;ent=Case&quot;; 
+*/ 
+
+var urlInquiry = &quot;https://indonesia.merimen.com/claims/index.cfm?fusebox=MTRclaim&amp;fuseaction=dsp_clmdirsearch&amp;srch=00245160&amp;srchtype=0&amp;CFID={!Contact.Policy_No__c}&amp;CFTOKEN=a7c168954f256725-B0F94AF3-07D8-D823-7FB4F74629F38475&amp;USID=528&amp;RID=1193005&amp;BR=700162*&quot;; 
+
+//window.location.href = urlInquiry; 
+
+window.open(urlInquiry);</url>
+</WebLink>

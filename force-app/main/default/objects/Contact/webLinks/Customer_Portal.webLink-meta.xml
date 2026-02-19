@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Portal</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Customer Portal</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+var url = &quot;/apex/UserManagement?contact_id={!Contact.Id}&quot;;
+console.log(&quot;url : &quot; + url);
+
+if (sforce.console.isInConsole()) {
+var focusedPrimaryTabId, allPrimaryTabIds;
+(function (c) {
+&quot;use strict&quot;;
+
+c.getFocusedPrimaryTabId(function (result) {
+focusedPrimaryTabId = result.id;
+});
+c.getPrimaryTabIds(function (result) {
+allPrimaryTabIds = result.ids;
+});
+})(sforce.console);
+
+sforce.console.openSubtab(focusedPrimaryTabId, url, true, &apos;CUSTOMER PORTAL&apos;, null,null, &apos;CUSTOMER PORTAL&apos;);
+sforce.console.focusSubtabByNameAndPrimaryTabId(&apos;CUSTOMER PORTAL&apos;, focusedPrimaryTabId);
+
+
+}else {
+javascript:var x=window.open(url,&apos;_blank&apos;);
+}</url>
+</WebLink>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Request</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New Request</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)}
+
+var caseList = sforce.connection.query(&quot;SELECT Id,Request_RecordTypeId_Keeper__c, Account.Id, Entity__c FROM Contact WHERE id =&apos;{!Call_Line__c.ContactId__c}&apos;&quot;);
+var records = caseList.getArray(&quot;records&quot;); 
+var Record_Type_Keeper__c,AccountId,entity;  
+if (records.length &gt; 0) { 
+for (var i=0; i&lt; records.length; i++) {
+    Record_Type_Keeper__c = records[i].Request_RecordTypeId_Keeper__c;
+    AccountId = records[i].Account.Id;
+    entity = records[i].Entity__c ;
+}
+} 
+ 
+var urlCallNote = &apos;&apos;; 
+
+if (entity  == &apos;AMFS&apos;) { 
+
+urlRequest = &quot;/apex/CaseRequestLayoutContact?retURL=/{!Call_Line__c.Id}&amp;def_contact_id={!Call_Line__c.ContactId__c}&amp;def_account_id=&quot;+AccountId+&quot;&amp;RecordType=&quot;+Record_Type_Keeper__c +&quot;&amp;00N9000000CD53R=0&amp;cas5=Request&amp;ent=Case&amp;&amp;cas11=none&amp;entity={!Call_Line__c.Entity__c}&quot;;
+} else {
+
+urlRequest = &quot;/apex/CaseRequestLayoutContact?retURL=/{!Call_Line__c.ContactId__c}&amp;def_contact_id={!Call_Line__c.ContactId__c}&amp;def_account_id=&quot;+AccountId+&quot;&amp;RecordType=&quot;+Record_Type_Keeper__c +&quot;&amp;00N9000000CD53R=0&amp;cas5=Request&amp;ent=Case&amp;&amp;cas11=none&amp;entity={!Call_Line__c.Entity__c}&quot;;
+}
+
+if (sforce.console.isInConsole()) {
+sforce.console.getEnclosingTabId(function(enclosingResult){
+sforce.console.getEnclosingPrimaryTabId(function(){
+sforce.console.openPrimaryTab(null, urlRequest, true, &apos;Create New Request&apos;, null);
+});
+});
+
+}else {
+window.location.href = urlRequest;
+}</url>
+</WebLink>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Level_Sensitive__c</fullName>
+    <label>Level Sensitive</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Case_Sensitive_Customer__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Level 1</fullName>
+                <default>false</default>
+                <label>Level 1</label>
+            </value>
+            <value>
+                <fullName>Level 2</fullName>
+                <default>false</default>
+                <label>Level 2</label>
+            </value>
+            <value>
+                <fullName>Level 3</fullName>
+                <default>false</default>
+                <label>Level 3</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>YES</controllingFieldValue>
+            <valueName>Level 1</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>YES</controllingFieldValue>
+            <valueName>Level 2</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>YES</controllingFieldValue>
+            <valueName>Level 3</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

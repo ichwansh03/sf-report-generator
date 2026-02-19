@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Complaint_Type_AGI__c</fullName>
+    <label>Complaint Type AGI</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Simple</fullName>
+                <default>false</default>
+                <label>Simple</label>
+            </value>
+            <value>
+                <fullName>Complex Case</fullName>
+                <default>false</default>
+                <label>Complex Case</label>
+            </value>
+            <value>
+                <fullName>Priority</fullName>
+                <default>false</default>
+                <label>Priority</label>
+            </value>
+            <value>
+                <fullName>Potensial Complaint (AGI)</fullName>
+                <default>false</default>
+                <label>Potensial Complaint (AGI)</label>
+            </value>
+            <value>
+                <fullName>Soft Complaint</fullName>
+                <default>false</default>
+                <label>Soft Complaint</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

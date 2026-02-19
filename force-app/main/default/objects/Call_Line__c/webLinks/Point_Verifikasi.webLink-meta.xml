@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Point_Verifikasi</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Point Verifikasi</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)}
+
+var url = &quot;/apex/Point_Verifikasi?id={!Call_Line__c.Id}&quot;;
+
+var result = sforce.connection.query(&quot;SELECT Id, Name, Call_Status_Config__c, Reason_Status_Config__c FROM Call_Line__c WHERE Id = &apos;{!Call_Line__c.Id }&apos; limit 1&quot;);
+
+records = result.getArray(&quot;records&quot;);
+
+var callStatus = records[0].Call_Status_Config__c;
+var reasonStatus = records[0].Reason_Status_Config__c;
+
+/*var checkReasonStatus = &apos;&apos;;
+if(reasonStatus.indexOf(&quot;Agree&quot;) !== -1){
+checkReasonStatus = reasonStatus;
+}else{
+alert(&quot;Agree not found&quot;)
+}*/
+
+if(callStatus == &apos;Contacted&apos;){
+
+if (sforce.console.isInConsole()) {
+sforce.console.getEnclosingTabId(function(enclosingResult){
+sforce.console.getEnclosingPrimaryTabId(function(){
+sforce.console.openPrimaryTab(null, url, true, &apos;Point Verifikasi&apos;, null);
+});
+});
+
+} else {
+window.location.href = url;
+}
+
+} else {
+
+alert(&quot;Maaf, tombol ini hanya untuk Call Status = Contacted.&quot;);
+
+}</url>
+</WebLink>

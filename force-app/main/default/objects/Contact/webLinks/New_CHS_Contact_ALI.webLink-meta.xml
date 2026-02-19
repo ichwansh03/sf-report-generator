@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_CHS_Contact_ALI</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New CHS ALI</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+//var urlCHS = &quot;/apex/CaseComplaintLayoutContactALI?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Record_Type_Keeper__c}&amp;00N9000000CD53R=0&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&quot;;
+
+var urlCHS = &quot;/apex/CaseComplaintLayoutContact?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Record_Type_Keeper__c}&amp;00N9000000CD53R=0&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&quot;;
+
+if (sforce.console.isInConsole()) {
+var focusedPrimaryTabId, allPrimaryTabIds;    	
+    	(function (c) {
+            &quot;use strict&quot;;
+            
+            c.getFocusedPrimaryTabId(function (result) {
+                focusedPrimaryTabId = result.id;
+            });
+            c.getPrimaryTabIds(function (result) {
+                allPrimaryTabIds = result.ids;
+            });
+        })(sforce.console);
+
+sforce.console.openSubtab(focusedPrimaryTabId, urlCHS, true, &apos;Create New CHS&apos;, null,null, &apos;contactCHStab&apos;); 
+sforce.console.focusSubtabByNameAndPrimaryTabId(&apos;contactCHStab&apos;, focusedPrimaryTabId);
+
+}else {
+window.location.href = urlCHS;
+}</url>
+</WebLink>

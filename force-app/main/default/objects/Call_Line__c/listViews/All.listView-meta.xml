@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Owner__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Campaign_Name__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status_Retry__c</field>
+        <operation>equals</operation>
+        <value>Callback from CCC</value>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>greaterThan</operation>
+        <value>12/1/2022 12:00 AM</value>
+    </filters>
+    <label>All</label>
+    <language>en_US</language>
+</ListView>

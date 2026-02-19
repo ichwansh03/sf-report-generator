@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grand_Total_Collection_Task_ALI__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+OR( ISPICKVAL( Reason_Status_Config__c , &apos;Cancel&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;Complaint&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;Follow Up&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;Done&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;Hard Contact&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;No Follow Up&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;No Pickup/ Mailbox&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;ALI - Wrong Number&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;Redebet&apos;),
+ISPICKVAL(Reason_Status_Config__c , &apos;&apos;)
+
+), 1, 0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Grand Total Collection Task ALI</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

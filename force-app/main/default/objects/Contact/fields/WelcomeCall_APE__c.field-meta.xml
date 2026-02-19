@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_APE__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(CONTAINS( $Label.APE_Product_Unit_Link+&apos;;&apos;+$Label.APE_Product_MDS+&apos;;&apos;+$Label.APE_Product_MDS_Teluw,  WelcomeCall_Product_Code_Plan__c+&apos;;&apos; ), ((	Total_Premium__c* IF(WelcomeCall_Payment_Type__c == &apos;A&apos;,1, IF(WelcomeCall_Payment_Type__c == &apos;S&apos;,2, IF(WelcomeCall_Payment_Type__c == &apos;Q&apos;,4, 12)))
+)+( WelcomeCall_Lump_Sum__c *0.1)), 
+
+IF(CONTAINS( $Label.APE_Product_Single_Premium ,WelcomeCall_Product_Code_Plan__c+&apos;;&apos;), 	
+(Total_Premium__c+WelcomeCall_Lump_Sum__c )*0.1, 
+
+IF(CONTAINS( $Label.APE_Product_Health ,WelcomeCall_Product_Code_Plan__c+&apos;;&apos;), (	Total_Premium__c + WelcomeCall_Lump_Sum__c ) * IF(WelcomeCall_Payment_Type__c == &apos;A&apos;,1, IF(WelcomeCall_Payment_Type__c == &apos;S&apos;,2, IF(WelcomeCall_Payment_Type__c == &apos;Q&apos;,4, 12))),0
+)
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>APE</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

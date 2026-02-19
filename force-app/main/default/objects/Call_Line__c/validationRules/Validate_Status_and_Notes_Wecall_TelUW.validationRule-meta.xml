@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Status_and_Notes_Wecall_TelUW</fullName>
+    <active>true</active>
+    <description>Make sure to change call status, reason, notes and checked confirm when call status is contacted. User can change notes when call status is uncontacted. This rules is only appear for updated record.</description>
+    <errorConditionFormula>AND(
+    OR(
+        RecordType.Name = &apos;Welcome Call&apos;,
+        RecordType.Name = &apos;TelUW&apos;
+    ),
+    ISPICKVAL(Entity__c, &apos;AMFS&apos;),
+    NOT(OR( $Profile.Name == &apos;System Administrator&apos;, $Profile.Name == &apos;Adminitrator Sistem&apos;, $Profile.Name = &apos;Supervisor-AMFS&apos;, $Profile.Name = &apos;Other Dept AMFS&apos;)),
+    NOT(Confirm__c),
+    NOT(
+       AND(
+        ISPICKVAL(WelcomeCall_Call_Line_Status__c,&apos;Closed&apos;),
+        Confirm__c
+       )
+    ),
+    OR(
+        AND(
+            OR(
+                ISPICKVAL(Activity_Result__c, &apos;Contacted&apos;),
+                ISPICKVAL(Activity_Result__c, &apos;Uncontacted&apos;)
+            ),
+            OR(
+                ISPICKVAL(Verification__c,&apos;&apos;),
+                ISBLANK(Notes__c),
+                NOT(ISCHANGED(Confirm__c))
+            )
+        ),
+        AND(
+            ISPICKVAL(Activity_Result__c, &apos;Hold&apos;),
+            OR(
+                ISBLANK(Notes__c),
+                NOT(ISCHANGED(Notes__c)),
+                NOT(ISCHANGED(Confirm__c))
+            )
+        ) 
+    ),
+    OR(
+        ISCHANGED(Activity_Result__c),
+        ISCHANGED(Notes__c),
+        ISCHANGED(Confirm__c),
+        ISCHANGED(Verification__c)
+    )
+)</errorConditionFormula>
+    <errorDisplayField>Confirm__c</errorDisplayField>
+    <errorMessage>Have you update Call Status/Reason Status/Notes? Checklist Confirm if you are sure</errorMessage>
+</ValidationRule>

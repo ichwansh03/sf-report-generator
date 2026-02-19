@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approve_Paid__c</fullName>
+    <label>Approve &amp; Paid</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Complaint_Decision_AMFS__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Refund All Premium</fullName>
+                <default>false</default>
+                <label>Refund All Premium</label>
+            </value>
+            <value>
+                <fullName>Refund with reduced charges (COI, COR, admin fee, etc)</fullName>
+                <default>false</default>
+                <label>Refund with reduced charges (COI, COR, admin fee, etc)</label>
+            </value>
+            <value>
+                <fullName>Waive penalty/charges</fullName>
+                <default>false</default>
+                <label>Waive penalty/charges</label>
+            </value>
+            <value>
+                <fullName>Collectible premiums are refunded</fullName>
+                <default>false</default>
+                <label>Collectible premiums are refunded</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Approve &amp; Paid</controllingFieldValue>
+            <valueName>Refund All Premium</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Approve &amp; Paid</controllingFieldValue>
+            <valueName>Refund with reduced charges (COI, COR, admin fee, etc)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Approve &amp; Paid</controllingFieldValue>
+            <valueName>Waive penalty/charges</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Approve &amp; Paid</controllingFieldValue>
+            <valueName>Collectible premiums are refunded</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

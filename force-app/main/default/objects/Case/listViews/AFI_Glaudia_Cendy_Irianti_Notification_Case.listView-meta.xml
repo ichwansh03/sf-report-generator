@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AFI_Glaudia_Cendy_Irianti_Notification_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>AFI - Glaudia Cendy Irianti Notification</label>
+    <queue>AFI_Glaudia_Cendy_Irianti_Notification</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

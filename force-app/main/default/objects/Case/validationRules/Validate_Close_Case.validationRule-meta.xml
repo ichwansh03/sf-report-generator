@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Close_Case</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+$User.ProfileId &lt;&gt; &apos;00e6F0000022jPS&apos;,
+$User.ProfileId &lt;&gt; &apos;00e90000001uN0Q&apos;,
+$UserRole.Name &lt;&gt; &apos;DMU Manager AMFS&apos;,
+$UserRole.Name &lt;&gt; &apos;Central Operation (CO) Head AMFS&apos;,
+$UserRole.Name &lt;&gt; &apos;DMU Supervisor AMFS&apos;,
+$UserRole.Name &lt;&gt; &apos;CMU ALI&apos;, 
+$UserRole.Name &lt;&gt; &apos;CMU AFI&apos;, $UserRole.Name &lt;&gt; &apos;CMU AMFS&apos;, $UserRole.Name &lt;&gt; &apos;CMU MAGI&apos;, $UserRole.Name &lt;&gt; &apos;PIC CMU AFI&apos;, $UserRole.Name &lt;&gt; &apos;PIC CMU AMFS&apos;, $UserRole.Name &lt;&gt; &apos;PIC CMU MAGI&apos;, $UserRole.Name &lt;&gt; &apos;CMU SPV AFI&apos;, $UserRole.Name &lt;&gt; &apos;CMU SPV AMFS&apos;, $UserRole.Name &lt;&gt; &apos;CMU SPV MAGI&apos;, $UserRole.Name &lt;&gt; &apos;CCC Asst. Manager AMFS&apos;, $UserRole.Name &lt;&gt; &apos;Agent AGI&apos;, $UserRole.Name &lt;&gt; &apos;BackOffice AGI&apos;, $UserRole.Name &lt;&gt; &apos;CCC Manager AGI&apos;, $UserRole.Name &lt;&gt; &apos;CCC SPV AGI&apos;,
+OR(ISPICKVAL(CHS_Status__c, &apos;Closed - Invalid&apos;), ISPICKVAL(CHS_Status__c, &apos;Closed - Valid&apos;)
+)
+)</errorConditionFormula>
+    <errorDisplayField>CHS_Status__c</errorDisplayField>
+    <errorMessage>You do not have the right to close this case</errorMessage>
+</ValidationRule>

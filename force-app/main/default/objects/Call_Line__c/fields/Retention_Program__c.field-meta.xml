@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Retention_Program__c</fullName>
+    <label>Retention - Program</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cancer &amp; Save</fullName>
+                <default>false</default>
+                <label>Cancer &amp; Save</label>
+            </value>
+            <value>
+                <fullName>Extra Cancer Insurance</fullName>
+                <default>false</default>
+                <label>Extra Cancer Insurance</label>
+            </value>
+            <value>
+                <fullName>Extra Health Insurance</fullName>
+                <default>false</default>
+                <label>Extra Health Insurance</label>
+            </value>
+            <value>
+                <fullName>Extra Life Insurance</fullName>
+                <default>false</default>
+                <label>Extra Life Insurance</label>
+            </value>
+            <value>
+                <fullName>Health &amp; Save</fullName>
+                <default>false</default>
+                <label>Health &amp; Save</label>
+            </value>
+            <value>
+                <fullName>Heart &amp; Save</fullName>
+                <default>false</default>
+                <label>Heart &amp; Save</label>
+            </value>
+            <value>
+                <fullName>Hospital &amp; Save</fullName>
+                <default>false</default>
+                <label>Hospital &amp; Save</label>
+            </value>
+            <value>
+                <fullName>Hospital Plus Life</fullName>
+                <default>false</default>
+                <label>Hospital Plus Life</label>
+            </value>
+            <value>
+                <fullName>Klik Proteksi Cancer</fullName>
+                <default>false</default>
+                <label>Klik Proteksi Cancer</label>
+            </value>
+            <value>
+                <fullName>Klik Proteksi Diri</fullName>
+                <default>false</default>
+                <label>Klik Proteksi Diri</label>
+            </value>
+            <value>
+                <fullName>Klik Proteksi Diri Plus</fullName>
+                <default>false</default>
+                <label>Klik Proteksi Diri Plus</label>
+            </value>
+            <value>
+                <fullName>Klik Proteksi Jantung &amp; Stroke</fullName>
+                <default>false</default>
+                <label>Klik Proteksi Jantung &amp; Stroke</label>
+            </value>
+            <value>
+                <fullName>Klik Proteksi Jiwa</fullName>
+                <default>false</default>
+                <label>Klik Proteksi Jiwa</label>
+            </value>
+            <value>
+                <fullName>Klik Proteksi Sehat</fullName>
+                <default>false</default>
+                <label>Klik Proteksi Sehat</label>
+            </value>
+            <value>
+                <fullName>Life &amp; Save</fullName>
+                <default>false</default>
+                <label>Life &amp; Save</label>
+            </value>
+            <value>
+                <fullName>Protection &amp; Save 8 Years</fullName>
+                <default>false</default>
+                <label>Protection &amp; Save 8 Years</label>
+            </value>
+            <value>
+                <fullName>Protection &amp; Save 10 Years</fullName>
+                <default>false</default>
+                <label>Protection &amp; Save 10 Years</label>
+            </value>
+            <value>
+                <fullName>AXA Syariah Plan &amp; Save 8 Years</fullName>
+                <default>false</default>
+                <label>AXA Syariah Plan &amp; Save 8 Years</label>
+            </value>
+            <value>
+                <fullName>AXA Medicash Pro Seven</fullName>
+                <default>false</default>
+                <label>AXA Medicash Pro Seven</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Business_channel__c</fullName>
+    <label>Business channel</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Leasing</fullName>
+                <default>false</default>
+                <label>Leasing</label>
+            </value>
+            <value>
+                <fullName>Bancassurance</fullName>
+                <default>false</default>
+                <label>Bancassurance</label>
+            </value>
+            <value>
+                <fullName>Direct</fullName>
+                <default>false</default>
+                <label>Direct</label>
+            </value>
+            <value>
+                <fullName>Direct Online</fullName>
+                <default>false</default>
+                <label>Direct Online</label>
+            </value>
+            <value>
+                <fullName>Commercial</fullName>
+                <default>false</default>
+                <label>Commercial</label>
+            </value>
+            <value>
+                <fullName>TM</fullName>
+                <default>false</default>
+                <label>TM</label>
+            </value>
+            <value>
+                <fullName>Conventional</fullName>
+                <default>false</default>
+                <label>Conventional</label>
+            </value>
+            <value>
+                <fullName>Corporate Solution</fullName>
+                <default>false</default>
+                <label>Corporate Solution</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Agency</fullName>
+                <default>false</default>
+                <label>Agency</label>
+            </value>
+            <value>
+                <fullName>Agency Online</fullName>
+                <default>false</default>
+                <label>Agency Online</label>
+            </value>
+            <value>
+                <fullName>Broker</fullName>
+                <default>false</default>
+                <label>Broker</label>
+            </value>
+            <value>
+                <fullName>Partnership</fullName>
+                <default>false</default>
+                <label>Partnership</label>
+            </value>
+            <value>
+                <fullName>Alternate</fullName>
+                <default>false</default>
+                <label>Alternate</label>
+            </value>
+            <value>
+                <fullName>Direct - Travel Agent</fullName>
+                <default>false</default>
+                <label>Direct - Travel Agent</label>
+            </value>
+            <value>
+                <fullName>Direct - Corp. Partner</fullName>
+                <default>false</default>
+                <label>Direct - Corp. Partner</label>
+            </value>
+            <value>
+                <fullName>Fullerton</fullName>
+                <default>false</default>
+                <label>Fullerton</label>
+            </value>
+            <value>
+                <fullName>Inbranch</fullName>
+                <default>false</default>
+                <label>Inbranch</label>
+            </value>
+            <value>
+                <fullName>DPLK</fullName>
+                <default>false</default>
+                <label>DPLK</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Are_All_Phone_Blank</fullName>
+    <active>false</active>
+    <description>To make sure not all phone fields are blank. It should one of those fields not blank</description>
+    <errorConditionFormula>AND(ISBLANK(Phone),ISBLANK(MobilePhone),ISBLANK(OtherPhone))</errorConditionFormula>
+    <errorMessage>All phone fields (Mobile Phone, Home Phone, Other Phone) are blank. It should be one of those fields not blank.</errorMessage>
+</ValidationRule>

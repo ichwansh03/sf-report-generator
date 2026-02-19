@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_EditedCallLineStatus</fullName>
+    <active>true</active>
+    <description>Record Type Welcome Call
+
+- 18 09 23: Update by MII to skip update by SPV Collection</description>
+    <errorConditionFormula>RecordType.Name = &apos;Welcome Call&apos; 
+&amp;&amp; 
+NOT(ISBLANK(TEXT(Activity_Result__c)))
+&amp;&amp; 
+ISPICKVAL(WelcomeCall_Call_Line_Status__c, &quot;Open&quot;)
+&amp;&amp; $Profile.Name != &apos;Supervisor Collection-AMFS&apos;</errorConditionFormula>
+    <errorMessage>Call Line Status tidak bisa di update menjadi OPEN apabila status sudah Contatcted/Uncontacted</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_AMFS_Confirm_Redemption_TM</fullName>
+    <active>false</active>
+    <errorConditionFormula>(ISPICKVAL(Call_Status_Config__c, &quot;Cancel&quot;) || ISPICKVAL(Call_Status_Config__c, &quot;Inforced&quot;) ||
+ISPICKVAL(Call_Status_Config__c, &quot;Pending&quot;)) &amp;&amp;  Confirm__c==false &amp;&amp;  RecordType.Name==&apos;Collection AMFS 8&apos;</errorConditionFormula>
+    <errorMessage>Please Checklist field Confirm if you are sure!</errorMessage>
+</ValidationRule>

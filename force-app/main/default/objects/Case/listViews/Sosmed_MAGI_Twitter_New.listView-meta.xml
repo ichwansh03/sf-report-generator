@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sosmed_MAGI_Twitter_New</fullName>
+    <booleanFilter>1 AND 2 AND 4 AND (3 OR 5)</booleanFilter>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Entity_Backup__c</field>
+        <operation>equals</operation>
+        <value>MAGI,AGI</value>
+    </filters>
+    <filters>
+        <field>CASES.ORIGIN</field>
+        <operation>equals</operation>
+        <value>Twitter</value>
+    </filters>
+    <filters>
+        <field>OWNER_NAME</field>
+        <operation>equals</operation>
+        <value>AXA Indonesia Queue,AXA Mandiri Queue,MAGI Twitter Queue</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notEqual</operation>
+        <value>Closed</value>
+    </filters>
+    <filters>
+        <field>OWNER_NAME</field>
+        <operation>equals</operation>
+        <value>AXA Mandiri General Queue</value>
+    </filters>
+    <label>Sosmed - New Case MAGI Twitter</label>
+    <language>en_US</language>
+    <sharedTo>
+        <group>AGI_Sosmed_Group</group>
+        <group>MAGI_Sosmed_Group</group>
+    </sharedTo>
+</ListView>

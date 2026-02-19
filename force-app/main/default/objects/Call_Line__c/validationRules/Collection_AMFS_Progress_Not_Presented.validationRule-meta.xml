@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_AMFS_Progress_Not_Presented</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+CONTAINS(RecordType.Name, &apos;Collection AMFS&apos;),
+$Profile.Name=&apos;Outbound Collection Agent-AMFS&apos;,
+CONTAINS(Campaign_Name__c, &apos;Redemption TM&apos;),
+ISCHANGED(Call_Status_Config__c),
+OR (
+ISBLANK(PRIORVALUE(Progress__c)),
+ISNULL(PRIORVALUE(Progress__c)),
+ISPICKVAL(PRIORVALUE(Progress__c),&apos;Not Presented&apos;)
+),
+ISPICKVAL(Progress__c, &apos;Presented&apos;),
+OR (
+CONTAINS(Todo_Item_Status__c, &apos;false&apos;),
+ISBLANK(Todo_Item_Status__c),
+ISNULL(Todo_Item_Status__c))
+)</errorConditionFormula>
+    <errorMessage>Can&apos;t Edit Progress to Presented Before Completing the To-Do List!</errorMessage>
+</ValidationRule>

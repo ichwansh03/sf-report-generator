@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product__c</fullName>
+    <label>Product</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>MV</fullName>
+                <default>false</default>
+                <label>MV</label>
+            </value>
+            <value>
+                <fullName>Non MV</fullName>
+                <default>false</default>
+                <label>Non MV</label>
+            </value>
+            <value>
+                <fullName>GC1040</fullName>
+                <default>false</default>
+                <label>GC1040</label>
+            </value>
+            <value>
+                <fullName>GC1060</fullName>
+                <default>false</default>
+                <label>GC1060</label>
+            </value>
+            <value>
+                <fullName>GC3020</fullName>
+                <default>false</default>
+                <label>GC3020</label>
+            </value>
+            <value>
+                <fullName>GC3040</fullName>
+                <default>false</default>
+                <label>GC3040</label>
+            </value>
+            <value>
+                <fullName>GC3060</fullName>
+                <default>false</default>
+                <label>GC3060</label>
+            </value>
+            <value>
+                <fullName>GC5020</fullName>
+                <default>false</default>
+                <label>GC5020</label>
+            </value>
+            <value>
+                <fullName>GC5040</fullName>
+                <default>false</default>
+                <label>GC5040</label>
+            </value>
+            <value>
+                <fullName>GC5060</fullName>
+                <default>false</default>
+                <label>GC5060</label>
+            </value>
+            <value>
+                <fullName>GC1020</fullName>
+                <default>false</default>
+                <label>GC1020</label>
+            </value>
+            <value>
+                <fullName>HONAR</fullName>
+                <default>false</default>
+                <label>HONAR</label>
+            </value>
+            <value>
+                <fullName>HONBR</fullName>
+                <default>false</default>
+                <label>HONBR</label>
+            </value>
+            <value>
+                <fullName>HONMCR</fullName>
+                <default>false</default>
+                <label>HONMCR</label>
+            </value>
+            <value>
+                <fullName>HONMDR</fullName>
+                <default>false</default>
+                <label>HONMDR</label>
+            </value>
+            <value>
+                <fullName>HONMAR</fullName>
+                <default>false</default>
+                <label>HONMAR</label>
+            </value>
+            <value>
+                <fullName>HONMBR</fullName>
+                <default>false</default>
+                <label>HONMBR</label>
+            </value>
+            <value>
+                <fullName>HONMS</fullName>
+                <default>false</default>
+                <label>HONMS</label>
+            </value>
+            <value>
+                <fullName>HONSPA</fullName>
+                <default>false</default>
+                <label>HONSPA</label>
+            </value>
+            <value>
+                <fullName>NYT</fullName>
+                <default>false</default>
+                <label>NYT</label>
+            </value>
+            <value>
+                <fullName>NT05</fullName>
+                <default>false</default>
+                <label>NT05</label>
+            </value>
+            <value>
+                <fullName>NT10</fullName>
+                <default>false</default>
+                <label>NT10</label>
+            </value>
+            <value>
+                <fullName>MEC</fullName>
+                <default>false</default>
+                <label>MEC</label>
+            </value>
+            <value>
+                <fullName>MHP</fullName>
+                <default>false</default>
+                <label>MHP</label>
+            </value>
+            <value>
+                <fullName>FFH</fullName>
+                <default>false</default>
+                <label>FFH</label>
+            </value>
+            <value>
+                <fullName>MPP</fullName>
+                <default>false</default>
+                <label>MPP</label>
+            </value>
+            <value>
+                <fullName>OTHERS</fullName>
+                <default>false</default>
+                <label>OTHERS</label>
+            </value>
+            <value>
+                <fullName>TM</fullName>
+                <default>false</default>
+                <label>TM</label>
+            </value>
+            <value>
+                <fullName>Conventional</fullName>
+                <default>false</default>
+                <label>Conventional</label>
+            </value>
+            <value>
+                <fullName>Corporate Solutions</fullName>
+                <default>false</default>
+                <label>Corporate Solutions</label>
+            </value>
+            <value>
+                <fullName>Health Individu - Local (ESC)</fullName>
+                <default>false</default>
+                <label>Health Individu - Local (ESC)</label>
+            </value>
+            <value>
+                <fullName>Health Individu - International (IE - Promedicare AB- Promedicare CDE)</fullName>
+                <default>false</default>
+                <label>Health Individu - International (IE - Promedicare AB- Promedicare CDE)</label>
+            </value>
+            <value>
+                <fullName>Health Group - Local (GSC)</fullName>
+                <default>false</default>
+                <label>Health Group - Local (GSC)</label>
+            </value>
+            <value>
+                <fullName>Health Group - International (IE)</fullName>
+                <default>false</default>
+                <label>Health Group - International (IE)</label>
+            </value>
+            <value>
+                <fullName>Home</fullName>
+                <default>false</default>
+                <label>Home</label>
+            </value>
+            <value>
+                <fullName>Lifestyle</fullName>
+                <default>false</default>
+                <label>Lifestyle</label>
+            </value>
+            <value>
+                <fullName>Liability - Commercial</fullName>
+                <default>false</default>
+                <label>Liability - Commercial</label>
+            </value>
+            <value>
+                <fullName>Marine</fullName>
+                <default>false</default>
+                <label>Marine</label>
+            </value>
+            <value>
+                <fullName>MV - Commercial</fullName>
+                <default>false</default>
+                <label>MV - Commercial</label>
+            </value>
+            <value>
+                <fullName>MV - Retail</fullName>
+                <default>false</default>
+                <label>MV - Retail</label>
+            </value>
+            <value>
+                <fullName>PA</fullName>
+                <default>false</default>
+                <label>PA</label>
+            </value>
+            <value>
+                <fullName>Property - Commercial</fullName>
+                <default>false</default>
+                <label>Property - Commercial</label>
+            </value>
+            <value>
+                <fullName>Travel</fullName>
+                <default>false</default>
+                <label>Travel</label>
+            </value>
+            <value>
+                <fullName>Health - Medicare Essential</fullName>
+                <default>false</default>
+                <label>Health - Medicare Essential</label>
+            </value>
+            <value>
+                <fullName>Non Product AGI</fullName>
+                <default>false</default>
+                <label>Non Product AGI</label>
+            </value>
+            <value>
+                <fullName>Purchase Protection</fullName>
+                <default>false</default>
+                <label>Purchase Protection</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

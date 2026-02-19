@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assign_to_MAGI</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Assign to MAGI</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/44.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/44.0/apex.js&quot;)} 
+
+var result = sforce.apex.execute(&quot;AssignCaseSocialMedia&quot;,&quot;assign&quot;, {CaseId:&quot;{!Case.Id}&quot;, Entity:&quot;MAGI&quot;, Origin:&quot;{!Case.Origin}&quot;}) 
+
+try{ 
+if(result == &apos;true&apos;) 
+{ 
+alert(&apos;Success&apos;); 
+window.location.reload(); 
+} 
+else{ 
+alert(&apos;Error : &apos;+result); 
+} 
+}catch(err){ 
+alert(err); 
+}</url>
+</WebLink>

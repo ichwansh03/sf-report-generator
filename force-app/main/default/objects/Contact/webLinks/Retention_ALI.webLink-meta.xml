@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Retention_ALI</fullName>
+    <availability>online</availability>
+    <description>/a01/e?retURL=/{!Contact.Id}&amp;CF00N9000000CD44q_lkid={!Contact.Id}&amp;CF00N9000000CD44q={!Contact.Name}&amp;RecordType={!Contact.CallLineRecordTypeID__c}&amp;00N9000000CD451={!Contact.Policy_No_ALI__c}&amp;00N9000000CD44r={!Contact.MobilePhone}&amp;00N0k000000w6jN={!Contact.Name}&amp;00N0k000000wN2a={!Contact.Insured_Name__c}&amp;00N9000000CD44s={!Contact.Entity__c}&amp;00N9000000E3Wbz={!Contact.HomePhone}&amp;00N9000000E3Wc2={!Contact.Phone}&amp;00N6F00000EINBA=Conservation&amp;00N9000000E3Wbu=Conservation&amp;00N9000000E3Wbv=Retain%20Redemption&amp;00N6F00000EINBD=Retain%20Redemption&amp;ent=01I90000001qWQ9</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Retention ALI</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)} 
+
+var urlRequest = &quot;/a01/e?retURL=/{!Contact.Id}&amp;CF00N9000000CD44q_lkid={!Contact.Id}&amp;CF00N9000000CD44q={!Contact.Name}&amp;RecordType={!Contact.CallLineRecordTypeID__c}&amp;00N9000000CD451={!Contact.Policy_No_ALI__c}&amp;00N9000000CD44r={!Contact.MobilePhone}&amp;00N0k000000w6jN={!Contact.Name}&amp;00N0k000000wN2a={!Contact.Insured_Name__c}&amp;CF00N9000000E3WuM_lkid={!$User.Id}&amp;CF00N9000000E3WuM={!$User.FirstName}%20{!$User.LastName}&amp;00N9000000CD44s={!Contact.Entity__c}&amp;00N9000000E3Wbz={!Contact.HomePhone}&amp;00N9000000E3Wc2={!Contact.Phone}&amp;00N6F00000EINBA=Conservation&amp;00N9000000E3Wbu=Conservation&amp;00N9000000E3Wbv=Retain%20Redemption&amp;00N6F00000EINBD=Retain%20Redemption&amp;ent=01I90000001qWQ9&quot;; 
+
+if (sforce.console.isInConsole()) { 
+var focusedPrimaryTabId, allPrimaryTabIds; 
+(function (c) { 
+&quot;use strict&quot;; 
+
+c.getFocusedPrimaryTabId(function (result) { 
+focusedPrimaryTabId = result.id; 
+}); 
+c.getPrimaryTabIds(function (result) { 
+allPrimaryTabIds = result.ids; 
+alert(&apos;test : &apos;+allPrimaryTabIds); 
+}); 
+})(sforce.console); 
+
+sforce.console.openSubtab(focusedPrimaryTabId, urlRequest, true, &apos;Create New Request&apos;, null,null, &apos;contactrequesttab&apos;); 
+sforce.console.focusSubtabByNameAndPrimaryTabId(&apos;contactrequesttab&apos;, focusedPrimaryTabId); 
+
+}else { 
+window.location.href = urlRequest; 
+}</url>
+</WebLink>

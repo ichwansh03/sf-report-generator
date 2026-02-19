@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inquiry_RecordTypeId_Keeper__c</fullName>
+    <description>-- 1 DESEMBER 2019 --
+IF(ISPICKVAL(Entity__c, &apos;ALI&apos;),&apos;0126F000001MIGNQA4&apos;,
+IF(ISPICKVAL(Entity__c, &apos;AGI&apos;),&apos;0126F0000026h75&apos;, 
+IF(ISPICKVAL($User.Entity__c, &apos;AFI&apos;),&apos;01290000000mOgZ&apos;, 
+IF(ISPICKVAL($User.Entity__c, &apos;AMFS&apos;),&apos;01290000000msDX&apos;, 
+&apos;01290000000msDc&apos;) ) ) )</description>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Entity__c, &apos;ALI&apos;),&apos;0126F000001MIGNQA4&apos;,
+IF(ISPICKVAL(Entity__c, &apos;AGI&apos;) &amp;&amp; LEFT( Policy_No__c , 1) == &apos;G&apos; ,&apos;0126F0000026h75&apos;,
+IF(ISPICKVAL(Entity__c, &apos;AGI&apos;),&apos;01290000000msDc&apos;,
+IF(ISPICKVAL(Entity__c, &apos;AFI&apos;),&apos;01290000000mOgZ&apos;,
+IF(ISPICKVAL(Entity__c, &apos;AMFS&apos;),&apos;01290000000msDX&apos;,
+&apos;01290000000msDc&apos;) ) ) ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Inquiry RecordTypeId Keeper</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_AMFS_Cant_Change_Call_Status</fullName>
+    <active>true</active>
+    <errorConditionFormula>CONTAINS(RecordType.Name, &apos;Collection AMFS&apos;) &amp;&amp;  $Profile.Name=&apos;Outbound Collection Agent-AMFS&apos;  &amp;&amp; ISCHANGED( Call_Status_Config__c) &amp;&amp; ISPICKVAL(PRIORVALUE(Status_has_call__c),&apos;Closed&apos;)</errorConditionFormula>
+    <errorMessage>Can&apos;t Edit Call Status if Previous Status Has Call is Closed..Please contact Supervisor!</errorMessage>
+</ValidationRule>

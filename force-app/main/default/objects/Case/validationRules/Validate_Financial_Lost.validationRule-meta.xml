@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Financial_Lost</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF(
+AND(ISPICKVAL(Type, &quot;Complaint&quot;), 
+$Profile.Name = &apos;CMU-AFI&apos; || $Profile.Name = &apos;CMU A-AMFS&apos; || $Profile.Name = &apos;CMU B-AMFS&apos; || $Profile.Name = &apos;CMU C-AMFS&apos; || $Profile.Name = &apos;CMU D-AMFS&apos; || $Profile.Name = &apos;CMU E-AMFS&apos; || $Profile.Name = &apos;CMU-MAGI&apos; || $Profile.Name = &apos;SPV CMU-AFI&apos; || $Profile.Name = &apos;SPV CMU-AMFS&apos; || $Profile.Name = &apos;SPV CMU-MAGI&apos; || $Profile.Name = &apos;Desk Control AFI&apos; || $Profile.Name = &apos;Desk Control AMFS&apos; || $Profile.Name = &apos;Desk Control MAGI&apos;, ISBLANK(Financial_Lost__c)),
+true, false)</errorConditionFormula>
+    <errorDisplayField>Financial_Lost__c</errorDisplayField>
+    <errorMessage>This field cannot be empty!</errorMessage>
+</ValidationRule>

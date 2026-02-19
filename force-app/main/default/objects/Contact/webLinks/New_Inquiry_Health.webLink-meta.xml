@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Inquiry_Health</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New Inquiry Health</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)} 
+
+/* 
+var urlInquiry = &quot;/500/e?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Inquiry_RecordTypeId_Keeper__c}&amp;cas5=Inquiry&amp;ent=Case&quot;; 
+*/ 
+
+var urlInquiry = &quot;/apex/CaseInquiryContact_AGI?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Inquiry_RecordTypeId_Keeper__c}&amp;cas5=Inquiry&amp;firstLoad=new&amp;entity={!Contact.Entity__c}&amp;formentity=AGI&quot;; 
+
+if (sforce.console.isInConsole()) { 
+var focusedPrimaryTabId, allPrimaryTabIds; 
+(function (c) { 
+&quot;use strict&quot;; 
+
+c.getFocusedPrimaryTabId(function (result) { 
+focusedPrimaryTabId = result.id; 
+}); 
+c.getPrimaryTabIds(function (result) { 
+allPrimaryTabIds = result.ids; 
+}); 
+})(sforce.console); 
+
+sforce.console.openSubtab(focusedPrimaryTabId, urlInquiry, true, &apos;Create New Inquiry&apos;, null,null, &apos;contactinquirytab&apos;); 
+sforce.console.focusSubtabByNameAndPrimaryTabId(&apos;contactinquirytab&apos;, focusedPrimaryTabId); 
+
+
+}else { 
+window.location.href = urlInquiry; 
+}</url>
+</WebLink>

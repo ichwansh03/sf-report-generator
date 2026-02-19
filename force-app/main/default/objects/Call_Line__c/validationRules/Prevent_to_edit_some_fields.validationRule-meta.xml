@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_to_edit_some_fields</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF( !Is_Allowed__c,   
+AND(NOT(AND($Profile.Name = &quot;Supervisor Outbound-AFI&quot;, $Profile.Name = &quot;Supervisor Outbound-AFI-Plus&quot;, $Profile.Name = &quot;Supervisor-AMFS&quot;, $Profile.Name = &quot;Supervisor-MAGI&quot;, $Profile.Name = &quot;System Administrator&quot;)),OR(PRIORVALUE( Contact__c )&lt;&gt; Contact__c, PRIORVALUE(  Home_Phone__c  )&lt;&gt; Home_Phone__c, 
+PRIORVALUE(  Phone__c )&lt;&gt; Phone__c, 
+PRIORVALUE(   Policy_No__c  )&lt;&gt; Policy_No__c  )), False)</errorConditionFormula>
+    <errorMessage>You cannot change value of these fields : Contact, Policy No, Phone, Mobile Phone, Home Phone and Campaign.</errorMessage>
+</ValidationRule>

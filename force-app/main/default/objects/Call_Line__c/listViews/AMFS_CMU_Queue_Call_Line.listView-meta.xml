@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AMFS_CMU_Queue_Call_Line</fullName>
+    <filterScope>Queue</filterScope>
+    <label>AMFS - CMU Queue</label>
+    <queue>AMFS_CMU_Queue</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

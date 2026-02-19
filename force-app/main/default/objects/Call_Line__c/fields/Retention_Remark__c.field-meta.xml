@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Retention_Remark__c</fullName>
+    <label>Retention - Remark</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Blm FC-Gagal Debet</fullName>
+                <default>false</default>
+                <label>Blm FC-Gagal Debet</label>
+            </value>
+            <value>
+                <fullName>Create Polis Baru</fullName>
+                <default>false</default>
+                <label>Create Polis Baru</label>
+            </value>
+            <value>
+                <fullName>Hold Billing</fullName>
+                <default>false</default>
+                <label>Hold Billing</label>
+            </value>
+            <value>
+                <fullName>Tdk FC-Pending</fullName>
+                <default>false</default>
+                <label>Tdk FC-Pending</label>
+            </value>
+            <value>
+                <fullName>Tetap Aktif</fullName>
+                <default>false</default>
+                <label>Tetap Aktif</label>
+            </value>
+            <value>
+                <fullName>Tetap Aktif Downgrade</fullName>
+                <default>false</default>
+                <label>Tetap Aktif Downgrade</label>
+            </value>
+            <value>
+                <fullName>Tetap Aktif Removed TT</fullName>
+                <default>false</default>
+                <label>Tetap Aktif Removed TT</label>
+            </value>
+            <value>
+                <fullName>Tetap Aktif Upgrade</fullName>
+                <default>false</default>
+                <label>Tetap Aktif Upgrade</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

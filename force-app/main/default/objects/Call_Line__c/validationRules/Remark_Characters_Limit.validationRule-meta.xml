@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Remark_Characters_Limit</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+  ISPICKVAL(Case_Type__c, &quot;Teleclaim&quot;),
+  ISPICKVAL(Entity__c, &quot;AMFS&quot;),
+  OR(
+    LEN(Call_Remarks__c) &gt;= 8000,
+    LEN(Claim_Remark__c) &gt;= 8000
+  )
+)</errorConditionFormula>
+    <errorMessage>Remarks or claim remark should be less than 8000 characters</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Count_Keterangan_Data_KYC__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( OR(ISPICKVAL(Jawaban_Nama_PP_TT__c, &apos;Tidak&apos;), ISPICKVAL(Jawaban_DOB__c, &apos;Tidak&apos;), ISPICKVAL(Jawaban_Alamat__c, &apos;Tidak&apos;), ISPICKVAL(Jawaban_Telepon__c, &apos;Tidak&apos;), ISPICKVAL(Jawaban_Email__c, &apos;Tidak&apos;)) , 1, 0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Count Keterangan Data KYC</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

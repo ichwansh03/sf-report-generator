@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Activity_Config__c</fullName>
+    <label>Activity Config</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Confirmation</fullName>
+                <default>false</default>
+                <label>Confirmation</label>
+            </value>
+            <value>
+                <fullName>Conservation</fullName>
+                <default>false</default>
+                <label>Conservation</label>
+            </value>
+            <value>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+                <label>Renewal</label>
+            </value>
+            <value>
+                <fullName>Survey</fullName>
+                <default>false</default>
+                <label>Survey</label>
+            </value>
+            <value>
+                <fullName>Callback</fullName>
+                <default>false</default>
+                <label>Callback</label>
+            </value>
+            <value>
+                <fullName>Survey Feedback</fullName>
+                <default>false</default>
+                <label>Survey Feedback</label>
+            </value>
+            <value>
+                <fullName>Complaint Case</fullName>
+                <default>false</default>
+                <label>Complaint Case</label>
+            </value>
+            <value>
+                <fullName>Teleservices</fullName>
+                <default>false</default>
+                <label>Teleservices</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

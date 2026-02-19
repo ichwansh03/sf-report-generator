@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WelcomeCall_Reason_Detail_Status__c</fullName>
+    <label>Reason Detail Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>WelcomeCall_Detail_Status__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Ahli waris tidak sesuai keinginan nasabah</fullName>
+                <color>#33FF33</color>
+                <default>false</default>
+                <label>Ahli waris tidak sesuai keinginan nasabah</label>
+            </value>
+            <value>
+                <fullName>Besaran atau masa pembayaran premi</fullName>
+                <default>false</default>
+                <label>Besaran atau masa pembayaran premi</label>
+            </value>
+            <value>
+                <fullName>Biaya-biaya Asuransi</fullName>
+                <default>false</default>
+                <label>Biaya-biaya Asuransi</label>
+            </value>
+            <value>
+                <fullName>Data polis tidak sesuai keinginan nasabah</fullName>
+                <color>#000099</color>
+                <default>false</default>
+                <label>Data polis tidak sesuai keinginan nasabah</label>
+            </value>
+            <value>
+                <fullName>FA menjelaskan jika produk yang dibeli adalah produk tabungan/deposito/reksadana/tabungan haji/produk bank BUKAN produk Asuransi</fullName>
+                <default>false</default>
+                <label>FA menjelaskan jika produk yang dibeli adalah produk tabungan/deposito/reksadana/tabungan haji/produk bank BUKAN produk Asuransi</label>
+            </value>
+            <value>
+                <fullName>Fluktuasi nilai Investasi</fullName>
+                <default>false</default>
+                <label>Fluktuasi nilai Investasi</label>
+            </value>
+            <value>
+                <fullName>Informasi tentang investasi yang fluktuatif dan tidak dijamin</fullName>
+                <color>#33CC00</color>
+                <default>false</default>
+                <label>Informasi tentang investasi yang fluktuatif dan tidak dijamin</label>
+            </value>
+            <value>
+                <fullName>Karena nasabah belum terinformasi akan adanya proses welcome call</fullName>
+                <default>false</default>
+                <label>Karena nasabah belum terinformasi akan adanya proses welcome call</label>
+            </value>
+            <value>
+                <fullName>Klausal kegagalan pendebitan</fullName>
+                <color>#A845DC</color>
+                <default>false</default>
+                <label>Klausal kegagalan pendebitan</label>
+            </value>
+            <value>
+                <fullName>Kondisi pemilihan masa tunggu pada produk PAYDI</fullName>
+                <default>false</default>
+                <label>Kondisi pemilihan masa tunggu pada produk PAYDI</label>
+            </value>
+            <value>
+                <fullName>Konfirmasi mengenai penalty (MEP)</fullName>
+                <color>#FF9900</color>
+                <default>false</default>
+                <label>Konfirmasi mengenai penalty (MEP)</label>
+            </value>
+            <value>
+                <fullName>Manfaat produk</fullName>
+                <default>false</default>
+                <label>Manfaat produk</label>
+            </value>
+            <value>
+                <fullName>Masa mempelajari atau membatalkan polis/cooling off</fullName>
+                <default>false</default>
+                <label>Masa mempelajari atau membatalkan polis/cooling off</label>
+            </value>
+            <value>
+                <fullName>Memastikan nasabah membaca kembali aplikasi sebelum di tandatangani</fullName>
+                <color>#FF0000</color>
+                <default>false</default>
+                <label>Memastikan nasabah membaca kembali aplikasi sebelum di tandatangani</label>
+            </value>
+            <value>
+                <fullName>Nasabah hanya ingin sekali bayar</fullName>
+                <color>#33FFFF</color>
+                <default>false</default>
+                <label>Nasabah hanya ingin sekali bayar</label>
+            </value>
+            <value>
+                <fullName>Nasabah ingin deposito / tabungan / hanya investasi</fullName>
+                <color>#F3D904</color>
+                <default>false</default>
+                <label>Nasabah ingin deposito / tabungan / hanya investasi</label>
+            </value>
+            <value>
+                <fullName>Nasabah ingin produk lain</fullName>
+                <color>#A53711</color>
+                <default>false</default>
+                <label>Nasabah ingin produk lain</label>
+            </value>
+            <value>
+                <fullName>Nasabah merasa pengembalian premi nya terlalu lama</fullName>
+                <default>false</default>
+                <label>Nasabah merasa pengembalian premi nya terlalu lama</label>
+            </value>
+            <value>
+                <fullName>Nasabah Pengajuan penutupan polis di Cabang</fullName>
+                <default>false</default>
+                <label>Nasabah Pengajuan penutupan polis di Cabang</label>
+            </value>
+            <value>
+                <fullName>Nominal premi dan cara bayar</fullName>
+                <color>#0B6FCE</color>
+                <default>false</default>
+                <label>Nominal premi dan cara bayar</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <color>#FF6666</color>
+                <default>false</default>
+                <label>Others</label>
+            </value>
+            <value>
+                <fullName>Pengajuan polisnya</fullName>
+                <default>false</default>
+                <label>Pengajuan polisnya</label>
+            </value>
+            <value>
+                <fullName>Penjelasan pre-existing condition</fullName>
+                <default>false</default>
+                <label>Penjelasan pre-existing condition</label>
+            </value>
+            <value>
+                <fullName>Produk yang dibeli adalah produk asuransi bukan tabungan/deposito/reksadana/tabungan haji/produk bank lainnya</fullName>
+                <default>false</default>
+                <label>Produk yang dibeli adalah produk asuransi bukan tabungan/deposito/reksadana/tabungan haji/produk bank lainnya</label>
+            </value>
+            <value>
+                <fullName>Tidak dijelaskan biaya asuransi</fullName>
+                <color>#666666</color>
+                <default>false</default>
+                <label>Tidak dijelaskan biaya asuransi</label>
+            </value>
+            <value>
+                <fullName>Tidak dijelaskan fluktuasi nilai investasi</fullName>
+                <color>#CC33CC</color>
+                <default>false</default>
+                <label>Tidak dijelaskan fluktuasi nilai investasi</label>
+            </value>
+            <value>
+                <fullName>Tidak dijelaskan masa pembayaran premi</fullName>
+                <color>#F96FB7</color>
+                <default>false</default>
+                <label>Tidak dijelaskan masa pembayaran premi</label>
+            </value>
+            <value>
+                <fullName>Tidak dijelaskan tentang biaya penalty</fullName>
+                <color>#000000</color>
+                <default>false</default>
+                <label>Tidak dijelaskan tentang biaya penalty</label>
+            </value>
+            <value>
+                <fullName>Tidak dijelaskan tentang manfaat produk</fullName>
+                <default>false</default>
+                <label>Tidak dijelaskan tentang manfaat produk</label>
+            </value>
+            <value>
+                <fullName>Tidak merasa bertemu FA dan menerima penjelasan mengenai product asuransi</fullName>
+                <default>false</default>
+                <label>Tidak merasa bertemu FA dan menerima penjelasan mengenai product asuransi</label>
+            </value>
+            <value>
+                <fullName>Tidak merasa membeli/mengajukan/menyetujui/menandatangani polis</fullName>
+                <default>false</default>
+                <label>Tidak merasa membeli/mengajukan/menyetujui/menandatangani polis</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Besaran atau masa pembayaran premi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Biaya-biaya Asuransi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Fluktuasi nilai Investasi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Karena nasabah belum terinformasi akan adanya proses welcome call</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Kondisi pemilihan masa tunggu pada produk PAYDI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Manfaat produk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Masa mempelajari atau membatalkan polis/cooling off</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Nasabah Pengajuan penutupan polis di Cabang</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Pengajuan polisnya</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Penjelasan pre-existing condition</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Produk yang dibeli adalah produk asuransi bukan tabungan/deposito/reksadana/tabungan haji/produk bank lainnya</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Tidak merasa bertemu FA dan menerima penjelasan mengenai product asuransi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FA perlu menjelaskan kembali</controllingFieldValue>
+            <valueName>Tidak merasa membeli/mengajukan/menyetujui/menandatangani polis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SPRO - Produk tidak sesuai</controllingFieldValue>
+            <controllingFieldValue>Produk Tidak Sesuai</controllingFieldValue>
+            <valueName>Nasabah hanya ingin sekali bayar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SPRO - Produk tidak sesuai</controllingFieldValue>
+            <controllingFieldValue>Produk Tidak Sesuai</controllingFieldValue>
+            <valueName>Nasabah ingin deposito / tabungan / hanya investasi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SPRO - Produk tidak sesuai</controllingFieldValue>
+            <controllingFieldValue>Produk Tidak Sesuai</controllingFieldValue>
+            <valueName>Nasabah ingin produk lain</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SPRO - Produk tidak sesuai</controllingFieldValue>
+            <valueName>Nasabah merasa pengembalian premi nya terlalu lama</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SAGT - Kecewa dengan Service FA</controllingFieldValue>
+            <valueName>FA menjelaskan jika produk yang dibeli adalah produk tabungan/deposito/reksadana/tabungan haji/produk bank BUKAN produk Asuransi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SAGT - Kecewa dengan Service FA</controllingFieldValue>
+            <controllingFieldValue>FA Service</controllingFieldValue>
+            <valueName>Tidak dijelaskan biaya asuransi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SAGT - Kecewa dengan Service FA</controllingFieldValue>
+            <controllingFieldValue>FA Service</controllingFieldValue>
+            <valueName>Tidak dijelaskan fluktuasi nilai investasi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SAGT - Kecewa dengan Service FA</controllingFieldValue>
+            <controllingFieldValue>FA Service</controllingFieldValue>
+            <valueName>Tidak dijelaskan masa pembayaran premi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SAGT - Kecewa dengan Service FA</controllingFieldValue>
+            <controllingFieldValue>FA Service</controllingFieldValue>
+            <valueName>Tidak dijelaskan tentang biaya penalty</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SAGT - Kecewa dengan Service FA</controllingFieldValue>
+            <valueName>Tidak dijelaskan tentang manfaat produk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Customer wants to meet FA</controllingFieldValue>
+            <valueName>Informasi tentang investasi yang fluktuatif dan tidak dijamin</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Customer wants to meet FA</controllingFieldValue>
+            <valueName>Klausal kegagalan pendebitan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Customer wants to meet FA</controllingFieldValue>
+            <valueName>Konfirmasi mengenai penalty (MEP)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Customer wants to meet FA</controllingFieldValue>
+            <valueName>Memastikan nasabah membaca kembali aplikasi sebelum di tandatangani</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Customer wants to meet FA</controllingFieldValue>
+            <valueName>Nominal premi dan cara bayar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Customer wants to meet FA</controllingFieldValue>
+            <controllingFieldValue>Produk Tidak Sesuai</controllingFieldValue>
+            <controllingFieldValue>FA Service</controllingFieldValue>
+            <controllingFieldValue>Polis tidak sesuai</controllingFieldValue>
+            <valueName>Others</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Polis tidak sesuai</controllingFieldValue>
+            <valueName>Ahli waris tidak sesuai keinginan nasabah</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Polis tidak sesuai</controllingFieldValue>
+            <valueName>Data polis tidak sesuai keinginan nasabah</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

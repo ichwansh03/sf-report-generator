@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Changes</fullName>
+    <availability>online</availability>
+    <description>Go to DMTM webpage</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Changes</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)} 
+
+var urlInquiry = &quot;https://wrdsql01/dmtm-ali/POS/ChangePolicy.aspx?PolicyId={!Contact.Policy_No_ALI__c}&amp;Caller=ccc&amp;isframe=1&quot;; 
+
+//var urlInquiry = &quot;https://10.47.17.14/dmtm-ali/POS/ChangePolicy.aspx?PolicyId={!Contact.Policy_No_ALI__c}&amp;Caller=ccc&amp;isframe=1&quot;; 
+
+//var urlInquiry = &quot;https://10.47.17.14/dmtm-ali/POS/ChangePolicy.aspx?PolicyId={!Contact.Policy_No__c}&amp;Caller=ccc&amp;isframe=1&quot;; 
+
+//var urlInquiry = &quot;http://www.google.co.id&quot;; 
+
+
+if (sforce.console.isInConsole()) { 
+var focusedPrimaryTabId, allPrimaryTabIds; 
+(function (c) { 
+&quot;use strict&quot;; 
+
+c.getFocusedPrimaryTabId(function (result) { 
+focusedPrimaryTabId = result.id; 
+}); 
+c.getPrimaryTabIds(function (result) { 
+allPrimaryTabIds = result.ids; 
+}); 
+})(sforce.console); 
+
+sforce.console.openSubtab(focusedPrimaryTabId, urlInquiry, true, &apos;DMTM Changes&apos;, null,null, &apos;dmtmchanges&apos;); 
+sforce.console.focusSubtabByNameAndPrimaryTabId(&apos;dmtmchanges&apos;, focusedPrimaryTabId); 
+
+
+}else { 
+/*
+window.location.href = urlInquiry; 
+window.location.open(urlInquiry,&quot;&quot;);
+*/
+//window.location.href = urlInquiry; 
+window.open(urlInquiry,&apos;_blank&apos;);
+
+}</url>
+</WebLink>

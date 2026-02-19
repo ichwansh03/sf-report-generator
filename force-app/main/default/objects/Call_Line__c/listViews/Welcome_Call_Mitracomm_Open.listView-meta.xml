@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Welcome_Call_Mitracomm_Open</fullName>
+    <booleanFilter>1 AND 2 AND (3 OR 4) AND 5</booleanFilter>
+    <columns>NAME</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Policy_No__c</columns>
+    <columns>Contact__c</columns>
+    <columns>WelcomeCall_Criteria__c</columns>
+    <columns>WelcomeCall_Schedule_Date__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Formula_Product__c</columns>
+    <columns>WelcomeCall_Call_Line_Status__c</columns>
+    <columns>OWNER.LAST_NAME</columns>
+    <columns>Verification__c</columns>
+    <columns>WelcomeCall_Detail_Status__c</columns>
+    <columns>APE_Contact__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Call_Line__c.Welcome_Call</value>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>greaterOrEqual</operation>
+        <value>LAST_90_DAYS</value>
+    </filters>
+    <filters>
+        <field>Owner__c</field>
+        <operation>equals</operation>
+        <value>EKA SETYANINGSIH,Hamidah,Regina Fricilla,Dea Oktaviani,Fajar Prakoso</value>
+    </filters>
+    <filters>
+        <field>Owner__c</field>
+        <operation>equals</operation>
+        <value>Triananda Amnesti,DESI DEVALUASI,Nabilah Chairunisa,Sri Wahyuni</value>
+    </filters>
+    <filters>
+        <field>WelcomeCall_Call_Line_Status__c</field>
+        <operation>equals</operation>
+        <value>Open</value>
+    </filters>
+    <label>Welcome Call Mitracomm Open</label>
+    <language>en_US</language>
+    <sharedTo>
+        <roleAndSubordinatesInternal>AMFS_CEO</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

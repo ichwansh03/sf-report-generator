@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ALI_Status_Redebet_Change_must_filled</fullName>
+    <active>true</active>
+    <errorConditionFormula>TEXT(Entity__c) == &apos;ALI&apos; &amp;&amp;
+TEXT(Reason_Status_Config__c) == &apos;Redebet&apos; &amp;&amp;  ISBLANK(TEXT(Changes__c))</errorConditionFormula>
+    <errorDisplayField>Changes__c</errorDisplayField>
+    <errorMessage>Change must filled</errorMessage>
+</ValidationRule>

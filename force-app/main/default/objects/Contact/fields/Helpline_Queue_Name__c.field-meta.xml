@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Helpline_Queue_Name__c</fullName>
+    <label>Helpline Queue Name</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AFI - Email Agent VIP Queue</fullName>
+                <default>false</default>
+                <label>AFI - Email Agent VIP Queue</label>
+            </value>
+            <value>
+                <fullName>AFI - Email Standart Queue</fullName>
+                <default>false</default>
+                <label>AFI - Email Standart Queue</label>
+            </value>
+            <value>
+                <fullName>AFI - Email Blacklist Queue</fullName>
+                <default>false</default>
+                <label>AFI - Email Blacklist Queue</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

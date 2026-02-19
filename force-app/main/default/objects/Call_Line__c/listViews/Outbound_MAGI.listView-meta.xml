@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outbound_MAGI</fullName>
+    <columns>NAME</columns>
+    <columns>Activity__c</columns>
+    <columns>Agent__c</columns>
+    <columns>Call_Date__c</columns>
+    <columns>Contact__c</columns>
+    <columns>Contact_Email__c</columns>
+    <columns>Home_Phone__c</columns>
+    <columns>Contacted_Number__c</columns>
+    <columns>Phone__c</columns>
+    <columns>Policy_No__c</columns>
+    <columns>Verification__c</columns>
+    <columns>Call_Remarks__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Agent__c</field>
+        <operation>contains</operation>
+        <value>indah</value>
+    </filters>
+    <filters>
+        <field>Agent__c</field>
+        <operation>contains</operation>
+        <value>erma</value>
+    </filters>
+    <label>Outbound MAGI</label>
+</ListView>

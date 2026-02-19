@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_E2C_OH_Department</fullName>
+    <active>true</active>
+    <description>OH wajib isi Department</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(Status),
+  $RecordType.DeveloperName = &quot;AMFSEmailtoCase&quot;,
+  AMFS_SLA_Target__c = &quot;OH&quot;,
+  ISBLANK(TEXT(Department__c))
+)</errorConditionFormula>
+    <errorDisplayField>Department__c</errorDisplayField>
+    <errorMessage>Mohon untuk input field Department!</errorMessage>
+</ValidationRule>

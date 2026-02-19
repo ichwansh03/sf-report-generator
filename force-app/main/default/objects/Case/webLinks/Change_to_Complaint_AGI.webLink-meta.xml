@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Change_to_Complaint_AGI</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Change to Complaint AGI</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)} 
+
+var urlCHS = &quot;/apex/CaseComplaintLayout_AGI?retURL=/{!Case.Id}&amp;cas3={!Case.ContactId}&amp;cas4={!Case.AccountId}&amp;RecordType={!Case.Complaint_Recordtype_ID__c}&amp;cas5=Complaint&amp;cas11=Email&amp;cas14={!Case.Subject}&amp;ent=Case&quot; 
+
+/* 
+if (sforce.console.isInConsole()) { 
+sforce.console.getEnclosingTabId(function(enclosingResult){ 
+sforce.console.getEnclosingPrimaryTabId(function(){ 
+sforce.console.openPrimaryTab(null, urlCHS, true, &apos;Create New Complaint&apos;, null); 
+}); 
+}); 
+}else { 
+window.location.href = urlCHS; 
+} 
+*/ 
+
+
+var caseList = sforce.connection.query(&quot;SELECT Id, ContactId FROM Case WHERE id =&apos;{!Case.Id}&apos;&quot;); 
+var records = caseList.getArray(&quot;records&quot;); 
+
+for (var i=0; i&lt; records.length; i++) { 
+var conId = records[i].ContactId ; 
+} 
+
+if(conId==null){ 
+alert(&apos;Contact Name tidak boleh kosong!&apos;); 
+}else{ 
+
+if (sforce.console.isInConsole()) { 
+sforce.console.getEnclosingTabId(function(enclosingResult){ 
+sforce.console.getEnclosingPrimaryTabId(function(){ 
+sforce.console.openPrimaryTab(null, urlCHS, true, &apos;Change To Complaint&apos;, null); 
+}); 
+}); 
+
+}else { 
+window.location.href = urlCHS; 
+} 
+
+}</url>
+</WebLink>

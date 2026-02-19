@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compensation_Payment__c</fullName>
+    <label>Compensation Payment</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Invalid_Paid__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Business Consideration</fullName>
+                <default>false</default>
+                <label>Business Consideration</label>
+            </value>
+            <value>
+                <fullName>Sensitive Customer</fullName>
+                <default>false</default>
+                <label>Sensitive Customer</label>
+            </value>
+            <value>
+                <fullName>Build Relationship with Bank Mandiri</fullName>
+                <default>false</default>
+                <label>Build Relationship with Bank Mandiri</label>
+            </value>
+            <value>
+                <fullName>Other (Freetext)</fullName>
+                <default>false</default>
+                <label>Other (Freetext)</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Compensation Payment</controllingFieldValue>
+            <valueName>Business Consideration</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compensation Payment</controllingFieldValue>
+            <valueName>Sensitive Customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compensation Payment</controllingFieldValue>
+            <valueName>Build Relationship with Bank Mandiri</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compensation Payment</controllingFieldValue>
+            <valueName>Other (Freetext)</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

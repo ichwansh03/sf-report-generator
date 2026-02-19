@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ALI_Case_Source_Filled</fullName>
+    <columns>CASES.SOURCE</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.SOURCE</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>Entity_Backup__c</field>
+        <operation>equals</operation>
+        <value>ALI</value>
+    </filters>
+    <label>ALI Case Source Filled</label>
+    <language>en_US</language>
+    <sharedTo>
+        <roleAndSubordinatesInternal>CEO_ALI</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

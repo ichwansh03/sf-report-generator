@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Call_Line_RecordTypeID__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Entity__c, &apos;AGI&apos;),
+IF(ISPICKVAL(Case_Type__c , &apos;Welcome Call&apos;),&apos;0126F0000026h5gQAA&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;Complaint Follow Up&apos;),&apos;0126F0000026h5YQAQ&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;SMS Pull Confirmation&apos;),&apos;0126F0000026h5bQAA&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Claim&apos;),&apos;0126F0000026h5XQAQ&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Update Data&apos;),&apos;0126F0000026h5fQAA&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Renewal&apos;),&apos;0126F0000026h5aQAA&apos;,
+IF(ISPICKVAL(Activity__c , &apos;Survey - I Ask&apos;),&apos;0126F0000026h5cQAA&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Survey - I Buy&apos;),&apos;0126F0000026h5dQAA&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Survey - I Claim&apos;),&apos;0126F0000026h5eQAA&apos;,
+&apos;0126F0000026h5ZQAQ&apos;))))))))),
+IF(ISPICKVAL(Entity__c, &apos;ALI&apos;),
+IF(ISPICKVAL(Case_Type__c , &apos;Welcome Call&apos;),&apos;0126F000001MIGAQA4&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;Reinstate&apos;),&apos;0126F000001MIGBQA4&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Premium FU&apos;),&apos;0126F000001MIGCQA4&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Claim&apos;),&apos;0126F000001MIGDQA4&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Update Data&apos;),&apos;0126F000001MIGEQA4&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;NCB&apos;),&apos;0126F000001MIGFQA4&apos;,
+IF(ISPICKVAL(Activity__c , &apos;Survey Feedback&apos;),&apos;0126F000001MIGGQA4&apos;,
+IF(ISPICKVAL(Case_Type__c , &apos;Collection Task&apos;),&apos;0126F000001MIGHQA4&apos;,
+&apos;0126F000001MIG8QAO&apos;)))))))),
+IF(ISPICKVAL(Entity__c, &apos;AMFS&apos;),
+IF(ISPICKVAL(Case_Type__c, &apos;Renewal Reminder&apos;) || ISPICKVAL(Case_Type__c, &apos;TRO Project&apos;) || CONTAINS(TEXT(Case_Type__c),&apos;Others&apos;),&apos;0120K000000q1QNQAY&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;Lapse Konven&apos;),&apos;0120K000000q1QOQAY&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;MKP&apos;),&apos;0120K000000q1QPQAY&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;Cuti Premi&apos;),&apos;0120K000000q1QQQAY&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;RTU&apos;),&apos;0120K000000q1QRQAY&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;Redemption Konven&apos;) || ISPICKVAL(Case_Type__c, &apos;Withdrawal&apos;),&apos;0120K000000q1QSQAY&apos;,
+IF(ISPICKVAL(Case_Type__c, &apos;Lapse TM&apos;),&apos;0120K000000q1QTQAY&apos;,&apos;0120K000000q1QUQAY&apos;))))))),
+&apos;0126F000001MIG8QAO&apos;)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Call Line RecordTypeID</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

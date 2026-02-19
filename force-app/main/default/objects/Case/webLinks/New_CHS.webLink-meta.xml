@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_CHS</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New CHS</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/support/console/26.0/integration.js&quot;)} 
+
+var urlCHS = &quot;/apex/CaseComplaintLayoutContact?retURL=/{!Case.Id}&amp;def_contact_id={!Case.ContactId}&amp;def_account_id={!Case.AccountId}&amp;RecordType={!Case.Complaint_Recordtype_ID__c}&amp;cas5=Complaint&amp;ent=Case&amp;cas11=contact&amp;idcase={!Case.Id}&quot;; 
+
+
+var parent = &quot;{!Case.ParentId}&quot;;
+
+if(parent!= &quot;&quot;){
+alert(&quot;Cannot create case from child&quot;);
+}
+else{
+if (sforce.console.isInConsole()) { 
+sforce.console.getEnclosingTabId(function(enclosingResult){ 
+sforce.console.getEnclosingPrimaryTabId(function(){ 
+sforce.console.openPrimaryTab(null, urlCHS, true, &apos;Create New CHS&apos;, null); 
+}); 
+}); 
+
+}else { 
+window.location.href = urlCHS; 
+}
+}</url>
+</WebLink>

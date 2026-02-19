@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Welcome_Call_Change_Owner</fullName>
+    <active>false</active>
+    <description>Change Owner</description>
+    <errorConditionFormula>ISCHANGED( OwnerId ) &amp;&amp; 
+NOT(OR( $Profile.Name == &apos;System Administrator&apos;, $Profile.Name == &apos;Adminitrator Sistem&apos;, $Profile.Name = &apos;Supervisor-AMFS&apos;, $Profile.Name = &apos;Other Dept AMFS&apos;)) &amp;&amp;   RecordType.Name = &apos;Welcome Call&apos;</errorConditionFormula>
+    <errorMessage>Hanya Supervisor yang bisa melakukan &quot;Change Owner&quot;</errorMessage>
+</ValidationRule>

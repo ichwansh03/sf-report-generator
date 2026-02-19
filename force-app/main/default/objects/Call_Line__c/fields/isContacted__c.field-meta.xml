@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>isContacted__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; TEXT(Call_List__r.Case_Type_Config__c) != &apos;Redemption TM&apos;,Total_Approved__c+ Total_Not_Approved__c,IF(Call_List__r.RecordType.Name==&apos;Collection AMFS&apos;  &amp;&amp; TEXT(Call_List__r.Case_Type_Config__c) == &apos;Redemption TM&apos; &amp;&amp; (TEXT(Call_Status_Config__c)== &apos;Cancel&apos; || TEXT(Call_Status_Config__c)== &apos;Inforced&apos; || TEXT(Call_Status_Config__c)== &apos;Pending&apos;),1,IF( ISPICKVAL(Activity_Result__c , &apos;Contacted&apos;),1,0)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Contacted</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

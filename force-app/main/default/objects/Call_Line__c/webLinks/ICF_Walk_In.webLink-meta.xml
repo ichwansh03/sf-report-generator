@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ICF_Walk_In</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>ICF Walk In</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+// identify the record
+var o = new sforce.SObject(&quot;Contact&quot;);
+o.id = &quot;{!Call_Line__c.ContactId__c }&quot;;
+
+// check, apakah ada yang open, jika ada, tidak boleh create baru.
+var dresult = sforce.connection.query(&quot;Select Id, Survey_URL__c from Email_Sms_Log__c WHERE Contact__c = &apos;&quot;+&quot;{!Call_Line__c.ContactId__c }&quot;+&quot;&apos; and ICF_Walk_IN__c != &apos;&apos; and Survey_URL__c != &apos;&apos; order by CreatedDate Desc LIMIT 1&quot;);
+
+var drecords = dresult.getArray(&apos;records&apos;);
+
+if (drecords.length &gt; 0) {
+var result = drecords;
+
+//alert(&apos;URL : &apos;+ result[0].Survey_URL__c);
+window.open(result[0].Survey_URL__c);
+} else {
+alert(&apos;No ICF is currently available or ICF already filled.&apos;);
+}</url>
+</WebLink>

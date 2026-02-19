@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Count_Email_Respond_SPV_ALI__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( TEXT(Entity_Backup__c)==&apos;ALI&apos; &amp;&amp; TEXT(Origin )==&apos;Email&apos; &amp;&amp; CONTAINS(CreatedBy.Profile.Name , &apos;ALI&apos;) &amp;&amp; (CONTAINS(CreatedBy.Profile.Name , &apos;SPV&apos;) || CONTAINS(CreatedBy.Profile.Name , &apos;Supervisor&apos;)) ,1,0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Count Email Respond SPV ALI</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

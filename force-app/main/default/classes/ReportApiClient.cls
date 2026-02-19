@@ -23,7 +23,7 @@ public class ReportApiClient {
             );
         }
         
-        String endpoint = NAMED_CREDENTIAL + API_BASE_PATH + reportId + '?includeDetails=true';
+        String endpoint = NAMED_CREDENTIAL + API_BASE_PATH + reportId + '/describe';
         
         try {
             HttpResponse response = executeRequestWithRetry(endpoint);
@@ -79,14 +79,15 @@ public class ReportApiClient {
         req.setEndpoint(endpoint);
         req.setMethod('GET');
         req.setTimeout(TIMEOUT_MS);
-        
+        req.setHeader('Authorization', 'Bearer 00DfV000000z9pe!AQEAQOsydI6KJduLQSZ.Hmfy.TKFyaeVAZORB5x7TMCdpAG0pKEydKW1_kOcuhDKzItDXMpwfpppBupS4lgwQKa3tk9YB4TP');
         HttpResponse response;
         Exception lastException;
         
         for (Integer i = 0; i < MAX_RETRIES; i++) {
             try {
                 response = new Http().send(req);
-                
+                system.debug('response: '+response.getBody());
+                system.debug('status code: '+response.getStatusCode());
                 // Retry on transient failures (5xx errors)
                 if (response.getStatusCode() >= 500 && response.getStatusCode() < 600 && i < MAX_RETRIES - 1) {
                     Integer backoffMs = (Integer) Math.pow(2, i) * 100;

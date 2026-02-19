@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Collection_AMFS_Active</fullName>
+    <columns>NAME</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Activity__c</columns>
+    <columns>Case_Type_Config__c</columns>
+    <columns>Generated_Date__c</columns>
+    <columns>Expired_Date__c</columns>
+    <columns>IsExpired__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Call_List__c.Collection_AMFS</value>
+    </filters>
+    <filters>
+        <field>IsExpired__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Expired_Date__c</field>
+        <operation>greaterThan</operation>
+        <value>TODAY</value>
+    </filters>
+    <label>All Collection AMFS Active</label>
+    <language>en_US</language>
+    <sharedTo>
+        <role>AMFS_PIC_Collection</role>
+    </sharedTo>
+</ListView>

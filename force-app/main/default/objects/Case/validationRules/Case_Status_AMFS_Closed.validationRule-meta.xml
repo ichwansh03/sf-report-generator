@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case_Status_AMFS_Closed</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(  Entity__c == &apos;AMFS&apos;,  ISPICKVAL( Type , &apos;Complaint&apos;),
+AND( ISCHANGED( CHS_Status__c ) , OR (ISPICKVAL ( CHS_Status__c, &apos;Closed - Invalid&apos; ) , ISPICKVAL ( CHS_Status__c, &apos;Closed - Valid&apos; ) )  ),
+AND( ISCHANGED( Status ) , ISPICKVAL ( Status, &apos;Closed&apos; ) )  
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>Cannot closed case when request status &apos;Closed-Invalid&apos; or &apos;Closed-Valid&apos;</errorMessage>
+</ValidationRule>

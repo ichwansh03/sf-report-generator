@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AGI_Claim_Health_Analyst_1_Case</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Queue</filterScope>
+    <filters>
+        <field>OWNER_NAME</field>
+        <operation>contains</operation>
+        <value>AGI - Claim Health Analyst 1 Queue</value>
+    </filters>
+    <label>AGI - Claim Health Analyst 1 Queue</label>
+    <language>en_US</language>
+    <queue>AGI_Claim_Health_Analyst_1_Queue</queue>
+    <sharedTo>
+        <group>Group_Claim_Health_Anlys_1_AGI</group>
+    </sharedTo>
+</ListView>

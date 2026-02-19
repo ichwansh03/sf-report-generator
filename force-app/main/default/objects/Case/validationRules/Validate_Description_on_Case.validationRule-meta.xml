@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Description_on_Case</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ AND(
+  ISPICKVAL(Type, &quot;Complaint&quot;), 
+  !ISPICKVAL(Origin, &quot;Walk-In&quot;)
+ ),
+ Description  &lt;&gt;  &quot;&quot;  
+ &amp;&amp; Description  &lt;&gt; &quot;THIS SECTION SHOULD BE FILLED BY SYSTEM&quot;
+)</errorConditionFormula>
+    <errorDisplayField>Description</errorDisplayField>
+    <errorMessage>This Section Should Be Filled By System Only!</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_Case_Type_is_Null</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+Entity__c == &apos;AMFS&apos;,
+ISPICKVAL( Type , &apos;Request&apos;),
+ISPICKVAL ( Status, &apos;New&apos;),
+!ISPICKVAL ( Origin, &apos;Walk-In&apos; ),
+ISPICKVAL ( Case_Type__c , &apos;Request_POS_Redemption&apos; ),
+OR( ISPICKVAL(Case_Type_Reason__c, &apos;&apos;) , ISPICKVAL( Case_Type_Reason__c , &apos;--None--&apos;))
+)</errorConditionFormula>
+    <errorDisplayField>Case_Type_Reason__c</errorDisplayField>
+    <errorMessage>Reason belum dipilih!</errorMessage>
+</ValidationRule>

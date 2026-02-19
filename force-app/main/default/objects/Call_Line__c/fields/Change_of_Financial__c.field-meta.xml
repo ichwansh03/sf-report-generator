@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Change_of_Financial__c</fullName>
+    <label>Change of Financial</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Perubahan pendebetan dari Rek BM to Rek BM lain</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari Rek BM to Rek BM lain</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari Rek BM to CC BM</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari Rek BM to CC BM</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari Rek BM to CC non BM</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari Rek BM to CC non BM</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari CC BM to CC BM lain</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari CC BM to CC BM lain</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari CC BM to Rek BM</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari CC BM to Rek BM</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari CC BM to CC non BM</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari CC BM to CC non BM</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari CC non BM to CC non BM lain</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari CC non BM to CC non BM lain</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari CC non BM to Rek BM</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari CC non BM to Rek BM</label>
+            </value>
+            <value>
+                <fullName>Perubahan pendebetan dari CC non BM to CC BM</fullName>
+                <default>false</default>
+                <label>Perubahan pendebetan dari CC non BM to CC BM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

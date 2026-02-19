@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CHS_Status__c</fullName>
+    <label>Request Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>New</fullName>
+                <default>true</default>
+                <label>New</label>
+            </value>
+            <value>
+                <fullName>Incomplete Information</fullName>
+                <default>false</default>
+                <label>Incomplete Information</label>
+            </value>
+            <value>
+                <fullName>Revised</fullName>
+                <default>false</default>
+                <label>Revised</label>
+            </value>
+            <value>
+                <fullName>In Progress CMU</fullName>
+                <default>false</default>
+                <label>In Progress CMU</label>
+            </value>
+            <value>
+                <fullName>Assigned to Back Office</fullName>
+                <default>false</default>
+                <label>Assigned to Back Office</label>
+            </value>
+            <value>
+                <fullName>In Progress Back Office</fullName>
+                <default>false</default>
+                <label>In Progress Back Office</label>
+            </value>
+            <value>
+                <fullName>Resolved</fullName>
+                <default>false</default>
+                <label>Resolved</label>
+            </value>
+            <value>
+                <fullName>Escalated</fullName>
+                <default>false</default>
+                <label>Escalated</label>
+            </value>
+            <value>
+                <fullName>Escalation Rejected</fullName>
+                <default>false</default>
+                <label>Escalation Rejected</label>
+            </value>
+            <value>
+                <fullName>Escalation Approved</fullName>
+                <default>false</default>
+                <label>Escalation Approved</label>
+            </value>
+            <value>
+                <fullName>BOD Approval</fullName>
+                <default>false</default>
+                <label>BOD Approval</label>
+            </value>
+            <value>
+                <fullName>Closed - Invalid</fullName>
+                <default>false</default>
+                <label>Closed - Invalid</label>
+            </value>
+            <value>
+                <fullName>Closed - Valid</fullName>
+                <default>false</default>
+                <label>Closed - Valid</label>
+            </value>
+            <value>
+                <fullName>Accept</fullName>
+                <default>false</default>
+                <label>Accept</label>
+            </value>
+            <value>
+                <fullName>Reject</fullName>
+                <default>false</default>
+                <label>Reject</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

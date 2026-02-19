@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product__c</fullName>
+    <label>Product</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Health Individu - Local (ESC)</fullName>
+                <default>false</default>
+                <label>Health Individu - Local (ESC)</label>
+            </value>
+            <value>
+                <fullName>Health Individu - International (IE - Promedicare AB- Promedicare CDE)</fullName>
+                <default>false</default>
+                <label>Health Individu - International (IE - Promedicare AB- Promedicare CDE)</label>
+            </value>
+            <value>
+                <fullName>Health Group - Local (GSC)</fullName>
+                <default>false</default>
+                <label>Health Group - Local (GSC)</label>
+            </value>
+            <value>
+                <fullName>Health Group - International (IE)</fullName>
+                <default>false</default>
+                <label>Health Group - International (IE)</label>
+            </value>
+            <value>
+                <fullName>Home</fullName>
+                <default>false</default>
+                <label>Home</label>
+            </value>
+            <value>
+                <fullName>Lifestyle</fullName>
+                <default>false</default>
+                <label>Lifestyle</label>
+            </value>
+            <value>
+                <fullName>Liability - Commercial</fullName>
+                <default>false</default>
+                <label>Liability - Commercial</label>
+            </value>
+            <value>
+                <fullName>Marine</fullName>
+                <default>false</default>
+                <label>Marine</label>
+            </value>
+            <value>
+                <fullName>MV - Commercial</fullName>
+                <default>false</default>
+                <label>MV - Commercial</label>
+            </value>
+            <value>
+                <fullName>MV - Retail</fullName>
+                <default>false</default>
+                <label>MV - Retail</label>
+            </value>
+            <value>
+                <fullName>PA</fullName>
+                <default>false</default>
+                <label>PA</label>
+            </value>
+            <value>
+                <fullName>Property - Commercial</fullName>
+                <default>false</default>
+                <label>Property - Commercial</label>
+            </value>
+            <value>
+                <fullName>Domestic Travel</fullName>
+                <default>false</default>
+                <label>Domestic Travel</label>
+            </value>
+            <value>
+                <fullName>International Travel</fullName>
+                <default>false</default>
+                <label>International Travel</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

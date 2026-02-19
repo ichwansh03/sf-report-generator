@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_mandatory_Paid_Amount</fullName>
+    <active>true</active>
+    <description>Paid Amount can&apos;t be empty when close case for AMFS</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(Type, &apos;Complaint&apos;),
+ISPICKVAL(Entity_Backup__c, &apos;AMFS&apos;),
+OR(ISPICKVAL(CHS_Status__c, &apos;Closed - Invalid&apos;), ISPICKVAL(CHS_Status__c, &apos;Closed - Valid&apos;)),
+OR(ISBLANK(   Paid_Amount__c   )))</errorConditionFormula>
+    <errorDisplayField>Paid_Amount__c</errorDisplayField>
+    <errorMessage>Paid Amount can&apos;t be empty when close case</errorMessage>
+</ValidationRule>

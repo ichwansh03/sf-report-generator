@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Need_Reply</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>No Need Reply</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/33.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/33.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+var result = sforce.connection.query(&quot;Select Id, Parent.CaseNumber, No_Need_To_Reply_New__c from case where Id = &apos;{!Case.Id }&apos; limit 1&quot;);
+records = result.getArray(&quot;records&quot;);
+
+var noNeedReply = records[0].No_Need_To_Reply_New__c;
+
+if(noNeedReply==&apos;true&apos;){
+alert(&quot;This case already click on no need reply button.&quot;);
+}
+else {
+
+sforce.connection.sessionId=&quot;{!$Api.Session_ID}&quot;;
+var user = sforce.connection.getUserInfo();
+var id = sforce.apex.execute(&quot;InvokeClass&quot;,&quot;UpdateNoNeedReply&quot;,{caseid:&quot;{!Case.Id }&quot;});
+//alert(&apos;Success&apos;);
+location.reload();
+}</url>
+</WebLink>

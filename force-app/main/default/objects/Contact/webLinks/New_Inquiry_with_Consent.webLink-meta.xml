@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Inquiry_with_Consent</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>New Inquiry</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/53.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+var urlInquiry = &quot;/apex/CaseInquiryContact?retURL=/{!Contact.Id}&amp;def_contact_id={!Contact.Id}&amp;def_account_id={!Account.Id}&amp;RecordType={!Contact.Inquiry_RecordTypeId_Keeper__c}&amp;cas5=Inquiry&amp;firstLoad=new&amp;entity={!Contact.Entity__c}&quot;;
+
+// Custom confirmation message
+if(&quot;{!Contact.Entity__c}&quot; == &quot;AMFS&quot;) {
+var userConfirmed = confirm(&quot;Disarankan untuk melakukan pengecekkan Consent Nasabah sebelum melanjutkan Pelayanan.\nApakah Anda ingin melanjutkan Pelayanan?\nKlik &apos;OK&apos; untuk melanjutkan Pelayanan atau Klik &apos;Cancel&apos; untuk Pengecekkan Consent terlebih dahulu.&quot;);
+
+if (userConfirmed) {
+    if (sforce.console.isInConsole()) {
+		sforce.console.getEnclosingTabId(function(enclosingResult){
+			sforce.console.getEnclosingPrimaryTabId(function(){
+				sforce.console.openPrimaryTab(null, urlInquiry, true, &apos;Create New Inquiry&apos;, null);
+			});
+		});
+    } else {
+        window.location.href = urlInquiry;
+    }
+}
+} else {
+if (sforce.console.isInConsole()) {
+		sforce.console.getEnclosingTabId(function(enclosingResult){
+			sforce.console.getEnclosingPrimaryTabId(function(){
+				sforce.console.openPrimaryTab(null, urlInquiry, true, &apos;Create New Inquiry&apos;, null);
+			});
+		});
+    } else {
+        window.location.href = urlInquiry;
+    }
+}</url>
+</WebLink>

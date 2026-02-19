@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AMFS_CR_Others_Call_Line</fullName>
+    <columns>NAME</columns>
+    <columns>Call_List__c</columns>
+    <columns>Campaign_Name__c</columns>
+    <columns>Campaign_Type__c</columns>
+    <filterScope>Queue</filterScope>
+    <filters>
+        <field>Call_List__c</field>
+        <operation>equals</operation>
+        <value>Gen#241014-041845</value>
+    </filters>
+    <filters>
+        <field>Campaign_Name__c</field>
+        <operation>equals</operation>
+        <value>Collection-Others - Gagal Debet#20241014</value>
+    </filters>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>10/22/2024 12:00 AM</value>
+    </filters>
+    <label>AMFS CR - Others - gagal debet</label>
+    <language>en_US</language>
+    <queue>AMFS_CR_Others</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

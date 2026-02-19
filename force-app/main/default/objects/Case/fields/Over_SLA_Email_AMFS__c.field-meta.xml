@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Over_SLA_Email_AMFS__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( Entity__c = &quot;AMFS&quot; &amp;&amp; Email_First_Response_Date__c &lt;= Email_Due_Date_In_Datetime__c, &quot;On-Time (&lt;= 1 Hari)&quot;,
+IF( Entity__c = &quot;AMFS&quot; &amp;&amp; Email_First_Response_Date__c &gt; Email_Due_Date_In_Datetime__c + 1 &amp;&amp; Email_First_Response_Date__c &lt; Email_Due_Date_In_Datetime__c + 2, &quot;Over SLA 1 (&gt; 1 Hari)&quot;,
+&quot;Over SLA 2 (&gt; 2 Hari)&quot; ))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Over SLA Email AMFS</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

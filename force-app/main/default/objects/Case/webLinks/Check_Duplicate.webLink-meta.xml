@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Duplicate</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Check Duplicate</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&apos;/soap/ajax/10.0/connection.js&apos;)}
+{!REQUIRESCRIPT(&apos;/soap/ajax/10.0/apex.js&apos;)}
+{!REQUIRESCRIPT(&apos;/support/console/26.0/integration.js&apos;)}
+
+ var flowUrl = &apos;/apex/VF_Case_Duplicate_List?id={!Case.Id}&apos;;
+   sforce.console.getEnclosingPrimaryTabId(function(){
+sforce.console.openPrimaryTab(null, flowUrl, true, &apos;Check Duplicate&apos;, null);
+});</url>
+</WebLink>

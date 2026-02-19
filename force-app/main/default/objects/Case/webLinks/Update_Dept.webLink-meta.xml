@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Update_Dept</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Update Dept</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/33.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/33.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&quot;/support/console/40.0/integration.js&quot;)}
+
+sforce.connection.sessionId=&quot;{!$Api.Session_ID}&quot;; 
+var user = sforce.connection.getUserInfo(); 
+var flag = &apos;{!User.Able_to_Change_Case_PIC_Dept__c}&apos;; 
+console.log(&apos;debug button update dept:&apos; + flag + &apos;,&apos; + &apos;{!User.Able_to_Change_Case_PIC_Dept__c}&apos;);
+
+if(flag == true) {
+if (sforce.console.isInConsole()) {
+    console.log(sforce.console.isInConsole());
+    sforce.console.getEnclosingPrimaryTabId(function EditTab(result) {
+	var tabId = result.id;
+        console.log(&quot;primary tab ID = &quot; + tabId);
+
+        var url = &quot;/apex/popupPICDeptOnCase?id={!Case.Id}&amp;pTabId=&quot; + tabId;
+        console.log(url);
+        sforce.console.openPrimaryTab(tabId, url, true, &quot;{!Case.CaseNumber}&quot;);
+        //sforce.console.openPrimaryTab(null, url, true, &quot;{!Case.CaseNumber}&quot;);
+    });
+} else {
+    window.open(&quot;/apex/popupPICDeptOnCase?id={!Case.Id}&quot;, &quot;_blank&quot;, &quot;width=800,height=600&quot;);
+    //alert(&quot;classic view&quot;);
+}
+} else {
+    alert(&quot;User don\&apos;t have permission to use this button.&quot;);
+}</url>
+</WebLink>

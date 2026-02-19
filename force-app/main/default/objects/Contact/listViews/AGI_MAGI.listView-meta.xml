@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AGI_MAGI</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>Policy_No__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CONTACT.PHONE1</columns>
+    <columns>CONTACT.PHONE3</columns>
+    <columns>CONTACT.EMAIL</columns>
+    <columns>Entity__c</columns>
+    <columns>CONTACT.LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Entity__c</field>
+        <operation>equals</operation>
+        <value>AGI,MAGI</value>
+    </filters>
+    <label>AGI &amp; MAGI</label>
+    <language>en_US</language>
+    <sharedTo>
+        <roleAndSubordinatesInternal>CEO_AGI</roleAndSubordinatesInternal>
+        <roleAndSubordinatesInternal>CEO_MAGI_AGI</roleAndSubordinatesInternal>
+        <roleAndSubordinatesInternal>MAGI_CEO</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>
