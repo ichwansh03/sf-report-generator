@@ -55,7 +55,30 @@ public class ReportApiClient {
                 );
             }
             
-            return (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+            Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+            system.debug('API Response - Full structure: ' + JSON.serializePretty(responseMap));
+            
+            // Log the key fields to help debug baseObject extraction
+            if (responseMap.containsKey('reportMetadata')) {
+                Map<String, Object> metadata = (Map<String, Object>) responseMap.get('reportMetadata');
+                system.debug('API Response - reportMetadata keys: ' + metadata.keySet());
+                system.debug('API Response - reportType: ' + metadata.get('reportType'));
+                system.debug('API Response - baseObject: ' + metadata.get('baseObject'));
+                system.debug('API Response - sobjectType: ' + metadata.get('sobjectType'));
+                system.debug('API Response - detailColumns: ' + metadata.get('detailColumns'));
+            }
+            
+            // Log reportTypeMetadata structure
+            if (responseMap.containsKey('reportTypeMetadata')) {
+                Map<String, Object> typeMetadata = (Map<String, Object>) responseMap.get('reportTypeMetadata');
+                system.debug('API Response - reportTypeMetadata keys: ' + typeMetadata.keySet());
+                system.debug('API Response - reportTypeMetadata.objects: ' + JSON.serializePretty(typeMetadata.get('objects')));
+                if (typeMetadata.containsKey('objectRelations')) {
+                    system.debug('API Response - reportTypeMetadata.objectRelations: ' + JSON.serializePretty(typeMetadata.get('objectRelations')));
+                }
+            }
+            
+            return responseMap;
             
         } catch (ReportToSoqlException e) {
             throw e;
