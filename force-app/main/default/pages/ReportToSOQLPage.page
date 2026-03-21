@@ -1,0 +1,107 @@
+<apex:page controller="ReportToSOQLController" showHeader="true" sidebar="true" lightningStylesheets="true">
+    <apex:form >
+
+        <apex:pageBlock title="Report to SOQL Converter">
+            <apex:pageBlockSection title="Search Report" columns="1">
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Report Name" for="reportSearch"/>
+                    <apex:outputPanel layout="block" style="min-width: 350px;">
+                        <apex:inputText id="reportSearch"
+                                        value="{!searchKeyword}"
+                                        style="width: 100%; padding: 6px; font-size: 13px; box-sizing: border-box;"
+                                        onkeyup="delaySearch(event)"
+                                        html-autocomplete="off"/>
+                        <apex:outputPanel id="searchDropdown" layout="block">
+                            <apex:outputPanel layout="block"
+                                              rendered="{!hasSearchResults}"
+                                              style="position: absolute; z-index: 9999; background: white; border: 1px solid #ddd; border-top: none; min-width: 350px; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
+                                <apex:repeat value="{!reportSearchResults}" var="r">
+                                    <apex:commandLink value="{!r.name}"
+                                                      action="{!selectAndGenerate}"
+                                                      rerender="searchDropdown,resultPanel"
+                                                      status="generateStatus"
+                                                      style="display: block; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 13px; text-decoration: none; color: #333;">
+                                        <apex:param name="paramReportId"   value="{!r.id}"   assignTo="{!selectedReportId}"/>
+                                        <apex:param name="paramReportName" value="{!r.name}" assignTo="{!selectedReportName}"/>
+                                    </apex:commandLink>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+        <apex:actionFunction name="doSearch"
+                             action="{!searchReports}"
+                             rerender="searchDropdown"
+                             status="searchStatus"/>
+
+        <!-- Loading indicators -->
+        <apex:actionStatus id="searchStatus">
+            <apex:facet name="start">
+                <p style="padding: 6px; color: #888; font-size: 12px; font-style: italic;">🔍 Searching reports...</p>
+            </apex:facet>
+        </apex:actionStatus>
+
+        <apex:actionStatus id="generateStatus">
+            <apex:facet name="start">
+                <div style="padding: 16px; text-align: center;">
+                    <img src="/img/loading.gif" style="vertical-align: middle; margin-right: 8px;"/>
+                    <span style="color: #666; font-size: 13px;">Generating SOQL, please wait...</span>
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+
+        <!-- Result Panel -->
+        <apex:outputPanel id="resultPanel">
+            <apex:pageBlock title="Generated SOQL" rendered="{!NOT(ISBLANK(generatedSOQL))}">
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Report"/>
+                        <apex:outputText value="{!selectedReportName}"
+                                         style="font-weight: bold; color: #0070d2; font-size: 13px;"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="SOQL Query"/>
+                        <apex:outputText value="{!generatedSOQL}"
+                                         style="font-family: monospace; word-break: break-all; white-space: pre-wrap; display: block; background: #f4f4f4; padding: 12px; border: 1px solid #ddd; border-radius: 4px; min-width: 500px;"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!NOT(ISBLANK(endpointUrl))}">
+                        <apex:outputLabel value="REST Endpoint"/>
+                        <apex:outputText value="{!endpointUrl}"
+                                         style="font-family: monospace; word-break: break-all; white-space: pre-wrap; display: block; background: #eef4ff; padding: 12px; border: 1px solid #cce0ff; border-radius: 4px; min-width: 500px; color: #0070d2;"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <apex:pageMessages />
+        </apex:outputPanel>
+
+    </apex:form>
+
+    <script>
+        var searchTimer = null;
+
+        function delaySearch(event) {
+            var ignored = [13, 16, 17, 18, 27, 37, 38, 39, 40];
+            if (ignored.indexOf(event.keyCode) !== -1) return;
+
+            clearTimeout(searchTimer);
+
+            var input = document.querySelector('input[id$="reportSearch"]');
+            var val   = input ? input.value : '';
+
+            if (val.length < 2) {
+                // Clear dropdown immediately if input too short
+                doSearch();
+                return;
+            }
+
+            searchTimer = setTimeout(function() {
+                doSearch();
+            }, 400);
+        }
+    </script>
+</apex:page>
