@@ -91,6 +91,4 @@ public class ReportToSOQLConverter {
         };
         return opMap.containsKey(reportOp) ? opMap.get(reportOp) : '=';
     }
-
-
 }

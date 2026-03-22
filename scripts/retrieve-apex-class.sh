@@ -11,6 +11,7 @@ if [ "$RETRIEVE_SPECIFIC" = "--specific" ]; then
     
     METADATA=(
         "ApexClass:ReportToSOQLConverter"
+        "ApexClass:ReportToSOQLConverterTest"
         "ApexClass:ReportToSOQLController"
         "ApexPage:ReportToSOQLPage"
     )
