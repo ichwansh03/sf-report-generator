@@ -37,29 +37,6 @@ public class ReportToSOQLController {
         hasSearchResults = !reportSearchResults.isEmpty();
     }
 
-    /*public void selectAndGenerate() {
-        // Reset
-        generatedSOQL    = null;
-        hasSearchResults = false;
-        reportSearchResults = new List<ReportWrapper>();
-        ApexPages.getMessages().clear();
-
-        if (String.isBlank(selectedReportId)) {
-            ApexPages.addMessage(new ApexPages.Message(
-                ApexPages.Severity.ERROR, 'No report selected.'
-            ));
-            return;
-        }
-
-        try {
-            generatedSOQL = ReportToSOQLConverter.getSOQLFromReport((Id) selectedReportId);
-        } catch (Exception e) {
-            ApexPages.addMessage(new ApexPages.Message(
-                ApexPages.Severity.ERROR, 'Error generating SOQL: ' + e.getMessage()
-            ));
-        }
-    }*/
-    
     public void selectAndGenerate() {
         generatedSOQL = null;
         endpointUrl   = null;

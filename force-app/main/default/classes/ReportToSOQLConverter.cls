@@ -73,6 +73,8 @@ public class ReportToSOQLConverter {
             return '\'' + value.trim() + '\'';
         }
 
+        system.debug('value: '+value);
+        system.debug('parts: '+parts);
         List<String> quoted = new List<String>();
         for (String part : parts) {
             quoted.add('\'' + part.trim() + '\'');

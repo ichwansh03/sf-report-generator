@@ -13,6 +13,7 @@ if [ "$RETRIEVE_SPECIFIC" = "--specific" ]; then
         "ApexClass:ReportToSOQLConverter"
         "ApexClass:ReportToSOQLConverterTest"
         "ApexClass:ReportToSOQLController"
+        "ApexClass:ReportToSOQLControllerTest"
         "ApexPage:ReportToSOQLPage"
     )
     
